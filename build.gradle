@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = 'com.datecourse'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // MySQL JDBC 드라이버
+    implementation 'com.mysql:mysql-connector-j:8.3.0'
+
+    // JSON 파싱 (공공데이터 및 카카오 API 응답 처리용)
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+}
+
+javafx {
+    version = "21"
+    // FXML 디자인 및 WebView(카카오 지도) 모듈 포함
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]
+}
+
+application {
+    mainClass = 'com.datecourse.MainApp'
+}
+
