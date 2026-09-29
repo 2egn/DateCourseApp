@@ -13,7 +13,7 @@ public class MainApp extends Application {
     }
     @Override
     public void start(Stage primaryStage) {
-        Label label = new Label("수정2ㄴㅇㄴㄴㅇㅇㄸ22");
+        Label label = new Label("수정");
         StackPane root = new StackPane(label);
         Scene scene = new Scene(root, 600, 400);
 
