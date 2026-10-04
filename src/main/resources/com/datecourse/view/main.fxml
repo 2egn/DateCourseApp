@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.datecourse.controller.MainController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+    <top>
+        <VBox spacing="8">
+            <Label text="나들이 코스 추천" style="-fx-font-size: 25px; -fx-font-weight: bold;"/>
+            <Label text="부산 데모 · 서면 주변의 가상 장소로 예산과 반경을 검증합니다."/>
+            <Separator/>
+        </VBox>
+    </top>
+    <left>
+        <VBox spacing="10" prefWidth="240">
+            <padding><Insets top="16" right="20"/></padding>
+            <Label text="총 예산 (전체 인원 합계, 원)"/>
+            <TextField fx:id="budgetField" text="60000"/>
+            <Label text="인원 수"/><TextField fx:id="peopleField" text="2"/>
+            <Label text="중심 위도"/><TextField fx:id="latitudeField" text="35.1577"/>
+            <Label text="중심 경도"/><TextField fx:id="longitudeField" text="129.0592"/>
+            <Label text="반경 (m, 최대 20,000)"/><TextField fx:id="radiusField" text="1500"/>
+            <Label text="방문 카테고리 (아래 순서로 각 1곳)"/>
+            <CheckBox fx:id="mealCheck" text="식사" selected="true"/>
+            <CheckBox fx:id="cafeCheck" text="카페" selected="true"/>
+            <CheckBox fx:id="cultureCheck" text="문화" selected="true"/>
+            <CheckBox fx:id="entertainmentCheck" text="오락"/>
+            <Button fx:id="searchButton" text="추천 코스 찾기" onAction="#recommend" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="12">
+            <padding><Insets top="16"/></padding>
+            <Label text="추천 코스 · 선택한 코스를 진하게 표시"/>
+            <ListView fx:id="courseList" prefHeight="190"/>
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                <content><Label fx:id="detailLabel" text="조건을 입력하고 추천 코스를 찾아보세요." wrapText="true">
+                    <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                </Label></content>
+            </ScrollPane>
+        </VBox>
+    </center>
+    <bottom><Label fx:id="statusLabel" text="추정 가격의 상한으로 예산을 검사합니다. 실제 지출을 보장하지 않습니다." wrapText="true">
+        <padding><Insets top="12"/></padding>
+    </Label></bottom>
+</BorderPane>
