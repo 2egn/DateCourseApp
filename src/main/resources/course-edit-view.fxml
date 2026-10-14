@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@style.css"
+            fx:controller="com.datecourse.CourseEditController"
+            prefWidth="1000" prefHeight="700">
+
+    <top>
+        <Label text="코스 수정 · 공유" styleClass="title">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </padding>
+        </Label>
+    </top>
+
+    <center>
+        <HBox spacing="20">
+            <padding>
+                <Insets top="5" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <!-- 왼쪽: 추천 코스 3개 -->
+            <VBox spacing="8" prefWidth="430" minWidth="430">
+                <Label text="추천 코스" styleClass="section"/>
+                <ListView fx:id="candidateList" prefHeight="190"/>
+                <Button fx:id="importButton" text="이 코스 통째로 가져오기" onAction="#onImportClick" maxWidth="Infinity"/>
+
+                <Label text="이 코스의 가게 (골라서 담기)" styleClass="section"/>
+                <ListView fx:id="candidatePlaceList" VBox.vgrow="ALWAYS"/>
+                <Button fx:id="addPlaceButton" text="내 코스에 추가 ▶" onAction="#onAddPlaceClick" maxWidth="Infinity"/>
+            </VBox>
+
+            <!-- 오른쪽: 내 코스 (편집) -->
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="내 코스 (이름을 정해주세요, 비우면 자동)" styleClass="section"/>
+                <TextField fx:id="titleField" promptText="예: 수원 데이트 코스"/>
+
+                <Label fx:id="summaryLabel" styleClass="section"/>
+                <Label fx:id="budgetLabel"/>
+
+                <ListView fx:id="placeList" VBox.vgrow="ALWAYS"/>
+
+                <HBox spacing="10">
+                    <Button fx:id="upButton" text="▲ 위로" onAction="#onMoveUpClick" styleClass="secondary"/>
+                    <Button fx:id="downButton" text="▼ 아래로" onAction="#onMoveDownClick" styleClass="secondary"/>
+                    <Button fx:id="removeButton" text="가게 삭제" onAction="#onRemoveClick" styleClass="danger"/>
+                    <Button fx:id="clearButton" text="모두 비우기" onAction="#onClearClick" styleClass="danger"/>
+                </HBox>
+            </VBox>
+        </HBox>
+    </center>
+
+    <bottom>
+        <VBox spacing="8" styleClass="panel-bottom">
+            <padding>
+                <Insets top="15" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label fx:id="messageLabel" wrapText="true"/>
+            <HBox spacing="10">
+                <Button fx:id="saveButton" text="저장" onAction="#onSaveClick"/>
+                <Button fx:id="shareButton" text="공유 (텍스트 복사)" onAction="#onShareClick" styleClass="secondary"/>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>

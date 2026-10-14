@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@style.css"
+            fx:controller="com.datecourse.CommunityController"
+            prefWidth="980" prefHeight="700">
+
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label text="커뮤니티 · 리뷰" styleClass="title"/>
+            <Label fx:id="countLabel"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ComboBox fx:id="sortBox"/>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox spacing="15">
+            <padding>
+                <Insets top="0" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <!-- 왼쪽: 리뷰 목록 -->
+            <ListView fx:id="reviewList" HBox.hgrow="ALWAYS"/>
+
+            <!-- 오른쪽: 선택한 리뷰의 코스 상세 -->
+            <VBox spacing="8" prefWidth="320" minWidth="320" styleClass="card">
+                <Label text="이 리뷰의 코스" styleClass="muted"/>
+                <Label fx:id="detailTitle" wrapText="true" styleClass="subtitle"/>
+                <Label fx:id="detailSummary" wrapText="true"/>
+                <ListView fx:id="detailPlaces" VBox.vgrow="ALWAYS"/>
+            </VBox>
+        </HBox>
+    </center>
+
+    <bottom>
+        <VBox spacing="8" styleClass="panel-bottom">
+            <padding>
+                <Insets top="15" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="리뷰 작성" styleClass="section"/>
+            <HBox spacing="10">
+                <ComboBox fx:id="courseBox" promptText="내가 다녀온 코스 선택" prefWidth="420"/>
+                <ComboBox fx:id="ratingBox" promptText="별점"/>
+            </HBox>
+            <TextArea fx:id="contentArea" promptText="코스는 어땠나요?" prefRowCount="3" wrapText="true"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="submitButton" text="등록" onAction="#onSubmitClick"/>
+                <Label fx:id="messageLabel" styleClass="error"/>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>

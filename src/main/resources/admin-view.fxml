@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@style.css"
+            fx:controller="com.datecourse.AdminController"
+            prefWidth="980" prefHeight="680">
+
+
+    <top>
+        <Label text="관리자 페이지" styleClass="title">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </padding>
+        </Label>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+
+            <!-- 통계 탭 -->
+            <Tab text="통계">
+                <HBox spacing="20" alignment="CENTER">
+                    <VBox alignment="CENTER" spacing="6" prefWidth="200" prefHeight="120"
+                          styleClass="card">
+                        <Label text="회원 수"/>
+                        <Label fx:id="memberCountLabel" styleClass="stat-number"/>
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="6" prefWidth="200" prefHeight="120"
+                          styleClass="card">
+                        <Label text="리뷰 수"/>
+                        <Label fx:id="reviewCountLabel" styleClass="stat-number"/>
+                    </VBox>
+                    <VBox alignment="CENTER" spacing="6" prefWidth="200" prefHeight="120"
+                          styleClass="card">
+                        <Label text="평균 별점"/>
+                        <Label fx:id="avgRatingLabel" styleClass="stat-number"/>
+                    </VBox>
+                </HBox>
+            </Tab>
+
+            <!-- 리뷰 관리 탭 -->
+            <Tab text="리뷰 관리">
+                <VBox spacing="10">
+                    <padding>
+                        <Insets top="15" right="20" bottom="15" left="20"/>
+                    </padding>
+                    <HBox spacing="10">
+                        <TextField fx:id="reviewSearchField" promptText="작성자 또는 내용 검색" prefWidth="300"/>
+                        <Button text="검색 초기화" onAction="#onReviewSearchReset" styleClass="secondary"/>
+                    </HBox>
+                    <TableView fx:id="reviewTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="reviewAuthorCol" text="작성자" prefWidth="90"/>
+                            <TableColumn fx:id="reviewCourseCol" text="코스" prefWidth="200"/>
+                            <TableColumn fx:id="reviewRatingCol" text="별점" prefWidth="70"/>
+                            <TableColumn fx:id="reviewContentCol" text="내용" prefWidth="380"/>
+                            <TableColumn fx:id="reviewDateCol" text="작성일" prefWidth="110"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="선택한 리뷰 삭제" onAction="#onDeleteReviewClick" styleClass="danger"/>
+                        <Label fx:id="reviewMessageLabel" styleClass="muted"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- 회원 관리 탭 -->
+            <Tab text="회원 관리">
+                <VBox spacing="10">
+                    <padding>
+                        <Insets top="15" right="20" bottom="15" left="20"/>
+                    </padding>
+                    <TableView fx:id="memberTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="memberNameCol" text="이름" prefWidth="140"/>
+                            <TableColumn fx:id="memberRoleCol" text="권한" prefWidth="100"/>
+                            <TableColumn fx:id="memberJoinedCol" text="가입일" prefWidth="130"/>
+                            <TableColumn fx:id="memberStatusCol" text="상태" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="정지 / 해제" onAction="#onToggleSuspendClick" styleClass="secondary"/>
+                        <Label fx:id="memberMessageLabel" styleClass="muted"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>
