@@ -1,0 +1,14 @@
+# Local database credentials must never be committed.
+src/main/resources/db.properties
+
+# IDE files
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+
+# Build output
+target/
+.local/
