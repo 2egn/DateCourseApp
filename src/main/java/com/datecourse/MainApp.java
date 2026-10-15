@@ -1,26 +1,31 @@
 package com.datecourse;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class MainApp extends Application {
+    private static Stage stg;
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        stg = primaryStage;
+        primaryStage.setResizable(false);
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
+        primaryStage.setTitle("DateCourseApp");
+        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.show();
+    }
+
+    public void changeScene(String fxml) throws IOException {
+        Parent pane = FXMLLoader.load(getClass().getResource(fxml));
+        stg.getScene().setRoot(pane);
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
-    @Override
-    public void start(Stage primaryStage) {
-        Label label = new Label("예산 맞춤형 데이트 코스 추천 프로그램 실행 테스트");
-        StackPane root = new StackPane(label);
-        Scene scene = new Scene(root, 600, 400);
-
-        primaryStage.setTitle("DateCourseApp");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-
 }
