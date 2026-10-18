@@ -1,0 +1,116 @@
+/* ===== 색상 (여기만 바꾸면 전체 색이 바뀜) ===== */
+.root {
+    -app-primary: #ff6b81;
+    -app-primary-dark: #e8506a;
+    -app-primary-light: #ffe3e8;
+    -app-bg: #fafafa;
+    -app-text: #333333;
+    -app-muted: #888888;
+    -app-border: #e3e3e3;
+    -app-danger: #e03131;
+
+    -fx-font-family: "Malgun Gothic";
+    -fx-font-size: 13px;
+    -fx-background-color: -app-bg;
+}
+
+/* ===== 글자 ===== */
+.label { -fx-text-fill: -app-text; }
+.title { -fx-font-size: 24px; -fx-font-weight: bold; }
+.subtitle { -fx-font-size: 16px; -fx-font-weight: bold; }
+.section { -fx-font-weight: bold; }
+.muted { -fx-text-fill: -app-muted; -fx-font-size: 11px; }
+.error { -fx-text-fill: -app-danger; }
+.stat-number { -fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: -app-primary; }
+
+/* ===== 카드(둥근 흰 상자) ===== */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: -app-border;
+    -fx-border-radius: 10;
+    -fx-padding: 14;
+}
+.panel-bottom {
+    -fx-background-color: white;
+    -fx-border-color: -app-border;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* ===== 버튼 ===== */
+.button {
+    -fx-background-color: -app-primary;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+}
+.button:hover { -fx-background-color: -app-primary-dark; }
+.button:disabled { -fx-opacity: 0.4; }
+
+.button.secondary {
+    -fx-background-color: white;
+    -fx-text-fill: -app-primary;
+    -fx-border-color: -app-primary;
+    -fx-border-radius: 8;
+}
+.button.secondary:hover { -fx-background-color: -app-primary-light; }
+
+.button.danger { -fx-background-color: -app-danger; }
+.button.danger:hover { -fx-background-color: #c92a2a; }
+
+/* ===== 입력칸 ===== */
+.text-field, .text-area, .combo-box, .spinner {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: -app-border;
+    -fx-border-radius: 8;
+}
+.text-field, .combo-box .text-field { -fx-padding: 7 10; }
+.text-field:focused, .text-area:focused, .combo-box:focused {
+    -fx-border-color: -app-primary;
+}
+.text-area .content { -fx-background-color: white; -fx-background-radius: 8; }
+
+.check-box:selected .mark { -fx-background-color: white; }
+.check-box:selected .box { -fx-background-color: -app-primary; -fx-border-color: -app-primary; }
+
+.slider .thumb { -fx-background-color: -app-primary; }
+.slider .track { -fx-background-color: -app-border; }
+
+/* ===== 목록 ===== */
+.list-view {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: -app-border;
+    -fx-border-radius: 10;
+}
+.list-cell { -fx-padding: 8 10; -fx-background-color: transparent; }
+.list-cell:filled:hover { -fx-background-color: #fff3f5; }
+.list-cell:filled:selected,
+.list-cell:filled:selected:focused {
+    -fx-background-color: -app-primary-light;
+    -fx-text-fill: -app-text;
+}
+.list-cell:filled:selected .label { -fx-text-fill: -app-text; }
+
+/* ===== 표 (관리자) ===== */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: -app-border;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+.table-view .column-header-background { -fx-background-color: #f3f3f3; }
+.table-view .column-header, .table-view .filler { -fx-background-color: transparent; }
+.table-row-cell:filled:selected {
+    -fx-background-color: -app-primary-light;
+    -fx-text-fill: -app-text;
+}
+.table-row-cell:filled:selected .text { -fx-fill: -app-text; }
+
+/* ===== 탭 (관리자) ===== */
+.tab-pane .tab-header-area .tab-header-background { -fx-background-color: transparent; }
+.tab-pane .tab:selected { -fx-background-color: -app-primary-light; }
+.tab-pane .tab:selected .tab-label { -fx-text-fill: -app-primary-dark; -fx-font-weight: bold; }
