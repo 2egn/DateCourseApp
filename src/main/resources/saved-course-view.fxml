@@ -11,7 +11,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             stylesheets="@style.css"
-            fx:controller="com.datecourse.SavedCourseController"
+            fx:controller="com.datecourse.controller.SavedCourseController"
             prefWidth="920" prefHeight="620">
 
     <top>

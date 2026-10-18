@@ -12,10 +12,10 @@
 
 아이디/이메일·이름·전화번호의 이전 입력값은 해당 칸 클릭 시 선택할 수 있습니다. 이번 변경 이후 입력한 값부터 기록하며 최대 8개를 프로젝트 .local/input-history.properties에 보관합니다. 비밀번호와 확인은 기록·추천하지 않습니다. .local은 Git 제외 대상입니다.
 
-IDE에서 MembershipApp.java의 main을 실행하거나 프로젝트 폴더에서 아래 명령을 실행합니다.
+IDE에서 com.datecourse.app 패키지의 [AppLauncher.java main](src/main/java/com/datecourse/app/AppLauncher.java)을 실행하거나 프로젝트 폴더에서 아래 명령을 실행합니다.
 
 ```powershell
-mvn compile exec:java "-Dexec.mainClass=kr.ac.university.localdb.MembershipApp"
+.\gradlew.bat run
 ```
 
 회원가입 창에서 이메일, 이름, 전화번호(선택), 비밀번호 및 확인을 입력합니다. 이메일 중복은 거부하며 비밀번호는 8~128자입니다. PBKDF2 SHA-256(600,000회, 개별 salt) 해시만 저장합니다.

@@ -13,7 +13,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             stylesheets="@style.css"
-            fx:controller="com.datecourse.ConditionController"
+            fx:controller="com.datecourse.controller.ConditionController"
             prefWidth="920" prefHeight="620">
 
     <left>

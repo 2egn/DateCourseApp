@@ -33,7 +33,7 @@ javafx {
 }
 
 application {
-    mainClass = 'com.datecourse.MainApp'
+    mainClass = 'com.datecourse.app.AppLauncher'
 }
 
 
