@@ -72,18 +72,73 @@ public final class UiTheme {
         panel.add(brand);panel.add(Box.createVerticalStrut(24));panel.add(main);panel.add(Box.createVerticalStrut(12));panel.add(sub);
         return panel;
     }
-    public static JPanel loginPanel(JTextField id,JPasswordField password,JButton login,JButton signupLink) {
+    public static JPanel loginPanel(JTextField id,JPasswordField password,JCheckBox rememberId,JButton login,JButton signupLink) {
         JPanel panel=new JPanel(new BorderLayout(0,30));
         panel.add(heading("다시 만나서 반가워요","아이디와 비밀번호로 로그인해 주세요"),BorderLayout.NORTH);
         JPanel fields=new JPanel();fields.setLayout(new BoxLayout(fields,BoxLayout.Y_AXIS));
         fields.add(inputRow("아이디",id));fields.add(Box.createVerticalStrut(22));fields.add(inputRow("비밀번호",password));
+        rememberId.setFont(BODY.deriveFont(14f));rememberId.setForeground(TEXT);
+        rememberId.setOpaque(false);rememberId.setAlignmentX(Component.LEFT_ALIGNMENT);
+        rememberId.setIcon(new RememberIdIcon());
+        rememberId.setSelectedIcon(new RememberIdIcon());
+        rememberId.setIconTextGap(9);
+        rememberId.setBorder(BorderFactory.createEmptyBorder(3,2,3,2));
+        rememberId.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        rememberId.setFocusPainted(false);
+        rememberId.setRolloverEnabled(true);
+        rememberId.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent event) { rememberId.repaint(); }
+            public void focusLost(FocusEvent event) { rememberId.repaint(); }
+        });
+        JPanel rememberRow=new JPanel(new BorderLayout());
+        rememberRow.add(rememberId,BorderLayout.WEST);
+        rememberRow.setMaximumSize(new Dimension(Integer.MAX_VALUE,32));
+        fields.add(Box.createVerticalStrut(12));fields.add(rememberRow);
         fields.add(Box.createVerticalGlue());panel.add(fields,BorderLayout.CENTER);
         button(login,true);
-        signupLink.setForeground(MUTED);signupLink.setFont(BODY.deriveFont(14f));
-        signupLink.setContentAreaFilled(false);signupLink.setBorderPainted(false);signupLink.setFocusPainted(false);
-        signupLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button(signupLink,false);
         JPanel actions=new JPanel(new GridLayout(0,1,0,12));actions.add(login);actions.add(signupLink);
         panel.add(actions,BorderLayout.SOUTH);return panel;
+    }
+    /** Rounded checkbox with the same accent as the login button. */
+    private static final class RememberIdIcon implements Icon {
+        public int getIconWidth() { return 24; }
+        public int getIconHeight() { return 24; }
+
+        public void paintIcon(Component component, Graphics graphics, int x, int y) {
+            JCheckBox checkbox = (JCheckBox) component;
+            Graphics2D g = (Graphics2D) graphics.create();
+            try {
+                g.translate(x, y);
+                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                boolean selected = checkbox.isSelected();
+                boolean enabled = checkbox.isEnabled();
+                if (checkbox.hasFocus() && enabled) {
+                    g.setColor(new Color(0xFFD3DC));
+                    g.fillRoundRect(0, 0, 24, 24, 10, 10);
+                }
+                Color fill = !enabled ? new Color(0xE5E8EB)
+                        : selected ? ACCENT : checkbox.getModel().isRollover() ? SOFT : Color.WHITE;
+                if (checkbox.getModel().isPressed() && enabled) fill = fill.darker();
+                g.setColor(fill);
+                g.fillRoundRect(3, 3, 18, 18, 7, 7);
+                if (!selected) {
+                    g.setColor(enabled ? new Color(0xB0B8C1) : new Color(0xD1D6DB));
+                    g.setStroke(new BasicStroke(1.4f));
+                    g.drawRoundRect(3, 3, 18, 18, 7, 7);
+                } else {
+                    g.setColor(enabled ? TEXT : MUTED);
+                    g.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                    java.awt.geom.Path2D check = new java.awt.geom.Path2D.Float();
+                    check.moveTo(7, 12);
+                    check.lineTo(10.5, 15.5);
+                    check.lineTo(17, 9);
+                    g.draw(check);
+                }
+            } finally {
+                g.dispose();
+            }
+        }
     }
     private static JPanel inputRow(String text,JTextField input) {
         JPanel row=new JPanel(new BorderLayout(0,10));JLabel label=new JLabel(text);label.setForeground(MUTED);label.setFont(BODY.deriveFont(14f));

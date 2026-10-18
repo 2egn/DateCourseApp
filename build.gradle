@@ -12,6 +12,10 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.zaxxer:HikariCP:7.1.0'
+    testImplementation 'com.h2database:h2:2.3.232'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
     // MySQL JDBC 드라이버
     implementation 'com.mysql:mysql-connector-j:8.3.0'
 
@@ -32,3 +36,8 @@ application {
     mainClass = 'com.datecourse.MainApp'
 }
 
+
+
+test {
+    useJUnitPlatform()
+}

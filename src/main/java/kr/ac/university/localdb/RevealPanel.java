@@ -7,7 +7,10 @@ import java.awt.*;
 public final class RevealPanel extends JPanel {
     private float progress;
     private Timer timer;
-    private final int fullHeight=98;
+    private int revealedHeight() {
+        // Include the actual font, label, field and padding sizes (also on scaled displays).
+        return Math.round(Math.max(98, super.getPreferredSize().height) * progress);
+    }
     public RevealPanel(String label,JComponent input) {
         super(new BorderLayout(0,6));
         setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
@@ -29,9 +32,9 @@ public final class RevealPanel extends JPanel {
         timer.start();
     }
     public void reset() { if(timer!=null) timer.stop(); progress=0; setVisible(false); }
-    @Override public Dimension getPreferredSize() { return new Dimension(440,Math.round(fullHeight*progress)); }
-    @Override public Dimension getMaximumSize() { return new Dimension(Integer.MAX_VALUE,Math.round(fullHeight*progress)); }
-    @Override public Dimension getMinimumSize() { return new Dimension(0,0); }
+    @Override public Dimension getPreferredSize() { return new Dimension(super.getPreferredSize().width,revealedHeight()); }
+    @Override public Dimension getMaximumSize() { return new Dimension(Integer.MAX_VALUE,revealedHeight()); }
+    @Override public Dimension getMinimumSize() { return new Dimension(0,revealedHeight()); }
     @Override public void paint(Graphics g) {
         Graphics2D copy=(Graphics2D)g.create();
         copy.setComposite(AlphaComposite.SrcOver.derive(progress)); super.paint(copy); copy.dispose();

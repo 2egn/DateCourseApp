@@ -1,17 +1,34 @@
 package kr.ac.university.localdb;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.*;
 import java.util.*;
 
 /** 가입과 관리자 기능에서 공통으로 사용하는 DB 코드입니다. */
-public class MemberRepository {
+public class MemberRepository implements AutoCloseable {
     public static final String ADMIN_USERNAME = "a1234";
     private static final String INITIAL_ADMIN_HASH = "pbkdf2-sha256$600000$VWNKiLVOeQPuuXhHV0lPKQ==$jo1T+y7gfBK3eGRNLyp9EBmnbbLaEe6czQss6sZVkpI=";
     public record Login(String name, AdminSession adminSession) {}
     public record Member(long id, String email, String name, String phone, String status, String created) {}
-    private final DbSettings settings = DbSettings.load();
+    private final HikariDataSource pool;
+
+    public MemberRepository() {
+        this(DatabasePool.create(DbSettings.load()));
+    }
+
+    MemberRepository(HikariDataSource pool) {
+        this.pool = pool;
+    }
+
     private Connection connect() throws SQLException {
-        return DriverManager.getConnection(settings.url(), settings.user(), settings.password());
+        // Closing this connection returns it to the pool for the next operation.
+        return pool.getConnection();
+    }
+
+    @Override
+    public void close() {
+        pool.close();
     }
 
     public void initialize() throws SQLException {
@@ -58,25 +75,40 @@ public class MemberRepository {
 
     public Login login(String username, char[] password) throws Exception {
         username = username.trim();
-        if (ADMIN_USERNAME.equals(username)) {
-            try (Connection c = connect(); PreparedStatement s = c.prepareStatement(
-                    "SELECT password_hash FROM app_admins WHERE username=?")) {
-                s.setString(1, username);
+        long started = System.nanoTime();
+
+        try (Connection c = connect()) {
+            long connected = System.nanoTime();
+
+            try (PreparedStatement s = c.prepareStatement(
+                    "SELECT name,password_hash,status FROM members WHERE email=?")) {
+                s.setString(1, username.toLowerCase(Locale.ROOT));
+
                 try (ResultSet r = s.executeQuery()) {
-                    if (!r.next() || !PasswordHash.verify(password,r.getString(1)))
-                        throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
+                    boolean found = r.next();
+                    long queried = System.nanoTime();
+
+                    boolean valid = found
+                            && PasswordHash.verify(password, r.getString("password_hash"));
+                    long verified = System.nanoTime();
+
+                    System.out.printf(
+                            "DB 연결: %.1f ms%n회원 조회: %.1f ms%n비밀번호 검증: %.1f ms%n",
+                            (connected - started) / 1_000_000.0,
+                            (queried - connected) / 1_000_000.0,
+                            (verified - queried) / 1_000_000.0
+                    );
+
+                    if (!valid)
+                        throw new IllegalArgumentException(
+                                "아이디 또는 비밀번호가 일치하지 않습니다.");
+
+                    if (!"ACTIVE".equals(r.getString("status")))
+                        throw new IllegalArgumentException(
+                                "탈퇴 또는 비활성화된 계정입니다.");
+
+                    return new Login(r.getString("name"), null);
                 }
-            }
-            return new Login("관리자",new AdminSession());
-        }
-        try (Connection c = connect(); PreparedStatement s = c.prepareStatement(
-                "SELECT name,password_hash,status FROM members WHERE email=?")) {
-            s.setString(1,username.toLowerCase(Locale.ROOT));
-            try (ResultSet r = s.executeQuery()) {
-                if (!r.next() || !PasswordHash.verify(password,r.getString("password_hash")))
-                    throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
-                if (!"ACTIVE".equals(r.getString("status"))) throw new IllegalArgumentException("탈퇴 또는 비활성화된 계정입니다.");
-                return new Login(r.getString("name"),null);
             }
         }
     }
@@ -96,7 +128,7 @@ public class MemberRepository {
             try (Connection c = connect(); PreparedStatement s = c.prepareStatement(
                     "SELECT member_id,email,name,phone,status,created_at FROM members "
                             + "WHERE LOCATE(?,email)>0 OR LOCATE(?,name)>0 ORDER BY member_id DESC")) {
-                s.setString(1, keyword.trim()); s.setString(2, keyword.trim());
+                s.setString(1, keyword.trim()); s.setString(    2, keyword.trim());
                 try (ResultSet r = s.executeQuery()) {
                     while (r.next()) members.add(new Member(r.getLong(1),r.getString(2),r.getString(3),
                             r.getString(4),r.getString(5),r.getString(6)));
