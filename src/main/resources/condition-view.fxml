@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@style.css"
+            fx:controller="com.datecourse.ConditionController"
+            prefWidth="920" prefHeight="620">
+
+    <left>
+        <VBox spacing="10" prefWidth="300">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="어떤 데이트를 원하세요?" styleClass="title"/>
+
+            <Label text="예산 (원)"/>
+            <TextField fx:id="budgetField" promptText="예: 50000"/>
+
+            <Label text="인원"/>
+            <TextField fx:id="peopleField" promptText="예: 2"/>
+
+            <Label text="카테고리 (여러 개 선택 가능)"/>
+            <FlowPane fx:id="categoryPane" hgap="10" vgap="6"/>
+
+            <Label fx:id="radiusLabel" text="반경: 500m"/>
+            <Slider fx:id="radiusSlider" min="200" max="2000" value="500"/>
+
+            <Label fx:id="countLabel" styleClass="section"/>
+
+            <Label fx:id="errorLabel" styleClass="error" wrapText="true"/>
+            <Button text="코스 추천받기" onAction="#onRecommendClick" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="8">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="0"/>
+            </padding>
+
+            <Label fx:id="hintLabel" text="지도를 클릭해서 원하는 위치를 찍어주세요"/>
+            <Pane fx:id="mapPane" VBox.vgrow="ALWAYS"
+                  style="-fx-background-color: #e8eef3; -fx-border-color: #aab;"/>
+        </VBox>
+    </center>
+</BorderPane>

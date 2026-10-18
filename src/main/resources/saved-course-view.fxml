@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@style.css"
+            fx:controller="com.datecourse.SavedCourseController"
+            prefWidth="920" prefHeight="620">
+
+    <top>
+        <Label text="저장한 코스" styleClass="title">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </padding>
+        </Label>
+    </top>
+
+    <left>
+        <VBox spacing="8" prefWidth="320">
+            <padding>
+                <Insets top="10" right="10" bottom="20" left="20"/>
+            </padding>
+            <ListView fx:id="courseList" VBox.vgrow="ALWAYS"/>
+            <Label fx:id="emptyLabel" text="저장한 코스가 없어요." visible="false"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="20" bottom="20" left="10"/>
+            </padding>
+            <Label fx:id="detailTitle" text="코스를 선택해주세요" styleClass="subtitle"/>
+            <Label fx:id="detailSummary"/>
+            <ListView fx:id="placeList" VBox.vgrow="ALWAYS"/>
+            <Label fx:id="messageLabel" styleClass="muted"/>
+            <HBox spacing="10">
+                <Button fx:id="renameButton" text="이름 변경" onAction="#onRenameClick" styleClass="secondary"/>
+                <Button fx:id="deleteButton" text="삭제" onAction="#onDeleteClick" styleClass="danger"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
