@@ -1,4 +1,4 @@
-USE university_project;
+-- Run against the database selected in your SQL client. Java imports use the database in db.url.
 
 CREATE TABLE IF NOT EXISTS members (
     member_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

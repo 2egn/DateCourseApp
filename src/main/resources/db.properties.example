@@ -1,5 +1,7 @@
-# Copy this file to db.properties, then enter your local MySQL account details.
+# Copy this file to db.properties, then enter your MySQL or Aiven connection details.
 # db.properties is excluded from Git by .gitignore.
+# db.url is required and must include the target database name.
+# There is no implicit localhost URL. Existing DB_URL/DB_USER/DB_PASSWORD environment variables override this file.
 db.url=jdbc:mysql://localhost:3306/university_project?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
 db.user=root
 db.password=ENTER_PASSWORD_HERE

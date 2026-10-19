@@ -1,5 +1,5 @@
 -- Integrated data replacement. Execute as a script (Alt+X).
-USE university_project;
+-- Run against the database selected in your SQL client. Java imports use the database in db.url.
 START TRANSACTION;
 DELETE FROM data_records WHERE source_file IN ('busan_cafes_cleaned.csv','smoke-test.xlsx','java-simple-test','integrated_places.csv');
 DELETE FROM categories WHERE category_code IN ('BUSAN_CAFE','DEMO_EXCEL') AND category_id NOT IN (SELECT category_id FROM data_records);

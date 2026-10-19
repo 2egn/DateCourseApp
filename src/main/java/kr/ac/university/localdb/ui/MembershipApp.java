@@ -1,5 +1,14 @@
 package kr.ac.university.localdb.ui;
 
+import com.datecourse.controller.ConditionController;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
+import java.io.IOException;
+
 import kr.ac.university.localdb.InputHistory;
 import kr.ac.university.localdb.db.MemberRepository;
 import kr.ac.university.localdb.UserSession;
@@ -202,11 +211,58 @@ public class MembershipApp {
             userSession = new UserSession(result.memberId(), result.name());
 
             history.saveIdentity(rememberId.isSelected() ? username : "");
-            if (result.adminSession()!=null) showAdmin(result.adminSession());
-            else AppDialogs.showMessageDialog(home,result.name()+"님, 로그인했습니다.");
+            if (result.adminSession()!=null) showAdmin(result.adminSession()); //[폼 이동] -> 어드민 페이지
+            else showConditionScreen(); //[폼 이동] ->
         });
     }
 
+    private void showConditionScreen(){
+        JFXPanel panel = new JFXPanel();
+
+        Platform.runLater(() ->{
+            try{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
+
+                Parent root = loader.load();
+
+                ConditionController controller = loader.getController();
+                controller.setUserSession(userSession);
+
+                panel.setScene(new Scene(root));
+
+                SwingUtilities.invokeLater(()->{
+                    home.setContentPane(panel);
+                    home.setTitle("데이트 코스 · 조건 입력");
+
+                    Rectangle usable = GraphicsEnvironment
+                            .getLocalGraphicsEnvironment()
+                            .getMaximumWindowBounds();
+
+                    home.setSize(
+                            Math.min(960, usable.width),
+                            Math.min(720, usable.height)
+                    );
+
+                    home.setLocationRelativeTo(null);
+                    home.revalidate();
+                    home.repaint();
+                });
+
+
+            }catch(IOException | RuntimeException failure){
+                SwingUtilities.invokeLater(()->{
+                    AppDialogs.showMessageDialog(
+                            home,
+                            "조건 입력 화면을 열지 못했습니다.\n"
+                            + failure.getMessage(),
+                            "화면 전환 실패",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                });
+            }
+        });
+
+    }
     /** 인증된 관리자 세션으로 회원 검색·수정·비활성화·영구 삭제 기능을 연결합니다. */
     private void showAdmin(MemberRepository.AdminSession session) {
         JFrame window = new JFrame("관리자 · 회원 관리");

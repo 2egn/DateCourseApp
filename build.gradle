@@ -29,7 +29,7 @@ dependencies {
 javafx {
     version = "21"
     // FXML 디자인 및 WebView(카카오 지도) 모듈 포함
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.swing']
 }
 
 application {
