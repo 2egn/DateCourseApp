@@ -56,3 +56,4 @@ src/main/resources/db.properties
 # Build output
 target/
 .local/
+/.codex/config.toml
