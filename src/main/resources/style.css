@@ -150,7 +150,7 @@
     -fx-border-color: -app-primary;
     -fx-font-weight: bold;
 }
-.condition-screen .category-chip:focused { -fx-border-color: -app-primary-dark; }
+.condition-screen .category-chip:focused { -fx-border-color: transparent; }
 .condition-screen .category-chip .box {
     -fx-background-color: white;
     -fx-background-insets: 0;
@@ -164,3 +164,85 @@
     -fx-border-color: -app-primary;
 }
 .condition-screen .category-chip:selected .mark { -fx-background-color: #191f28; }
+
+/* Planner uses the same palette and soft fields as UiTheme's authentication screens. */
+.condition-screen {
+    -fx-background-color: #f7f8fa;
+    -fx-font-family: "Malgun Gothic";
+    -fx-font-size: 14px;
+}
+.condition-screen .label { -fx-text-fill: #191f28; }
+.condition-screen .planner-header {
+    -fx-padding: 20 24 18 24;
+    -fx-background-color: white;
+    -fx-border-color: #eef0f3;
+    -fx-border-width: 0 0 1 0;
+}
+.condition-screen .planner-brand {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6b7684;
+}
+.condition-screen .planner-heading { -fx-font-size: 24px; -fx-font-weight: bold; }
+.condition-screen .region-badge {
+    -fx-background-color: #fff0f3;
+    -fx-background-radius: 20;
+    -fx-padding: 7 16;
+    -fx-font-size: 13px;
+    -fx-text-fill: #b63c57;
+}
+.condition-screen .condition-drawer {
+    -fx-background-color: white;
+    -fx-border-color: #eef0f3;
+    -fx-border-width: 0 1 0 0;
+}
+.condition-screen .condition-title { -fx-font-size: 21px; -fx-font-weight: bold; }
+.condition-screen .planner-caption { -fx-font-size: 12px; -fx-text-fill: #6b7684; }
+.condition-screen .field-label { -fx-font-size: 13px; -fx-text-fill: #6b7684; }
+.condition-screen .text-field {
+    -fx-background-color: #f2f4f6;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-padding: 11 12;
+    -fx-font-size: 15px;
+    -fx-text-fill: #191f28;
+    -fx-prompt-text-fill: #929ba6;
+}
+.condition-screen .text-field:focused { -fx-border-color: #ff6b81; }
+.condition-screen .planner-primary {
+    -fx-background-color: #ff6b81;
+    -fx-background-radius: 10;
+    -fx-text-fill: #191f28;
+    -fx-font-size: 15px;
+    -fx-padding: 14 20;
+}
+.condition-screen .planner-primary:hover { -fx-background-color: #ff8294; }
+.condition-screen .drawer-toggle {
+    -fx-background-color: transparent;
+    -fx-border-color: #dce1e8;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-padding: 6 10;
+}
+.condition-screen .category-chip {
+    -fx-background-color: #f2f4f6;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 10 12;
+    -fx-label-padding: 0;
+    -fx-font-size: 13px;
+}
+.condition-screen .category-chip .box { -fx-padding: 0; -fx-min-width: 0; -fx-max-width: 0; -fx-pref-width: 0; -fx-opacity: 0; }
+.condition-screen .category-chip:hover { -fx-background-color: #e9edf1; }
+.condition-screen .category-chip:selected { -fx-background-color: #ffe3e8; -fx-border-color: #ff6b81; }
+.condition-screen .category-chip:selected:hover { -fx-background-color: #ffd3dc; }
+.condition-screen .category-chip:selected:focused { -fx-border-color: #ff6b81; }
+.condition-screen .separator .line { -fx-border-color: #eef0f3; -fx-border-width: 1 0 0 0; }
+.condition-screen .slider .track { -fx-background-color: #e5e8eb; -fx-pref-height: 4; }
+.condition-screen .slider .thumb { -fx-background-color: #ff6b81; -fx-padding: 7; -fx-effect: none; }
+.condition-screen .error { -fx-text-fill: #c83b52; -fx-font-size: 12px; }
+.condition-screen .planner-map { -fx-background-color: white; -fx-background-radius: 12; }

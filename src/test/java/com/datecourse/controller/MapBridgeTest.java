@@ -39,4 +39,18 @@ class MapBridgeTest {
         assertEquals(1, ready.get());
         assertEquals("지도 연결 실패", error.get());
     }
+
+    @Test
+    void onlyKakaoWebLinksAreForwardedToExternalBrowser() {
+        AtomicReference<String> opened = new AtomicReference<>();
+        MapBridge bridge = new MapBridge(() -> {}, (lat, lng) -> {}, error -> {}, opened::set);
+        bridge.openExternalLink("https://map.kakao.com/link/map/35.1,129.1");
+        assertEquals("https://map.kakao.com/link/map/35.1,129.1", opened.get());
+        opened.set(null);
+        for (String address : new String[]{"javascript:alert(1)", "file:///C:/test", "https://kakao.com.evil.test/",
+                "https://example.com/", "https://user@map.kakao.com/", "not a URL"}) {
+            bridge.openExternalLink(address);
+            assertNull(opened.get());
+        }
+    }
 }

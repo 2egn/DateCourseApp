@@ -5,6 +5,9 @@
     let marker;
     let circle;
     let selectedPosition;
+    let selectedPlaceName = "";
+    let locationVersion = 0;
+    let locationNameTimer;
     let radiusMeter = 500;
     let ready = false;
     let failureMessage = "";
@@ -16,8 +19,31 @@
     const searchResults = document.getElementById("search-results");
     const searchClose = document.getElementById("search-close");
     let places;
+    let geocoder;
     let searchVersion = 0;
     let searchTimer;
+
+    function openExternalLink(address) {
+        if (window.javaMapBridge && typeof window.javaMapBridge.openExternalLink === "function") {
+            window.javaMapBridge.openExternalLink(address);
+        } else {
+            status.textContent = "외부 링크는 앱에서 기본 브라우저로 열 수 있어요.";
+        }
+    }
+
+    // Keep Kakao's attribution links intact, but open their full website in a browser.
+    document.addEventListener("click", function (event) {
+        const target = event.target.nodeType === 1 ? event.target : event.target.parentElement;
+        const link = target && target.closest("a[href]");
+        if (!link || !/^https?:/i.test(link.href)) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        openExternalLink(link.href);
+    }, true);
+    window.open = function (address) {
+        if (address) openExternalLink(new URL(address, window.location.href).href);
+        return null;
+    };
 
     // Search results take their own layout space; resize the map when that space changes.
     let mapLayoutPending = false;
@@ -64,7 +90,7 @@
             button.addEventListener("click", function () {
                 const latitude = Number(place.y);
                 const longitude = Number(place.x);
-                window.selectMapLocation(latitude, longitude);
+                window.selectMapLocation(latitude, longitude, place.place_name);
                 map.setCenter(new kakao.maps.LatLng(latitude, longitude));
                 searchInput.value = place.place_name;
                 clearSearchResults();
@@ -176,13 +202,44 @@
 
     function updateStatus() {
         if (selectedPosition) {
-            status.textContent = "출발 위치 선택 완료 · 반경 " + radiusMeter + "m · 지도를 클릭하면 변경할 수 있어요.";
+            status.textContent = selectedPlaceName;
         }
     }
 
-    window.selectMapLocation = function (latitude, longitude) {
+    function resolveSelectedAddress(latitude, longitude, version) {
+        if (!geocoder) {
+            selectedPlaceName = "선택한 위치";
+            updateStatus();
+            return;
+        }
+        locationNameTimer = setTimeout(function () {
+            if (version !== locationVersion) return;
+            selectedPlaceName = "선택한 위치";
+            updateStatus();
+        }, 10000);
+        try {
+            geocoder.coord2Address(longitude, latitude, function (results, resultStatus) {
+                if (version !== locationVersion) return;
+                clearTimeout(locationNameTimer);
+                const result = resultStatus === kakao.maps.services.Status.OK && results[0];
+                const address = result && (result.road_address || result.address);
+                selectedPlaceName = address && address.address_name ? address.address_name : "선택한 위치";
+                updateStatus();
+            });
+        } catch (failure) {
+            clearTimeout(locationNameTimer);
+            selectedPlaceName = "선택한 위치";
+            updateStatus();
+        }
+    }
+
+    window.selectMapLocation = function (latitude, longitude, placeName) {
         if (!ready || !Number.isFinite(latitude) || !Number.isFinite(longitude)
             || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) return;
+        const version = ++locationVersion;
+        clearTimeout(locationNameTimer);
+        const hasName = typeof placeName === "string" && placeName.trim().length > 0;
+        selectedPlaceName = hasName ? placeName.trim() : "주소를 확인하고 있어요…";
         selectedPosition = new kakao.maps.LatLng(latitude, longitude);
         marker.setPosition(selectedPosition);
         marker.setMap(map);
@@ -191,6 +248,7 @@
         circle.setMap(map);
         updateStatus();
         notifyLocation();
+        if (!hasName) resolveSelectedAddress(latitude, longitude, version);
     };
 
     const key = window.KAKAO_MAP_KEY && window.KAKAO_MAP_KEY.trim();
@@ -233,6 +291,9 @@
                     searchButton.disabled = false;
                 } else {
                     searchMessage.textContent = "장소 검색을 불러오지 못했어요. 지도에서 직접 위치를 선택해 주세요.";
+                }
+                if (kakao.maps.services && kakao.maps.services.Geocoder) {
+                    geocoder = new kakao.maps.services.Geocoder();
                 }
                 status.textContent = "지도에서 출발 위치를 클릭해 주세요.";
                 window.connectJavaMapBridge();

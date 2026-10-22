@@ -6,9 +6,11 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.web.WebView?>
 <?import javafx.scene.layout.VBox?>
@@ -20,50 +22,79 @@
             fx:controller="com.datecourse.controller.ConditionController"
             prefWidth="920" prefHeight="620">
 
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16" styleClass="planner-header">
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="데이트 코스 추천 앱" styleClass="planner-brand"/>
+                <Label text="오늘의 데이트를 계획해요" styleClass="planner-heading"/>
+            </VBox>
+            <Label text="부산" styleClass="region-badge"/>
+        </HBox>
+    </top>
+
     <left>
-        <StackPane fx:id="conditionDrawer" prefWidth="280" minWidth="0" maxWidth="-Infinity" alignment="CENTER_LEFT">
+        <StackPane fx:id="conditionDrawer" prefWidth="300" minWidth="0" maxWidth="-Infinity" alignment="CENTER_LEFT" styleClass="condition-drawer">
         <ScrollPane fx:id="conditionScroll" fitToWidth="true" hbarPolicy="NEVER"
-                    prefWidth="280" minWidth="280" maxWidth="280" styleClass="condition-scroll">
-        <VBox spacing="10" styleClass="condition-form">
+                    prefWidth="300" minWidth="300" maxWidth="300" styleClass="condition-scroll">
+        <VBox spacing="18" styleClass="condition-form">
             <padding>
-                <Insets top="20" right="16" bottom="20" left="16"/>
+                <Insets top="24" right="24" bottom="24" left="24"/>
             </padding>
 
-            <Label text="코스 조건" styleClass="condition-title" wrapText="true"/>
+            <VBox spacing="6">
+                <Label text="나만의 코스" styleClass="condition-title"/>
+                <Label text="함께할 조건을 골라 주세요." styleClass="planner-caption"/>
+            </VBox>
 
-            <Label text="예산 (원)"/>
-            <TextField fx:id="budgetField" promptText="예: 50000"/>
+            <HBox spacing="12">
+                <VBox spacing="8" HBox.hgrow="ALWAYS" prefWidth="140" minWidth="0">
+                    <Label text="총 예산 (원)" styleClass="field-label"/>
+                    <TextField fx:id="budgetField" promptText="50000" minWidth="0"/>
+                </VBox>
+                <VBox spacing="8" prefWidth="84" minWidth="70">
+                    <Label text="인원 (명)" styleClass="field-label"/>
+                    <TextField fx:id="peopleField" promptText="2" minWidth="0"/>
+                </VBox>
+            </HBox>
 
-            <Label text="인원"/>
-            <TextField fx:id="peopleField" promptText="예: 2"/>
+            <VBox spacing="10">
+                <Label text="하고 싶은 활동" styleClass="field-label"/>
+                <FlowPane fx:id="categoryPane" hgap="8" vgap="8"/>
+                <Label text="여러 개를 선택할 수 있어요" styleClass="planner-caption"/>
+            </VBox>
 
-            <Label text="카테고리 · 복수 선택"/>
-            <FlowPane fx:id="categoryPane" hgap="8" vgap="8"/>
-
-            <Label fx:id="radiusLabel" text="반경: 500m"/>
-            <Slider fx:id="radiusSlider" min="200" max="2000" value="500"/>
+            <Separator/>
+            <VBox spacing="12">
+                <Label fx:id="radiusLabel" text="탐색 반경 · 500m" styleClass="field-label"/>
+                <Slider fx:id="radiusSlider" min="200" max="2000" value="500"/>
+                <HBox>
+                    <Label text="200m" styleClass="planner-caption"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="2km" styleClass="planner-caption"/>
+                </HBox>
+            </VBox>
 
             <Label fx:id="countLabel" visible="false" managed="false" wrapText="true"/>
 
             <Label fx:id="errorLabel" styleClass="error" wrapText="true"/>
-            <Button text="코스 추천받기" onAction="#onRecommendClick" maxWidth="Infinity"/>
+            <Button text="코스 추천받기" onAction="#onRecommendClick" maxWidth="Infinity" styleClass="planner-primary"/>
         </VBox>
         </ScrollPane>
         </StackPane>
     </left>
 
     <center>
-        <VBox spacing="8">
+        <VBox spacing="12">
             <padding>
-                <Insets top="12" right="12" bottom="12" left="12"/>
+                <Insets top="18" right="20" bottom="20" left="20"/>
             </padding>
 
             <HBox spacing="12" alignment="CENTER_LEFT">
                 <Button fx:id="drawerToggle" text="‹ 조건 접기" onAction="#onToggleConditions"
                         styleClass="drawer-toggle" minWidth="100"/>
-                <Label fx:id="hintLabel" text="부산 · 출발 장소 선택" styleClass="muted" wrapText="true" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="hintLabel" text="출발할 장소를 찾아보세요" styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS"/>
             </HBox>
-            <StackPane fx:id="mapPane" VBox.vgrow="ALWAYS">
+            <StackPane fx:id="mapPane" VBox.vgrow="ALWAYS" styleClass="planner-map">
                 <WebView fx:id="mapView"/>
             </StackPane>
         </VBox>

@@ -6,6 +6,7 @@ import kr.ac.university.localdb.UserSession;
 import com.datecourse.model.SearchCondition;
 
 import javafx.fxml.FXML;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.concurrent.Worker;
 import netscape.javascript.JSObject;
@@ -26,6 +27,8 @@ import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.net.URI;
+import java.awt.Desktop;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -42,11 +45,12 @@ public class ConditionController implements Initializable {
     @FXML private Label errorLabel;
     @FXML private Label hintLabel;
     @FXML private WebView mapView;
+    @FXML private StackPane mapPane;
     @FXML private StackPane conditionDrawer;
     @FXML private ScrollPane conditionScroll;
     @FXML private Button drawerToggle;
 
-    private static final double DRAWER_WIDTH = 280;
+    private static final double DRAWER_WIDTH = 300;
     private boolean conditionsOpen = true;
     private Timeline drawerAnimation;
 
@@ -56,7 +60,8 @@ public class ConditionController implements Initializable {
     private static final String MAP_URL = "http://localhost:8080/map.html";
     private Double selectedLatitude, selectedLongitude;
     private boolean mapReady;
-    private final MapBridge mapBridge = new MapBridge(this::onMapReady, this::onLocationSelected, this::onMapError);
+    private final MapBridge mapBridge = new MapBridge(
+            this::onMapReady, this::onLocationSelected, this::onMapError, this::openExternalLink);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,7 +76,7 @@ public class ConditionController implements Initializable {
         }
 
         radiusSlider.valueProperty().addListener((obs, oldV, newV) -> {
-            radiusLabel.setText("반경: " + getRadiusMeter() + "m");
+            radiusLabel.setText("탐색 반경 · " + getRadiusMeter() + "m");
             updateMapRadius();
             updateCount();
         });
@@ -103,6 +108,12 @@ public class ConditionController implements Initializable {
         drawerClip.widthProperty().bind(conditionDrawer.widthProperty());
         drawerClip.heightProperty().bind(conditionDrawer.heightProperty());
         conditionDrawer.setClip(drawerClip);
+        Rectangle mapClip = new Rectangle();
+        mapClip.widthProperty().bind(mapPane.widthProperty());
+        mapClip.heightProperty().bind(mapPane.heightProperty());
+        mapClip.setArcWidth(24);
+        mapClip.setArcHeight(24);
+        mapPane.setClip(mapClip);
         drawerToggle.setAccessibleText("조건 입력 패널 접기");
 
         updateCount();
@@ -111,7 +122,7 @@ public class ConditionController implements Initializable {
     private void onMapReady() {
         mapReady = true;
         errorLabel.setText("");
-        hintLabel.setText("부산 · 출발 장소 선택");
+        hintLabel.setText("출발할 장소를 찾아보세요");
         updateMapRadius();
         if (mapReady && selectedLatitude != null) {
             mapView.getEngine().executeScript(String.format(Locale.ROOT,
@@ -131,6 +142,21 @@ public class ConditionController implements Initializable {
         mapReady = false;
         hintLabel.setText("지도 연결을 확인해 주세요");
         errorLabel.setText(message);
+    }
+
+    private void openExternalLink(String address) {
+        Thread browser = new Thread(() -> {
+            try {
+                if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    throw new IllegalStateException("Browser is unavailable");
+                }
+                Desktop.getDesktop().browse(URI.create(address));
+            } catch (Exception failure) {
+                Platform.runLater(() -> errorLabel.setText("외부 브라우저를 열지 못했어요. 기본 브라우저 설정을 확인해 주세요."));
+            }
+        }, "map-external-link");
+        browser.setDaemon(true);
+        browser.start();
     }
 
     private void updateMapRadius() {

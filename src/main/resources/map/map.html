@@ -8,26 +8,28 @@
         html, body { width: 100%; height: 100%; margin: 0; }
         body { display: flex; flex-direction: column; font: 13px "Malgun Gothic", sans-serif; color: #191f28; background: white; }
         #place-search { flex: 0 0 auto; min-width: 0; border-bottom: 1px solid #eef0f3; }
-        #search-form { padding: 10px 12px; }
+        #search-form { padding: 14px 16px; }
         .search-row { display: flex; gap: 8px; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); }
-        #place-query { flex: 1; min-width: 0; padding: 9px 12px; border: 1px solid #dce1e8; border-radius: 8px; font: inherit; background: #fafbfc; }
+        #place-query { flex: 1; min-width: 0; padding: 12px 14px; border: 1.5px solid transparent; border-radius: 10px; font: inherit; background: #f2f4f6; color: #191f28; }
+        #place-query::placeholder { color: #6b7684; }
         #place-query:focus { outline: 2px solid #ffe3e8; border-color: #ff6b81; }
         button { font: inherit; cursor: pointer; }
-        #search-submit { border: 0; border-radius: 8px; padding: 0 16px; background: #ff6b81; color: white; }
+        #search-submit { border: 0; border-radius: 10px; padding: 0 18px; background: #fff0f3; color: #191f28; font-weight: bold; }
+        #search-submit:hover { background: #ffe3e8; }
         #search-submit:disabled { opacity: 0.5; cursor: default; }
         #search-close { border: 0; background: transparent; color: #667085; padding: 0 4px; }
         [hidden] { display: none !important; }
-        #search-message { margin: 0; padding: 0 14px 8px; color: #667085; font-size: 12px; line-height: 1.5; }
+        #search-message { margin: 0; padding: 0 18px 10px; color: #6b7684; font-size: 12px; line-height: 1.5; }
         #search-message:empty { display: none; }
-        #search-results { list-style: none; margin: 0; padding: 0 12px; max-height: 25vh; overflow-y: auto; }
+        #search-results { list-style: none; margin: 0; padding: 0 16px; max-height: 25vh; overflow-y: auto; }
         #search-results button { width: 100%; padding: 10px 4px; border: 0; border-top: 1px solid #eef0f3; background: white; text-align: left; }
         #search-results button:hover, #search-results button:focus { background: #fff2f5; }
         .place-name, .place-address { display: block; overflow-wrap: anywhere; }
         .place-name { font-weight: bold; }
         .place-address { margin-top: 3px; color: #667085; font-size: 12px; }
         #map { flex: 1 1 0; min-height: 0; width: 100%; position: relative; }
-        #map-status { flex: 0 0 auto; margin: 0; padding: 8px 12px; border-top: 1px solid #eef0f3; color: #667085; font-size: 12px; line-height: 1.5; }
+        #map-status { flex: 0 0 auto; margin: 0; padding: 10px 16px; border-top: 1px solid #eef0f3; color: #6b7684; font-size: 12px; line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -36,7 +38,7 @@
         <label for="place-query" class="sr-only">부산 출발 장소 검색</label>
         <div class="search-row">
             <input id="place-query" type="search" maxlength="100"
-                   placeholder="부산에서 출발할 장소 검색 · 서면역, 광안리"
+                   placeholder="출발 장소 검색 · 서면역, 광안리"
                    autocomplete="off" aria-describedby="search-message">
             <button id="search-submit" type="submit" disabled>검색</button>
             <button id="search-close" type="button" hidden aria-label="검색 결과 닫기">닫기</button>
