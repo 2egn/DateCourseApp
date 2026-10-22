@@ -114,3 +114,53 @@
 .tab-pane .tab-header-area .tab-header-background { -fx-background-color: transparent; }
 .tab-pane .tab:selected { -fx-background-color: -app-primary-light; }
 .tab-pane .tab:selected .tab-label { -fx-text-fill: -app-primary-dark; -fx-font-weight: bold; }
+
+/* Sliding condition form and category chips; scoped to this screen. */
+.condition-screen .condition-scroll,
+.condition-screen .condition-scroll > .viewport {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.condition-screen .condition-form { -fx-background-color: white; }
+.condition-screen .condition-title { -fx-font-size: 19px; -fx-font-weight: bold; }
+.condition-screen .drawer-toggle {
+    -fx-background-color: white;
+    -fx-text-fill: -app-text;
+    -fx-border-color: -app-border;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 7 10;
+}
+.condition-screen .drawer-toggle:hover { -fx-background-color: -app-primary-light; }
+.condition-screen .drawer-toggle:focused { -fx-border-color: -app-primary; }
+.condition-screen .category-chip {
+    -fx-background-color: #f5f6f8;
+    -fx-background-radius: 12;
+    -fx-border-color: transparent;
+    -fx-border-radius: 12;
+    -fx-padding: 8 10;
+    -fx-label-padding: 0 0 0 7;
+    -fx-text-fill: -app-text;
+    -fx-cursor: hand;
+}
+.condition-screen .category-chip:hover { -fx-background-color: #fff0f3; }
+.condition-screen .category-chip:selected {
+    -fx-background-color: -app-primary-light;
+    -fx-border-color: -app-primary;
+    -fx-font-weight: bold;
+}
+.condition-screen .category-chip:focused { -fx-border-color: -app-primary-dark; }
+.condition-screen .category-chip .box {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+    -fx-border-color: #b0b8c1;
+    -fx-border-radius: 5;
+    -fx-padding: 3;
+}
+.condition-screen .category-chip:selected .box {
+    -fx-background-color: -app-primary;
+    -fx-border-color: -app-primary;
+}
+.condition-screen .category-chip:selected .mark { -fx-background-color: #191f28; }

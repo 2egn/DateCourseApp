@@ -3,24 +3,32 @@ package com.datecourse.controller;
 
 import kr.ac.university.localdb.UserSession;
 
-import com.datecourse.service.PlaceCountService;
 import com.datecourse.model.SearchCondition;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.concurrent.Worker;
+import netscape.javascript.JSObject;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.web.WebView;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ConditionController implements Initializable {
@@ -32,48 +40,124 @@ public class ConditionController implements Initializable {
     @FXML private Label radiusLabel;
     @FXML private Label countLabel;
     @FXML private Label errorLabel;
-    @FXML private Pane mapPane;
+    @FXML private Label hintLabel;
+    @FXML private WebView mapView;
+    @FXML private StackPane conditionDrawer;
+    @FXML private ScrollPane conditionScroll;
+    @FXML private Button drawerToggle;
+
+    private static final double DRAWER_WIDTH = 280;
+    private boolean conditionsOpen = true;
+    private Timeline drawerAnimation;
 
     private static final String[] CATEGORIES = {"식사", "카페", "문화"};
-    private static final double METER_PER_PIXEL = 5; // 가짜 지도: 1픽셀 = 5m
 
     private final List<CheckBox> categoryBoxes = new ArrayList<>();
-    private final PlaceCountService placeCountService = new PlaceCountService();
-    private Double pickedX, pickedY; // 찍은 위치 (null이면 아직 안 찍음)
+    private static final String MAP_URL = "http://localhost:8080/map.html";
+    private Double selectedLatitude, selectedLongitude;
+    private boolean mapReady;
+    private final MapBridge mapBridge = new MapBridge(this::onMapReady, this::onLocationSelected, this::onMapError);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 카테고리 체크박스 생성 (바뀌면 가게 수만 다시 계산)
+        errorLabel.managedProperty().bind(errorLabel.textProperty().isNotEmpty());
+        errorLabel.visibleProperty().bind(errorLabel.managedProperty());
         for (String name : CATEGORIES) {
             CheckBox box = new CheckBox(name);
+            box.getStyleClass().add("category-chip");
             box.setOnAction(e -> updateCount());
             categoryBoxes.add(box);
             categoryPane.getChildren().add(box);
         }
 
-        // 지도 영역 밖으로 그림이 넘치지 않게 자르기
-        Rectangle clip = new Rectangle();
-        clip.widthProperty().bind(mapPane.widthProperty());
-        clip.heightProperty().bind(mapPane.heightProperty());
-        mapPane.setClip(clip);
-
-        // 지도 클릭 → 위치 저장
-        mapPane.setOnMouseClicked(e -> {
-            pickedX = e.getX();
-            pickedY = e.getY();
-            redrawMap();
-            updateCount();
-        });
-
-        // 반경 슬라이더
         radiusSlider.valueProperty().addListener((obs, oldV, newV) -> {
             radiusLabel.setText("반경: " + getRadiusMeter() + "m");
-            redrawMap();
+            updateMapRadius();
             updateCount();
         });
 
-        redrawMap();
+        mapView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, state) -> {
+            if (state == Worker.State.SCHEDULED) {
+                mapReady = false;
+                hintLabel.setText("지도를 불러오고 있어요…");
+            } else if (state == Worker.State.SUCCEEDED) {
+                // Only our local map page receives a Java bridge.
+                if (!MAP_URL.equals(mapView.getEngine().getLocation())) {
+                    onMapError("등록된 지도 페이지를 열어 주세요.");
+                    return;
+                }
+                try {
+                    JSObject window = (JSObject) mapView.getEngine().executeScript("window");
+                    window.setMember("javaMapBridge", mapBridge);
+                    mapView.getEngine().executeScript("window.connectJavaMapBridge()");
+                } catch (RuntimeException failure) {
+                    onMapError("지도 연결을 준비하지 못했습니다. 페이지를 확인하고 앱을 다시 실행해 주세요.");
+                }
+            } else if (state == Worker.State.FAILED || state == Worker.State.CANCELLED) {
+                onMapError("지도를 열지 못했습니다. 로컬 웹 서버와 인터넷 연결을 확인해 주세요.");
+            }
+        });
+        mapView.getEngine().load(MAP_URL);
+
+        Rectangle drawerClip = new Rectangle();
+        drawerClip.widthProperty().bind(conditionDrawer.widthProperty());
+        drawerClip.heightProperty().bind(conditionDrawer.heightProperty());
+        conditionDrawer.setClip(drawerClip);
+        drawerToggle.setAccessibleText("조건 입력 패널 접기");
+
         updateCount();
+    }
+
+    private void onMapReady() {
+        mapReady = true;
+        errorLabel.setText("");
+        hintLabel.setText("부산 · 출발 장소 선택");
+        updateMapRadius();
+        if (mapReady && selectedLatitude != null) {
+            mapView.getEngine().executeScript(String.format(Locale.ROOT,
+                    "window.selectMapLocation(%s, %s)", selectedLatitude, selectedLongitude));
+        }
+    }
+
+    private void onLocationSelected(double latitude, double longitude) {
+        selectedLatitude = latitude;
+        selectedLongitude = longitude;
+        hintLabel.setText("코스 조건을 입력해 주세요");
+        errorLabel.setText("");
+        updateCount();
+    }
+
+    private void onMapError(String message) {
+        mapReady = false;
+        hintLabel.setText("지도 연결을 확인해 주세요");
+        errorLabel.setText(message);
+    }
+
+    private void updateMapRadius() {
+        if (!mapReady) return;
+        try {
+            mapView.getEngine().executeScript("window.setMapRadius(" + getRadiusMeter() + ")");
+        } catch (RuntimeException failure) {
+            onMapError("지도 반경을 변경하지 못했습니다. 앱을 다시 실행해 주세요.");
+        }
+    }
+
+    @FXML
+    private void onToggleConditions() {
+        if (drawerAnimation != null) drawerAnimation.stop();
+        conditionsOpen = !conditionsOpen;
+        // Collapsed controls must also be excluded from keyboard navigation.
+        conditionScroll.setVisible(true);
+        conditionScroll.setDisable(!conditionsOpen);
+        drawerToggle.setText(conditionsOpen ? "‹ 조건 접기" : "조건 열기 ›");
+        drawerToggle.setAccessibleText(conditionsOpen ? "조건 입력 패널 접기" : "조건 입력 패널 열기");
+        drawerAnimation = new Timeline(new KeyFrame(Duration.millis(240),
+                new KeyValue(conditionDrawer.prefWidthProperty(), conditionsOpen ? DRAWER_WIDTH : 0,
+                        Interpolator.EASE_BOTH),
+                new KeyValue(conditionScroll.translateXProperty(), conditionsOpen ? 0 : -DRAWER_WIDTH,
+                        Interpolator.EASE_BOTH)));
+        drawerAnimation.setOnFinished(event -> conditionScroll.setVisible(conditionsOpen));
+        drawerAnimation.play();
     }
 
     private int getRadiusMeter() {
@@ -88,31 +172,14 @@ public class ConditionController implements Initializable {
         return selected;
     }
 
-    // 지도에는 "내 위치 + 반경 원"만 그림 (카카오 연동 후엔 지도 쪽이 대신 그림)
-    private void redrawMap() {
-        mapPane.getChildren().clear();
-        if (pickedX == null) return;
 
-        Circle area = new Circle(pickedX, pickedY, getRadiusMeter() / METER_PER_PIXEL);
-        area.setFill(Color.rgb(66, 133, 244, 0.15));
-        area.setStroke(Color.rgb(66, 133, 244));
-        area.setMouseTransparent(true);
-
-        Circle marker = new Circle(pickedX, pickedY, 7, Color.DODGERBLUE);
-        marker.setMouseTransparent(true);
-
-        mapPane.getChildren().addAll(area, marker);
-    }
-
-    // "반경 안 가게 N곳" 표시
+    // Actual place counts will be provided by the place repository, not a fabricated estimate.
     private void updateCount() {
-        if (pickedX == null) {
-            countLabel.setText("위치를 찍으면 주변 가게 수가 나와요");
+        if (selectedLatitude == null) {
+            countLabel.setText("지도에서 출발 위치를 선택해 주세요.");
             return;
         }
-        // TODO: 지금은 가짜 좌표(픽셀). 카카오 연동 후 위도/경도로 교체
-        int count = placeCountService.count(pickedY, pickedX, getRadiusMeter(), getSelectedCategories());
-        countLabel.setText("반경 안 가게 약 " + count + "곳");
+        countLabel.setText("출발 위치 선택 완료 · 반경 " + getRadiusMeter() + "m\n주변 장소 수는 DB 연동 후 표시됩니다.");
     }
 
     private UserSession userSession;
@@ -164,7 +231,11 @@ public class ConditionController implements Initializable {
             errorLabel.setText("카테고리를 하나 이상 선택해주세요.");
             return;
         }
-        if (pickedX == null) {
+        if (!mapReady) {
+            errorLabel.setText("지도가 준비된 뒤 위치를 선택해 주세요.");
+            return;
+        }
+        if (selectedLatitude == null) {
             errorLabel.setText("지도에서 위치를 찍어주세요.");
             return;
         }
@@ -176,8 +247,8 @@ public class ConditionController implements Initializable {
                 budget,
                 people,
                 categories,
-                pickedY,   // 위도 (지금은 가짜 지도 픽셀)
-                pickedX,   // 경도 (지금은 가짜 지도 픽셀)
+                selectedLatitude,
+                selectedLongitude,
                 getRadiusMeter()
         );
         System.out.println(condition);

@@ -157,7 +157,7 @@ public class MembershipApp {
         });
     }
 
-    /** 다음 단계로 넘어가기 전에 현재까지 입력한 값을 검사합니다. 오류는 advance에서 안내합니다. */
+    /** 다음 단계로 넘어가   기 전에 현재까지 입력한 값을 검사합니다. 오류는 advance에서 안내합니다. */
     private void validateStep(int index) {
         // 이메일 단계에서는 아직 이름을 받지 않았으므로 공통 검증에 임시 이름을 전달합니다.
         if(index==0) { MemberRepository.validate(email.getText().trim(),"이름",""); }

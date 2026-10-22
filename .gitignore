@@ -45,6 +45,9 @@ bin/
 # Local database credentials must never be committed.
 src/main/resources/db.properties
 
+# Local Kakao Maps JavaScript key (keep the example file in Git).
+src/main/resources/map/kakao-config.js
+
 # IDE files
 .idea/
 *.iml
@@ -57,3 +60,4 @@ src/main/resources/db.properties
 target/
 .local/
 /.codex/config.toml
+
