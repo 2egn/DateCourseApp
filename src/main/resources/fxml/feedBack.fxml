@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.FeedBack"
+            style="-fx-background-color:#FFF9F7;">
+
+    <center>
+
+        <VBox alignment="CENTER"
+              spacing="20"
+              style="-fx-padding:30;">
+
+            <VBox prefWidth="700"
+                  spacing="18"
+                  style="
+                        -fx-background-color:white;
+                        -fx-background-radius:22;
+                        -fx-padding:30;
+                        -fx-effect:dropshadow(
+                            gaussian,
+                            rgba(0,0,0,0.08),
+                            14,
+                            0,
+                            0,
+                            3
+                        );
+                    ">
+
+                <!-- 제목 -->
+
+                <Label text="피드백"
+                       style="
+                            -fx-font-size:28;
+                            -fx-font-weight:bold;
+                            -fx-text-fill:#4A4A4A;
+                        "/>
+
+                <Label text="서비스 이용 중 불편했던 점이나 개선 아이디어를 알려주세요."
+                       style="
+                            -fx-font-size:14;
+                            -fx-text-fill:#7B7B7B;
+                        "/>
+
+                <Separator/>
+
+                <!-- 제목 입력 -->
+
+                <VBox spacing="8">
+
+                    <Label text="제목"
+                           style="
+                                -fx-font-size:14;
+                                -fx-font-weight:bold;
+                            "/>
+
+                    <TextField fx:id="titleField"
+                               promptText="피드백 제목을 입력하세요."
+                               prefHeight="40"
+                               style="
+                                    -fx-background-radius:12;
+                                "/>
+
+                </VBox>
+
+                <!-- 내용 입력 -->
+
+                <VBox spacing="8">
+
+                    <Label text="내용"
+                           style="
+                                -fx-font-size:14;
+                                -fx-font-weight:bold;
+                            "/>
+
+                    <TextArea fx:id="contentArea"
+                              promptText="피드백 내용을 입력해주세요."
+                              wrapText="true"
+                              prefHeight="280"
+                              style="
+                                    -fx-background-radius:12;
+                                "/>
+
+                </VBox>
+
+                <!-- 제출 버튼 -->
+
+                <Button text="제출하기"
+                        onAction="#submitFeedback"
+                        prefHeight="45"
+                        maxWidth="9999"
+                        style="
+                            -fx-background-color:#E8B4B8;
+                            -fx-text-fill:white;
+                            -fx-font-weight:bold;
+                            -fx-font-size:14;
+                            -fx-background-radius:12;
+                        "/>
+
+            </VBox>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>

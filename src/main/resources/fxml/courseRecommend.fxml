@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.CourseRecommend"
+            style="-fx-background-color:#FFF9F7;">
+
+    <center>
+
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background:#FFF9F7;">
+
+            <content>
+
+                <VBox spacing="18"
+                      style="-fx-padding:20;">
+
+                    <!-- 홈 버튼 -->
+
+                    <HBox alignment="CENTER_LEFT">
+
+                        <Button text="DateCourse"
+                                onAction="#goHome"
+                                prefWidth="140"
+                                prefHeight="40"
+                                style="
+                                    -fx-background-color:#FFF9F7;
+                                    -fx-text-fill:#B8878D;
+                                    -fx-font-weight:bold;
+                                    -fx-background-radius:12;
+                                    -fx-font-size:20;
+                                "/>
+
+                    </HBox>
+
+                    <!-- 지도 -->
+
+                    <AnchorPane prefHeight="380"
+                                style="
+                                    -fx-background-color:white;
+                                    -fx-background-radius:22;
+                                    -fx-padding:15;
+                                    -fx-effect:dropshadow(
+                                        gaussian,
+                                        rgba(0,0,0,0.08),
+                                        14,
+                                        0,
+                                        0,
+                                        3
+                                    );
+                                ">
+
+                        <children>
+
+                            <Pane prefHeight="340"
+                                  prefWidth="1000"
+                                  AnchorPane.topAnchor="15"
+                                  AnchorPane.leftAnchor="15"
+                                  AnchorPane.rightAnchor="15"
+                                  AnchorPane.bottomAnchor="15"
+                                  style="
+                                        -fx-background-color:#F8F5F3;
+                                        -fx-background-radius:18;
+                                  ">
+
+                                <!-- 추천 코스 1 -->
+
+                                <Circle centerX="180"
+                                        centerY="120"
+                                        radius="12"
+                                        fill="#D8A7B1"/>
+
+                                <Label layoutX="200"
+                                       layoutY="108"
+                                       text="추천 코스 1"/>
+
+                                <!-- 추천 코스 2 -->
+
+                                <Circle centerX="520"
+                                        centerY="180"
+                                        radius="12"
+                                        fill="#CDB4DB"/>
+
+                                <Label layoutX="540"
+                                       layoutY="168"
+                                       text="추천 코스 2"/>
+
+                                <!-- 추천 코스 3 -->
+
+                                <Circle centerX="340"
+                                        centerY="270"
+                                        radius="12"
+                                        fill="#B7C9A8"/>
+
+                                <Label layoutX="360"
+                                       layoutY="258"
+                                       text="추천 코스 3"/>
+
+                            </Pane>
+
+                        </children>
+
+                    </AnchorPane>
+
+                    <!-- 추천 코스 1 -->
+
+                    <VBox spacing="12"
+                          style="
+                                -fx-background-color:white;
+                                -fx-background-radius:22;
+                                -fx-padding:20;
+                                -fx-effect:dropshadow(
+                                    gaussian,
+                                    rgba(0,0,0,0.08),
+                                    14,
+                                    0,
+                                    0,
+                                    3
+                                );
+                          ">
+
+                        <Label text="추천 코스 1"
+                               style="
+                                    -fx-font-size:22;
+                                    -fx-font-weight:bold;
+                                    -fx-text-fill:#D8A7B1;
+                               "/>
+
+                        <Label text="예상 예산 : 50,000원"/>
+
+                        <Separator/>
+
+                        <Label text="① 광안리 해수욕장"/>
+                        <Label text="② 밀락더마켓"/>
+                        <Label text="③ 민락수변공원"/>
+
+                        <Button text="저장하기"
+                                onAction="#saveCourse1"
+                                prefHeight="42"
+                                style="
+                                    -fx-background-color:#D8A7B1;
+                                    -fx-text-fill:white;
+                                    -fx-background-radius:12;
+                                "/>
+
+                    </VBox>
+
+                    <!-- 추천 코스 2 -->
+
+                    <VBox spacing="12"
+                          style="
+                                -fx-background-color:rgba(255,255,255,0.88);
+                                -fx-background-radius:22;
+                                -fx-padding:20;
+                          ">
+
+                        <Label text="추천 코스 2"
+                               style="
+                                    -fx-font-size:22;
+                                    -fx-font-weight:bold;
+                                    -fx-text-fill:#CDB4DB;
+                               "/>
+
+                        <Label text="예상 예산 : 70,000원"/>
+
+                        <Separator/>
+
+                        <Label text="① 해운대 해변"/>
+                        <Label text="② 카페 레이어드"/>
+                        <Label text="③ 달맞이길"/>
+
+                        <Button text="저장하기"
+                                onAction="#saveCourse2"
+                                prefHeight="42"
+                                style="
+                                    -fx-background-color:#CDB4DB;
+                                    -fx-text-fill:white;
+                                    -fx-background-radius:12;
+                                "/>
+
+                    </VBox>
+
+                    <!-- 추천 코스 3 -->
+
+                    <VBox spacing="12"
+                          style="
+                                -fx-background-color:rgba(255,255,255,0.78);
+                                -fx-background-radius:22;
+                                -fx-padding:20;
+                          ">
+
+                        <Label text="추천 코스 3"
+                               style="
+                                    -fx-font-size:22;
+                                    -fx-font-weight:bold;
+                                    -fx-text-fill:#B7C9A8;
+                               "/>
+
+                        <Label text="예상 예산 : 30,000원"/>
+
+                        <Separator/>
+
+                        <Label text="① 전포카페거리"/>
+                        <Label text="② 송정해수욕장"/>
+                        <Label text="③ 죽성성당"/>
+
+                        <Button text="저장하기"
+                                onAction="#saveCourse3"
+                                prefHeight="42"
+                                style="
+                                    -fx-background-color:#B7C9A8;
+                                    -fx-text-fill:white;
+                                    -fx-background-radius:12;
+                                "/>
+
+                    </VBox>
+
+                </VBox>
+
+            </content>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>

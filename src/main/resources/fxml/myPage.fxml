@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.MyPage"
+            style="-fx-background-color:#FFF9F7;">
+
+    <!-- 왼쪽 메뉴 -->
+
+    <left>
+
+        <VBox prefWidth="180"
+              spacing="10"
+              style="
+                    -fx-background-color:white;
+                    -fx-padding:20;
+                    -fx-border-color:#F2E7E7;
+                    -fx-border-width:0 1 0 0;
+                ">
+
+            <Label text="DateCourse"
+                   onMouseClicked="#goHome"
+                   style="
+                        -fx-font-size:22;
+                        -fx-font-weight:bold;
+                        -fx-text-fill:#B8878D;
+                    "/>
+
+            <Separator />
+
+            <Button text="회원정보 수정"
+                    onAction="#showProfile"
+                    prefHeight="42"
+                    maxWidth="9999"
+                    style="
+                        -fx-background-color:#F6E3E5;
+                        -fx-background-radius:12;
+                    "/>
+
+            <Button text="저장한 코스"
+                    onAction="#showSavedCourse"
+                    prefHeight="42"
+                    maxWidth="9999"
+                    style="
+                        -fx-background-color:#F6E3E5;
+                        -fx-background-radius:12;
+                    "/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Button text="로그아웃"
+                    onAction="#logout"
+                    prefHeight="42"
+                    maxWidth="9999"
+                    style="
+                        -fx-background-color:#E8B4B8;
+                        -fx-text-fill:white;
+                        -fx-background-radius:12;
+                    "/>
+
+        </VBox>
+
+    </left>
+
+    <!-- 오른쪽 내용 -->
+
+    <center>
+
+        <StackPane fx:id="contentPane"
+                   style="-fx-padding:25;">
+
+            <!-- 기본 화면 : 회원정보 -->
+
+            <VBox fx:id="profilePane"
+                  spacing="15"
+                  style="
+                        -fx-background-color:white;
+                        -fx-background-radius:22;
+                        -fx-padding:25;
+                    ">
+
+                <Label text="회원정보 수정"
+                       style="
+                            -fx-font-size:24;
+                            -fx-font-weight:bold;
+                        "/>
+
+                <Separator/>
+
+                <Label text="이메일(ID)"/>
+                <TextField fx:id="emailField"/>
+
+                <Label text="비밀번호"/>
+                <PasswordField fx:id="passwordField"/>
+
+                <Label text="이름"/>
+                <TextField fx:id="nameField"/>
+
+                <Label text="전화번호"/>
+                <TextField fx:id="phoneField"/>
+
+                <Button text="회원정보 저장"
+                        onAction="#updateMemberInfo"
+                        prefHeight="40"
+                        style="
+                            -fx-background-color:#E8B4B8;
+                            -fx-text-fill:white;
+                            -fx-background-radius:12;
+                        "/>
+
+            </VBox>
+
+            <!-- 저장한 코스 화면 -->
+
+            <VBox fx:id="savedCoursePane"
+                  visible="false"
+                  managed="false"
+                  spacing="15"
+                  style="
+                        -fx-background-color:white;
+                        -fx-background-radius:22;
+                        -fx-padding:25;
+                    ">
+
+                <Label text="저장한 코스"
+                       style="
+                            -fx-font-size:24;
+                            -fx-font-weight:bold;
+                        "/>
+
+                <Separator/>
+
+                <ListView fx:id="savedCourseListView"
+                          prefHeight="400"/>
+
+            </VBox>
+
+        </StackPane>
+
+    </center>
+
+</BorderPane>
