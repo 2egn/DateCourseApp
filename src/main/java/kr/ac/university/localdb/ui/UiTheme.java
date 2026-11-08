@@ -32,16 +32,90 @@ public final class UiTheme {
         protected void paintComponent(Graphics g){background(this,g);super.paintComponent(g);}
     }
     public static class PasswordField extends JPasswordField {
-        public PasswordField(int columns){super(columns);UiTheme.field(this);setEchoChar('●');}
+        private final JToggleButton visibilityButton = new JToggleButton();
+
+        public PasswordField(int columns){
+            super(columns);
+            UiTheme.field(this);
+            setEchoChar('●');
+            setBorder(new FieldBorder(60));
+            setLayout(null);
+            visibilityButton.setIcon(new EyeIcon(false));
+            visibilityButton.setSelectedIcon(new EyeIcon(true));
+            visibilityButton.setBorder(BorderFactory.createEmptyBorder());
+            visibilityButton.setContentAreaFilled(false);
+            visibilityButton.setOpaque(false);
+            visibilityButton.setFocusPainted(false);
+            visibilityButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            visibilityButton.setUI(new BasicButtonUI(){
+                @Override public void paint(Graphics graphics,JComponent component){
+                    Graphics2D g=(Graphics2D)graphics.create();
+                    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+                    if(visibilityButton.isEnabled() && (visibilityButton.hasFocus() || visibilityButton.getModel().isRollover())){
+                        g.setColor(visibilityButton.hasFocus()?new Color(0xFFE0E7):new Color(0xE5E8ED));
+                        g.fillRoundRect(1,1,component.getWidth()-2,component.getHeight()-2,12,12);
+                    }
+                    g.dispose();super.paint(graphics,component);
+                }
+            });
+            updateVisibilityLabel();
+            visibilityButton.addItemListener(event -> {
+                setEchoChar(visibilityButton.isSelected()?'\0':'●');
+                updateVisibilityLabel();
+            });
+            visibilityButton.addActionListener(event -> requestFocusInWindow());
+            add(visibilityButton);
+            addPropertyChangeListener("enabled",event -> visibilityButton.setEnabled(isEnabled()));
+            getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+                private void resetIfEmpty(){if(getDocument().getLength()==0)visibilityButton.setSelected(false);}
+                public void insertUpdate(javax.swing.event.DocumentEvent event){resetIfEmpty();}
+                public void removeUpdate(javax.swing.event.DocumentEvent event){resetIfEmpty();}
+                public void changedUpdate(javax.swing.event.DocumentEvent event){resetIfEmpty();}
+            });
+            addHierarchyListener(event -> {
+                if((event.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED)!=0 && !isShowing())
+                    visibilityButton.setSelected(false);
+            });
+        }
+        private void updateVisibilityLabel(){
+            String label=visibilityButton.isSelected()?"비밀번호 숨기기":"비밀번호 보기";
+            visibilityButton.setToolTipText(label);
+            visibilityButton.getAccessibleContext().setAccessibleName(label);
+        }
+        @Override public void doLayout(){
+            int size=Math.max(0,Math.min(42,getHeight()-8));
+            visibilityButton.setBounds(Math.max(0,getWidth()-size-8),(getHeight()-size)/2,size,size);
+        }
         protected void paintComponent(Graphics g){background(this,g);super.paintComponent(g);}
+    }
+    private static final class EyeIcon implements Icon {
+        private final boolean crossed;
+        private EyeIcon(boolean crossed){this.crossed=crossed;}
+        public int getIconWidth(){return 24;}
+        public int getIconHeight(){return 24;}
+        public void paintIcon(Component component,Graphics graphics,int x,int y){
+            Graphics2D g=(Graphics2D)graphics.create();
+            try{
+                g.translate(x,y);g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+                g.setColor(component.isEnabled()?MUTED:new Color(0xADB5BF));
+                g.setStroke(new BasicStroke(1.7f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));
+                java.awt.geom.Path2D eye=new java.awt.geom.Path2D.Float();
+                eye.moveTo(2,12);eye.quadTo(12,-1,22,12);eye.quadTo(12,25,2,12);
+                g.draw(eye);g.drawOval(9,9,6,6);
+                if(crossed)g.drawLine(3,3,21,21);
+            }finally{g.dispose();}
+        }
     }
     private static void background(JComponent c,Graphics g) {
         Graphics2D p=(Graphics2D)g.create(); p.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         p.setColor(INPUT);p.fillRoundRect(0,0,c.getWidth(),c.getHeight(),18,18);p.dispose();
     }
     private static class FieldBorder extends AbstractBorder {
-        public Insets getBorderInsets(Component c){return new Insets(12,16,12,16);}
-        public Insets getBorderInsets(Component c,Insets i){i.set(12,16,12,16);return i;}
+        private final int right;
+        FieldBorder(){this(16);}
+        FieldBorder(int right){this.right=right;}
+        public Insets getBorderInsets(Component c){return new Insets(12,16,12,right);}
+        public Insets getBorderInsets(Component c,Insets i){i.set(12,16,12,right);return i;}
         public void paintBorder(Component c,Graphics g,int x,int y,int w,int h){
             if(!c.hasFocus())return;
             Graphics2D p=(Graphics2D)g.create();p.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);

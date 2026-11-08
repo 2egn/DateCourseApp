@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>데이트 코스 지도</title>
+    <link rel="stylesheet" href="./itinerary-rail.css">
     <style>
         * { box-sizing: border-box; }
         html, body { width: 100%; height: 100%; margin: 0; }
         body { display: flex; flex-direction: column; font: 13px "Malgun Gothic", sans-serif; color: #191f28; background: white; }
-        #place-search { flex: 0 0 auto; min-width: 0; border-bottom: 1px solid #eef0f3; }
+        #place-search { position: relative; z-index: 30; flex: 0 0 auto; min-width: 0; border-bottom: 1px solid #eef0f3; }
+        #search-popup { position: absolute; top: calc(100% - 5px); left: 16px; right: 16px; background: rgba(255,255,255,.98); border: 1px solid #e5e9ef; border-radius: 12px; box-shadow: 0 8px 24px #18294b26; overflow: hidden; }
         #search-form { padding: 14px 16px; }
         .search-row { display: flex; gap: 8px; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); }
@@ -20,16 +22,21 @@
         #search-submit:disabled { opacity: 0.5; cursor: default; }
         #search-close { border: 0; background: transparent; color: #667085; padding: 0 4px; }
         [hidden] { display: none !important; }
-        #search-message { margin: 0; padding: 0 18px 10px; color: #6b7684; font-size: 12px; line-height: 1.5; }
+        #search-message { margin: 0; padding: 10px 14px; color: #6b7684; font-size: 12px; line-height: 1.5; }
         #search-message:empty { display: none; }
-        #search-results { list-style: none; margin: 0; padding: 0 16px; max-height: 25vh; overflow-y: auto; }
+        #search-results { position: relative; list-style: none; margin: 0; padding: 0 12px; max-height: 48vh; overflow-y: auto; overscroll-behavior: contain; }
         #search-results button { width: 100%; padding: 10px 4px; border: 0; border-top: 1px solid #eef0f3; background: white; text-align: left; }
-        #search-results button:hover, #search-results button:focus { background: #fff2f5; }
+        #search-results button:hover, #search-results button:focus, #search-results button[aria-selected="true"] { background: #fff2f5; }
+        #search-results button[aria-selected="true"] { box-shadow: inset 3px 0 #ff6b81; outline: none; }
         .place-name, .place-address { display: block; overflow-wrap: anywhere; }
         .place-name { font-weight: bold; }
         .place-address { margin-top: 3px; color: #667085; font-size: 12px; }
         #map { flex: 1 1 0; min-height: 0; width: 100%; position: relative; }
         #map-status { flex: 0 0 auto; margin: 0; padding: 10px 16px; border-top: 1px solid #eef0f3; color: #6b7684; font-size: 12px; line-height: 1.5; }
+        #map-legend { position: absolute; bottom: 68px; right: 12px; z-index: 10; display: flex; gap: 14px; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.95); box-shadow: 0 2px 8px #0002; font-size: 12px; color: #4b5563; pointer-events: none; }
+        #map-legend span { display: flex; align-items: center; gap: 6px; }
+        .origin-symbol { width: 12px; height: 12px; border: 3px solid #2563eb; border-radius: 50%; }
+        .course-symbol { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 20px; border-radius: 9px 9px 9px 0; background: #e54870; color: white; font-style: normal; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -39,17 +46,45 @@
         <div class="search-row">
             <input id="place-query" type="search" maxlength="100"
                    placeholder="출발 장소 검색 · 서면역, 광안리"
-                   autocomplete="off" aria-describedby="search-message">
+                   autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false"
+                   aria-controls="search-results" aria-describedby="search-message">
             <button id="search-submit" type="submit" disabled>검색</button>
             <button id="search-close" type="button" hidden aria-label="검색 결과 닫기">닫기</button>
         </div>
     </form>
-    <p id="search-message" role="status" aria-live="polite"></p>
-    <ul id="search-results" aria-label="장소 검색 결과"></ul>
+    <div id="search-popup" hidden>
+        <p id="search-message" role="status" aria-live="polite"></p>
+        <ul id="search-results" role="listbox" aria-label="장소 검색 결과"></ul>
+    </div>
 </section>
+<div id="map-surface">
 <div id="map"></div>
+<div id="map-legend" aria-label="지도 마커 안내"><span><i class="origin-symbol"></i>출발 위치 · 반경 중심</span><span><i class="course-symbol">1</i>장소 · 추천 순서 (점선은 순서 안내)</span></div>
+<section id="itinerary-rail" class="itinerary-rail" aria-label="코스와 주변 장소 탐색" hidden>
+    <div class="planner-tabs" role="tablist" aria-label="장소 목록">
+        <button id="course-tab" role="tab" aria-selected="true" aria-controls="itinerary-viewport" type="button">추천 코스</button>
+        <button id="nearby-tab" role="tab" aria-selected="false" aria-controls="itinerary-viewport" type="button">주변 장소</button>
+    </div>
+    <header class="itinerary-heading"><strong><span id="itinerary-title">오늘의 코스</span> <span id="itinerary-count"></span></strong><small id="itinerary-hint">스크롤로 탐색 · 선택된 카드를 눌러 상세</small></header>
+    <div id="itinerary-empty" class="itinerary-empty" hidden></div>
+    <div id="itinerary-viewport" class="itinerary-viewport" role="listbox" aria-label="방문 순서" aria-orientation="vertical">
+        <ol id="itinerary-list" class="itinerary-list" role="presentation"></ol>
+    </div>
+</section>
+<section id="place-detail" class="place-detail" role="region" aria-labelledby="detail-title" aria-hidden="true" hidden>
+    <button id="detail-close" class="detail-close" type="button" aria-label="장소 상세 닫기" tabindex="-1">×</button>
+    <div id="detail-category" class="detail-topline"></div>
+    <h2 id="detail-title"></h2>
+    <dl id="detail-facts" class="detail-facts"></dl>
+    <div id="detail-extra" class="detail-extra"></div>
+    <a id="detail-map-link" class="detail-map-link" target="_blank" rel="noopener noreferrer" tabindex="-1">카카오맵에서 보기 ↗</a>
+    <p class="detail-note">가격·평점은 저장된 참고 정보입니다.</p>
+</section>
+</div>
 <div id="map-status" role="status" aria-live="polite">지도를 불러오고 있어요…</div>
 <script src="./kakao-config.js"></script>
+<script src="./itinerary-rail.js"></script>
+<script src="./instant-zoom.js"></script>
 <script src="./map.js"></script>
 </body>
 </html>

@@ -15,6 +15,11 @@ public class MemberRepository implements AutoCloseable {
     public record Member(long id, String email, String name, String phone, String status, String created) {}
     private final HikariDataSource pool;
 
+    /** Place reads share the login pool and its application shutdown lifecycle. */
+    public PlaceRepository places() {
+        return new PlaceRepository(pool);
+    }
+
     public MemberRepository() {
         this(DatabasePool.create(DbSettings.load()));
     }

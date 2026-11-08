@@ -6,6 +6,11 @@ import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Interpolator;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -30,6 +35,7 @@ import java.util.function.Consumer;
 public class MembershipApp {
     private volatile MemberRepository repository;
     private UserSession userSession;
+    private Timer screenTransition;
     private final JFrame home = new JFrame("로그인 / 회원가입");
     private final JTextField email = new UiTheme.TextField(24), name = new UiTheme.TextField(24), phone = new UiTheme.TextField(24);
     private final JPasswordField password = new UiTheme.PasswordField(24), confirm = new UiTheme.PasswordField(24);
@@ -227,7 +233,10 @@ public class MembershipApp {
 
                 ConditionController controller = loader.getController();
                 controller.setUserSession(userSession);
+                controller.setPlaceRepository(repository.places());
 
+                root.setOpacity(0);
+                root.setTranslateY(10);
                 panel.setScene(new Scene(root));
 
                 SwingUtilities.invokeLater(()->{
@@ -238,14 +247,21 @@ public class MembershipApp {
                             .getLocalGraphicsEnvironment()
                             .getMaximumWindowBounds();
 
-                    home.setSize(
-                            Math.min(960, usable.width),
-                            Math.min(720, usable.height)
-                    );
-
-                    home.setLocationRelativeTo(null);
                     home.revalidate();
                     home.repaint();
+                    int width = Math.min(1440, usable.width);
+                    int height = Math.min(960, usable.height);
+                    animatePlannerWindow(new Rectangle(usable.x + (usable.width - width) / 2,
+                            usable.y + (usable.height - height) / 2, width, height));
+                    Platform.runLater(() -> {
+                        FadeTransition fade = new FadeTransition(Duration.millis(260), root);
+                        fade.setFromValue(0); fade.setToValue(1);
+                        TranslateTransition slide = new TranslateTransition(Duration.millis(260), root);
+                        slide.setFromY(10); slide.setToY(0);
+                        ParallelTransition entrance = new ParallelTransition(fade, slide);
+                        entrance.setInterpolator(Interpolator.EASE_OUT);
+                        entrance.play();
+                    });
                 });
 
 
@@ -262,6 +278,24 @@ public class MembershipApp {
             }
         });
 
+    }
+    /** Keep the authenticated planner in the same window while its bounds settle into place. */
+    private void animatePlannerWindow(Rectangle target) {
+        if (screenTransition != null) screenTransition.stop();
+        Rectangle start = home.getBounds();
+        long started = System.nanoTime();
+        screenTransition = new Timer(16, event -> {
+            if (!home.isDisplayable()) { ((Timer) event.getSource()).stop(); return; }
+            double progress = Math.min(1, (System.nanoTime() - started) / 240_000_000.0);
+            double eased = 1 - Math.pow(1 - progress, 3);
+            home.setBounds(
+                    (int) Math.round(start.x + (target.x - start.x) * eased),
+                    (int) Math.round(start.y + (target.y - start.y) * eased),
+                    (int) Math.round(start.width + (target.width - start.width) * eased),
+                    (int) Math.round(start.height + (target.height - start.height) * eased));
+            if (progress >= 1) ((Timer) event.getSource()).stop();
+        });
+        screenTransition.start();
     }
     /** 인증된 관리자 세션으로 회원 검색·수정·비활성화·영구 삭제 기능을 연결합니다. */
     private void showAdmin(MemberRepository.AdminSession session) {
