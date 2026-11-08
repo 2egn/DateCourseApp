@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane style="-fx-background-color:#FFF9F7;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="controller.Main">
+
+    <!-- 왼쪽 메뉴 -->
+
+    <left>
+
+        <VBox prefWidth="165" spacing="8" style="-fx-background-color:white; -fx-padding:18; -fx-border-color:#F2E7E7; -fx-border-width:0 1 0 0;">
+
+            <Label style="-fx-font-size:20; -fx-font-weight:bold;  -fx-text-fill:#B8878D;" text="DateCourse" />
+
+            <Separator />
+
+            <Label style="-fx-background-color:#F8ECEC; -fx-background-radius:12; -fx-padding:12 15; -fx-font-weight:bold; -fx-text-fill:#B8878D;" text="홈" />
+
+            <Label onMouseClicked="#goCourseRecommend" style="-fx-padding:12 15;" text="코스 추천" />
+
+            <Label onMouseClicked="#goSavedCourse" style="-fx-padding:12 15;" text="저장한 코스" />
+
+            <Label onMouseClicked="#goCommunity" style="-fx-padding:12 15;" text="커뮤니티" />
+
+            <Label onMouseClicked="#goFeedback" style="-fx-padding:12 15;" text="피드백" />
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Label onMouseClicked="#goMyPage" style="-fx-padding:12 15;" text="마이페이지" />
+
+        </VBox>
+
+    </left>
+
+    <!-- 메인 화면 -->
+
+    <center>
+
+        <HBox spacing="15" style="-fx-padding:18;">
+
+            <!-- 왼쪽 영역 -->
+
+            <VBox spacing="15" HBox.hgrow="ALWAYS">
+
+                <!-- 오늘의 데이트 -->
+
+                <VBox onMouseEntered="#cardHoverEnter" onMouseExited="#cardHoverExit" prefHeight="145" style="                             -fx-background-color:white;                             -fx-background-radius:22;                             -fx-padding:20;                             -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.08),14,0,0,3);                         ">
+
+                    <Label style="-fx-font-size:28; -fx-font-weight:bold; -fx-text-fill:#4A4A4A; " text="안녕하세요." />
+
+                    <Label style=" -fx-font-size:14; -fx-text-fill:#7B7B7B; " text="오늘은 어떤 데이트를 계획하고 계신가요?" />
+
+                    <Region prefHeight="10.0" prefWidth="293.0" VBox.vgrow="ALWAYS" />
+
+                    <Label style="-fx-font-size:13; -fx-text-fill:#A0A0A0;" text="예산과 취향에 맞는 데이트 코스를 추천받아보세요." />
+
+                </VBox>
+
+                <!-- 최근 커뮤니티 인기글 -->
+
+                <VBox onMouseEntered="#cardHoverEnter" onMouseExited="#cardHoverExit" prefHeight="280" spacing="12" style="                             -fx-background-color:white;                             -fx-background-radius:22;                             -fx-padding:20;                             -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.08),14,0,0,3);                         ">
+
+                    <Label style=" -fx-font-size:22; -fx-font-weight:bold;-fx-text-fill:#4A4A4A;" text="최근 커뮤니티 인기글" />
+
+                    <Separator />
+
+                    <Label text="• 성수동 데이트 후기" />
+                    <Label text="• 광안리 야경 코스 추천" />
+                    <Label text="• 비 오는 날 실내 데이트" />
+                    <Label text="• 부산 드라이브 코스 추천" />
+                    <Label text="• 5만원 이하 데이트 코스" />
+
+                </VBox>
+
+            </VBox>
+
+            <!-- 오른쪽 영역 -->
+
+            <VBox prefWidth="250" spacing="15">
+
+                <!-- 빠른 메뉴 -->
+
+                <VBox onMouseEntered="#cardHoverEnter" onMouseExited="#cardHoverExit" prefHeight="220" spacing="10" style="                             -fx-background-color:white;                             -fx-background-radius:22;                             -fx-padding:20;                             -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.08),14,0,0,3);                         ">
+
+                    <Label style=" -fx-font-size:20;-fx-font-weight:bold;" text="빠른 메뉴" />
+
+                    <Separator />
+
+                    <Button maxWidth="9999" onAction="#goCourseRecommendAction" prefHeight="40" style="                                 -fx-background-color:#F6E3E5;                                 -fx-background-radius:12;                             " text="코스 추천" />
+
+                    <Button maxWidth="9999" onAction="#goCommunityButton" prefHeight="40" style="                                 -fx-background-color:#F6E3E5;                                 -fx-background-radius:12;                             " text="커뮤니티" />
+
+                    <Button maxWidth="9999" onAction="#goSavedCourseAction" prefHeight="40" style="                                 -fx-background-color:#F6E3E5;                                 -fx-background-radius:12;                             " text="저장한 코스" />
+
+                </VBox>
+
+                <!-- 최근 저장한 코스 -->
+
+                <VBox onMouseClicked="#goSavedCourse" onMouseEntered="#cardHoverEnter" onMouseExited="#cardHoverExit" prefHeight="190" spacing="12" style="                             -fx-background-color:white;                             -fx-background-radius:22;                             -fx-padding:20;                             -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.08),14,0,0,3);                         ">
+
+                    <Label style="-fx-font-size:20; -fx-font-weight:bold; " text="최근 저장한 코스" />
+
+                    <Separator />
+
+                    <Label text="저장된 코스가 없습니다." />
+
+                    <Label style=" -fx-text-fill:#8A8A8A; " text="추천받은 코스를 저장하면 표시됩니다." />
+
+                </VBox>
+
+            </VBox>
+
+        </HBox>
+
+    </center>
+
+</BorderPane>
