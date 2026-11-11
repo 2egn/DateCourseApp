@@ -11,7 +11,7 @@ public final class MapBridge {
     private final BiConsumer<Double, Double> selected;
     private final Consumer<String> failed;
     private final Consumer<String> externalLink;
-
+    private final Consumer<Long> placeSelected;
     public MapBridge(
             Runnable ready,
             BiConsumer<Double, Double> selected,
@@ -22,10 +22,16 @@ public final class MapBridge {
 
     public MapBridge(Runnable ready, BiConsumer<Double, Double> selected,
                      Consumer<String> failed, Consumer<String> externalLink) {
+        this(ready, selected, failed, externalLink, ignored -> {});
+    }
+
+    public MapBridge(Runnable ready, BiConsumer<Double, Double> selected,
+                     Consumer<String> failed, Consumer<String> externalLink, Consumer<Long> placeSelected) {
         this.ready = ready;
         this.selected = selected;
         this.failed = failed;
         this.externalLink = externalLink;
+        this.placeSelected = placeSelected;
     }
 
     public void onMapReady() { ready.run(); }
@@ -38,6 +44,10 @@ public final class MapBridge {
     }
 
     public void onMapError(String message) { failed.accept(message); }
+    public void onPlaceSelected(String recordId) {
+        try { placeSelected.accept(Long.parseLong(recordId)); }
+        catch (NumberFormatException ignored) { }
+    }
 
     public void openExternalLink(String address) {
         if (address == null) return;

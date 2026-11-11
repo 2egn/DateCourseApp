@@ -1,0 +1,7 @@
+{
+  "name": "datecourseapp-private-docs",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test test/*.test.mjs", "build": "node tools/build.mjs" },
+  "engines": { "node": ">=22" }
+}

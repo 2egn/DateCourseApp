@@ -87,13 +87,24 @@
     -fx-border-radius: 10;
 }
 .list-cell { -fx-padding: 8 10; -fx-background-color: transparent; }
-.list-cell:filled:hover { -fx-background-color: #fff3f5; }
+.list-cell:filled:hover { -fx-background-color: #f2f4f6; }
 .list-cell:filled:selected,
 .list-cell:filled:selected:focused {
-    -fx-background-color: -app-primary-light;
+    -fx-background-color: #e9edf1;
     -fx-text-fill: -app-text;
 }
 .list-cell:filled:selected .label { -fx-text-fill: -app-text; }
+
+/* 드롭다운은 선택·포커스·펼친 목록 모두 중립 회색으로 표시한다. */
+.combo-box { -fx-background-color: #f2f4f6; }
+.combo-box:focused, .combo-box:showing { -fx-border-color: #9ca3af; }
+.combo-box .list-cell,
+.combo-box .list-cell:filled:selected,
+.combo-box .list-cell:filled:selected:focused { -fx-background-color: transparent; -fx-text-fill: -app-text; }
+.combo-box .arrow-button { -fx-background-color: transparent; }
+.combo-box-popup .list-view .list-cell:filled:hover,
+.combo-box-popup .list-view .list-cell:filled:selected,
+.combo-box-popup .list-view .list-cell:filled:selected:focused { -fx-background-color: #e9edf1; -fx-text-fill: -app-text; }
 
 /* ===== 표 (관리자) ===== */
 .table-view {
@@ -245,6 +256,11 @@
     -fx-padding: 14 20;
 }
 .condition-screen .planner-primary:hover { -fx-background-color: #ff8294; }
+.condition-screen .course-edit-panel {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent transparent #e5e8eb;
+    -fx-border-width: 0 0 0 1;
+}
 .condition-screen .drawer-toggle {
     -fx-background-color: transparent;
     -fx-border-color: #dce1e8;
@@ -288,3 +304,19 @@
 .condition-screen .result-summary-badge { -fx-background-color: #eef1f5; -fx-background-radius: 7; -fx-padding: 5 8; -fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #526174; }
 .condition-screen .result-summary:success .result-summary-badge { -fx-background-color: #ffe0e8; -fx-text-fill: #a82e50; }
 .condition-screen .result-summary:warning .result-summary-badge { -fx-background-color: #ffedca; -fx-text-fill: #956015; }
+.route-editor-screen { -fx-background-color: white; }
+.route-edit-form { -fx-background-color: white; -fx-border-color: transparent transparent transparent #e5e8eb; }
+.map-toolbar { -fx-padding: 12 16; -fx-background-color: #f7f8fa; }
+.route-editor-footer { -fx-padding: 14 24; -fx-background-color: white; -fx-border-color: #e5e8eb transparent transparent transparent; }
+.candidate-card { -fx-padding: 14; -fx-background-color: #fff3f6; -fx-background-radius: 12; }
+.route-sidebar-summary { -fx-padding: 18 16 12; -fx-background-color: white; }
+.route-state-panels { -fx-padding: 0 14 12; }
+.route-sidebar-note { -fx-padding: 8 16 12; -fx-background-color: white; }
+.route-form-scroll { -fx-background-color: white; -fx-border-color: transparent; }
+.route-form-scroll > .viewport { -fx-background-color: white; }
+.compact-pane > .title { -fx-background-color: #f2f4f6; -fx-background-radius: 8; -fx-padding: 10 12; -fx-font-size: 13px; }
+.compact-pane > .content { -fx-background-color: white; -fx-border-color: #e5e8eb; -fx-border-radius: 0 0 8 8; -fx-padding: 12; }
+.candidate-rank { -fx-min-width: 18; -fx-font-weight: bold; -fx-text-fill: #64748b; }
+.condition-screen .candidate-row-detail { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-padding: 6 9; -fx-font-size: 12px; }
+.condition-screen .candidate-row-detail:hover { -fx-background-color: #e5e8eb; }
+.condition-screen .candidate-row-add { -fx-padding: 6 9; -fx-font-size: 12px; }

@@ -2,17 +2,28 @@
     "use strict";
     // Set false to restore the original SDK wheel/double-click zoom behavior.
     const USE_INSTANT_ZOOM = true;
+    // Experimental map-only scaling inside WebView; false restores SDK-level wheel behavior.
+    const USE_FRACTIONAL_ZOOM = false;
 
     let map;
     let marker;
     let circle;
     let circleOutline;
+    let nextCircle;
+    let nextCircleOutline;
+    let nextRadiusMeter = 500;
     let selectedPosition;
     let selectedPlaceName = "";
     let locationVersion = 0;
     let locationNameTimer;
     let radiusMeter = 500;
     let ready = false;
+    let zoomInstalled = false;
+    let routePresentation = null;
+    let routeCandidate = null;
+    let routeCandidates = [];
+    let routeLocked = false;
+    let suppressLocationNotification = false;
     let failureMessage = "";
     const status = document.getElementById("map-status");
     const searchForm = document.getElementById("search-form");
@@ -228,6 +239,7 @@
     }
 
     function notifyLocation() {
+        if (suppressLocationNotification) return;
         if (selectedPosition && window.javaMapBridge) {
             window.javaMapBridge.onLocationSelected(selectedPosition.getLat(), selectedPosition.getLng());
         }
@@ -238,6 +250,11 @@
         if (!window.javaMapBridge) return;
         if (failureMessage) window.javaMapBridge.onMapError(failureMessage);
         else if (ready) {
+            if (USE_INSTANT_ZOOM && !zoomInstalled) {
+                window.disposeMapZoom = window.installInstantZoom(document.getElementById('map'), map,
+                    { motion: 'auto', fractional: USE_FRACTIONAL_ZOOM });
+                zoomInstalled = true;
+            }
             window.javaMapBridge.onMapReady();
             notifyLocation();
         }
@@ -414,28 +431,36 @@
             const bounds = document.getElementById('map').getBoundingClientRect();
             const narrow = window.matchMedia('(max-width: 760px)').matches;
             // The Swing/JavaFX option panel lies outside this map viewport already.
-            const freeRight = (narrow ? railBounds.left : detailBounds.left) - bounds.left - 16;
+            const standalone = !!routePresentation;
+            const freeRight = (narrow && !standalone ? railBounds.left : detailBounds.left) - bounds.left - 16;
             const targetX = Math.max(40, freeRight / 2);
             const targetY = narrow ? Math.max(40, (detailBounds.top - bounds.top) / 2) : bounds.height / 2;
             const projection = map.getProjection();
             const point = projection.containerPointFromCoords(new kakao.maps.LatLng(place.lat, place.lng));
             const center = projection.coordsFromContainerPoint(new kakao.maps.Point(
-                point.x + bounds.width / 2 - targetX, point.y + bounds.height / 2 - targetY));
+                point.x + (bounds.width / 2 - targetX) * document.getElementById('map').clientWidth / bounds.width,
+                point.y + (bounds.height / 2 - targetY) * document.getElementById('map').clientHeight / bounds.height));
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) map.setCenter(center);
             else map.panTo(center);
         }
     });
     window.updatePlannerPlaces = function (course, nearby) {
+        routePresentation = null;
+        document.getElementById('map-surface').classList.remove('route-presentation');
+        if (nextCircle) { nextCircle.setMap(null); nextCircleOutline.setMap(null); }
+        document.getElementById('next-range-legend').hidden = true;
         plannerCourse = course;
         itinerary.setCollections(course, nearby);
     };
     window.selectItineraryPlace = function (recordId) { itinerary.openPlace(recordId); };
+    window.openRoutePlace = function (recordId) { itinerary.openPlace(recordId); };
     function markerImage(label, origin, active, nearby) {
+        const opacity = nearby && !active ? 0.55 : 1;
         const svg = origin
             ? '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" viewBox="0 0 48 46"><rect x="2" y="1" width="44" height="22" rx="11" fill="#2563eb" stroke="white" stroke-width="2"/><text x="24" y="16" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="white">출발</text><circle cx="24" cy="35" r="9" fill="white" stroke="white" stroke-width="3"/><circle cx="24" cy="35" r="6" fill="#2563eb"/></svg>'
-            : '<svg xmlns="http://www.w3.org/2000/svg" width="38" height="48" viewBox="0 0 38 48"><path d="M19 46C15 39 2 28 2 19a17 17 0 1 1 34 0c0 9-13 20-17 27z" fill="#e54870" stroke="white" stroke-width="2"/><text x="19" y="25" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="white">' + label + '</text></svg>';
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="38" height="48" viewBox="0 0 38 48"><g opacity="' + opacity + '"><path d="M19 46C15 39 2 28 2 19a17 17 0 1 1 34 0c0 9-13 20-17 27z" fill="#e54870" stroke="white" stroke-width="2"/><text x="19" y="25" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="white">' + label + '</text></g></svg>';
         const info = {
-            src: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.replace('#e54870', nearby ? (active ? '#2563eb' : '#64748b') : active ? '#9d174d' : '#e54870')),
+            src: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.replace('#e54870', nearby ? (active || routePresentation ? '#2563eb' : '#64748b') : active ? '#9d174d' : '#e54870')),
             width: origin ? 48 : active ? 44 : 38, height: origin ? 46 : active ? 56 : 48,
             x: origin ? 24 : active ? 22 : 19, y: origin ? 35 : active ? 54 : 46
         };
@@ -446,16 +471,21 @@
     function createResultPin(item, index, visits, connectRoute, panelManaged) {
             const point = new kakao.maps.LatLng(item.lat, item.lng);
             const courseIndex = plannerCourse.findIndex(function (p) { return p.placeId ? p.placeId === item.placeId : p.recordId === item.recordId; });
-            const nearby = panelManaged && !connectRoute && courseIndex < 0;
-            const label = nearby ? '·' : panelManaged && !connectRoute ? courseIndex + 1 : index + 1;
-            const pin = new kakao.maps.Marker({ position: point, title: (nearby ? '주변 장소' : label) + '. ' + item.name,
+            const nearby = (panelManaged || routePresentation) && !connectRoute && courseIndex < 0;
+            const candidateRank = routeCandidates.findIndex(function (p) { return p.recordId === item.recordId; }) + 1;
+            const label = nearby ? (routePresentation ? candidateRank : '·') : panelManaged && !connectRoute ? courseIndex + 1 : index + 1;
+            const pin = new kakao.maps.Marker({ position: point, title: (nearby ? '추천 후보' : label) + '. ' + item.name,
                 image: markerImage(label, false, false, nearby), zIndex: 3 });
             pin.setMap(map);
             pin.normalImage = markerImage(label, false, false, nearby);
             pin.activeImage = markerImage(label, false, true, nearby);
-            if (connectRoute || panelManaged) {
+            if (connectRoute || panelManaged || routePresentation) {
                 pin.visitId = visits[index].visitId;
-                pin.visitClick = function () { itinerary.openVisit(pin.visitId); };
+                pin.visitClick = function () {
+                    if (routePresentation && nearby && window.javaMapBridge && typeof window.javaMapBridge.onPlaceSelected === 'function')
+                        window.javaMapBridge.onPlaceSelected(String(item.recordId));
+                    itinerary.openVisit(pin.visitId);
+                };
                 kakao.maps.event.addListener(pin, 'click', pin.visitClick);
             }
             pin.coursePin = courseIndex >= 0;
@@ -474,7 +504,7 @@
         if (!ready) return;
         renderingResults = true;
         currentPanelManaged = !!panelManaged; currentCourseTab = !!connectRoute;
-        const visits = itinerary.setItems(connectRoute || panelManaged ? items : []);
+        const visits = routePresentation ? itinerary.setStandaloneItems(items) : itinerary.setItems(connectRoute || panelManaged ? items : []);
         items.forEach(function (item, index) {
             if (!panelManaged || connectRoute || plannerCourse.some(function (p) { return p.placeId ? p.placeId === item.placeId : p.recordId === item.recordId; }))
                 createResultPin(item, index, visits, connectRoute, panelManaged);
@@ -507,6 +537,123 @@
         if (ready) map.setCenter(new kakao.maps.LatLng(lat, lng));
     };
 
+    // 메인 지도와 편집 지도는 각 WebView 안에 이 상태를 별도로 보관한다.
+    window.presentRoute = function (plan, candidate, radius, locked, fit, candidates) {
+        if (!ready) return;
+        routePresentation = plan;
+        routeCandidate = candidate;
+        routeCandidates = candidates || (candidate ? [candidate] : []);
+        document.getElementById('map-surface').classList.add('route-presentation');
+        routeLocked = locked;
+        plannerCourse = plan.places;
+        document.getElementById('place-search').hidden = locked;
+        if (!selectedPosition || selectedPosition.getLat() !== plan.startLat || selectedPosition.getLng() !== plan.startLng) {
+            suppressLocationNotification = true;
+            try { window.selectMapLocation(plan.startLat, plan.startLng, '출발 위치'); }
+            finally { suppressLocationNotification = false; }
+        }
+        window.setMapRadius(plan.radius || radius);
+        const center = new kakao.maps.LatLng(plan.startLat, plan.startLng);
+        circle.setPosition(center);
+        circleOutline.setPosition(center);
+        document.getElementById('route-range-label').textContent = '전체 범위 · ' + radiusMeter + 'm';
+        const nextLegend = document.getElementById('next-range-legend');
+        nextLegend.hidden = !locked;
+        if (locked) {
+            nextRadiusMeter = Number.isFinite(radius) ? Math.max(200, Math.min(2000, radius)) : 500;
+            const last = plan.places.length ? plan.places[plan.places.length - 1] : {lat:plan.startLat, lng:plan.startLng};
+            const nextCenter = new kakao.maps.LatLng(last.lat, last.lng);
+            if (!nextCircle) {
+                nextCircleOutline = new kakao.maps.Circle({
+                    center: nextCenter, radius: nextRadiusMeter,
+                    strokeWeight: 5, strokeColor: '#ffffff', strokeOpacity: 0.95,
+                    strokeStyle: 'shortdash', fillOpacity: 0, zIndex: 0
+                });
+                nextCircle = new kakao.maps.Circle({
+                    center: nextCenter, radius: nextRadiusMeter,
+                    strokeWeight: 2.5, strokeColor: '#15803d', strokeOpacity: 0.95,
+                    strokeStyle: 'shortdash', fillOpacity: 0, zIndex: 1
+                });
+            }
+            [nextCircleOutline, nextCircle].forEach(function (shape) {
+                shape.setPosition(nextCenter); shape.setRadius(nextRadiusMeter); shape.setMap(map);
+            });
+            document.getElementById('next-range-label').textContent =
+                (plan.places.length ? '이전 장소' : '출발지') + ' 기준 · ' + nextRadiusMeter + 'm';
+        } else if (nextCircle) {
+            nextCircle.setMap(null); nextCircleOutline.setMap(null);
+        }
+        const rankedCandidates = routeCandidates.map(function (place, index) { return Object.assign({}, place, {candidateRank:index + 1}); });
+        window.showResultPlaces(plan.places.concat(rankedCandidates), false, false, plan.places);
+        if (candidate) itinerary.activatePlace(candidate.recordId);
+        document.getElementById('itinerary-rail').hidden = true;
+        status.textContent = locked ? '분홍 번호는 코스 순서, 옅은 파랑 번호는 후보 순위입니다. 선택한 후보는 진하게 표시해요.' : '확정한 코스 · 점선은 직선 순서 안내';
+        if (fit) window.fitRouteView(false);
+    };
+
+    // Keep both circles visible; zoom back in only when the next level has ample space.
+    window.ensureRouteRangesVisible = function () {
+        if (!ready || !routePresentation) return;
+        const element = document.getElementById('map');
+        const width = element.clientWidth, height = element.clientHeight;
+        const padding = 8; // Allow for the circle's stroke, without constantly refitting the camera.
+        if (width <= padding * 2 || height <= padding * 2) return;
+        const projection = map.getProjection();
+        let ratio = 0;
+        function includeCircle(lat, lng, radius) {
+            const dy = radius / 110000;
+            const dx = radius / (110000 * Math.cos(lat * Math.PI / 180));
+            [[lat-dy,lng-dx],[lat-dy,lng+dx],[lat+dy,lng-dx],[lat+dy,lng+dx]].forEach(function (coordinate) {
+                const point = projection.containerPointFromCoords(new kakao.maps.LatLng(coordinate[0],coordinate[1]));
+                ratio = Math.max(ratio, Math.abs(point.x-width/2)/(width/2-padding),
+                    Math.abs(point.y-height/2)/(height/2-padding));
+            });
+        }
+        const plan = routePresentation;
+        includeCircle(plan.startLat, plan.startLng, radiusMeter);
+        if (routeLocked) {
+            const last = plan.places.length ? plan.places[plan.places.length-1] : {lat:plan.startLat,lng:plan.startLng};
+            includeCircle(last.lat,last.lng,nextRadiusMeter);
+        }
+        const current = map.getLevel();
+        let target = current;
+        if (ratio > 1) target = Math.min(14,current + Math.ceil(Math.log(ratio)/Math.LN2));
+        else {
+            // A zoom-in doubles screen distances. Leave 15% spare room to avoid oscillation.
+            while (target > 1 && ratio * 2 <= 0.85) { target--; ratio *= 2; }
+        }
+        if (target !== current) map.setLevel(target, {
+            anchor: map.getCenter(),
+            animate: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? false : {duration:300}
+        });
+    };
+
+    window.fitRouteView = function (wholeRoute) {
+        if (!ready || !routePresentation) return;
+        if (window.resetMapZoom) window.resetMapZoom();
+        map.relayout();
+        const plan = routePresentation;
+        const bounds = new kakao.maps.LatLngBounds();
+        if (wholeRoute) {
+            bounds.extend(new kakao.maps.LatLng(plan.startLat, plan.startLng));
+            plan.places.forEach(function (p) { bounds.extend(new kakao.maps.LatLng(p.lat, p.lng)); });
+            routeCandidates.forEach(function (place) { bounds.extend(new kakao.maps.LatLng(place.lat, place.lng)); });
+        } else {
+            function includeCircle(lat, lng, radius) {
+                const latitudeSpan = radius / 110000;
+                const longitudeSpan = radius / (110000 * Math.cos(lat * Math.PI / 180));
+                bounds.extend(new kakao.maps.LatLng(lat - latitudeSpan, lng - longitudeSpan));
+                bounds.extend(new kakao.maps.LatLng(lat + latitudeSpan, lng + longitudeSpan));
+            }
+            includeCircle(plan.startLat, plan.startLng, radiusMeter);
+            if (routeLocked) {
+                const last = plan.places.length ? plan.places[plan.places.length - 1] : {lat:plan.startLat, lng:plan.startLng};
+                includeCircle(last.lat, last.lng, nextRadiusMeter);
+            }
+        }
+        map.setBounds(bounds, 48, 48, 48, 48);
+    };
+
     const key = window.KAKAO_MAP_KEY && window.KAKAO_MAP_KEY.trim();
     if (!key) {
         reportFailure("kakao-config.js에 JavaScript 키를 입력해 주세요.");
@@ -530,7 +677,7 @@
                     center: new kakao.maps.LatLng(35.1796, 129.0756), level: 5,
                     disableDoubleClickZoom: USE_INSTANT_ZOOM
                 });
-                if (USE_INSTANT_ZOOM) window.installInstantZoom(document.getElementById('map'), map, { motion: 'on' });
+
                 marker = new kakao.maps.Marker({ image: markerImage('', true), title: '출발 위치 · 탐색 반경 중심', zIndex: 5 });
                 circle = new kakao.maps.Circle({
                     center: map.getCenter(), radius: radiusMeter,
@@ -543,6 +690,7 @@
                     strokeStyle: "solid", fillOpacity: 0, zIndex: -1
                 });
                 function select(event) {
+                    if (routeLocked) return;
                     dismissSearch();
                     window.selectMapLocation(event.latLng.getLat(), event.latLng.getLng());
                 }

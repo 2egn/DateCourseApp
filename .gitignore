@@ -60,4 +60,5 @@ src/main/resources/map/kakao-config.js
 target/
 .local/
 /.codex/config.toml
+/.wrangler/
 

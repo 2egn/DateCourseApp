@@ -14,14 +14,35 @@ public final class PlaceSearchService {
 
     public List<NearbyPlace> nearby(List<Place> places, double lat, double lng,
                                     int radius, List<String> categories) {
-        return places.stream()
+        List<NearbyPlace> candidates = places.stream()
                 .filter(p -> valid(p) && (categories.isEmpty() || categories.contains(categoryName(p.category()))))
                 .map(p -> new NearbyPlace(p, calculation.calculateDistance(lat, lng, p.lat(), p.lng())))
                 .filter(p -> p.distanceMeters() <= radius)
+                .sorted(Comparator.comparingInt((NearbyPlace p) -> p.place().price())
+                        .thenComparingDouble(NearbyPlace::distanceMeters)
+                        .thenComparingLong(p -> p.place().recordId()))
+                .toList();
+        Set<String> ids = new HashSet<>();
+        Set<PlaceLocation> locations = new HashSet<>();
+        List<NearbyPlace> distinct = new ArrayList<>();
+        for (NearbyPlace candidate : candidates) {
+            Place place = candidate.place();
+            PlaceLocation location = place.name() == null || place.name().isBlank() ? null
+                    : new PlaceLocation(place.name(), place.lat(), place.lng());
+            boolean duplicate = ids.contains(identity(place))
+                    || (location != null && locations.contains(location));
+            // 중복 행의 ID도 기억해 이후 같은 ID가 다시 들어오는 것을 막는다.
+            ids.add(identity(place));
+            if (location != null) locations.add(location);
+            if (!duplicate) distinct.add(candidate);
+        }
+        return distinct.stream()
                 .sorted(Comparator.comparingDouble(NearbyPlace::distanceMeters)
                         .thenComparingLong(p -> p.place().recordId()))
                 .toList();
     }
+
+    private record PlaceLocation(String name, double lat, double lng) {}
 
     public Result recommend(List<Place> places, SearchCondition condition) {
         if (condition.people() < 1 || condition.budget() < 1 || condition.categories().isEmpty())

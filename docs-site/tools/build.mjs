@@ -1,0 +1,40 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createRequire} from 'node:module';
+import {spawnSync} from 'node:child_process';
+const site=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),root=path.resolve(site,'..');
+const quartz=path.join(root,'build/docs-tools/quartz');
+const source=process.env.DOCS_NOTES_DIR||path.join(process.env.USERPROFILE,'OneDrive/OneSyncFiles/SchoolStudies/Java/프로젝트/DateCourseApp');
+if(!fs.existsSync(source))throw Error('DOCS_NOTES_DIR에 문서 원본 폴더를 지정해 주세요.');
+const yaml=createRequire(path.join(quartz,'package.json'))('yaml');
+const cfg=yaml.parse(fs.readFileSync(path.join(quartz,'quartz.config.default.yaml'),'utf8'));
+Object.assign(cfg.configuration,{pageTitle:'DateCourseApp 팀 문서',analytics:null,locale:'ko-KR',baseUrl:'datecourseapp-team-docs.ate-ourse-pp.workers.dev',prefetch:'off'});
+Object.assign(cfg.configuration.theme,{fontOrigin:'local',cdnCaching:false});
+cfg.configuration.theme.typography={header:'Malgun Gothic',body:'Malgun Gothic',code:'Consolas'};
+cfg.configuration.links.markdownLinkResolution='absolute';
+cfg.configuration.contentIndex={enableSiteMap:false,enableRSS:false};
+for(const p of cfg.plugins)if(['quartz-fonts','og-image','cname','latex','created-modified-date','encrypted-pages','graph'].some(n=>p.source==='@quartz-community/'+n))p.enabled=false;
+fs.writeFileSync(path.join(quartz,'quartz.config.yaml'),yaml.stringify(cfg));
+const output=path.resolve(quartz,'team-content');
+if(path.dirname(output)!==path.resolve(quartz)||path.basename(output)!=='team-content')throw Error('문서 임시 경로 확인 실패');
+fs.rmSync(output,{recursive:true,force:true});fs.mkdirSync(output,{recursive:true});
+function copy(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){
+ const src=path.join(dir,item.name);if(item.isDirectory()){copy(src);continue;}if(!item.name.endsWith('.md'))continue;
+ const relative=path.relative(source,src).replace(/^00_/,'');const dest=path.join(output,relative);fs.mkdirSync(path.dirname(dest),{recursive:true});
+ let text=fs.readFileSync(src,'utf8').replaceAll('\r\n','\n').replaceAll('[[Java/프로젝트/DateCourseApp/','[[').replace(/\[\[00_/g,'[[').replace(/\|00_/g,'|');
+ const title=path.basename(relative,'.md').replaceAll('_',' ');
+ if(text.startsWith('---')){const end=text.indexOf('\n---',3);if(end<0)throw Error('잘못된 frontmatter: '+src);const meta=yaml.parse(text.slice(3,end))||{};meta.title=title;text='---\n'+yaml.stringify(meta)+'---'+text.slice(end+4);}
+ else text='---\ntitle: '+JSON.stringify(title)+'\n---\n'+text;
+ if(relative==='작업_대시보드.md')text='---\ntitle: 작업 대시보드\n---\n\n# 작업 대시보드\n\n[공동 작업 보드 열기 →](/dashboard/)\n\n할 일 · 진행 중 · 검토·테스트 · 완료 상태와 기능 영역으로 관리합니다. 작업을 만들고 담당자·완료 기준·관련 노트를 연결할 수 있습니다. 변경 내용은 팀원에게 공유됩니다.\n';
+ fs.writeFileSync(dest,text);
+}}
+copy(source);
+fs.writeFileSync(path.join(output,'index.md'),'---\ntitle: DateCourseApp 팀 문서\n---\n\n# DateCourseApp 팀 문서\n\n저장소에 초대된 팀원을 위한 개발 중인 코드 학습 노트입니다.\n\n## 함께 진행하기\n\n[작업 보드 열기 →](/dashboard/)\n\n## 코드 읽기\n\n[[전체_동작_흐름|전체 흐름부터 읽기]] · [[목차|클래스 목차]] · [[라이브러리_사용_안내|라이브러리 사용 안내]]\n');
+const result=spawnSync(process.execPath,['quartz/bootstrap-cli.mjs','build','-d','team-content','-o',path.join(site,'public'),'--concurrency','1'],{cwd:quartz,stdio:'inherit'});
+if(result.status!==0)process.exit(result.status||1);
+fs.cpSync(path.join(site,'web/dashboard'),path.join(site,'public/dashboard'),{recursive:true});
+const index=JSON.parse(fs.readFileSync(path.join(site,'public/static/contentIndex.json'),'utf8'));
+const notes=Object.entries(index).filter(([slug,n])=>slug!=='index'&&n.filePath&&fs.existsSync(path.join(output,n.filePath))).map(([slug,n])=>({title:n.title,url:'/'+slug+'.html'})).sort((a,b)=>a.title.localeCompare(b.title,'ko'));
+fs.writeFileSync(path.join(site,'public/dashboard/notes.json'),JSON.stringify(notes));
+console.log(`Built ${notes.length} notes and shared dashboard. Graph view disabled.`);

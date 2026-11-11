@@ -1,151 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
-
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            stylesheets="@style.css"
-            styleClass="condition-screen"
-            fx:controller="com.datecourse.controller.ConditionController"
-            prefWidth="1440" prefHeight="960">
-
-    <top>
-        <HBox alignment="CENTER_LEFT" spacing="16" styleClass="planner-header">
-            <VBox spacing="5" HBox.hgrow="ALWAYS">
-                <Label text="데이트 코스 추천 앱" styleClass="planner-brand"/>
-                <Label text="오늘의 데이트를 계획해요" styleClass="planner-heading"/>
-            </VBox>
-            <Label text="부산" styleClass="region-badge"/>
-        </HBox>
-    </top>
-
-    <left>
-        <StackPane fx:id="conditionDrawer" prefWidth="300" minWidth="0" maxWidth="-Infinity" alignment="CENTER_LEFT" styleClass="condition-drawer">
-        <ScrollPane fx:id="conditionScroll" fitToWidth="true" hbarPolicy="NEVER"
-                    prefWidth="300" minWidth="300" maxWidth="300" styleClass="condition-scroll">
-        <VBox spacing="18" styleClass="condition-form">
-            <padding>
-                <Insets top="24" right="24" bottom="24" left="24"/>
-            </padding>
-
-            <VBox spacing="6">
-                <Label text="나만의 코스" styleClass="condition-title"/>
-                <Label text="함께할 조건을 골라 주세요." styleClass="planner-caption"/>
-            </VBox>
-
-            <HBox spacing="12">
-                <VBox spacing="8" HBox.hgrow="ALWAYS" prefWidth="140" minWidth="0">
-                    <Label text="총 예산 (원)" styleClass="field-label"/>
-                    <TextField fx:id="budgetField" promptText="50000" minWidth="0"/>
-                </VBox>
-                <VBox spacing="8" prefWidth="84" minWidth="70">
-                    <Label text="인원 (명)" styleClass="field-label"/>
-                    <StackPane minWidth="0" styleClass="place-count-stepper">
-                        <TextField fx:id="peopleField" text="2" promptText="2" minWidth="0" accessibleText="인원 수" styleClass="place-count-editor"/>
-                        <VBox StackPane.alignment="CENTER_RIGHT" prefWidth="30" maxWidth="30" maxHeight="40" styleClass="place-count-buttons">
-                            <Button fx:id="peopleUp" onAction="#onPeopleUp" accessibleText="인원 한 명 늘리기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-up">
-                                <graphic><SVGPath content="M 1 5 L 5 1 L 9 5" styleClass="place-count-chevron"/></graphic>
-                            </Button>
-                            <Button fx:id="peopleDown" onAction="#onPeopleDown" accessibleText="인원 한 명 줄이기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-down">
-                                <graphic><SVGPath content="M 1 1 L 5 5 L 9 1" styleClass="place-count-chevron"/></graphic>
-                            </Button>
-                        </VBox>
-                    </StackPane>
-                </VBox>
-            </HBox>
-
-            <VBox spacing="10">
-                <Label text="하고 싶은 활동" styleClass="field-label"/>
-                <FlowPane fx:id="categoryPane" hgap="8" vgap="8"/>
-                <Label text="여러 개를 선택할 수 있어요" styleClass="planner-caption"/>
-            </VBox>
-
-            <VBox spacing="8">
-                <Label text="희망 방문 장소 수" styleClass="field-label"/>
-                <HBox spacing="8" alignment="CENTER_LEFT">
-                    <StackPane prefWidth="92" minWidth="0" HBox.hgrow="ALWAYS" styleClass="place-count-stepper">
-                        <TextField fx:id="minPlacesField" text="2" promptText="최소" minWidth="0" accessibleText="최소 방문 장소 수" styleClass="place-count-editor"/>
-                        <VBox StackPane.alignment="CENTER_RIGHT" prefWidth="30" maxWidth="30" maxHeight="40" styleClass="place-count-buttons">
-                            <Button fx:id="minPlacesUp" onAction="#onMinPlacesUp" accessibleText="최소 방문 장소 수 늘리기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-up">
-                                <graphic><SVGPath content="M 1 5 L 5 1 L 9 5" styleClass="place-count-chevron"/></graphic>
-                            </Button>
-                            <Button fx:id="minPlacesDown" onAction="#onMinPlacesDown" accessibleText="최소 방문 장소 수 줄이기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-down">
-                                <graphic><SVGPath content="M 1 1 L 5 5 L 9 1" styleClass="place-count-chevron"/></graphic>
-                            </Button>
-                        </VBox>
-                    </StackPane>
-                    <Label text="~" minWidth="-Infinity"/>
-                    <StackPane prefWidth="92" minWidth="0" HBox.hgrow="ALWAYS" styleClass="place-count-stepper">
-                        <TextField fx:id="maxPlacesField" text="5" promptText="최대" minWidth="0" accessibleText="최대 방문 장소 수" styleClass="place-count-editor"/>
-                        <VBox StackPane.alignment="CENTER_RIGHT" prefWidth="30" maxWidth="30" maxHeight="40" styleClass="place-count-buttons">
-                            <Button fx:id="maxPlacesUp" onAction="#onMaxPlacesUp" accessibleText="최대 방문 장소 수 늘리기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-up">
-                                <graphic><SVGPath content="M 1 5 L 5 1 L 9 5" styleClass="place-count-chevron"/></graphic>
-                            </Button>
-                            <Button fx:id="maxPlacesDown" onAction="#onMaxPlacesDown" accessibleText="최대 방문 장소 수 줄이기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-down">
-                                <graphic><SVGPath content="M 1 1 L 5 5 L 9 1" styleClass="place-count-chevron"/></graphic>
-                            </Button>
-                        </VBox>
-                    </StackPane>
-                    <Label text="곳" minWidth="-Infinity"/>
-                </HBox>
-                <Label text="1~10곳 · 선택한 활동별 최소 1곳 포함" styleClass="planner-caption" wrapText="true"/>
-            </VBox>
-
-            <Separator/>
-            <VBox spacing="12">
-                <Label fx:id="radiusLabel" text="탐색 반경 · 500m" styleClass="field-label"/>
-                <Slider fx:id="radiusSlider" min="200" max="2000" value="500"/>
-                <HBox>
-                    <Label text="200m" styleClass="planner-caption"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="2km" styleClass="planner-caption"/>
-                </HBox>
-            </VBox>
-
-            <Label fx:id="countLabel" wrapText="true" styleClass="planner-caption"/>
-
-            <Label fx:id="errorLabel" styleClass="error" wrapText="true"/>
-            <Button fx:id="recommendButton" text="코스 추천받기" onAction="#onRecommendClick" maxWidth="Infinity" styleClass="planner-primary"/>
-        </VBox>
-        </ScrollPane>
-        </StackPane>
-    </left>
-
-    <center>
-        <VBox spacing="12">
-            <padding>
-                <Insets top="18" right="20" bottom="20" left="20"/>
-            </padding>
-
-            <HBox spacing="12" alignment="CENTER_LEFT">
-                <Button fx:id="drawerToggle" text="‹ 조건 접기" onAction="#onToggleConditions"
-                        styleClass="drawer-toggle" minWidth="100"/>
-                <Label fx:id="hintLabel" text="출발할 장소를 찾아보세요" styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS"/>
-            </HBox>
-            <StackPane fx:id="mapPane" VBox.vgrow="ALWAYS" styleClass="planner-map">
-                <WebView fx:id="mapView"/>
-            </StackPane>
-            <VBox fx:id="resultSummary" spacing="7" styleClass="result-summary">
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label fx:id="resultBadge" text="주변 탐색" styleClass="result-summary-badge" minWidth="-Infinity"/>
-                    <Label fx:id="resultLabel" text="주변 장소" wrapText="true" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="result-summary-title"/>
-                </HBox>
-                <Label visible="false" managed="false" fx:id="resultDetail" text="출발 위치와 조건을 선택해 나만의 코스를 만들어 보세요." wrapText="true" maxWidth="Infinity" styleClass="result-summary-detail"/>
-            </VBox>
-        </VBox>
-    </center>
-</BorderPane>
+<StackPane fx:id="plannerRoot" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+ fx:controller="com.datecourse.controller.ConditionController" prefWidth="1440" prefHeight="960" stylesheets="@style.css" styleClass="condition-screen">
+ <BorderPane fx:id="mainPage">
+ <top><HBox alignment="CENTER_LEFT" styleClass="planner-header"><VBox spacing="5"><Label text="데이트 코스" styleClass="planner-brand"/><Label text="어디서 시작할까요?" styleClass="planner-heading"/></VBox><Region HBox.hgrow="ALWAYS"/><Label text="01 공통 조건 → 02 장소 선택 → 03 코스 확정" styleClass="planner-caption"/></HBox></top>
+ <left><VBox prefWidth="300" minWidth="300" maxWidth="300" spacing="22" styleClass="condition-form">
+ <padding><Insets top="28" right="24" bottom="24" left="24"/></padding>
+ <VBox spacing="7"><Label text="루트 공통 조건" styleClass="condition-title"/><Label text="장소별 조건은 다음 화면에서 정해요." wrapText="true" styleClass="planner-caption"/></VBox>
+ <VBox spacing="8"><Label text="인원 (명)" styleClass="field-label"/><StackPane styleClass="place-count-stepper" minWidth="0">
+ <TextField fx:id="peopleField" text="2" accessibleText="인원" styleClass="place-count-editor" minWidth="0"/>
+ <VBox StackPane.alignment="CENTER_RIGHT" prefWidth="30" maxWidth="30" maxHeight="40" styleClass="place-count-buttons">
+ <Button fx:id="peopleUp" accessibleText="인원 늘리기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-up"><graphic><SVGPath content="M 1 5 L 5 1 L 9 5" styleClass="place-count-chevron"/></graphic></Button>
+ <Button fx:id="peopleDown" accessibleText="인원 줄이기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-down"><graphic><SVGPath content="M 1 1 L 5 5 L 9 1" styleClass="place-count-chevron"/></graphic></Button>
+ </VBox></StackPane></VBox>
+ <VBox spacing="10"><Label text="루트 전체 원형 범위" styleClass="field-label"/><Label fx:id="radiusLabel" text="출발지 중심 · 500m" styleClass="planner-caption"/>
+ <Slider fx:id="radiusSlider" min="200" max="2000" value="500" blockIncrement="100" majorTickUnit="100" minorTickCount="0" snapToTicks="true"/>
+ <HBox><Label text="200m" styleClass="planner-caption"/><Region HBox.hgrow="ALWAYS"/><Label text="2km" styleClass="planner-caption"/></HBox></VBox>
+ <Label text="지도에서 출발 위치를 선택해 주세요. 추천 전에는 주변 장소를 표시하지 않아요." wrapText="true" styleClass="planner-caption"/>
+ <Label fx:id="errorLabel" wrapText="true" styleClass="error"/>
+ <Button fx:id="recommendButton" text="코스 만들기 →" onAction="#onRecommendClick" maxWidth="Infinity" styleClass="planner-primary"/>
+ <Region VBox.vgrow="ALWAYS"/>
+ <Label text="가격·평점은 저장된 참고 정보입니다." wrapText="true" styleClass="planner-caption"/>
+ </VBox></left>
+ <center><VBox spacing="12"><padding><Insets top="18" right="20" bottom="20" left="20"/></padding>
+ <Label fx:id="hintLabel" text="부산의 출발 장소를 검색하거나 지도를 클릭해 주세요." styleClass="planner-caption" wrapText="true"/>
+ <WebView fx:id="mapView" VBox.vgrow="ALWAYS"/>
+ <HBox fx:id="resultSummary" alignment="CENTER_LEFT" spacing="12" styleClass="result-summary">
+ <Label fx:id="resultLabel" text="아직 확정된 코스가 없어요." wrapText="true" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+ </HBox></VBox></center>
+ </BorderPane>
+ <fx:include fx:id="routeEditor" source="route-editor-view.fxml" visible="false" managed="false" disable="true"/>
+</StackPane>

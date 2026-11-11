@@ -33,9 +33,10 @@
         .place-address { margin-top: 3px; color: #667085; font-size: 12px; }
         #map { flex: 1 1 0; min-height: 0; width: 100%; position: relative; }
         #map-status { flex: 0 0 auto; margin: 0; padding: 10px 16px; border-top: 1px solid #eef0f3; color: #6b7684; font-size: 12px; line-height: 1.5; }
-        #map-legend { position: absolute; bottom: 68px; right: 12px; z-index: 10; display: flex; gap: 14px; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.95); box-shadow: 0 2px 8px #0002; font-size: 12px; color: #4b5563; pointer-events: none; }
+        #map-legend { position: absolute; bottom: 68px; right: 12px; z-index: 10; display: flex; flex-wrap: wrap; max-width: calc(100% - 24px); gap: 8px 14px; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.95); box-shadow: 0 2px 8px #0002; font-size: 12px; color: #4b5563; pointer-events: none; }
         #map-legend span { display: flex; align-items: center; gap: 6px; }
         .origin-symbol { width: 12px; height: 12px; border: 3px solid #2563eb; border-radius: 50%; }
+        .next-range-symbol { width: 14px; height: 14px; border: 2px dashed #15803d; border-radius: 50%; }
         .course-symbol { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 20px; border-radius: 9px 9px 9px 0; background: #e54870; color: white; font-style: normal; font-weight: bold; }
     </style>
 </head>
@@ -59,7 +60,7 @@
 </section>
 <div id="map-surface">
 <div id="map"></div>
-<div id="map-legend" aria-label="지도 마커 안내"><span><i class="origin-symbol"></i>출발 위치 · 반경 중심</span><span><i class="course-symbol">1</i>장소 · 추천 순서 (점선은 순서 안내)</span></div>
+<div id="map-legend" aria-label="지도 범위와 마커 안내"><span><i class="origin-symbol"></i><span id="route-range-label">출발지 중심 전체 범위</span></span><span id="next-range-legend" hidden><i class="next-range-symbol"></i><span id="next-range-label">이전 장소 기준 범위</span></span><span><i class="course-symbol">1</i>장소 · 코스 순서</span></div>
 <section id="itinerary-rail" class="itinerary-rail" aria-label="코스와 주변 장소 탐색" hidden>
     <div class="planner-tabs" role="tablist" aria-label="장소 목록">
         <button id="course-tab" role="tab" aria-selected="true" aria-controls="itinerary-viewport" type="button">추천 코스</button>

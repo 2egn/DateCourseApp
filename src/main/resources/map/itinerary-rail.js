@@ -15,6 +15,7 @@
         let signature = '';
         let linkVersion = 0;
         let panelManaged = false, activeTab = 'course', collections = { course: [], nearby: [] };
+        let standalone = false;
         const courseTab = document.getElementById('course-tab'), nearbyTab = document.getElementById('nearby-tab');
         function switchTab(tab, user) {
             activeTab = tab;
@@ -59,7 +60,7 @@
             closeTimer = setTimeout(function () { detail.hidden = true; }, reduced.matches ? 0 : 200);
             if (returnFocus) {
                 const index = visits.findIndex(function (v) { return v.visitId === activePlaceId; });
-                if (cards[index]) cards[index].focus({ preventScroll: true });
+                if (!standalone && cards[index]) cards[index].focus({ preventScroll: true });
             }
         }
         function activate(id) {
@@ -122,7 +123,8 @@
             expandedPlaceId = id;
             clearTimeout(closeTimer);
             document.getElementById('detail-title').textContent = place.name;
-            document.getElementById('detail-category').textContent = (activeTab === 'nearby' ? '주변 장소 · ' : (index + 1) + '번째 방문 · ') + category(place.category);
+            document.getElementById('detail-category').textContent = (place.candidateRank ? '추천 ' + place.candidateRank + '위 · '
+                    : activeTab === 'nearby' ? '주변 장소 · ' : (index + 1) + '번째 방문 · ') + category(place.category);
             const facts = document.getElementById('detail-facts');
             facts.textContent = '';
             if (Number.isFinite(place.price) && place.price >= 0) fact('1인 예상 가격', place.price.toLocaleString('ko-KR') + '원');
@@ -152,6 +154,7 @@
             detail.getBoundingClientRect();
             detail.classList.add('is-open');
             options.onOpen(place, detail.getBoundingClientRect(), rail.getBoundingClientRect());
+            if (standalone) closeButton.focus({ preventScroll: true });
         }
         function category(code) {
             return ({ MEAL: '식사', CAFE: '카페', CULTURE: '문화' })[code] || code || '';
@@ -204,7 +207,16 @@
             if (expandedPlaceId) openDetail(expandedPlaceId);
         });
         return {
+            setStandaloneItems: function (items) {
+                standalone = true;
+                panelManaged = false;
+                activeTab = 'course';
+                const result = this.setItems(items);
+                rail.hidden = true;
+                return result;
+            },
             setCollections: function (course, nearby) {
+                standalone = false;
                 const changed = JSON.stringify(collections.course) !== JSON.stringify(course);
                 collections = { course: course, nearby: nearby };
                 panelManaged = true;
@@ -223,7 +235,7 @@
                     return Object.assign({}, place, { visitId: id + ':' + count });
                 });
                 list.textContent = ''; cards = [];
-                rail.hidden = panelManaged ? false : !visits.length;
+                rail.hidden = standalone || (panelManaged ? false : !visits.length);
                 document.getElementById('itinerary-empty').hidden = !!visits.length;
                 document.getElementById('itinerary-empty').textContent = activeTab === 'course'
                     ? '아직 추천 코스가 없어요. 왼쪽에서 조건을 설정한 뒤 코스를 추천받아 주세요.'
@@ -255,6 +267,10 @@
                 return visits;
             },
             openVisit: function (id) { select(id, true); },
+            activatePlace: function (recordId) {
+                const visit = visits.find(function (v) { return String(v.recordId) === String(recordId); });
+                if (visit) activate(visit.visitId);
+            },
             openPlace: function (recordId) {
                 const visit = visits.find(function (v) { return String(v.recordId) === String(recordId); });
                 if (visit) select(visit.visitId, true);
