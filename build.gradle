@@ -41,3 +41,51 @@ application {
 test {
     useJUnitPlatform()
 }
+
+// Read the personal map key at runtime instead of packaging it in application archives.
+processResources { exclude 'map/kakao-config.js' }
+tasks.named('jar') { exclude 'map/kakao-config.js' }
+
+tasks.register('runMapDemo', JavaExec) {
+    group = 'application'
+    description = 'Open the planner map without requiring a DB login'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.ConditionLauncher'
+    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
+}
+
+// The app provider supplies one service key; users select only their route preference.
+def tmapServiceResources = layout.buildDirectory.dir('generated/tmap-service-resources')
+tasks.register('prepareTmapServiceConfig') {
+    inputs.files(file('.local/tmap.properties')).withPropertyName('providerTmapSettings')
+    outputs.dir(tmapServiceResources)
+    outputs.upToDateWhen { false }
+    doLast {
+        def settings = new Properties()
+        def source = file('.local/tmap.properties')
+        if (source.exists()) source.withInputStream { settings.load(it) }
+        def serviceKey = System.getenv('TMAP_APP_KEY')?.trim()
+        if (!serviceKey) serviceKey = settings.getProperty('tmap.app.key', '').trim()
+        if (serviceKey && !(serviceKey ==~ /[A-Za-z0-9_-]{16,256}/))
+            throw new GradleException('TMAP service key has an invalid format')
+        def destination = tmapServiceResources.get().file('tmap-service.properties').asFile
+        destination.parentFile.mkdirs()
+        def content = 'tmap.app.key=' + serviceKey + '\n'
+        if (!destination.exists() || destination.getText('UTF-8') != content)
+            destination.setText(content, 'UTF-8')
+    }
+}
+sourceSets.main.resources.srcDir(tmapServiceResources)
+tasks.named('processResources') { dependsOn 'prepareTmapServiceConfig' }
+
+// Real map integration runs in a separate worker from the WebView fixtures.
+tasks.named('test') { exclude '**/WalkingRouteLiveTest.class' }
+tasks.register('tmapLiveTest', Test) {
+    group = 'verification'
+    description = 'Verify the packaged TMAP service on the real Kakao map'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    include '**/WalkingRouteLiveTest.class'
+    useJUnitPlatform()
+    environment 'RUN_TMAP_LIVE_TEST', 'true'
+}
