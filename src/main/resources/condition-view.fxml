@@ -27,7 +27,8 @@
  <Label text="가격·평점은 저장된 참고 정보입니다." wrapText="true" styleClass="planner-caption"/>
  </VBox></left>
  <center><VBox spacing="12"><padding><Insets top="18" right="20" bottom="20" left="20"/></padding>
- <Label fx:id="hintLabel" text="부산의 출발 장소를 검색하거나 지도를 클릭해 주세요." styleClass="planner-caption" wrapText="true"/>
+ <HBox spacing="8" alignment="CENTER_RIGHT"><Button text="경로 탐색 방식" onAction="#onTmapSettings" styleClass="drawer-toggle"/><Button text="도보 경로 조회" onAction="#onWalkingRoute" styleClass="drawer-toggle"/></HBox>
+ <HBox alignment="CENTER_LEFT" spacing="12"><Label fx:id="hintLabel" text="부산의 출발 장소를 검색하거나 지도를 클릭해 주세요." styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Button fx:id="reloadMapButton" text="지도 다시 불러오기" onAction="#onReloadMap" styleClass="drawer-toggle" minWidth="-Infinity"/></HBox>
  <WebView fx:id="mapView" VBox.vgrow="ALWAYS"/>
  <HBox fx:id="resultSummary" alignment="CENTER_LEFT" spacing="12" styleClass="result-summary">
  <Label fx:id="resultLabel" text="아직 확정된 코스가 없어요." wrapText="true" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>

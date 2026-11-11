@@ -1,0 +1,5 @@
+# Save this file as .local/tmap.properties and supply your SK open API TMAP appKey.
+# You can also use the in-app TMAP settings dialog or TMAP_APP_KEY environment variable.
+tmap.app.key=
+# 0=recommended, 4=main roads, 10=shortest, 30=shortest without stairs
+tmap.search.option=0

@@ -51,7 +51,16 @@ public class ConditionController {
     }
 
     public void setUserSession(UserSession session) { userSession = session; }
+    @FXML private void onWalkingRoute() { map.requestWalkingRoute(); }
+    @FXML private void onTmapSettings() {
+        if (TmapSettingsDialog.show(mapView.getScene().getWindow())) map.refreshWalkingPreferences();
+    }
     public void setPlaceRepository(PlaceRepository repository) { placeRepository = repository; loadPlaces(); }
+
+    @FXML private void onReloadMap() {
+        errorLabel.setText("");
+        map.reload();
+    }
 
     private void loadPlaces() {
         if (placeRepository == null || placesLoading) return;

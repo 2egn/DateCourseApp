@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "place_rows": 158347,
+  "price_shop_rows": 1292,
+  "menu_rows": 2660,
+  "districts": 16,
+  "unique_source_ids": true,
+  "foreign_keys_valid": true,
+  "original_menu_values_preserved": true,
+  "sql_serialized_rows": 162299,
+  "sql_insert_batches": 651,
+  "manifest_hashes_verified": true,
+  "overview_cached_total_verified": true,
+  "sql_executed_on_user_database": false
+}

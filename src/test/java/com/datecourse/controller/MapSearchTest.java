@@ -28,6 +28,28 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
+    @Test
+    void onlyTmapWalkingGeometryIsShownAndFailuresDoNotRestoreStraightRoutes() throws Exception {
+        WebEngine engine = loadMap();
+        script(engine, """
+                window.selectMapLocation(35.1796,129.0756,'출발');
+                window.showResultPlaces([{recordId:1,placeId:'one',lat:35.1813,lng:129.0797,name:'도착',category:'CAFE',price:1000,rating:4}],true,false);
+                window.showWalkingRoute({totalDistance:619,totalTime:514,legs:[{
+                  from:{name:'출발'},to:{name:'<img src=x onerror=alert(1)>'},distance:619,time:514,
+                  paths:[[{lat:35.1796,lng:129.0756},{lat:35.1789,lng:129.0760}],
+                         [{lat:35.1789,lng:129.0760},{lat:35.1813,lng:129.0797}]],
+                  steps:[{description:'<script>alert(1)</script>'}]
+                }]},'',true);
+                """);
+        assertEquals(true, script(engine, "routeLines.filter(l=>l.attached).length===4 && routeLines.filter(l=>l.attached).every(l=>l.options.strokeStyle==='solid')"));
+        assertEquals(true, script(engine, "routeLines[routeLines.length-1].options.path[0].getLat()===35.1789"));
+        assertEquals(true, script(engine, "document.getElementById('walking-summary').textContent.includes('619m') && document.getElementById('walking-summary').textContent.includes('9분')"));
+        assertEquals(0, ((Number)script(engine, "document.querySelectorAll('#walking-directions img,#walking-directions script').length")).intValue());
+        script(engine, "window.showWalkingRoute(null,'연결 실패',false)");
+        assertEquals(true, script(engine, "routeLines.filter(l=>l.attached).length===0"));
+        assertEquals("연결 실패", script(engine, "document.getElementById('walking-summary').textContent"));
+    }
+
     private static Object field(Object target, String name) throws Exception {
         var member = target.getClass().getDeclaredField(name);
         member.setAccessible(true);
@@ -494,10 +516,14 @@ class MapSearchTest {
     @BeforeAll
     static void startJavaFx() throws Exception {
         CountDownLatch started = new CountDownLatch(1);
-        Platform.startup(() -> {
-            Platform.setImplicitExit(false);
-            started.countDown();
-        });
+        try {
+            Platform.startup(() -> {
+                Platform.setImplicitExit(false);
+                started.countDown();
+            });
+        } catch (IllegalStateException alreadyStarted) {
+            Platform.runLater(started::countDown);
+        }
         assertTrue(started.await(10, TimeUnit.SECONDS));
     }
 
@@ -665,7 +691,7 @@ class MapSearchTest {
         script(engine,"document.querySelectorAll('.mini-place-card')[3].click()");
         assertEquals(0,((Number)script(engine,"mapPans.length")).intValue());
         assertEquals(4,((Number)script(engine,"pins.filter(function(p){return p.visitId && p.attached;}).length")).intValue());
-        assertEquals(2,((Number)script(engine,"routeLines.length")).intValue());
+        assertEquals(0,((Number)script(engine,"routeLines.length")).intValue());
         assertEquals(true,script(engine,"routeLines.every(function(p){return p.attached;})"));
         script(engine,"document.querySelectorAll('.mini-place-card')[3].click()");
         assertEquals("주변 카페",script(engine,"document.getElementById('detail-title').textContent"));
@@ -673,7 +699,7 @@ class MapSearchTest {
         Thread.sleep(250);
         assertEquals(3,((Number)script(engine,"document.querySelectorAll('.mini-place-card').length")).intValue());
         assertEquals(true,script(engine,"document.getElementById('place-detail').hidden"));
-        assertEquals(2,((Number)script(engine,"routeLines.length")).intValue());
+        assertEquals(0,((Number)script(engine,"routeLines.length")).intValue());
     }
 
     @Test
@@ -738,7 +764,7 @@ class MapSearchTest {
             presentRoute({startLat:35.157,startLng:129.06,radius:500,people:2,places:[]},null,500,false,false,[]);
             """);
         assertEquals(true,script(engine,"oldCoursePins.length>0 && oldCoursePins.every(function(p){return !p.attached;})"));
-        assertEquals(true,script(engine,"oldRouteLines.length>0 && oldRouteLines.every(function(p){return !p.attached;})"));
+        assertEquals(true,script(engine,"oldRouteLines.length===0 && routeLines.length===0"));
         assertEquals(true,script(engine,"document.getElementById('place-detail').hidden && document.getElementById('next-range-legend').hidden"));
     }
 
@@ -995,7 +1021,7 @@ class MapSearchTest {
         assertEquals("true", script(engine, "document.querySelectorAll('.mini-place-card')[0].getAttribute('aria-selected')"));
         assertEquals(true, script(engine, "document.getElementById('place-detail').hidden"));
         assertEquals(1, ((Number) script(engine, "mapPans.length")).intValue());
-        assertEquals(2, ((Number) script(engine, "routeLines.length")).intValue());
+        assertEquals(0, ((Number) script(engine, "routeLines.length")).intValue());
     }
 
     @Test
@@ -1208,14 +1234,11 @@ class MapSearchTest {
         assertEquals(2, ((Number) script(engine, "resultPins.length")).intValue());
         assertEquals("[35.158,129.06]", script(engine, "JSON.stringify(lastCenter)"));
         assertEquals("[[35.157,129.059]]", script(engine, "JSON.stringify(bridgeSelections)"));
-        assertEquals("[[35.157,129.059],[35.158,129.06],[35.159,129.061]]", script(engine,
-                "JSON.stringify(routeLines[0].options.path.map(function(p){return [p.getLat(),p.getLng()];}))"));
+        assertEquals(0, ((Number) script(engine, "routeLines.length")).intValue());
         script(engine, "window.showResultPlaces([])");
         assertEquals(false, script(engine, "resultPins[0].attached || resultPins[1].attached"));
-        assertEquals(false, script(engine, "routeLines[0].attached"));
-        assertEquals(false, script(engine, "routeLines[1].attached"));
         script(engine, "window.showResultPlaces([{lat:35.158,lng:129.06,name:'주변 장소'}], false)");
-        assertEquals(2, ((Number) script(engine, "routeLines.length")).intValue());
+        assertEquals(0, ((Number) script(engine, "routeLines.length")).intValue());
     }
 
     @Test

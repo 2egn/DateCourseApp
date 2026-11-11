@@ -223,7 +223,15 @@ public class MembershipApp {
     }
 
     private void showConditionScreen(){
-        JFXPanel panel = new JFXPanel();
+        PlannerLoadingDialog loading = new PlannerLoadingDialog(home);
+        loading.open();
+        SwingUtilities.invokeLater(() -> loadConditionScreen(loading));
+    }
+
+    private void loadConditionScreen(PlannerLoadingDialog loading) {
+        final JFXPanel panel;
+        try { panel = new JFXPanel(); }
+        catch (RuntimeException failure) { showConditionFailure(loading, failure); return; }
 
         Platform.runLater(() ->{
             try{
@@ -242,6 +250,7 @@ public class MembershipApp {
                 SwingUtilities.invokeLater(()->{
                     home.setContentPane(panel);
                     home.setTitle("데이트 코스 · 조건 입력");
+                    loading.close();
 
                     Rectangle usable = GraphicsEnvironment
                             .getLocalGraphicsEnvironment()
@@ -266,18 +275,16 @@ public class MembershipApp {
 
 
             }catch(IOException | RuntimeException failure){
-                SwingUtilities.invokeLater(()->{
-                    AppDialogs.showMessageDialog(
-                            home,
-                            "조건 입력 화면을 열지 못했습니다.\n"
-                            + failure.getMessage(),
-                            "화면 전환 실패",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                });
+                SwingUtilities.invokeLater(() -> showConditionFailure(loading, failure));
             }
         });
 
+    }
+
+    private void showConditionFailure(PlannerLoadingDialog loading, Exception failure) {
+        loading.close();
+        AppDialogs.showMessageDialog(home, "조건 입력 화면을 열지 못했습니다.\n" + failure.getMessage(),
+                "화면 전환 실패", JOptionPane.ERROR_MESSAGE);
     }
     /** Keep the authenticated planner in the same window while its bounds settle into place. */
     private void animatePlannerWindow(Rectangle target) {

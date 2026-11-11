@@ -58,6 +58,14 @@ public final class RouteEditorController {
     @FXML
     private void initialize() {
         map = new PlannerMap(editMapView, (lat, lng) -> {}, editorError::setText);
+        MenuButton walkingMenu = new MenuButton("도보 경로");
+        walkingMenu.getStyleClass().add("drawer-toggle");
+        MenuItem walkingQuery = new MenuItem("TMAP 도보 경로 조회");
+        walkingQuery.setOnAction(event -> onWalkingRoute());
+        MenuItem walkingSettings = new MenuItem("경로 탐색 방식");
+        walkingSettings.setOnAction(event -> onTmapSettings());
+        walkingMenu.getItems().addAll(walkingQuery, walkingSettings);
+        ((HBox) finishButton.getParent()).getChildren().add(1, walkingMenu);
         map.setOnPlaceSelected(id -> {
             for (int index = 0; index < candidates.size(); index++) {
                 if (candidates.get(index).place().recordId() == id) {
@@ -180,6 +188,11 @@ public final class RouteEditorController {
         refreshSummary();
         map.load();
         refreshMap(true);
+    }
+
+    @FXML private void onReloadMap() {
+        editorError.setText("");
+        map.reload();
     }
 
     private RoutePlan draft() {
@@ -349,6 +362,10 @@ public final class RouteEditorController {
     @FXML private void onFitRoute() { map.fit(true); }
 
     public void fitRange() { refreshMap(true); }
+    @FXML private void onWalkingRoute() { map.requestWalkingRoute(); }
+    @FXML private void onTmapSettings() {
+        if (TmapSettingsDialog.show(editMapView.getScene().getWindow())) map.refreshWalkingPreferences();
+    }
 
     private void refreshMap(boolean fit) {
         if (original != null) map.presentCandidates(draft(), state == EditorState.CHOICE

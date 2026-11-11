@@ -323,8 +323,6 @@
     };
 
     let resultMarkers = [];
-    let routeLine;
-    let routeOutline;
     let resultSignature = '';
     let renderedRouteKey = '';
     let plannerCourse = [];
@@ -515,23 +513,6 @@
         const routeKey = JSON.stringify([route, selectedPosition && [selectedPosition.getLat(), selectedPosition.getLng()]]);
         if (routeKey === renderedRouteKey) return;
         renderedRouteKey = routeKey;
-        if (routeLine) { routeLine.setMap(null); routeLine = null; }
-        if (routeOutline) { routeOutline.setMap(null); routeOutline = null; }
-        if (selectedPosition && route.length) {
-            const path = [selectedPosition].concat(route.map(function (item) {
-                    return new kakao.maps.LatLng(item.lat, item.lng);
-                }));
-            routeOutline = new kakao.maps.Polyline({
-                path: path, strokeWeight: 5, strokeColor: '#ffffff', strokeOpacity: 0.95,
-                strokeStyle: 'shortdash', zIndex: 1
-            });
-            routeOutline.setMap(map);
-            routeLine = new kakao.maps.Polyline({
-                path: path, strokeWeight: 2.5, strokeColor: '#c4486b', strokeOpacity: 0.9,
-                strokeStyle: 'shortdash', zIndex: 2
-            });
-            routeLine.setMap(map);
-        }
     };
     window.focusResultPlace = function (lat, lng) {
         if (ready) map.setCenter(new kakao.maps.LatLng(lat, lng));
@@ -587,7 +568,7 @@
         window.showResultPlaces(plan.places.concat(rankedCandidates), false, false, plan.places);
         if (candidate) itinerary.activatePlace(candidate.recordId);
         document.getElementById('itinerary-rail').hidden = true;
-        status.textContent = locked ? '분홍 번호는 코스 순서, 옅은 파랑 번호는 후보 순위입니다. 선택한 후보는 진하게 표시해요.' : '확정한 코스 · 점선은 직선 순서 안내';
+        status.textContent = locked ? '분홍 번호는 코스 순서, 옅은 파랑 번호는 후보 순위입니다. 도보 경로 조회로 실제 이동 경로를 확인하세요.' : '확정한 코스 · 도보 경로 조회로 실제 이동 경로를 확인하세요.';
         if (fit) window.fitRouteView(false);
     };
 
@@ -654,6 +635,60 @@
         map.setBounds(bounds, 48, 48, 48, 48);
     };
 
+    let walkingShapes = [];
+    window.showWalkingRoute = function (route, message, fit) {
+        walkingShapes.forEach(function (shape) { shape.setMap(null); });
+        walkingShapes = [];
+        const panel = document.getElementById('walking-panel');
+        const summary = document.getElementById('walking-summary');
+        const details = document.getElementById('walking-details');
+        const directions = document.getElementById('walking-directions');
+        directions.textContent = '';
+        panel.hidden = !route && !message;
+        details.hidden = !route;
+        if (!route || !ready) {
+            summary.textContent = message || '';
+            return;
+        }
+        // Draw only the actual TMAP walking geometry on the Kakao map.
+        const bounds = new kakao.maps.LatLngBounds();
+        let points = 0;
+        function meters(value) { return value >= 1000 ? (value / 1000).toFixed(2) + 'km' : value + 'm'; }
+        function duration(seconds) { return seconds === 0 ? '0분' : '약 ' + Math.ceil(seconds / 60) + '분'; }
+        summary.textContent = 'TMAP 도보 · ' + meters(route.totalDistance) + ' · ' + duration(route.totalTime)
+            + ' · ' + route.legs.length + '구간 (파란 실선)';
+        route.legs.forEach(function (leg, index) {
+            leg.paths.forEach(function (coordinates) {
+                const path = coordinates.map(function (point) {
+                    const position = new kakao.maps.LatLng(point.lat, point.lng);
+                    bounds.extend(position); points++;
+                    return position;
+                });
+                if (path.length < 2) return;
+                const outline = new kakao.maps.Polyline({path:path, strokeWeight:7, strokeColor:'#ffffff',
+                    strokeOpacity:0.95, strokeStyle:'solid', zIndex:3});
+                const line = new kakao.maps.Polyline({path:path, strokeWeight:4, strokeColor:'#2563eb',
+                    strokeOpacity:0.95, strokeStyle:'solid', zIndex:4});
+                outline.setMap(map); line.setMap(map);
+                walkingShapes.push(outline, line);
+            });
+            const item = document.createElement('li');
+            const title = document.createElement('strong');
+            title.textContent = (index + 1) + '. ' + leg.from.name + ' → ' + leg.to.name
+                + ' · ' + meters(leg.distance) + ' · ' + duration(leg.time);
+            item.appendChild(title);
+            const instructions = document.createElement('ol');
+            leg.steps.forEach(function (step) {
+                const instruction = document.createElement('li');
+                instruction.textContent = step.description;
+                instructions.appendChild(instruction);
+            });
+            if (leg.steps.length) item.appendChild(instructions);
+            directions.appendChild(item);
+        });
+        if (fit && points) map.setBounds(bounds, 48, 48, 48, 48);
+    };
+
     const key = window.KAKAO_MAP_KEY && window.KAKAO_MAP_KEY.trim();
     if (!key) {
         reportFailure("kakao-config.js에 JavaScript 키를 입력해 주세요.");
@@ -662,16 +697,26 @@
 
 
     const sdk = document.createElement("script");
+    let sdkTimedOut = false;
+    const sdkTimeout = setTimeout(function () {
+        sdkTimedOut = true;
+        reportFailure("지도 연결 시간이 초과됐어요. 인터넷 연결을 확인하고 지도 다시 불러오기를 눌러 주세요.");
+    }, 20000);
     sdk.src = "https://dapi.kakao.com/v2/maps/sdk.js?appkey=" + encodeURIComponent(key) + "&autoload=false&libraries=services";
     sdk.onerror = function () {
+        clearTimeout(sdkTimeout);
         reportFailure("지도 SDK를 불러오지 못했습니다. 인터넷 연결과 카카오맵 설정을 확인해 주세요.");
     };
     sdk.onload = function () {
+        if (sdkTimedOut) return;
         if (!window.kakao || !kakao.maps) {
+            clearTimeout(sdkTimeout);
             reportFailure("지도 SDK를 초기화하지 못했습니다.");
             return;
         }
         kakao.maps.load(function () {
+            if (sdkTimedOut) return;
+            clearTimeout(sdkTimeout);
             try {
                 map = new kakao.maps.Map(document.getElementById("map"), {
                     center: new kakao.maps.LatLng(35.1796, 129.0756), level: 5,

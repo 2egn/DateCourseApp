@@ -320,3 +320,8 @@
 .condition-screen .candidate-row-detail { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-padding: 6 9; -fx-font-size: 12px; }
 .condition-screen .candidate-row-detail:hover { -fx-background-color: #e5e8eb; }
 .condition-screen .candidate-row-add { -fx-padding: 6 9; -fx-font-size: 12px; }
+
+.route-options-dialog { -fx-background-color: white; }
+.route-options-dialog .route-option-card { -fx-padding: 14; -fx-background-color: #f7f8fa; -fx-background-radius: 12; -fx-border-color: transparent; -fx-border-radius: 12; -fx-graphic-text-gap: 12; }
+.route-options-dialog .route-option-card:selected { -fx-background-color: #fff0f3; -fx-border-color: #ff6b81; }
+.route-options-dialog .radio-button:selected .radio .dot { -fx-background-color: #ff6b81; }

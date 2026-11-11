@@ -1,0 +1,348 @@
+{
+  "collected_at": "2026-11-10T17:28:32.000226+09:00",
+  "summary": {
+    "places": 158347,
+    "businesses": 157296,
+    "libraries": 194,
+    "standard_source_rows": {
+      "15017323": 39,
+      "15012890": 731,
+      "15021141": 87
+    },
+    "identical_records_removed": 0,
+    "categories": {
+      "OTHER": 99588,
+      "MEAL": 37354,
+      "LEISURE": 6032,
+      "CAFE": 7071,
+      "BAR": 7251,
+      "CULTURE": 1051
+    },
+    "districts": {
+      "연제구": 10109,
+      "남구": 9391,
+      "해운대구": 17559,
+      "부산진구": 20720,
+      "금정구": 10103,
+      "수영구": 10235,
+      "사상구": 9469,
+      "북구": 8632,
+      "사하구": 10803,
+      "동래구": 11881,
+      "기장군": 8798,
+      "영도구": 4070,
+      "동구": 6919,
+      "중구": 7407,
+      "강서구": 8294,
+      "서구": 3957
+    },
+    "price_shops": 1292,
+    "matched_price_shops": 900,
+    "menu_records": 2660,
+    "numeric_menu_prices": 2660,
+    "admission_prices": 39,
+    "missing_coordinates": 6,
+    "ratings_available": 0,
+    "possible_duplicate_name_address_groups": 1545
+  },
+  "sources": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "소상공인시장진흥공단_상가(상권)정보",
+      "alternateName": "소상공인시장진흥공단_상가(상권)정보_20260930",
+      "description": "소상공인시장진흥공단_상가(상권)정보 영업 중인 전국 상가업소 데이터를 제공합니다. (상호명, 업종코드, 업종명, 지번주소, 도로명주소, 경도, 위도 등) [데이터 변경 안내] 1. 상권업종분류 : 표준산업분류 기반 업종분류 2. 업종분류 체계: 대분류(10개), 중분류(75개), 소분류(247개) 3. 표준산업분류 : 10차 -표준산업분류는 업종분류 정제에 따라 상권업종분류 연계표와 상이할 수 있음 자세한 사항은 소상공인 365 공지사항에서 확인하시기 바랍니다. https://bigdata.sbiz.or.kr/#/notice/267352041576902656",
+      "url": "https://www.data.go.kr/data/15083033/fileData.do",
+      "identifier": "15083033",
+      "inLanguage": "ko",
+      "keywords": "상가업소,소상공인,상권정보,행정주소,도로명주소,상권분류,지도데이터,업종코드",
+      "license": {
+        "name": "이용허락범위 제한 없음",
+        "url": "https://www.data.go.kr/ugs/selectPortalPolicyView.do",
+        "@type": "CreativeWork"
+      },
+      "isAccessibleForFree": true,
+      "dateCreated": "2026-10-30",
+      "dateModified": "2026-10-30",
+      "datePublished": "2026-10-30",
+      "creator": {
+        "name": "소상공인시장진흥공단",
+        "contactPoint": {
+          "contactType": "AI빅데이터실",
+          "telephone": "+82-42-363-7579",
+          "@type": "ContactPoint"
+        },
+        "@type": "Organization"
+      },
+      "encodingFormat": "CSV",
+      "includedInDataCatalog": {
+        "name": "공공데이터포털",
+        "url": "https://www.data.go.kr",
+        "@id": "https://www.data.go.kr/#datacatalog",
+        "@type": "DataCatalog"
+      },
+      "additionalProperty": [
+        {
+          "name": "분류체계",
+          "value": "산업·통상·중소기업 - 산업·중소기업일반",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "업데이트 주기",
+          "value": "분기",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "보유근거",
+          "value": "소상공인 보호 및 지원에 관한 법률 제13조",
+          "@type": "PropertyValue"
+        }
+      ],
+      "download_url": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000007751774&fileDetailSn=1",
+      "reference_date": "09/30/2026"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "행정안전부_착한가격업소 현황",
+      "alternateName": "행정안전부_착한가격업소 현황_20260930",
+      "description": "행정안전부, 지방자치단체가 지정 및 운영하는 착한가격업소 현황에 대한 데이터로 지역, 업종, 업소명, 주소, 착한가격메뉴 등의 항목을 제공합니다. 이 자료는 2026.9.30. 기준 착한가격업소 현황으로 2026년 3분기 현황을 기준으로 전국 지자체에서 현행화하여 정리한 자료로 시도별 , 업종별(외식업(한식, 일식, 중식, 양식, 기타 요식업 등)과 개인서비스업(이미용업, 숙박업, 목욕업, 기타 비요식업 등), 구체적인 주소, 착한가격 메뉴와 그에 대한 가격 등에 대해 정리한 현황을 나타내는 자료입니다.",
+      "url": "https://www.data.go.kr/data/3045247/fileData.do",
+      "identifier": "3045247",
+      "inLanguage": "ko",
+      "keywords": "착한,가격,업소,현황,자료",
+      "license": {
+        "name": "이용허락범위 제한 없음",
+        "url": "https://www.data.go.kr/ugs/selectPortalPolicyView.do",
+        "@type": "CreativeWork"
+      },
+      "isAccessibleForFree": true,
+      "dateCreated": "2026-10-15",
+      "dateModified": "2026-10-16",
+      "datePublished": "2026-10-15",
+      "creator": {
+        "name": "행정안전부",
+        "contactPoint": {
+          "contactType": "지역경제과",
+          "telephone": "+82-44-205-3924",
+          "@type": "ContactPoint"
+        },
+        "@type": "Organization"
+      },
+      "encodingFormat": "CSV",
+      "includedInDataCatalog": {
+        "name": "공공데이터포털",
+        "url": "https://www.data.go.kr",
+        "@id": "https://www.data.go.kr/#datacatalog",
+        "@type": "DataCatalog"
+      },
+      "variableMeasured": [
+        {
+          "name": "시도",
+          "description": "착한가격업소의 주소의 지역단위(광역)",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "시군",
+          "description": "착한가격업소의 주소의 지역단위(기초)",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "업종",
+          "description": "착한가격업소의 업종",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "업소명",
+          "description": "착한가격업소의 이름",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "주소",
+          "description": "착한가격업소의 도로명 주소",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "메뉴1",
+          "description": "착한가격업소의 메뉴1",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "가격1",
+          "description": "착한가격업소의 메뉴1의 가격",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "메뉴2",
+          "description": "착한가격업소의 메뉴2",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "가격2",
+          "description": "착한가격업소의 메뉴2의 가격",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "메뉴3",
+          "description": "착한가격업소의 메뉴3",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "가격3",
+          "description": "착한가격업소의 메뉴3의 가격",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "메뉴4",
+          "description": "착한가격업소의 메뉴4",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "가격4",
+          "description": "착한가격업소의 메뉴4의 가",
+          "@type": "PropertyValue"
+        }
+      ],
+      "additionalProperty": [
+        {
+          "name": "분류체계",
+          "value": "일반공공행정 - 일반행정",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "업데이트 주기",
+          "value": "분기",
+          "@type": "PropertyValue"
+        }
+      ],
+      "download_url": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000007728892&fileDetailSn=1",
+      "reference_date": "09/30/2026"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "부산광역시_부산문화포털 생활 문화 공공도서관",
+      "alternateName": "부산광역시_부산문화포털 생활 문화 공공도서관_20260911",
+      "description": "부산광역시가 제공하는 「부산문화포털 생활 문화 공공도서관」 데이터는 부산문화포털에 등록된 부산지역 공공도서관 관련 정보를 제공하는 공공데이터입니다. 도서관의 시설명, 시군구, 주소, 전화번호, 홈페이지 주소, 위도·경도 등 공공도서관 이용과 위치 확인에 필요한 기본 정보를 포함하고 있습니다. 시민과 방문객이 부산지역 공공도서관 정보를 보다 쉽게 확인할 수 있도록 제공되며, 도서관 위치 안내, 지역별 공공도서관 현황 파악, 문화시설 정보 제공, 지도 기반 서비스 및 문화 관련 콘텐츠 개발 등 다양한 분야에서 활용할 수 있습니다.",
+      "url": "https://www.data.go.kr/data/15167428/fileData.do",
+      "identifier": "15167428",
+      "inLanguage": "ko",
+      "keywords": "부산문화포털,생활문화,공공도서관,도서관,문화시설",
+      "license": {
+        "name": "이용허락범위 제한 없음",
+        "url": "https://www.data.go.kr/ugs/selectPortalPolicyView.do",
+        "@type": "CreativeWork"
+      },
+      "isAccessibleForFree": true,
+      "dateCreated": "2026-09-22",
+      "dateModified": "2026-09-23",
+      "datePublished": "2026-09-22",
+      "creator": {
+        "name": "부산광역시",
+        "contactPoint": {
+          "contactType": "문화예술과",
+          "telephone": "+82-51-888-3731",
+          "@type": "ContactPoint"
+        },
+        "@type": "Organization"
+      },
+      "encodingFormat": "CSV",
+      "includedInDataCatalog": {
+        "name": "공공데이터포털",
+        "url": "https://www.data.go.kr",
+        "@id": "https://www.data.go.kr/#datacatalog",
+        "@type": "DataCatalog"
+      },
+      "variableMeasured": [
+        {
+          "name": "연번",
+          "description": "데이터 내 각 항목의 순서를 구분하기 위한 연변",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "시군구",
+          "description": "도서관이 위치한 부산광역시 시군구 명칭",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "시설명",
+          "description": "공공도서관 및 작은도서관 등 시설의 명칭",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "주소",
+          "description": "해당 도서관 시설의 소재지 주소",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "전화번호",
+          "description": "해당 도서관 문의 및 연락을 위한 전화번호",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "홈페이지 주소",
+          "description": "도서관 또는 관련 기관의 홈페이지 접속 주소",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "위도",
+          "description": "도서관 위치의 위도 좌표",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "경도",
+          "description": "도서관 위치의 경도 좌표",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "정렬번호",
+          "description": "데이터 표시 및 정렬에 사용하는 순서 번호",
+          "@type": "PropertyValue"
+        }
+      ],
+      "additionalProperty": [
+        {
+          "name": "분류체계",
+          "value": "문화체육관광 - 문화예술",
+          "@type": "PropertyValue"
+        },
+        {
+          "name": "업데이트 주기",
+          "value": "연간",
+          "@type": "PropertyValue"
+        }
+      ],
+      "download_url": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000007691520&fileDetailSn=1",
+      "reference_date": "09/11/2026"
+    },
+    {
+      "identifier": "15017323",
+      "name": "전국박물관미술관정보표준데이터",
+      "url": "https://www.data.go.kr/data/15017323/standard.do",
+      "total_count": 1070
+    },
+    {
+      "identifier": "15012890",
+      "name": "전국도시공원정보표준데이터",
+      "url": "https://www.data.go.kr/data/15012890/standard.do",
+      "total_count": 18376
+    },
+    {
+      "identifier": "15021141",
+      "name": "전국관광지정보표준데이터",
+      "url": "https://www.data.go.kr/data/15021141/standard.do",
+      "total_count": 897
+    }
+  ],
+  "sha256": {
+    "busan_good_price_shops.csv": "e9144bff3b59ce2ac5a41aec2c36789561d274c510d30b9bdf381985a62ce74f",
+    "busan_menu_prices.csv": "9dc3cbec3f1f6a6876a74a56c49a9ee697f0685330f9e6b673f5f96061a557f8",
+    "busan_places.csv": "90d7333db15e72e3b024978be7382974de27bc0ab1c228942959668084b33480",
+    "import_busan_public.sql": "4625fee124965c9190e446cc754f1c7ef45d328529ed5c231472bd05d8e7beeb",
+    "possible_duplicate_places.json": "1e719a6287b4436851839741ac632acc86450e1654e2e1bfa40d51c9faf0a825",
+    "raw\\busan_good_price_source.json": "f8b8377f4772fee895b9dc2dba7cca286c6b96e45ff71a5998371d2cca8f2c3c",
+    "raw\\busan_libraries_source.csv": "bfcc8c1af2cbac08996ea4889e51b4d175fafdd4c9a65f9c7b7435a43da1d775",
+    "raw\\busan_standard_sources.json": "824f3f23e5e57421080322ef8fbe25d08c89fee7ba92cdbc72cc9f688a745375",
+    "raw\\busan_stores_source.csv": "4319984f14e6d97d3ad588ceee070199eeaf528d934ced9293fcc53de67230fd"
+  }
+}
