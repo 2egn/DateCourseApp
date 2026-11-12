@@ -45,7 +45,7 @@ public class SavedCourseController implements Initializable {
         loadCourses();
     }
 
-    // 나중에 백엔드 호출로 바뀌는 자리
+    // 임시데이터 가져옴 //백엔드 연결 때 여기만 교체
     private void loadCourses() {
         courseList.getItems().setAll(FakeCourseData.getSavedCourses());
         updateEmptyState();
