@@ -1,0 +1,695 @@
+{
+  "schemaVersion": 1,
+  "documents": {
+    "01_시작/AppLauncher.md": {
+      "fingerprint": "4242865a76d11f0062d72fda335dcb8b03aa8b848fd4cab8ec973d76f2db8ce8",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "01_시작/MainApp.md": {
+      "fingerprint": "820762661b13a6548361949082db4f511556a6d10f5c56457ab8a2d97d9d6e8e",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/AdminController.md": {
+      "fingerprint": "a6ade3ac249f4b7ee12e759dc0e82958793eed01ff37c047dd2e4fc6d1072d38",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/CommunityController.md": {
+      "fingerprint": "916cba9ce6cc6b5b54243b72dad816939fc467373ffb8e360c8644ec40771eea",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/ConditionController.md": {
+      "fingerprint": "2ce13fb3ac54080240d72d49d078e78a0196618d990ba17ca2af056eb02f3f9c",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/CourseEditController.md": {
+      "fingerprint": "0fe4a05bdbc6d18fb7ac53d4dd00d3f4ba92c229d8bf9e25841a42f65efed5bf",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/login.md": {
+      "fingerprint": "1af78a4abd7576e2113b71a526b408514914ba33416a2fbaea9d909bfd548603",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/MapBridge.md": {
+      "fingerprint": "f23630c365c0346f416841be153a92ab84cb84ef23b9dc4d1a148e9024b1e3cc",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/NumberStepper.md": {
+      "fingerprint": "d67f828fa4ef71ab414baabb6c7419c69c53813a1d8f1b619f20d92aabdf0169",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/PlannerMap.md": {
+      "fingerprint": "2ae0ede6c27b5e4e219e60013fa8fd099e23c60a6bdc23f66580510f1ccfd119",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/RouteEditorController.md": {
+      "fingerprint": "b44709aedb4ae6a20ac8a2b5c72b5f590d7f6e83d7f96a9e764de770a64ba00f",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/SavedCourseController.md": {
+      "fingerprint": "c22d40bc672927c616893000504bfd3af15f9adb245db68f9004565ddfe8e2a0",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/TmapSettingsDialog.md": {
+      "fingerprint": "fddcb37864c326adbc0ca2e9a8d44de20b6c5e8103cf805e2c9c717add8dc82e",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/ExternalBrowser.md": {
+      "fingerprint": "a61717b370b006a3548cbb6742267248c11255e4852453ff34766a5e21d2d00f",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/MapPageServer.md": {
+      "fingerprint": "4bf0ca7d8a93f75cf105981969f8eb206924b4309fdf89c00127564c0651d1ec",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/NextPlaceService.md": {
+      "fingerprint": "685472a4bff87dfbaa0c151db5957c1d551ab3fde596ffd658be29501f0add0e",
+      "revision": 5,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/PlaceCalculationService.md": {
+      "fingerprint": "07a10083e6bc25043133d7e81de1e1f160c818c810fadae25e542dbd33afb33f",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/PlaceCountService.md": {
+      "fingerprint": "da622477c6158c39aac535e2510c4791f565c7d6ddebb573be52a57163e80e9f",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/PlaceSearchService.md": {
+      "fingerprint": "e896ed7bfceaf068fca24218a2cd712416d3142a15ce85e7d36d72996a41b775",
+      "revision": 5,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/RecommendedCourseMapper.md": {
+      "fingerprint": "1072cda0503ee472105edfb7a7e160944196cc6891fe57c2d665733eebce472b",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/RouteRangeValidator.md": {
+      "fingerprint": "00b21b536f729b05057488f4df6ca0508b465567b1d5806320a4ac722b36deb8",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/TmapSettings.md": {
+      "fingerprint": "c2c425a28dac0564eaa29e9dcab5af933241016166b19947577f0d7855fe42b7",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/WalkingRouteService.md": {
+      "fingerprint": "918170a9def6799c5ca28d889d2e363e7ca6c70a8340c12d454f28946f0325ac",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/Course.md": {
+      "fingerprint": "f24a4ff8a8cb5e1168b6377ed331eafccbb186843733683b3116ed02a809257b",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/CoursePlace.md": {
+      "fingerprint": "33ba6fc94130d73f0eedd54961370729a0ed73f9ca5a1bd8485172f6788a104a",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/Member.md": {
+      "fingerprint": "f2a7f1cfd7262d4ef2fc526ae2908d58f83fb983eda6efe90e56f936761c3723",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/Place.md": {
+      "fingerprint": "03e6ffbb01e25988b2087fc904129f98f60732c699b0aef4456b743501020ef7",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/Review.md": {
+      "fingerprint": "9b5e99973daeac1532a04d5a75b83a319760afc25f35288a571230860503cfb9",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/RoutePlan.md": {
+      "fingerprint": "14dabd06489ad40222cbffadae72157054436ec00ca50d36fd9998cc419a5e3e",
+      "revision": 5,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/SearchCondition.md": {
+      "fingerprint": "f2e06e8a337a8fa06830e749edd3161eaee93e9d86986fd9f2d209c8f69f2f49",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/WalkingRoute.md": {
+      "fingerprint": "ac34ba21afc4638ac09cb655d54d8ddbe67212588d72acf1f6a1aef835d92594",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/WalkingSearchOption.md": {
+      "fingerprint": "1cc9ef51742083dc8d0bf3248f4444cdb705811f1473aa28a9a995c7a47aa70d",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/AppDialogs.md": {
+      "fingerprint": "ef77c84ef82157fb03660f1574cc2090fb2038152594044d1799289c5fa0fdf7",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/DatabasePool.md": {
+      "fingerprint": "4a90171f4a9b05a6ec8f3b69f5c22cfa6dbb581cdb0fa5cf4b6674a268130f8c",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/DbSettings.md": {
+      "fingerprint": "fb070ab98986c8001d2d678a008a3f38dc6af9b4202c8b5a37b07e38fa56ddf5",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/InputHistory.md": {
+      "fingerprint": "7711d4c0adbd706aaf9d363d3098d5598ef4c096639819dd5544023a27415084",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/MemberRepository.md": {
+      "fingerprint": "129ebb7d430d3ba3b6487096a867b5083d5409935415cc533c2a4dec2bbc5c34",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/MembershipApp.md": {
+      "fingerprint": "2be994bb6a7ce966c112bf9188c6d4195276d593747c0ddd43946deb1010612f",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/PasswordHash.md": {
+      "fingerprint": "4ac0306de6b90bc025a24a1a6140f32793d84a0bad8e3a12fd1459e27a6fde82",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/PlaceQueryDemo.md": {
+      "fingerprint": "964f1f07b6299c8be9b6434a195f196da7a688fa130638b574b7a93601d694ea",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/PlaceRepository.md": {
+      "fingerprint": "c06cab9353f56424442e358da3e14b4c9a72a71ebb6df1b865450c217025c810",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/PlannerLoadingDialog.md": {
+      "fingerprint": "ace03f55a6cd9eca3518c85593e2c7e444e710b7d6de31fb9dded13e0024d929",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/ReplaceIntegratedData.md": {
+      "fingerprint": "664dd5eacb6d075da602f8e8a85ccbfc810205c3e4c459b13f57009287c6243d",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/RevealPanel.md": {
+      "fingerprint": "f71183540f022e49e4da963f1ec16957883d09ec597261e0f645e18f21749e0d",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/SignupForm.md": {
+      "fingerprint": "89b7782be0a0b50816fdff99e98d3c24684f00eaa09ef8621667a20a0465cd82",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/StartupPanel.md": {
+      "fingerprint": "24612169c4322c7bcb89326d24f12e67c2bdf6b8398cbf969a4d117ed6584cf6",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/UiTheme.md": {
+      "fingerprint": "2c29d224fc22842bbcedce2294ba7e1abd47ef85e449b4630766fb46450993b1",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/UserSession.md": {
+      "fingerprint": "5acef320b0c1e92096ee0b43187746a4b4f9e706149b24770a2d665e9e344fce",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/AdminLauncher.md": {
+      "fingerprint": "17f30670c362d2d8c5f25599596da200ab3f72c570a9e01561e670db4716f394",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/AdminTestApp.md": {
+      "fingerprint": "5ea9ee04182f2c4d10778988ab7ee158f3e2f6f102afe21c53126602b4506399",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/CommunityLauncher.md": {
+      "fingerprint": "e4346fd610d6a4e55a8dc248b40f0c1704121c331a9d7b4203426af97fc973c2",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/CommunityTestApp.md": {
+      "fingerprint": "7863d3455a8f2cad198573935adf08fe2dd44e67be0bd5eda69517aa5d0467f6",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/ConditionLauncher.md": {
+      "fingerprint": "97265c0695fef8b145fec90a8a6b6eb83b707062b2badbca5708b94097d3c888",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/ConditionTestApp.md": {
+      "fingerprint": "37170ff0cf09c8f6bce85916d5789abc1132f1a0e0a53625ab861ffaf905b63f",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/CourseEditLauncher.md": {
+      "fingerprint": "d3f5919186847c4ac92e93a9a81255ed95ada1b15feeff4eb239e79918ea3145",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/CourseEditTestApp.md": {
+      "fingerprint": "c822da060bed9de5ce0a25fd714e818be3176dad43c03662bdd2aa061782dbc8",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/FakeCourseData.md": {
+      "fingerprint": "093c8d3a265238c536e12d26caa7e77128f19a8ed7fd12a6a1e030cc795a12ad",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/FakeMapData.md": {
+      "fingerprint": "6856228c3c73d27b1ebac2120ec1582a24f2e4528b3cc3b1f2940885f0f87ef8",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/FakeMemberData.md": {
+      "fingerprint": "3fd56d75f488d6837631c9ee2c82f0b9d54c671aae2b3ec7f59af64cf7848ab2",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/FakeReviewData.md": {
+      "fingerprint": "71039c5d575ba522b4db0895c75abbafe89ac6e3d36cb3e7e2298bd4cacb4742",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/SavedCourseLauncher.md": {
+      "fingerprint": "b6acdae8b3c203a1b738767740350f13f44e4c0cb2461a73512b98f2e7f5d90f",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/SavedCourseTestApp.md": {
+      "fingerprint": "74ef711d07530581ef01f6c68a24f9fb1ddb8d3b54180658f96b73e188b4e0bd",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/DatabasePoolTest.md": {
+      "fingerprint": "0e7e11d1611d0cc0e6cf6e368da547c71b4cfbbb20ff1553a9d1ce514eb7d1eb",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/DbSettingsTest.md": {
+      "fingerprint": "d15485d629836dafe5797f5c0312fc9763e867a82d6e5bb3ce6fdc28f99e6134",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/ExternalBrowserTest.md": {
+      "fingerprint": "f3662e5cc1b3304bf429386d44d0e502c9e3e0fc5b90ca4130319225daea380c",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/MapBridgeTest.md": {
+      "fingerprint": "d78a95f40a8f6ee223aebb71591f6c0023e6cc8119af0cf2b9bc7df274d5671c",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/MapSearchTest.md": {
+      "fingerprint": "0ea9058c4583e2d58491e8ffe450b58cd65b112458c6af60232a698bd1705e1b",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/NextPlaceServiceTest.md": {
+      "fingerprint": "b3822c3471560ad5ca5eac8531c9fe64fd47b56e125146e32da2f40c95a53236",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/PasswordFieldTest.md": {
+      "fingerprint": "99923b98340f4abb97152830eb859a5b0737b62840f88fb1abfc88f3852ff622",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/PlaceCalculationServiceTest.md": {
+      "fingerprint": "534378cff0af028c57f3aa3a579dbd08831a321878fd86d9faf16738e630405e",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/PlaceSearchServiceTest.md": {
+      "fingerprint": "22c86b6481b42f5f8bbb489ad4a2c1a7fdf706d75ad0476e979bde7d881932b7",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/RecommendedCourseMapperTest.md": {
+      "fingerprint": "1a83f99e19f04ac7b5ec0fb7d6b76be381aa3dce426117d35f3b6c9a21bc46a2",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/ReplaceIntegratedDataTest.md": {
+      "fingerprint": "91a19248a870631ce11fc32a902f2d29df5563033527f1f1594b3297f6677ced",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/RouteRangeValidatorTest.md": {
+      "fingerprint": "92e68adae5be2cfb57cea57b8aa1757e97907339dbe8e874293391daa7944483",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/StartupPanelTest.md": {
+      "fingerprint": "3cbe126278c3ef05118d4ae1039576cce303d0fe7ef4c7e92ad802163df8165c",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "08_지도_보충/instant-zoom.js.md": {
+      "fingerprint": "400d4068456c1ee500fc94658095d60bafbf7b8084a437bcb420982bb4c5711a",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "08_지도_보충/itinerary-rail.js.md": {
+      "fingerprint": "103ac9c01ba607020e4523106b8a8369b8870c0cc2916a6103fb21518e614e82",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "08_지도_보충/map.js.md": {
+      "fingerprint": "7f952f4668a5ea207bf490ba5f056635502af1cabdfc21c4633137fbf63e55d0",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "index.md": {
+      "fingerprint": "56c116f6414c7f8684ed786a83e7e085e6313dd5bc4295b0666f829e6ec80a9b",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "라이브러리_사용_안내.md": {
+      "fingerprint": "ab313daf89dd86e7e074ee8ffea05a2191757f47ee833aef2e8c03868c7fda92",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "리뷰_및_구현_방향.md": {
+      "fingerprint": "1cefa07255ea61fdae3e1a9b3f385b5ba2ae4449a764e19389e5f8bb12a8e1d0",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "목차.md": {
+      "fingerprint": "508b7b93ffd2c2ebf4c63790601093e1d58cd4600444376752e071989ab8e798",
+      "revision": 6,
+      "updated": true,
+      "present": true
+    },
+    "문서_읽는법.md": {
+      "fingerprint": "ef7ec039f66eaa0327a1403a047cc716b43ef174090ac37a0054b7ad9342c457",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "실행_및_테스트.md": {
+      "fingerprint": "777fcbbe73096b8a19f94734b806eb9b6cc919756f3064a021d76056ea2297aa",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "업데이트_내역.md": {
+      "fingerprint": "42918658819b372305de9c4e5478ae0dbd09463cf439d36bf815351adfe8bfca",
+      "revision": 9,
+      "updated": true,
+      "present": true
+    },
+    "전체_동작_흐름.md": {
+      "fingerprint": "0983b31564eb53f187b2093d29dc2d8bfe234fec8aa19d71211afe8ddfd96e93",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/SavedCourseSchemaTest.md": {
+      "fingerprint": "262e3510e4885dde7b9406c56ef970e64d712cf7fe940e7b2e4b74a30162abe8",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "코스_저장_설계.md": {
+      "fingerprint": "5e46a4b3fb3fe963eae8a85b04a5f63261455fd1b71c0db4723fc202feea1815",
+      "revision": 6,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/SavedCourse.md": {
+      "fingerprint": "9a23401d3feecef14189359877ddab70d09abf6b7bf60e776db91c16fd34bfeb",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/SavedCourseRepository.md": {
+      "fingerprint": "8a39177446b2561f66fd717e418486a01bfc63e420f86b20d3d53aecfac336b0",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/SavedCourseRepositoryTest.md": {
+      "fingerprint": "dfabe714948b4d3532eae4bc89f1336f773ae7a3aa8a775f38d39cad8095e1a7",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/BasePageController.md": {
+      "fingerprint": "e55b0fa4f3d4073ef7c1ce3cd14af7854fb6cce767befae8946c6c45b12ab2d1",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/MyPageController.md": {
+      "fingerprint": "cf9fc301b9a1f28d7baa517480e72572b793062c7c7992f89ff2d4a566b19608",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "02_화면/PageFeedback.md": {
+      "fingerprint": "5761558c1045346c68fa01767e5dd547f380cb87b58e0d391c14195627adeadd",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/PilotPlaceRepository.md": {
+      "fingerprint": "0891509d4656f3a38ff7063fc15ec59db65e0b00ce7b3415f54fd69af37c6c0c",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/PlaceBindingCatalog.md": {
+      "fingerprint": "9fc7c095ee2b95156b58b6ad9741de229e6a9e68eda0308a1254b9387713c0d1",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/PlaceSource.md": {
+      "fingerprint": "19b47f03dfc3d42383f3382164fbc1c4857b54a37caa70a7e5c4c593cd197010",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/CostEstimate.md": {
+      "fingerprint": "bb45db64dd2fd98667aea4117222dfc74760c50d2208b41a1358884e6f743221",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/PlaceDetails.md": {
+      "fingerprint": "f09426a42142f294fcad3c0eb1f013d581667d7c8a6151f3fbfbd57f88489259",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "04_데이터/PriceEstimate.md": {
+      "fingerprint": "6f29ce2c1860e7ff8fccb6b2bfbd0a23b37f0c01dfae85e3cb598b2be2b15c48",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "05_회원_DB/CapsLockHint.md": {
+      "fingerprint": "cc618800a6e150fe989c61bdf68eff280d3bc4e019db53e9b9ba61a5c98ed909",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/PilotPlannerApp.md": {
+      "fingerprint": "aed0511178ba39cc67d26531fc6d99cb85efbad9a0cad261bda094220fd7201e",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/PilotPlannerLauncher.md": {
+      "fingerprint": "136ba2e5e4b5ded03cb0d62e8f5706fc1fc808904c6af5f42d0b20e8f643c074",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "06_데모/PlaceBindingDemo.md": {
+      "fingerprint": "00525ee1d134c9f57e19ca033faed58f979d5418164dc65be949d9c6391b8a78",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/CapsLockHintTest.md": {
+      "fingerprint": "f8715d995c56f8b8992879ecb52deefe407d011b0554f3afa01caffa6328f93d",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/MemberProfileTest.md": {
+      "fingerprint": "5ef11a23150a80dc79de79e912356fb64ace6ddd1efb486d31b3a16ae5bbf9cf",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/PilotPriceFlowTest.md": {
+      "fingerprint": "66fece1eb19250e6e19c3a346bf4e158f537ac2279020b82d9394ec584febdcd",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/PlaceBindingCatalogTest.md": {
+      "fingerprint": "6be90ab0210303c935752da56e3a51d35acb25e060cbae55795451bf90418b46",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/PlaceRepositoryPriceTest.md": {
+      "fingerprint": "7cd17e9b037b7285964a62b607724f01723124d704a8323e1fc913cf8b32a383",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/PlannerLoadingDialogTest.md": {
+      "fingerprint": "211e6007f00d59edf323b4617c1932c1ed6f076dba089b46b0d033c2abb19da1",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "07_테스트/WalkingRouteUiTest.md": {
+      "fingerprint": "8df4641350dcc6573f0439e89565ecb1ef5ad7661f42e6f785ef07c29e987179",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "공통_UI와_홈_메뉴.md": {
+      "fingerprint": "76d78fa736d1bb54a0db16589a7a4d99c4f2aeca738a02b53ffcdf2a700003c2",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "시연_장소와_가격_흐름.md": {
+      "fingerprint": "e469af41e865f05626d10714bf69fb512664771a322190a7220b36d7c7488585",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "코스_저장과_다시열기.md": {
+      "fingerprint": "f2667a88d11aae5be51def31a02a5dc54f32cc7ca72301f3a051b61843aa0d95",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "현재_구현_흐름.md": {
+      "fingerprint": "98564ae2db0013787d37096e1e2db260d260e95a5a5802417fcaf27823fcf64b",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    }
+  }
+}
