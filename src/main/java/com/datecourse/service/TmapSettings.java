@@ -49,7 +49,8 @@ public record TmapSettings(String appKey, int searchOption) {
             if (choices.containsKey("tmap.search.option"))
                 properties.setProperty("tmap.search.option", choices.getProperty("tmap.search.option"));
         }
-        String key = environment.get("TMAP_APP_KEY");
+        String key = TeamApiKeys.get("tmap", root, environment);
+        if (key.isBlank()) key = environment.get("TMAP_APP_KEY");
         if (key == null || key.isBlank()) key = properties.getProperty("tmap.app.key", "");
         try { return new TmapSettings(key, Integer.parseInt(properties.getProperty("tmap.search.option", "0").trim())); }
         catch (NumberFormatException failure) { throw new IllegalArgumentException("TMAP 탐색 옵션은 숫자로 입력해 주세요."); }

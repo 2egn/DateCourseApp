@@ -106,7 +106,8 @@ public final class MapPageServer implements AutoCloseable {
     }
 
     private byte[] configuration() throws IOException {
-        String key = environment.getOrDefault("KAKAO_MAP_JAVASCRIPT_KEY", "").trim();
+        String key = TeamApiKeys.get("kakaoJavascript", root, environment);
+        if (key.isEmpty()) key = environment.getOrDefault("KAKAO_MAP_JAVASCRIPT_KEY", "").trim();
         Path source = root.resolve("src/main/resources/map/kakao-config.js");
         if (key.isEmpty() && Files.exists(source)) {
             var assignment = KEY_ASSIGNMENT.matcher(Files.readString(source));

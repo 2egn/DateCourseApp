@@ -8,6 +8,7 @@ const pendingMembership = new WeakMap();
 export {TaskBoard} from './board-store.mjs';
 export {AgentAccess} from './agent-store.mjs';
 import {agentRoute,handleAgent} from './agent.mjs';
+import {appKeys} from './app-keys.mjs';
 
 function base64(bytes) {
   return btoa(String.fromCharCode(...bytes)).replaceAll('+', '-').replaceAll('/', '_').replace(/=+$/, '');
@@ -139,6 +140,7 @@ export async function handle(request, env, remote = fetch) {
   } catch { return protectedResponse('사이트 인증 설정이 준비되지 않았습니다.', 503); }
   const url = new URL(request.url);
   if (url.origin !== origin) return protectedResponse('허용되지 않은 사이트 주소입니다.', 403);
+  if(['/api/app/keys','/api/app/database'].includes(url.pathname)) return appKeys(request, env, protectedResponse);
   if(agentRoute(url.pathname))return handleAgent(request,env,{
     respond:protectedResponse,seal,unseal,membership:token=>checkMembership(token,remote),
     getSession:async()=>{const s=await unseal(cookie(request,SESSION),env,SESSION);return s&&typeof s.token==='string'&&Number.isSafeInteger(s.id)?s:null;}

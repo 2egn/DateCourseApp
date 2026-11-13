@@ -86,8 +86,8 @@
       "present": true
     },
     "03_처리/MapPageServer.md": {
-      "fingerprint": "4bf0ca7d8a93f75cf105981969f8eb206924b4309fdf89c00127564c0651d1ec",
-      "revision": 3,
+      "fingerprint": "47c5e00647cc3202e624eecc42284a996083f1958dfd19922e49755206b5c2d7",
+      "revision": 4,
       "updated": true,
       "present": true
     },
@@ -128,8 +128,8 @@
       "present": true
     },
     "03_처리/TmapSettings.md": {
-      "fingerprint": "c2c425a28dac0564eaa29e9dcab5af933241016166b19947577f0d7855fe42b7",
-      "revision": 2,
+      "fingerprint": "04bfdcfd53f5c3958123d100878223447a07d6f40caaa5e21a643c7b1438f621",
+      "revision": 3,
       "updated": true,
       "present": true
     },
@@ -206,8 +206,8 @@
       "present": true
     },
     "05_회원_DB/DbSettings.md": {
-      "fingerprint": "fb070ab98986c8001d2d678a008a3f38dc6af9b4202c8b5a37b07e38fa56ddf5",
-      "revision": 2,
+      "fingerprint": "73c2505b4e3f604fbb1aed54d5bd670024dc704100b51f9347844ab333315ed7",
+      "revision": 3,
       "updated": true,
       "present": true
     },
@@ -470,8 +470,8 @@
       "present": true
     },
     "index.md": {
-      "fingerprint": "56c116f6414c7f8684ed786a83e7e085e6313dd5bc4295b0666f829e6ec80a9b",
-      "revision": 3,
+      "fingerprint": "80b167f417f243cb2b53718d6daa9b3d4ba84c9f0eef7e10d671e688adde3638",
+      "revision": 4,
       "updated": true,
       "present": true
     },
@@ -500,14 +500,14 @@
       "present": true
     },
     "실행_및_테스트.md": {
-      "fingerprint": "777fcbbe73096b8a19f94734b806eb9b6cc919756f3064a021d76056ea2297aa",
-      "revision": 4,
+      "fingerprint": "cf5c230351ae13761913abf62f41b749344d2aba5f63c0668018f380343688d6",
+      "revision": 6,
       "updated": true,
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "42918658819b372305de9c4e5478ae0dbd09463cf439d36bf815351adfe8bfca",
-      "revision": 9,
+      "fingerprint": "e4412ceaca38a3ab7155a2491835eddd861b4f319167af207e895a7367090f45",
+      "revision": 11,
       "updated": true,
       "present": true
     },
@@ -688,6 +688,18 @@
     "현재_구현_흐름.md": {
       "fingerprint": "98564ae2db0013787d37096e1e2db260d260e95a5a5802417fcaf27823fcf64b",
       "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "03_처리/TeamApiKeys.md": {
+      "fingerprint": "ccc2222e35d603c1fc64830009d3d19e3d8498e50816f7c7cfbc5d4b9e4a7a28",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "공통_접속_키.md": {
+      "fingerprint": "cb2450ea762bc38266bc6b96d2d0f5b11b16ae7d33a9fa9ab034a19ec7b24c3a",
+      "revision": 2,
       "updated": true,
       "present": true
     }

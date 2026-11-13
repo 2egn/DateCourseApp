@@ -30,7 +30,7 @@ python tools/place-data-pilot/pilot.py live
 
 `prepare`는 이미 만들어진 테스트 파일을 덮어쓰지 않고 중단한다. 실제 결과는 `data/places/pilot/seomyeon-jeonpo-2026-11-13/`에 있다.
 
-`live`는 `.local/google-places.properties`의 `google.places.api.key`를 사용한다. 검색 5회 + 상세 최대 5회, 재시도 없음. 검색은 ID 필드만 요청하며 상세는 리뷰까지 요청하므로 Place Details Enterprise + Atmosphere 등급에 해당한다. 응답 원문·가게명·좌표·가격·리뷰 본문을 저장하지 않고, 집계한 제공 여부만 `build/place-data-pilot/live-summary.json`에 남긴다.
+`live`는 [공통 접속 키](../../docs/공통_접속_키.md)가 있으면 서버에서 Google 키를 받아 메모리에 보관한다. 공통 설정이 없을 때만 `.local/google-places.properties`의 `google.places.api.key`를 사용한다. 검색 5회 + 상세 최대 5회, 재시도 없음. 검색은 ID 필드만 요청하며 상세는 리뷰까지 요청하므로 Place Details Enterprise + Atmosphere 등급에 해당한다. 응답 원문·가게명·좌표·가격·리뷰 본문을 저장하지 않고, 집계한 제공 여부만 `build/place-data-pilot/live-summary.json`에 남긴다.
 
 중복 실행을 막기 위해 `.local/place-data-pilot-live.lock`을 생성한다. 이미 한 번 실행했으므로 다시 `live`를 실행하면 중단되는 것이 정상이다. 이 잠금은 API 전체 사용량이나 다른 프로그램의 요청을 제한하는 장치는 아니다. 이번 검증은 5곳의 표본이며 앱 추천 순위의 상위 5곳을 재현한 것이 아니다.
 

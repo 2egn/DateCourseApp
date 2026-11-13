@@ -93,6 +93,10 @@ AppLauncher
 
 com.datecourse.app.MainApp은 이전 실행 코드이며 현재 저장소에 없는 /fxml/Login.fxml을 참조합니다. 통합 앱은 AppLauncher로 실행합니다.
 
+## 팀 공통 API 설정 (권장)
+
+[공통 접속 키 설정 안내](docs/공통_접속_키.md)에 따라 `.local/team-access.properties`에 접속 키 하나만 입력합니다. 카카오·TMAP·Google 키는 서버에서 받아 메모리에 보관합니다. DB 접속 정보도 같은 공통 키로 받아옵니다. 카카오 허용 도메인은 계속 필요합니다. 공통 설정을 사용하면 아래 개별 API 키 입력은 생략합니다. 실제 TMAP 키와 `db.properties`는 빌드 결과에 포함하지 않습니다.
+
 ## 카카오 지도 준비
 
 ### 1. JavaScript 키와 도메인 설정
@@ -110,7 +114,7 @@ Copy-Item src/main/resources/map/kakao-config.example.js src/main/resources/map/
 window.KAKAO_MAP_KEY = "YOUR_KAKAO_JAVASCRIPT_KEY";
 ~~~
 
-실제 `kakao-config.js`는 Git과 애플리케이션 JAR에서 제외하며 실행할 때 읽습니다. 빈 예제 파일만 공유합니다. REST API 키나 관리자 키를 넣지 않습니다. 비어 있지 않은 환경변수 `KAKAO_MAP_JAVASCRIPT_KEY`가 있으면 우선합니다. 소스 설정 파일에 키가 없으면 `.local/kakao-map.properties`의 `kakao.javascript.key`를 읽으므로 배포본에서도 이 로컬 파일을 사용할 수 있습니다.
+실제 `kakao-config.js`는 Git과 애플리케이션 JAR에서 제외하며 실행할 때 읽습니다. 빈 예제 파일만 공유합니다. REST API 키나 관리자 키를 넣지 않습니다. 공통 접속 키가 없을 때는 비어 있지 않은 환경변수 `KAKAO_MAP_JAVASCRIPT_KEY`가 우선합니다. 소스 설정 파일에 키가 없으면 `.local/kakao-map.properties`의 `kakao.javascript.key`를 읽으므로 배포본에서도 이 로컬 파일을 사용할 수 있습니다.
 
 ### 2. 지도 페이지 실행
 
@@ -400,7 +404,7 @@ tmap.app.key=본인_TMAP_appKey
 tmap.search.option=0
 ~~~
 
-빌드의 `prepareTmapServiceConfig`가 키만 `tmap-service.properties` 리소스로 만들어 JAR·배포본에 포함합니다. 배포본 사용자는 키를 발급하거나 입력할 필요가 없습니다. 키는 Java HTTP `appKey` 헤더로 사용하며 지도 HTML·JavaScript에는 전달하지 않습니다. 환경변수 키가 파일보다 우선하며, 소스 저장소에는 실제 키를 추가하지 않습니다.
+공통 접속 키가 있으면 `TeamApiKeys`가 서버에서 TMAP 키를 받아 메모리에 보관합니다. 공통 설정이 없는 경우에만 기존 환경변수·로컬 파일을 읽습니다. `prepareTmapServiceConfig`는 빈 설정만 만들어 예전에 포함되던 키를 새 빌드에서 제거합니다. 키는 Java HTTP `appKey` 헤더로 사용하며 지도 HTML·JavaScript에는 전달하지 않습니다.
 
 사용자의 탐색 방식은 `.local/tmap-route.properties`에 별도로 저장하고 공통 키 파일을 변경하지 않습니다. 탐색 방식 코드는 추천(0), 추천·대로 우선(4), 최단(10), 최단·계단 제외(30)입니다. 개발용 설정 예제는 `src/main/resources/tmap.properties.example`에 있습니다.
 

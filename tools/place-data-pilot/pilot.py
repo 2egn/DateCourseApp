@@ -149,6 +149,10 @@ def normalized_name(name):
 
 
 def load_google_key():
+    from team_keys import load
+    shared = load(ROOT, 'googlePlaces')
+    if shared:
+        return shared
     values = {}
     for line in (ROOT / '.local/google-places.properties').read_text(encoding='utf-8-sig').splitlines():
         if '=' in line and not line.lstrip().startswith('#'):

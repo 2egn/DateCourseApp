@@ -51,4 +51,16 @@ class DbSettingsTest {
         assertEquals(properties.getProperty("db.user"), settings.user());
         assertEquals(properties.getProperty("db.password"), settings.password());
     }
+    @Test void serverSettingsKeepExactPasswordWithoutDisclosingItInToString() {
+        DbSettings settings=DbSettings.fromRemote(Map.of("url","jdbc:mysql://example.invalid/course",
+                "user","team-user","password","  p@ss:word=한글  "));
+        assertEquals("  p@ss:word=한글  ",settings.password());
+        assertFalse(settings.toString().contains(settings.password()));
+        assertFalse(settings.toString().contains(settings.url()));
+    }
+
+    @Test void partialServerSettingsAreRejectedInsteadOfMixingWithLocalSettings() {
+        assertThrows(IllegalStateException.class,()->DbSettings.fromRemote(Map.of("url","jdbc:mysql://host/db","user","team")));
+        assertThrows(IllegalStateException.class,()->DbSettings.fromRemote(Map.of("url","jdbc:mysql://host/db","user","team","password"," ")));
+    }
 }

@@ -1,0 +1,3 @@
+# Copy to .local/team-access.properties (never commit the filled file).
+# Get the shared app credential from the project owner, outside Git/chat.
+team.access.key=
