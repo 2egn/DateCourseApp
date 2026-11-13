@@ -81,20 +81,28 @@
     <a id="detail-map-link" class="detail-map-link" target="_blank" rel="noopener noreferrer" tabindex="-1">카카오맵에서 보기 ↗</a>
     <p class="detail-note">가격·평점은 저장된 참고 정보입니다.</p>
 </section>
-</div>
-<div id="map-status" role="status" aria-live="polite">지도를 불러오고 있어요…</div>
-<script src="./kakao-config.js"></script>
 <style>
-    #walking-panel { flex: 0 0 auto; padding: 9px 16px; border-top: 1px solid #dbeafe; background: #f0f7ff; font-size: 12px; color: #1e3a5f; }
+    #walking-panel { position: absolute; top: 12px; left: 12px; right: 12px; z-index: 8; padding: 10px 12px; border: 1px solid #dbe2eb; border-radius: 10px; background: rgba(255,255,255,.97); box-shadow: 0 3px 10px #1e293b15; font-size: 12px; color: #1e3a5f; }
+    #walking-summary { font-weight: 600; }
+    #walking-leg-list { display: flex; gap: 6px; overflow-x: auto; margin-top: 8px; padding-bottom: 3px; }
+    .walking-leg-button { flex: 0 0 auto; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid #d9e0e8; border-left-width: 4px; border-radius: 6px; padding: 6px 8px; background: #fff; color: #334155; font-size: 12px; }
+    .walking-leg-button[aria-pressed="true"] { background: #edf2f7; font-weight: bold; }
+    .walking-route-tooltip { box-sizing: border-box; width: 248px; white-space: normal; word-break: keep-all; overflow-wrap: break-word; background: #fff; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 2px 7px #0002; font-size: 12px; line-height: 1.5; pointer-events: none; }
+    .walking-tooltip-facts { margin-top: 4px; color: #64748b; white-space: nowrap; }
+    .walking-leg-badge { border: 2px solid white; border-radius: 14px; min-width: 26px; height: 26px; padding: 0 5px; color: #fff; font-size: 12px; font-weight: bold; box-shadow: 0 1px 4px #0003; }
     #walking-panel details { margin-top: 6px; }
     #walking-panel summary { cursor: pointer; }
-    #walking-directions { max-height: 120px; overflow-y: auto; margin: 6px 0 0; padding-left: 22px; }
+    #walking-directions { max-height: 130px; overflow-y: auto; margin: 6px 0 0; padding-left: 0; list-style: none; }
     #walking-directions li { margin: 4px 0; line-height: 1.5; }
 </style>
 <section id="walking-panel" hidden aria-label="TMAP 도보 경로 안내">
     <div id="walking-summary" role="status" aria-live="polite"></div>
-    <details id="walking-details" hidden><summary>구간별 도보 안내 보기</summary><ol id="walking-directions"></ol></details>
+    <div id="walking-leg-list" role="group" aria-label="도보 구간 선택"></div>
+    <details id="walking-details" open hidden><summary>선택 구간 안내</summary><ol id="walking-directions"></ol></details>
 </section>
+</div>
+<div id="map-status" role="status" aria-live="polite">지도를 불러오고 있어요…</div>
+<script src="./kakao-config.js"></script>
 <script src="./itinerary-rail.js"></script>
 <script src="./instant-zoom.js"></script>
 <script src="./map.js"></script>

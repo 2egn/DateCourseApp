@@ -19,7 +19,7 @@ class PlannerLoadingDialogTest {
                     dialog.open();
                     assertTrue(dialog.isShowing());assertFalse(owner.isEnabled());
                     JPanel body=(JPanel)dialog.getContentPane();
-                    assertEquals("앱을 실행중입니다..",((JLabel)body.getComponent(0)).getText());
+                    assertEquals("화면과 장소 목록을 준비하고 있어요…",((JLabel)body.getComponent(0)).getText());
                     assertTrue(((JProgressBar)body.getComponent(2)).isIndeterminate());
                     BufferedImage image=new BufferedImage(body.getWidth(),body.getHeight(),BufferedImage.TYPE_INT_ARGB);
                     Graphics2D graphics=image.createGraphics();body.printAll(graphics);graphics.dispose();

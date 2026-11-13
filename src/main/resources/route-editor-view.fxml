@@ -6,9 +6,9 @@
 <?import javafx.scene.shape.SVGPath?>
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.datecourse.controller.RouteEditorController"
  stylesheets="@style.css" styleClass="condition-screen,route-editor-screen" prefWidth="1440" prefHeight="960" minHeight="0">
- <top><HBox alignment="CENTER_LEFT" spacing="20" styleClass="planner-header">
+ <top><HBox alignment="CENTER_LEFT" spacing="20" styleClass="planner-header,editor-heading-bar">
  <VBox spacing="5"><Label text="02 · 장소를 하나씩 골라요" styleClass="planner-heading"/><Label fx:id="commonLabel" styleClass="planner-caption"/></VBox>
- <Region HBox.hgrow="ALWAYS"/><Label text="편집 완료 전까지 메인 코스는 바뀌지 않아요." styleClass="planner-caption"/>
+ <Region HBox.hgrow="ALWAYS"/><Button text="경로 설명" onAction="#onWalkingExplanation" styleClass="drawer-toggle"/><Button text="도보 설정" onAction="#onTmapSettings" styleClass="drawer-toggle"/>
  </HBox></top>
  <center><GridPane hgap="0" minHeight="0"><columnConstraints><ColumnConstraints percentWidth="55"/><ColumnConstraints percentWidth="45"/></columnConstraints>
  <rowConstraints><RowConstraints minHeight="0" percentHeight="100" vgrow="ALWAYS"/></rowConstraints>
@@ -20,7 +20,7 @@
  <top><VBox spacing="6" styleClass="route-sidebar-summary"><Label fx:id="summaryLabel" wrapText="true" styleClass="section"/></VBox></top>
  <center><ScrollPane fitToWidth="true" fitToHeight="true" minHeight="0" hbarPolicy="NEVER" styleClass="route-form-scroll"><VBox spacing="10" styleClass="route-state-panels">
  <TitledPane fx:id="coursePane" text="내 코스 보기 · 0곳" expanded="false" animated="false" styleClass="compact-pane"><content><VBox spacing="8">
- <TextField fx:id="titleField" promptText="코스 이름 (선택, 20자 이내)"/>
+ <Label text="코스 이름은 저장할 때 정해요." styleClass="planner-caption"/>
  <ListView fx:id="placeList" prefHeight="112" minHeight="80"/>
  <FlowPane hgap="6" vgap="6"><Button fx:id="upButton" text="↑ 위로" onAction="#onMoveUp" styleClass="drawer-toggle"/><Button fx:id="downButton" text="↓ 아래로" onAction="#onMoveDown" styleClass="drawer-toggle"/><Button fx:id="removeButton" text="삭제" onAction="#onRemove" styleClass="drawer-toggle"/><Button fx:id="placeInfoButton" text="상세" onAction="#onPlaceDetail" disable="true" styleClass="drawer-toggle"/></FlowPane>
  <Label fx:id="selectedRadiusLabel" text="장소를 선택하면 이동 반경을 수정할 수 있어요." wrapText="true" styleClass="planner-caption"/>
@@ -39,6 +39,8 @@
  <Label fx:id="radiusLabel" text="이전 장소에서 · 500m 이내" styleClass="planner-caption"/>
  <Slider fx:id="radiusSlider" min="200" max="2000" value="500"/>
  <Label text="두 원형 범위가 겹치는 곳에서 추천해요." styleClass="planner-caption" wrapText="true"/>
+ <CheckBox fx:id="includeUncertainPrice" text="가격 미확인·상한 미확인 장소도 포함" selected="false"/>
+ <Label text="포함하면 가격 상한 충족 여부를 보장할 수 없어요." styleClass="planner-caption" wrapText="true"/>
  <Button fx:id="recommendNextButton" text="후보 추천받기" onAction="#onRecommendNext" maxWidth="Infinity" styleClass="planner-primary"/>
  </VBox></content></TitledPane>
  <TitledPane fx:id="choicePane" text="추천 후보" expanded="false" animated="false" styleClass="compact-pane"><content><VBox spacing="8">
@@ -49,5 +51,5 @@
  <bottom><VBox spacing="5" styleClass="route-sidebar-note"><Label fx:id="rangeWarning" text="" styleClass="error" wrapText="true"/><Label fx:id="editorError" text="" styleClass="error" wrapText="true"/><Label text="거리: 직선 기준 · 가격·평점: 참고 정보" styleClass="planner-caption" wrapText="true"/></VBox></bottom>
  </BorderPane>
  </GridPane></center>
- <bottom><HBox fx:id="editorFooter" alignment="CENTER_RIGHT" spacing="12" minHeight="76" prefHeight="76" maxHeight="76" styleClass="route-editor-footer"><Label text="편집 완료를 누르면 메인 코스에 반영됩니다." styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Button text="지도 다시 불러오기" onAction="#onReloadMap" styleClass="drawer-toggle"/><Button fx:id="cancelButton" text="편집 취소하고 돌아가기" onAction="#onCancel" styleClass="drawer-toggle"/><Button fx:id="finishButton" text="편집 완료" onAction="#onFinish" disable="true" styleClass="planner-primary"/></HBox></bottom>
+ <bottom><HBox fx:id="editorFooter" alignment="CENTER_RIGHT" spacing="10" minHeight="76" prefHeight="76" maxHeight="76" styleClass="route-editor-footer"><Label text="돌아가도 편집 초안은 유지돼요." styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Button text="도보 경로" onAction="#onWalkingRoute" styleClass="drawer-toggle"/><Button text="지도 새로고침" onAction="#onReloadMap" styleClass="drawer-toggle"/><Button text="편집 초기화" onAction="#onResetDraft" styleClass="drawer-toggle"/><Button fx:id="cancelButton" text="돌아가기" onAction="#onCancel" styleClass="drawer-toggle"/><Button fx:id="finishButton" text="편집 완료" onAction="#onFinish" disable="true" styleClass="planner-primary"/></HBox></bottom>
 </BorderPane>

@@ -20,6 +20,49 @@ import java.util.function.Supplier;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WalkingRouteUiTest {
+    @Test void automaticWalkingWaitsForMapAndResetCancelsQueuedWorkWithoutZooming() throws Exception {
+        for (boolean resetBeforeReady : new boolean[]{false,true}) {
+            AtomicReference<WebView> view = new AtomicReference<>();
+            var calls = new java.util.concurrent.atomic.AtomicInteger();
+            PlannerMap map = fx(() -> {
+                view.set(new WebView());
+                PlannerMap result = new PlannerMap(view.get(),(lat,lng)->{},error -> fail(error),
+                        () -> URI.create("http://localhost/not-used"));
+                result.setWalkingRouter(stops -> {
+                    calls.incrementAndGet();
+                    return new WalkingRoute(List.of(),300,100);
+                });
+                view.get().getEngine().loadContent("""
+                    <html><script>
+                    window.presentRoute=function(){};
+                    window.showWalkingRoute=function(route,message,fit){window.walking=route;window.walkingFit=fit;};
+                    </script></html>
+                    """);
+                return result;
+            });
+            try {
+                await(view.get(),"typeof window.presentRoute==='function'");
+                fx(() -> {
+                    map.present(plan("auto",35.18),null,500,false,false);
+                    map.requestWalkingRouteWhenReady();
+                    assertEquals(0,calls.get());
+                    if(resetBeforeReady) map.present(new RoutePlan(35.1796,129.0756,2,1000,"",List.of()),null,500,false,false);
+                    try {
+                        var bridge = PlannerMap.class.getDeclaredField("bridge");bridge.setAccessible(true);
+                        ((MapBridge)bridge.get(map)).onMapReady();
+                    } catch (ReflectiveOperationException failure) { throw new RuntimeException(failure); }
+                    return null;
+                });
+                if(resetBeforeReady) assertEquals(0,calls.get());
+                else {
+                    await(view.get(),"!!window.walking && window.walking.totalDistance===300");
+                    assertEquals(1,calls.get());
+                    assertEquals(false,fx(() -> view.get().getEngine().executeScript("window.walkingFit")));
+                }
+            } finally { fx(() -> { view.get().getEngine().load(null);return null; }); }
+        }
+    }
+
     @BeforeAll static void startFx() throws Exception {
         CountDownLatch started = new CountDownLatch(1);
         try { Platform.startup(() -> { Platform.setImplicitExit(false); started.countDown(); }); }

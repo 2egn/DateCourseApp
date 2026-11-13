@@ -115,6 +115,11 @@
             document.getElementById('detail-facts').appendChild(dt);
             document.getElementById('detail-facts').appendChild(dd);
         }
+        function priceText(place) {
+            if (typeof place.priceText === 'string') return place.priceText;
+            return Number.isFinite(place.price) && place.price >= 0
+                ? place.price.toLocaleString('ko-KR') + '원/인' : '가격 미확인';
+        }
         function openDetail(id) {
             const index = visits.findIndex(function (v) { return v.visitId === id; });
             if (index < 0) return;
@@ -127,11 +132,16 @@
                     : activeTab === 'nearby' ? '주변 장소 · ' : (index + 1) + '번째 방문 · ') + category(place.category);
             const facts = document.getElementById('detail-facts');
             facts.textContent = '';
-            if (Number.isFinite(place.price) && place.price >= 0) fact('1인 예상 가격', place.price.toLocaleString('ko-KR') + '원');
+            fact('예상 가격', priceText(place));
             if (Number.isFinite(place.rating) && place.rating > 0) fact('평점', place.rating.toFixed(1));
             const extra = document.getElementById('detail-extra');
             extra.textContent = '';
-            [['주소', place.address], ['설명', place.description], ['영업시간', place.openingHours], ['예상 방문 시간', place.visitDuration]].forEach(function (pair) {
+            const info = place.details || {};
+            [['주소', place.address || info.address], ['세부 분류', info.subcategory], ['연락처', info.phone],
+             ['자료 기준일', info.sourceDate], ['장소 확인일', info.identityCheckedAt],
+             ['자료 출처', info.sourceUrl], ['확인 출처', info.verificationUrl],
+             ['가격 근거', place.priceEstimate && place.priceEstimate.basis],
+             ['설명', place.description], ['영업시간', place.openingHours], ['예상 방문 시간', place.visitDuration]].forEach(function (pair) {
                 if (!pair[1]) return;
                 const p = document.createElement('p'); p.textContent = pair[0] + ' · ' + pair[1]; extra.appendChild(p);
             });
@@ -253,7 +263,7 @@
                     const copy = document.createElement('span'); copy.className = 'visit-copy';
                     const name = document.createElement('span'); name.className = 'visit-name'; name.textContent = place.name;
                     const meta = document.createElement('span'); meta.className = 'visit-meta'; meta.textContent = category(place.category)
-                        + (activeTab === 'nearby' && Number.isFinite(place.price) ? ' · ' + place.price.toLocaleString('ko-KR') + '원/인' : '');
+                        + ' · ' + priceText(place);
                     const current = document.createElement('span'); current.className = 'visit-current'; current.textContent = '선택됨';
                     meta.appendChild(current); copy.appendChild(name); copy.appendChild(meta); button.appendChild(number); button.appendChild(copy);
                     button.addEventListener('click', function () {

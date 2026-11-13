@@ -2,6 +2,7 @@ package com.datecourse.controller;
 
 import com.datecourse.model.Place;
 import com.datecourse.model.RoutePlan;
+import com.datecourse.model.CostEstimate;
 import com.datecourse.service.NextPlaceService;
 import com.datecourse.service.PlaceSearchService;
 import com.datecourse.service.RouteRangeValidator;
@@ -20,10 +21,11 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /** 편집본만 변경한다. 메인 화면으로의 전달은 완료 버튼에서만 일어난다. */
-public final class RouteEditorController {
+public final class RouteEditorController extends BasePageController {
     @FXML private WebView editMapView;
     @FXML private ComboBox<String> activityBox;
-    @FXML private TextField placePriceField, titleField;
+    @FXML private CheckBox includeUncertainPrice;
+    @FXML private TextField placePriceField;
     @FXML private Button priceUp, priceDown, finishButton;
     @FXML private Button upButton, downButton, removeButton;
     @FXML private Button placeInfoButton;
@@ -57,15 +59,9 @@ public final class RouteEditorController {
 
     @FXML
     private void initialize() {
+        watchNotice(editorError, PageFeedback.Kind.ERROR);
         map = new PlannerMap(editMapView, (lat, lng) -> {}, editorError::setText);
-        MenuButton walkingMenu = new MenuButton("도보 경로");
-        walkingMenu.getStyleClass().add("drawer-toggle");
-        MenuItem walkingQuery = new MenuItem("TMAP 도보 경로 조회");
-        walkingQuery.setOnAction(event -> onWalkingRoute());
-        MenuItem walkingSettings = new MenuItem("경로 탐색 방식");
-        walkingSettings.setOnAction(event -> onTmapSettings());
-        walkingMenu.getItems().addAll(walkingQuery, walkingSettings);
-        ((HBox) finishButton.getParent()).getChildren().add(1, walkingMenu);
+        map.setLoadingUi(this::beginLoading);
         map.setOnPlaceSelected(id -> {
             for (int index = 0; index < candidates.size(); index++) {
                 if (candidates.get(index).place().recordId() == id) {
@@ -116,7 +112,7 @@ public final class RouteEditorController {
                 rank.setText(Integer.toString(getIndex() + 1));
                 name.setText(nearby.place().name());
                 name.setTooltip(new Tooltip(nearby.place().name()));
-                meta.setText(String.format("%.0fm · %,d원/인", nearby.distanceMeters(), nearby.place().price()));
+                meta.setText(String.format("%.0fm · %s", nearby.distanceMeters(), nearby.place().priceText()));
                 detail.setAccessibleText(nearby.place().name() + " 상세 보기");
                 add.setAccessibleText(nearby.place().name() + " 코스에 추가");
                 setGraphic(row);
@@ -128,6 +124,7 @@ public final class RouteEditorController {
         });
         activityBox.valueProperty().addListener((obs, old, value) -> clearCandidate());
         placePriceField.textProperty().addListener((obs, old, value) -> clearCandidate());
+        includeUncertainPrice.selectedProperty().addListener((obs, old, value) -> clearCandidate());
         radiusSlider.valueProperty().addListener((obs, old, value) -> {
             radiusLabel.setText("이전 장소에서 · " + radius() + "m 이내");
             clearCandidate();
@@ -150,8 +147,8 @@ public final class RouteEditorController {
                         + (leg != null && leg.exceeded() ? "[이동 거리 초과] " : "")
                         + (getIndex() + 1) + ". " + place.name()
                         + " · " + PlaceSearchService.categoryName(place.category())
-                        + String.format("\n1인 %,d원 · %d명 %,d원", place.price(), original == null ? 1 : original.people(),
-                        (long) place.price() * (original == null ? 1 : original.people())) + distance);
+                        + "\n" + place.priceText() + " · " + (original == null ? 1 : original.people()) + "명 "
+                        + CostEstimate.of(List.of(place), original == null ? 1 : original.people()).display() + distance);
             }
         });
         placeList.getSelectionModel().selectedIndexProperty().addListener((obs, old, value) -> updateButtons());
@@ -173,6 +170,40 @@ public final class RouteEditorController {
         setState(EditorState.CONDITION);
     }
 
+    public void prepareMap() { map.load(); }
+    public void dispose() { map.dispose(); }
+
+    /** Reuse the live form so selected candidates and conditions also survive navigation. */
+    public void resume(RoutePlan context, List<Place> places) {
+        boolean changed = original.startLat() != context.startLat() || original.startLng() != context.startLng()
+                || original.people() != context.people() || original.radius() != context.radius();
+        original = context;
+        allPlaces = List.copyOf(places);
+        commonLabel.setText(String.format("%d명 · 출발지 중심 %dm 범위", context.people(), context.radius()));
+        if (changed) clearCandidate();
+        refreshSummary();
+        refreshMap(false);
+    }
+
+    public RoutePlan draftSnapshot() { return draft(); }
+
+    @FXML private void onResetDraft() {
+        if (original == null) return;
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "편집 중인 장소와 후보를 비울까요? 저장한 코스는 유지돼요.", ButtonType.OK, ButtonType.CANCEL);
+        confirm.initOwner(editMapView.getScene().getWindow());
+        if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) resetDraft();
+    }
+
+    void resetDraft() {
+        draftPlaces.clear();
+        arrivalRadii.clear();
+        clearCandidate();
+        refreshSummary();
+        refreshMap(false);
+        notifyUser(PageFeedback.Kind.INFO, "편집 내용을 비웠어요.");
+    }
+
     public void begin(RoutePlan snapshot, List<Place> places, Consumer<RoutePlan> complete, Runnable cancel) {
         original = snapshot;
         allPlaces = List.copyOf(places);
@@ -182,7 +213,6 @@ public final class RouteEditorController {
         arrivalRadii.putAll(snapshot.arrivalRadii());
         draftPlaces.setAll(snapshot.places());
         coursePane.setExpanded(false);
-        titleField.setText(snapshot.title());
         commonLabel.setText(String.format("%d명 · 출발지 중심 %dm 범위", snapshot.people(), snapshot.radius()));
         clearCandidate();
         refreshSummary();
@@ -197,7 +227,7 @@ public final class RouteEditorController {
 
     private RoutePlan draft() {
         return new RoutePlan(original.startLat(), original.startLng(), original.people(), original.radius(),
-                titleField.getText().trim(), draftPlaces, arrivalRadii);
+                original.title(), draftPlaces, arrivalRadii);
     }
 
     private int radius() { return (int) Math.round(radiusSlider.getValue() / 100) * 100; }
@@ -208,12 +238,14 @@ public final class RouteEditorController {
         try {
             int price = NumberStepper.read(placePriceField, 0, 10000, "1인 가격 상한(만원)") * 10000;
             candidates = search.candidates(allPlaces, draftPlaces, original.startLat(), original.startLng(),
-                    radius(), activityBox.getValue(), price, original.people(), original.radius());
+                    radius(), activityBox.getValue(), price, original.people(), original.radius(), includeUncertainPrice.isSelected());
             candidateIndex = -1;
             candidateList.getItems().setAll(candidates);
             candidateList.getSelectionModel().clearSelection();
             if (!candidates.isEmpty()) candidateList.getSelectionModel().selectFirst();
-            editorError.setText(candidates.isEmpty() ? "조건에 맞는 새 장소가 없어요. 가격·반경·활동을 바꿔 주세요." : "");
+            editorError.setText(candidates.isEmpty() ? "조건에 맞는 새 장소가 없어요. 가격·반경·활동을 바꾸거나 가격 미확인 포함을 확인해 주세요."
+                    : candidates.stream().anyMatch(p -> !p.place().priceEstimate().finite())
+                        ? "가격 상한을 확인할 수 없는 후보가 포함돼요. 선택 후 실제 가격을 확인해 주세요." : "");
             showCandidate();
             setState(candidates.isEmpty() ? EditorState.CONDITION : EditorState.CHOICE);
         } catch (IllegalArgumentException invalid) {
@@ -256,8 +288,8 @@ public final class RouteEditorController {
     private void refreshSummary() {
         if (original == null) return;
         RoutePlan plan = draft();
-        summaryLabel.setText(String.format("%d곳 · %d명 누적 예상 금액 %,d원",
-                draftPlaces.size(), plan.people(), plan.totalCost()));
+        summaryLabel.setText(String.format("%d곳 · %d명 · %s",
+                draftPlaces.size(), plan.people(), plan.costEstimate().display()));
         coursePane.setText("내 코스 보기 · " + draftPlaces.size() + "곳");
         updateButtons();
         placeList.refresh();
@@ -334,7 +366,6 @@ public final class RouteEditorController {
         if (original == null) return;
         updateButtons(); // Guard the completion callback as well as the UI button.
         if (!outsideRange.isEmpty() || !exceededLegs.isEmpty()) { coursePane.setExpanded(true); return; }
-        if (titleField.getText().trim().length() > 20) { editorError.setText("코스 이름은 20자 이하로 입력해 주세요."); return; }
         onComplete.accept(draft());
     }
     @FXML private void onCancel() { onCancel.run(); }
@@ -363,6 +394,7 @@ public final class RouteEditorController {
 
     public void fitRange() { refreshMap(true); }
     @FXML private void onWalkingRoute() { map.requestWalkingRoute(); }
+    @FXML private void onWalkingExplanation() { map.toggleWalkingExplanation(); }
     @FXML private void onTmapSettings() {
         if (TmapSettingsDialog.show(editMapView.getScene().getWindow())) map.refreshWalkingPreferences();
     }

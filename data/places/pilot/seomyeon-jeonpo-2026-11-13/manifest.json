@@ -1,0 +1,27 @@
+{
+  "created_utc": "2026-11-13T12:11:30.902052+00:00",
+  "scope": "MEAL/CAFE: four neighborhoods; CULTURE: Busanjingu within 2km of Seomyeon station",
+  "counts": {
+    "MEAL": 2182,
+    "CAFE": 467,
+    "CULTURE": 20
+  },
+  "price_states": {
+    "UNKNOWN": 2666,
+    "EXPLICIT_FREE": 2,
+    "EXACT": 1
+  },
+  "with_public_menu_rows": 27,
+  "source_sha256": {
+    "data\\places\\current\\integrated_places.csv": "bd859cd31ec9c9ade7746ca1ac5551187ba47ea46992289f5a4315828f7832f2",
+    "data\\sql\\05_replace_integrated_data.sql": "f8b71805a22156d3d3100446b2fc41c86717d68db866154f7fc48cad0a55f75d",
+    "src\\main\\java\\kr\\ac\\university\\localdb\\db\\PlaceRepository.java": "07353d3279a2494cb808716c2bfaad2f9ed20d75edf1976bda631d074fc4586b",
+    "data\\places\\public\\busan\\busan_places.csv": "90d7333db15e72e3b024978be7382974de27bc0ab1c228942959668084b33480",
+    "data\\places\\public\\busan\\busan_menu_prices.csv": "9dc3cbec3f1f6a6876a74a56c49a9ee697f0685330f9e6b673f5f96061a557f8",
+    "data\\places\\public\\busan\\busan_good_price_shops.csv": "e9144bff3b59ce2ac5a41aec2c36789561d274c510d30b9bdf381985a62ce74f"
+  },
+  "google_content_stored": false,
+  "app_connected": false,
+  "duplicate_policy": "preserve source IDs; no automatic name merge",
+  "source_files_unchanged": true
+}

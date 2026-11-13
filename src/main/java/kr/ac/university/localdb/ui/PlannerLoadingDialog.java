@@ -20,7 +20,7 @@ final class PlannerLoadingDialog extends JDialog implements AutoCloseable {
         body.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0xE5E8EB)),
                 BorderFactory.createEmptyBorder(28, 38, 28, 38)));
-        JLabel message = new JLabel("앱을 실행중입니다..");
+        JLabel message = new JLabel("화면과 장소 목록을 준비하고 있어요…");
         message.setFont(UiTheme.BODY.deriveFont(Font.BOLD, 18f));
         message.setForeground(UiTheme.TEXT);
         message.setAlignmentX(Component.CENTER_ALIGNMENT);

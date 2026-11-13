@@ -1,127 +1,131 @@
 package com.datecourse.controller;
 
-import com.datecourse.model.Course;
-import com.datecourse.model.CoursePlace;
-import com.datecourse.demo.FakeCourseData;
-
+import com.datecourse.model.Place;
+import com.datecourse.model.SavedCourse;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
+import kr.ac.university.localdb.UserSession;
+import kr.ac.university.localdb.db.SavedCourseRepository;
+import java.util.function.Consumer;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class SavedCourseController implements Initializable {
-
-    @FXML private ListView<Course> courseList;
+/** List and details use the same saved snapshot returned to the planner. */
+public class SavedCourseController extends BasePageController {
+    @FXML private ListView<SavedCourse> courseList;
     @FXML private ListView<String> placeList;
-    @FXML private Label emptyLabel;
-    @FXML private Label detailTitle;
-    @FXML private Label detailSummary;
-    @FXML private Label messageLabel;
-    @FXML private Button deleteButton;
-    @FXML private Button renameButton;
+    @FXML private Label emptyLabel, detailTitle, detailSummary, messageLabel;
+    @FXML private Button deleteButton, renameButton, openButton, refreshButton;
+    private SavedCourseRepository repository;
+    private UserSession session;
+    private Consumer<SavedCourse> onOpen;
+    private boolean busy;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // 목록에 코스를 어떤 글자로 보여줄지 지정
-        courseList.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(Course c, boolean empty) {
-                super.updateItem(c, empty);
-                if (empty || c == null) {
-                    setText(null);
-                } else {
-                    setText(c.title() + "\n"
-                            + c.coursePlaces().size() + "곳 · " + c.totalPrice() + "원");
-                }
+    @FXML public void initialize() {
+        watchNotice(messageLabel, PageFeedback.Kind.ERROR);
+        courseList.setCellFactory(list -> new ListCell<>() {
+            @Override protected void updateItem(SavedCourse course, boolean empty) {
+                super.updateItem(course, empty);
+                setText(empty || course == null ? null : title(course) + "\n"
+                        + course.plan().places().size() + "곳 · " + course.plan().costEstimate().display()
+                        + "\n최근 수정 " + updatedText(course));
             }
         });
-
-        // 코스를 선택하면 오른쪽 상세 갱신
-        courseList.getSelectionModel().selectedItemProperty()
-                .addListener((obs, oldV, newV) -> showDetail(newV));
-
-        loadCourses();
+        courseList.getSelectionModel().selectedItemProperty().addListener((o, old, value) -> showDetail(value));
+        showDetail(null);
     }
 
-    // 나중에 백엔드 호출로 바뀌는 자리
-    private void loadCourses() {
-        courseList.getItems().setAll(FakeCourseData.getSavedCourses());
-        updateEmptyState();
-        if (!courseList.getItems().isEmpty()) {
-            courseList.getSelectionModel().selectFirst();
-        }
+    public void configure(SavedCourseRepository repository, UserSession session, Consumer<SavedCourse> onOpen) {
+        this.repository = repository;
+        this.session = session;
+        this.onOpen = onOpen;
+        onRefreshClick();
     }
 
-    private void showDetail(Course course) {
+    private String title(SavedCourse course) { return course.plan().title().isBlank() ? "내 코스" : course.plan().title(); }
+    private String updatedText(SavedCourse course) {
+        return course.updatedAt() == null ? "시각 미확인" : java.time.format.DateTimeFormatter
+                .ofPattern("yyyy.MM.dd HH:mm").withZone(java.time.ZoneId.of("Asia/Seoul")).format(course.updatedAt());
+    }
+
+    private void showDetail(SavedCourse course) {
         placeList.getItems().clear();
-        messageLabel.setText("");
-
-        if (course == null) {
-            detailTitle.setText("코스를 선택해주세요");
-            detailSummary.setText("");
-            deleteButton.setDisable(true);
-            renameButton.setDisable(true);
-            return;
+        detailTitle.setText(course == null ? "코스를 선택해 주세요" : title(course));
+        detailSummary.setText(course == null ? "" : course.plan().people() + "명 · " + course.plan().radius()
+                + "m · " + course.plan().costEstimate().display() + "\n최근 수정 " + updatedText(course) + " (한국 시간)");
+        if (course != null) {
+            int order = 1;
+            for (Place place : course.plan().places()) placeList.getItems().add(order++ + ". " + place.name()
+                    + " · " + place.priceText() + "\n" + place.details().address());
         }
-
-        detailTitle.setText(course.title());
-        detailSummary.setText("총 " + course.totalPrice() + "원 · "
-                + course.coursePlaces().size() + "곳");
-
-        int order = 1;
-        for (CoursePlace p : course.coursePlaces()) {
-            placeList.getItems().add(order++ + ". " + p.name()
-                    + " (" + p.category() + ") - " + p.price() + "원\n    " + p.address());
-        }
-        deleteButton.setDisable(false);
-        renameButton.setDisable(false);
+        updateButtons();
     }
 
-    private void updateEmptyState() {
-        emptyLabel.setVisible(courseList.getItems().isEmpty());
+    private void updateButtons() {
+        boolean unavailable = busy || courseList.getSelectionModel().getSelectedItem() == null;
+        openButton.setDisable(unavailable);
+        deleteButton.setDisable(unavailable);
+        renameButton.setDisable(unavailable);
+        refreshButton.setDisable(busy);
+        courseList.setDisable(busy);
     }
 
-    @FXML
-    private void onDeleteClick() {
-        Course selected = courseList.getSelectionModel().getSelectedItem();
-        if (selected == null) return;
-
-        // TODO: 백엔드에 삭제 요청 (selected.courseId())
-        courseList.getItems().remove(selected);
-        updateEmptyState();
-        messageLabel.setText("'" + selected.title() + "' 코스를 삭제했어요.");
+    @FXML private void onRefreshClick() {
+        if (repository == null || busy) return;
+        run(() -> repository.findAll(session), courses -> {
+            courseList.getItems().setAll(courses);
+            emptyLabel.setVisible(courses.isEmpty());
+            emptyLabel.setManaged(courses.isEmpty());
+            if (!courses.isEmpty()) courseList.getSelectionModel().selectFirst();
+            else showDetail(null);
+            messageLabel.setText("");
+        });
     }
 
-    @FXML
-    private void onRenameClick() {
-        Course selected = courseList.getSelectionModel().getSelectedItem();
-        if (selected == null) return;
+    @FXML private void onOpenClick() {
+        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
+        if (!busy && selected != null && onOpen != null) onOpen.accept(selected);
+    }
 
-        TextInputDialog dialog = new TextInputDialog(selected.title());
-        dialog.setTitle("이름 변경");
-        dialog.setHeaderText("코스 이름을 입력해주세요. (최대 20자)");
-        dialog.setContentText("이름:");
+    @FXML private void onDeleteClick() {
+        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
+        if (busy || selected == null) return;
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "'" + title(selected) + "' 코스를 삭제할까요?", ButtonType.OK, ButtonType.CANCEL);
+        confirm.initOwner(courseList.getScene().getWindow());
+        if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
+        run(() -> { repository.delete(session, selected.courseId()); return true; }, ignored -> {
+            notifyUser(PageFeedback.Kind.SUCCESS, "코스를 삭제했어요.");
+            onRefreshClick();
+        });
+    }
 
+    @FXML private void onRenameClick() {
+        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
+        if (busy || selected == null) return;
+        TextInputDialog dialog = new TextInputDialog(selected.plan().title());
+        dialog.initOwner(courseList.getScene().getWindow());
+        dialog.setHeaderText("코스 이름을 입력해 주세요. (1~20자)");
         dialog.showAndWait().ifPresent(input -> {
-            String newTitle = input.trim();
-            if (newTitle.isEmpty() || newTitle.length() > 20) {
-                messageLabel.setText("이름은 1~20자로 입력해주세요.");
-                return;
-            }
+            String title = input.trim();
+            if (title.isEmpty() || title.length() > 20) { messageLabel.setText("이름은 1~20자로 입력해 주세요."); return; }
+            run(() -> { repository.rename(session, selected.courseId(), title); return true; }, ignored -> {
+                notifyUser(PageFeedback.Kind.SUCCESS, "코스 이름을 바꿨어요.");
+                onRefreshClick();
+            });
+        });
+    }
 
-            // TODO: 백엔드에 이름 변경 요청 (selected.courseId(), newTitle)
-            Course renamed = new Course(selected.courseId(), newTitle,
-                    selected.coursePlaces(), selected.totalPrice());
-            int index = courseList.getItems().indexOf(selected);
-            courseList.getItems().set(index, renamed);
-            courseList.getSelectionModel().select(index);
-            messageLabel.setText("이름을 '" + newTitle + "'(으)로 바꿨어요.");
+    private <T> void run(java.util.concurrent.Callable<T> work, Consumer<T> success) {
+        busy = true;
+        updateButtons();
+        messageLabel.setText("처리 중…");
+        runWork("저장한 코스를 확인하고 있어요", work, value -> {
+            busy = false;
+            updateButtons();
+            success.accept(value);
+        }, failure -> {
+            busy = false;
+            updateButtons();
+            messageLabel.setText("요청 실패. DB 연결을 확인해 주세요.");
         });
     }
 }

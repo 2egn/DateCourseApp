@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+ fx:controller="com.datecourse.controller.MyPageController" spacing="18" styleClass="my-page">
+ <Label text="내 페이지" styleClass="condition-title"/>
+ <Label text="로그인한 회원 정보" styleClass="planner-caption"/>
+ <VBox spacing="16" maxWidth="560" styleClass="profile-card">
+  <VBox spacing="6"><Label text="이름" styleClass="field-label"/><Label fx:id="nameLabel" text="—" wrapText="true"/></VBox>
+  <VBox spacing="6"><Label text="이메일" styleClass="field-label"/><Label fx:id="emailLabel" text="—" wrapText="true"/></VBox>
+  <VBox spacing="6"><Label text="전화번호" styleClass="field-label"/><Label fx:id="phoneLabel" text="—" wrapText="true"/></VBox>
+ </VBox>
+ <Label fx:id="statusLabel" wrapText="true"/>
+ <HBox spacing="10"><Button text="코스 만들기로" onAction="#onBack" styleClass="header-secondary"/>
+ <Button text="저장한 코스" onAction="#onSavedCourses" styleClass="header-save"/>
+ <Button text="새로고침" onAction="#onRefresh" styleClass="header-secondary"/></HBox>
+</VBox>

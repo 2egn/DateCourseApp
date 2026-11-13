@@ -13,11 +13,30 @@ public class MemberRepository implements AutoCloseable {
     private static final String INITIAL_ADMIN_HASH = "pbkdf2-sha256$600000$VWNKiLVOeQPuuXhHV0lPKQ==$jo1T+y7gfBK3eGRNLyp9EBmnbbLaEe6czQss6sZVkpI=";
     public record Login(long memberId, String name, AdminSession adminSession) {}
     public record Member(long id, String email, String name, String phone, String status, String created) {}
+    public record Profile(String email, String name, String phone) {}
+
+    /** Reads only the authenticated member's public account fields, never a password hash. */
+    public Profile profile(kr.ac.university.localdb.UserSession session) throws SQLException {
+        if (session == null || session.memberId() <= 0) throw new IllegalArgumentException("로그인이 필요합니다.");
+        try (Connection connection = connect(); PreparedStatement query = connection.prepareStatement(
+                "SELECT email,name,phone FROM members WHERE member_id=? AND status='ACTIVE'")) {
+            query.setLong(1, session.memberId());
+            try (ResultSet row = query.executeQuery()) {
+                if (!row.next()) throw new SQLException("회원 정보를 찾지 못했습니다.");
+                return new Profile(row.getString("email"), row.getString("name"), row.getString("phone"));
+            }
+        }
+    }
     private final HikariDataSource pool;
 
     /** Place reads share the login pool and its application shutdown lifecycle. */
     public PlaceRepository places() {
         return new PlaceRepository(pool);
+    }
+
+    /** Course saves share the same pool; closing this member repository closes it. */
+    public SavedCourseRepository savedCourses() {
+        return new SavedCourseRepository(pool);
     }
 
     public MemberRepository() {

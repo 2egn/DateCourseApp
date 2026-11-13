@@ -1,0 +1,27 @@
+DateCourseApp 폴더 안내
+
+src     : 앱 만들기 — 자바 코드, 화면, 지도, 자동 테스트
+data    : 데이터 준비 — DB용 SQL과 장소 자료
+docs    : 문서 읽기 — 팀 문서 사이트, 조사 결과, 이전 자료
+tools   : 별도 도구 — 장소 데이터 검증 실험
+gradle  : 빌드 도구 — 앱을 실행하고 테스트하기 위한 도구
+build   : 생성 결과 — 빌드 결과와 임시 검증 파일
+
+data 안쪽
+  sql             : DB 생성·초기화·저장용 SQL
+  places/current  : 현재 앱에 적재하는 장소 원본
+  places/public   : 수집한 공공 장소 자료
+  places/pilot    : 기존 자료와 분리한 테스트용 자료
+  places/demo     : 앱에서 선택하는 자체 ID 기반 시연 목록
+
+docs 안쪽
+  site      : 팀 문서 사이트와 대시보드 코드
+  research  : 조사·검증 결과
+  archive   : 현재 실행에 사용하지 않는 이전 자료
+
+개인 설정
+  .local : API 키 등 개인 설정. 공유하지 않는 폴더
+
+앱 실행 : 최상단에서 .\gradlew.bat run
+앱 검사 : 최상단에서 .\gradlew.bat test
+자세한 설명은 각 폴더의 README.md 참고

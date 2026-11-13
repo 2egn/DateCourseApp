@@ -43,7 +43,13 @@ test {
 }
 
 // Read the personal map key at runtime instead of packaging it in application archives.
-processResources { exclude 'map/kakao-config.js' }
+processResources {
+    exclude 'map/kakao-config.js'
+    from('data/places/demo') {
+        include 'seomyeon-jeonpo-demo.json'
+        into 'datasets'
+    }
+}
 tasks.named('jar') { exclude 'map/kakao-config.js' }
 
 tasks.register('runMapDemo', JavaExec) {
@@ -51,6 +57,21 @@ tasks.register('runMapDemo', JavaExec) {
     description = 'Open the planner map without requiring a DB login'
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'com.datecourse.demo.ConditionLauncher'
+    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
+}
+
+tasks.register('runPlaceBindingDemo', JavaExec) {
+    group = 'verification'
+    description = 'Check confirmed pilot place IDs without an API call or DB connection'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.PlaceBindingDemo'
+}
+
+tasks.register('runPilotDemo', JavaExec) {
+    group = 'application'
+    description = 'Open the nine-place pilot planner without a member DB connection'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.PilotPlannerLauncher'
     jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
 }
 

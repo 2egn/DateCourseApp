@@ -42,6 +42,8 @@
             <ListView fx:id="placeList" VBox.vgrow="ALWAYS"/>
             <Label fx:id="messageLabel" styleClass="muted"/>
             <HBox spacing="10">
+                <Button fx:id="openButton" text="이 코스 불러오기" onAction="#onOpenClick" styleClass="secondary"/>
+                <Button fx:id="refreshButton" text="새로고침" onAction="#onRefreshClick" styleClass="secondary"/>
                 <Button fx:id="renameButton" text="이름 변경" onAction="#onRenameClick" styleClass="secondary"/>
                 <Button fx:id="deleteButton" text="삭제" onAction="#onDeleteClick" styleClass="danger"/>
             </HBox>

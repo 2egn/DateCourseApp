@@ -1,0 +1,607 @@
+{
+  "schema_version": 3,
+  "dataset_sha256": "eadae051e2272312c23de2cbafa06bf50f637f0c85cbdaf9bbda5ffab1b0f2d7",
+  "checked_at": "2026-11-13T12:44:12.867681+00:00",
+  "baseline_evaluation_sha256": "bfc940ebf31b2be3ed06885b2058791323cc9d56d8b04c84f45efdaabe112734",
+  "request_attempts": {
+    "search": 2,
+    "details": 6
+  },
+  "error": null,
+  "updates": [
+    {
+      "local_place_id": "SBIZ:MA0106202201A2364418",
+      "previous_decision": "REVIEW",
+      "new_decision": "REVIEW"
+    },
+    {
+      "local_place_id": "SBIZ:MA0101202603A0035991",
+      "previous_decision": "REVIEW",
+      "new_decision": "REVIEW"
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220802888675",
+      "previous_decision": "REVIEW",
+      "new_decision": "AUTO_CONFIRMED"
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220807078377",
+      "previous_decision": "REVIEW",
+      "new_decision": "AUTO_CONFIRMED"
+    }
+  ],
+  "outcomes": [
+    {
+      "local_place_id": "SBIZ:MA0101202607A0151351",
+      "decision": "AUTO_CONFIRMED",
+      "selected_google_place_id": "ChIJy9t_MG_raDURycqFmFmXVA8",
+      "baseline_top1_confirmed": true,
+      "reasons": [],
+      "candidates": [
+        {
+          "google_place_id": "ChIJy9t_MG_raDURycqFmFmXVA8",
+          "identity_match": true,
+          "visit_eligible": true,
+          "name_method": "EXACT_NAME",
+          "address_method": "ROAD_BUILDING",
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220813751543",
+      "decision": "AUTO_CONFIRMED",
+      "selected_google_place_id": "ChIJiYlDsmjraDURn7UoK53tA6I",
+      "baseline_top1_confirmed": false,
+      "reasons": [],
+      "candidates": [
+        {
+          "google_place_id": "ChIJiYlDsmjraDURn7UoK53tA6I",
+          "identity_match": true,
+          "visit_eligible": true,
+          "name_method": "DELIMITED_DESCRIPTION",
+          "address_method": "ROAD_BUILDING",
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA0106202201A2364418",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED",
+        "LOCATION_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJueKaZ8rraDURe6Z1_pvL9SA",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED"
+          ]
+        },
+        {
+          "google_place_id": "ChIJl3iotG_raDURmkYnaM8g-sE",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA0101202406A0012647",
+      "decision": "AUTO_CONFIRMED",
+      "selected_google_place_id": "ChIJXUD6AD7raDURKSQ_LWmWM8M",
+      "baseline_top1_confirmed": true,
+      "reasons": [],
+      "candidates": [
+        {
+          "google_place_id": "ChIJXUD6AD7raDURKSQ_LWmWM8M",
+          "identity_match": true,
+          "visit_eligible": true,
+          "name_method": "EXACT_NAME",
+          "address_method": "ROAD_BUILDING",
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "local_place_id": "STD:15017323:e33f9aadac190db685befd1a",
+      "decision": "EXCLUDED",
+      "selected_google_place_id": "ChIJ4YoP9G_raDURGq1G7z_IP1o",
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "VISIT_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJ4YoP9G_raDURGq1G7z_IP1o",
+          "identity_match": true,
+          "visit_eligible": false,
+          "name_method": "EXACT_NAME",
+          "address_method": "LOT_BUILDING",
+          "reasons": [
+            "VISIT_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220810619677",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJr0wA8gPraDURfVoOeQzChiQ",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": "ROAD_BUILDING",
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA0101202603A0035991",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED",
+        "LOCATION_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJJcdxWajraDURzNPQmsao_LE",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": "ROAD_BUILDING",
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED"
+          ]
+        },
+        {
+          "google_place_id": "ChIJ7_V3lWXraDURM4Gm4gQKSRY",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220802888675",
+      "decision": "AUTO_CONFIRMED",
+      "selected_google_place_id": "ChIJ4VBf9HHraDURNv4M5cfFckI",
+      "baseline_top1_confirmed": false,
+      "reasons": [],
+      "candidates": [
+        {
+          "google_place_id": "ChIJ4VBf9HHraDURNv4M5cfFckI",
+          "identity_match": true,
+          "visit_eligible": true,
+          "name_method": "LATIN_NAME_SUFFIX",
+          "address_method": "LOT_BUILDING",
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220805402285",
+      "decision": "AUTO_CONFIRMED",
+      "selected_google_place_id": "ChIJPcA0FJTraDURopacwsf1AXQ",
+      "baseline_top1_confirmed": true,
+      "reasons": [],
+      "candidates": [
+        {
+          "google_place_id": "ChIJPcA0FJTraDURopacwsf1AXQ",
+          "identity_match": true,
+          "visit_eligible": true,
+          "name_method": "EXACT_NAME",
+          "address_method": "ROAD_BUILDING",
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA0101202502A0010557",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED",
+        "LOCATION_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJ2SjO9WXraDURU-hHEiFrmTs",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220807078377",
+      "decision": "AUTO_CONFIRMED",
+      "selected_google_place_id": "ChIJx60Ys2jraDUR-sX9kil5wDU",
+      "baseline_top1_confirmed": false,
+      "reasons": [],
+      "candidates": [
+        {
+          "google_place_id": "ChIJx60Ys2jraDUR-sX9kil5wDU",
+          "identity_match": true,
+          "visit_eligible": true,
+          "name_method": "EXACT_NAME",
+          "address_method": "LOT_BUILDING",
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA0101202305A0165509",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJKZmgKC_raDURpcs7Q-tlZ0A",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": "EXACT_NAME",
+          "address_method": null,
+          "reasons": [
+            "ADDRESS_NOT_CONFIRMED"
+          ]
+        },
+        {
+          "google_place_id": "ChIJ0TLp9GTraDURNYe6F-8Hqjo",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": "EXACT_NAME",
+          "address_method": null,
+          "reasons": [
+            "ADDRESS_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220808476057",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJEYFmN4rraDUR5IIg75Hpm2I",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220808556189",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED",
+        "LOCATION_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJ_85tVwDraDURC7aX3Y4acSU",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220807139757",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ACTIVITY_NOT_CONFIRMED",
+        "ADDRESS_NOT_CONFIRMED",
+        "LOCATION_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJAWX2mvHraDURx-BYpdoHEjI",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED",
+            "ACTIVITY_NOT_CONFIRMED"
+          ]
+        },
+        {
+          "google_place_id": "ChIJK1qm9rDraDUR2Nl5INN4Gkc",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED",
+            "ACTIVITY_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA0106202201A2364057",
+      "decision": "AUTO_CONFIRMED",
+      "selected_google_place_id": "ChIJv-9YDdnraDURsuuMSYKMvuI",
+      "baseline_top1_confirmed": true,
+      "reasons": [],
+      "candidates": [
+        {
+          "google_place_id": "ChIJv-9YDdnraDURsuuMSYKMvuI",
+          "identity_match": true,
+          "visit_eligible": true,
+          "name_method": "EXACT_NAME",
+          "address_method": "ROAD_BUILDING",
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220810600686",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED",
+        "LOCATION_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJLdDM1YTraDUR5PWauEc0mWg",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "STD:15017323:b89cdda823e5b9669483edf9",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJV2Bl_KfsaDURH8vo2-1dysY",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "STD:15017323:b6b6e11b0673809a1375a7f7",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJ1dUG_mDraDURxcqryQiDYiY",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": "ROAD_BUILDING",
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "LIB:73",
+      "decision": "AUTO_CONFIRMED",
+      "selected_google_place_id": "ChIJ4ThxWQDraDUR4RANsayka8w",
+      "baseline_top1_confirmed": true,
+      "reasons": [],
+      "candidates": [
+        {
+          "google_place_id": "ChIJ4ThxWQDraDUR4RANsayka8w",
+          "identity_match": true,
+          "visit_eligible": true,
+          "name_method": "EXACT_NAME",
+          "address_method": "ROAD_BUILDING",
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "local_place_id": "LIB:21",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJ90kbc2XraDURT-xEa0d_i50",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": "EXACT_NAME",
+          "address_method": null,
+          "reasons": [
+            "ADDRESS_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "LIB:69",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJNxss8Z3raDUR4bI1iQKrzgY",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": "EXACT_NAME",
+          "address_method": null,
+          "reasons": [
+            "ADDRESS_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "STD:15012890:37ac03de03f1fe426869c6db",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ADDRESS_NOT_CONFIRMED",
+        "LOCATION_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJKWFgkH3raDURNu2wz-SKUlk",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    },
+    {
+      "local_place_id": "STD:15012890:448526d11fc945f06d87e37a",
+      "decision": "REVIEW",
+      "selected_google_place_id": null,
+      "baseline_top1_confirmed": false,
+      "reasons": [
+        "ACTIVITY_NOT_CONFIRMED",
+        "ADDRESS_NOT_CONFIRMED",
+        "LOCATION_NOT_CONFIRMED",
+        "NAME_OR_BRANCH_NOT_CONFIRMED"
+      ],
+      "candidates": [
+        {
+          "google_place_id": "ChIJzVBjHFLraDURjZl4sbU9c_4",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED"
+          ]
+        },
+        {
+          "google_place_id": "ChIJaQzT9hOVaDURrfkkMiylnDM",
+          "identity_match": false,
+          "visit_eligible": false,
+          "name_method": null,
+          "address_method": null,
+          "reasons": [
+            "NAME_OR_BRANCH_NOT_CONFIRMED",
+            "ADDRESS_NOT_CONFIRMED",
+            "LOCATION_NOT_CONFIRMED",
+            "ACTIVITY_NOT_CONFIRMED"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_files_unchanged": true,
+  "provider_payload_stored": false,
+  "note": "Targeted refinement of four cases; remaining cases retain baseline assessment; not a new independent validation"
+}

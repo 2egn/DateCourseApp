@@ -18,7 +18,6 @@ public record RoutePlan(double startLat, double startLng, int people, int radius
             throw new IllegalArgumentException("장소별 이동 반경은 200~2000m여야 합니다.");
     }
 
-    public long totalCost() {
-        return places.stream().mapToLong(place -> (long) place.price() * people).sum();
-    }
+    public CostEstimate costEstimate() { return CostEstimate.of(places, people); }
+    public long totalCost() { return costEstimate().exactTotal(); }
 }

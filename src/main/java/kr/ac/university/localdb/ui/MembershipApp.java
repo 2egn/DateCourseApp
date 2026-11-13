@@ -36,6 +36,7 @@ public class MembershipApp {
     private volatile MemberRepository repository;
     private UserSession userSession;
     private Timer screenTransition;
+    private JPanel authenticationContent;
     private final JFrame home = new JFrame("로그인 / 회원가입");
     private final JTextField email = new UiTheme.TextField(24), name = new UiTheme.TextField(24), phone = new UiTheme.TextField(24);
     private final JPasswordField password = new UiTheme.PasswordField(24), confirm = new UiTheme.PasswordField(24);
@@ -116,6 +117,7 @@ public class MembershipApp {
         content.add(pagePanel,BorderLayout.CENTER);
         JPanel bottom = new JPanel(new BorderLayout(8,12));
         content.add(bottom,BorderLayout.SOUTH); home.setContentPane(content);
+        authenticationContent = content;
         pages.show(pagePanel,"startup");
         next.addActionListener(e -> advance()); login.addActionListener(e -> login());
         signup.addActionListener(e -> { resetSignup(); pages.show(pagePanel,"signup"); advance(); });
@@ -235,21 +237,24 @@ public class MembershipApp {
 
         Platform.runLater(() ->{
             try{
+                Platform.setImplicitExit(false);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
 
                 Parent root = loader.load();
 
                 ConditionController controller = loader.getController();
                 controller.setUserSession(userSession);
+                controller.setSavedCourseRepository(repository.savedCourses());
+                controller.setAccountActions(repository, () -> SwingUtilities.invokeLater(() -> logout(panel)));
                 controller.setPlaceRepository(repository.places());
 
                 root.setOpacity(0);
                 root.setTranslateY(10);
                 panel.setScene(new Scene(root));
 
-                SwingUtilities.invokeLater(()->{
+                controller.prepareStartup(() -> SwingUtilities.invokeLater(()->{
                     home.setContentPane(panel);
-                    home.setTitle("데이트 코스 · 조건 입력");
+                    home.setTitle("DateCourse · 코스 만들기");
                     loading.close();
 
                     Rectangle usable = GraphicsEnvironment
@@ -258,6 +263,7 @@ public class MembershipApp {
 
                     home.revalidate();
                     home.repaint();
+                    bringPlannerToFront(panel);
                     int width = Math.min(1440, usable.width);
                     int height = Math.min(960, usable.height);
                     animatePlannerWindow(new Rectangle(usable.x + (usable.width - width) / 2,
@@ -270,8 +276,9 @@ public class MembershipApp {
                         ParallelTransition entrance = new ParallelTransition(fade, slide);
                         entrance.setInterpolator(Interpolator.EASE_OUT);
                         entrance.play();
+                        root.requestFocus();
                     });
-                });
+                }));
 
 
             }catch(IOException | RuntimeException failure){
@@ -279,6 +286,33 @@ public class MembershipApp {
             }
         });
 
+    }
+
+    private void bringPlannerToFront(JFXPanel panel) {
+        home.setExtendedState(home.getExtendedState() & ~Frame.ICONIFIED);
+        home.toFront();
+        home.requestFocus();
+        panel.requestFocusInWindow();
+    }
+
+    private void logout(JFXPanel panel) {
+        userSession = null;
+        if (screenTransition != null) screenTransition.stop();
+        Platform.runLater(() -> panel.setScene(null));
+        loginPassword.setText("");
+        if (!rememberId.isSelected()) loginId.setText("");
+        resetSignup();
+        pages.show(pagePanel, "login");
+        home.setContentPane(authenticationContent);
+        home.setTitle("로그인 / 회원가입");
+        Rectangle usable = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        home.setSize(Math.min(580, usable.width), Math.min(900, usable.height));
+        home.setLocationRelativeTo(null);
+        home.revalidate(); home.repaint(); home.toFront();
+        SwingUtilities.invokeLater(() -> {
+            if (loginId.getText().isBlank()) loginId.requestFocusInWindow();
+            else loginPassword.requestFocusInWindow();
+        });
     }
 
     private void showConditionFailure(PlannerLoadingDialog loading, Exception failure) {
@@ -300,7 +334,10 @@ public class MembershipApp {
                     (int) Math.round(start.y + (target.y - start.y) * eased),
                     (int) Math.round(start.width + (target.width - start.width) * eased),
                     (int) Math.round(start.height + (target.height - start.height) * eased));
-            if (progress >= 1) ((Timer) event.getSource()).stop();
+            if (progress >= 1) {
+                ((Timer) event.getSource()).stop();
+                if (home.getContentPane() instanceof JFXPanel panel) bringPlannerToFront(panel);
+            }
         });
         screenTransition.start();
     }

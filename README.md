@@ -1,8 +1,31 @@
 # DateCourseApp
 
-출발 위치·원형 범위·인원을 정한 뒤, 장소마다 활동·가격 상한·이동 반경을 설정해 코스를 구성하는 Java 데스크톱 앱입니다. 총예산은 따로 입력하지 않고 편집 화면에서 누적 예상 금액을 확인합니다. 회원가입·로그인, 카카오 지도 출발 위치 선택, 실제 DB에서 장소를 하나씩 추천받아 코스를 구성하고, 편집 완료 시 메인 지도에 반영합니다. 회원별 DB 저장·재조회는 후속 구현 범위입니다.
+출발 위치·원형 범위·인원을 정한 뒤, 장소마다 활동·가격 상한·이동 반경을 설정해 코스를 구성하는 Java 데스크톱 앱입니다. 총예산은 따로 입력하지 않고 편집 화면에서 누적 예상 금액을 확인합니다. 편집 완료 시 메인 지도에 반영하며, 로그인 앱에서 코스 저장·회원별 목록·다시 열기·수정 저장·이름 변경·삭제를 연결했습니다. 실제 MySQL 수동 검증은 남아 있습니다.
+
+최신 UI는 [홈 메뉴와 공통 UI](docs/공통_UI와_홈_메뉴.md)를 참고하세요. 헤더에서 페이지를 이동하고 저장 시 이름을 입력합니다. 기존 저장·수정·재시작 복원은 사용자 수동 확인을 마쳤고, 이번 공통 UI 변경의 실제 실행 확인은 별도입니다.
+
+## 폴더 안내
+
+처음에는 [폴더_안내.txt](폴더_안내.txt)를 보세요. 자세한 위치는 각 폴더의 README에 정리했습니다.
+
+| 폴더 | 찾을 내용 |
+|---|---|
+| [src](src/README.md) | Java 앱 코드, 화면·지도 리소스, 자동 테스트 |
+| [data](data/README.md) | DB 생성·적재 SQL, 현재 장소 자료, 공공 원본, 실험 자료 |
+| [docs](docs/README.md) | 팀 문서 사이트, 조사 결과, 이전 자료 |
+| [tools](tools/README.md) | 앱과 분리해서 실행하는 데이터 검증 도구 |
+| gradle | 앱 빌드 도구. 최상단의 gradlew.bat로 실행 |
+| build | 자동 생성 결과·로컬 검증 캐시 |
+
+앱 실행과 테스트 명령은 프로젝트 최상단에서 실행합니다. `.local`은 개인 설정·키, `.gradle`·`.idea`·`.wrangler` 등 점으로 시작하는 폴더는 개발 도구의 설정·캐시입니다.
 
 ## 현재 구현 상태
+
+### 시연 목록과 가격 상태 확인
+
+회원 DB 없이 `.\gradlew.bat runPilotDemo`로 서면·전포 9곳을 확인할 수 있습니다. 일반 앱에서는 왼쪽 **장소 목록**에서 기존 목록과 시연 목록을 선택합니다. 현재 시연 9곳은 1인 가격 미확인이므로 편집 화면에서 **가격 미확인·상한 미확인 장소도 포함**을 선택해야 후보가 표시됩니다. 금액을 임의로 넣거나 미확인을 무료로 계산하지 않습니다.
+
+가격 범위가 있으면 **예상 총비용 범위**, 일부가 미확인이면 **확인된 비용 + 가격 미확인 N곳**으로 표시합니다. 실행 확인·코드 읽는 순서·저장 준비는 [시연 장소와 가격 흐름](docs/시연_장소와_가격_흐름.md)을 참고하세요.
 
 | 기능 | 상태 |
 |---|---|
@@ -12,8 +35,8 @@
 | 아이디 저장 | 체크 후 로그인 성공 시 한 개 저장, 다음 실행 시 자동 입력 |
 | 사용자 세션 | 회원 ID·이름을 보관하고 조건 입력 컨트롤러에 전달 |
 | 장소 적재 | 6,139건을 최대 250건씩 묶어 INSERT, 진행 상황 표시 |
-| 장소 조회 | PlaceRepository.findAll()에서 실제 데이터를 Place 목록으로 반환 |
-| 거리·비용 계산 | 미터 단위 거리·반경 필터, 1인당 가격 합계 × 인원 계산 |
+| 장소 조회 | 기존 DB 목록 또는 자체 ID·출처를 담은 서면·전포 시연 목록 9곳을 선택 |
+| 거리·비용 계산 | 미터 단위 반경 필터, 가격 범위 합계·미확인 장소 수를 구분 |
 | 지도 | JavaFX WebView에 카카오 지도 표시, 부산시청 부근에서 시작 |
 | 출발 장소 검색 | 카카오 장소 검색, 부산 주소 결과만 표시, 선택 시 지도 이동·마커 표시 |
 | 위치·반경 선택 | 지도 클릭 또는 검색 결과로 실제 위도·경도 선택, 반경 200~2,000m 표시 |
@@ -25,7 +48,7 @@
 | 편집 지도 | 왼쪽 55%의 별도 지도, 확정 장소·후보 구분, 현재 범위·전체 코스 맞춤. 편집 완료 전 메인과 상태 분리 |
 | 편집 완료·취소 | 완료 시 메인 코스·지도 반영, 취소 시 편집본 폐기. 앱 종료 후 코스 유지 기능은 없음 |
 | 상세 정보 | 후보 상세·코스 장소 상세 버튼, 목록 더블클릭, 두 지도의 장소 마커로 열기. 분류·1인 가격·있는 경우 평점·카카오맵 링크 표시 |
-| 코스 저장 | 회원별 DB 저장·재조회는 미연결. 기존 저장 목록 화면은 예제 데이터 사용 |
+| 코스 저장 | 로그인 앱 헤더에서 저장·본인 목록·다시 열기·수정 저장·이름 변경·삭제. H2/FXML 자동 검사, 실제 MySQL 수동 검증 필요 |
 | 커뮤니티·관리자 | 기존 화면·처리 코드가 남아 있으나 통합 흐름은 미완성 |
 
 현재 MemberRepository.login()은 일반 회원 인증만 처리합니다. app_admins 초기화와 관리자 화면 코드는 남아 있지만 관리자 인증 분기가 없어, 관리자 계정으로 화면에 진입하는 기능은 동작하지 않습니다.
@@ -40,7 +63,7 @@
 - 테스트: JUnit 5, H2
 - 지도 웹 서버: Java 앱이 8080 포트에서 자동 시작 (별도 Python 실행 불필요)
 
-다른 JDK를 사용할 때는 JavaFX 21과 Gradle Wrapper의 호환성을 확인해야 합니다. 기존 pom.xml은 남아 있지만 현재 통합 앱의 실행 안내는 Gradle을 기준으로 합니다.
+다른 JDK를 사용할 때는 JavaFX 21과 Gradle Wrapper의 호환성을 확인해야 합니다. 예전 Maven 설정은 `docs/archive/pom.xml`에 참고용으로 보관했으며 현재 앱의 빌드·실행은 Gradle을 기준으로 합니다.
 
 먼저 아래 **DB 준비**와 **카카오 지도 준비**를 마친 뒤 프로젝트 루트에서 앱을 실행합니다. 지도 화면을 열면 앱이 로컬 지도 서버를 자동으로 시작합니다.
 
@@ -116,7 +139,7 @@ window.KAKAO_MAP_KEY = "YOUR_KAKAO_JAVASCRIPT_KEY";
 - 메인 화면은 출발 위치·인원·루트 전체 원형 범위를 설정하는 공통 조건 화면입니다. 추천 전에는 주변 장소 목록·마커를 표시하지 않습니다.
 - 하나의 ‘코스 만들기 / 코스 편집’ 버튼으로 같은 창의 편집 화면에 슬라이드 전환합니다. 왼쪽 약 55%는 별도의 편집 지도, 오른쪽은 코스 목록과 장소별 조건입니다.
 - 총예산은 입력하지 않으며 편집 화면에서 인원 기준 누적 예상 금액을 확인합니다. 장소별 1인 가격 상한은 **만원 단위 정수**입니다. 화살표 버튼·키보드 위아래·마우스 휠로 1만원씩 조절합니다. 장소 가격 상한 0은 무료 후보만 허용합니다.
-- 장소마다 활동·1인 가격 상한·이전 위치로부터 탐색 반경을 설정합니다. 첫 장소는 출발지, 이후는 마지막 확정 장소를 기준으로 거리순 추천합니다. 이미 추가한 장소와 출발지 중심의 전체 원형 범위 밖에 있는 후보는 제외합니다. 총예산 제한은 적용하지 않습니다. 장소를 추가할 때 이동 반경을 RoutePlan에 보관하며, 순서 변경·삭제·재편집 시 구간별 실제 거리와 허용 거리를 표시하고 초과하면 편집 완료를 차단합니다. 다음 장소 반경 슬라이더는 이미 추가한 장소의 조건을 변경하지 않습니다. 이 보관은 메모리에서만 이루어지며 DB 저장은 후속 범위입니다.
+- 장소마다 활동·1인 가격 상한·이전 위치로부터 탐색 반경을 설정합니다. 첫 장소는 출발지, 이후는 마지막 확정 장소를 기준으로 거리순 추천합니다. 이미 추가한 장소와 출발지 중심의 전체 원형 범위 밖에 있는 후보는 제외합니다. 총예산 제한은 적용하지 않습니다. 장소를 추가할 때 이동 반경을 RoutePlan에 보관하며, 순서 변경·삭제·재편집 시 구간별 실제 거리와 허용 거리를 표시하고 초과하면 편집 완료를 차단합니다. 다음 장소 반경 슬라이더는 이미 추가한 장소의 조건을 변경하지 않습니다. 편집 완료 후 헤더에서 코스 저장을 누르면 장소별 이동 반경도 DB에 보관합니다.
 - 추천 시 조건에 맞는 후보를 이전 위치에서 가까운 순으로 최대 5곳 표시합니다. 목록에서 한 곳을 선택하고 ‘선택한 장소 추가’를 눌러야 편집 코스에 들어갑니다. 후보가 5곳보다 적으면 있는 후보만 표시하며, 평점순 추천은 적용하지 않습니다. 같은 ID 또는 같은 이름·좌표인 중복 행은 제거하며, 중복 중 낮은 가격을 대표값으로 사용합니다. 가격의 정확성은 별도 데이터 검증이 필요합니다.
 - 추가·삭제·순서 변경은 편집 지도에 즉시 반영되지만 현재 중심·확대 수준은 유지합니다. 범위 변경·편집 진입 또는 명시적인 지도 맞춤 버튼에서만 범위를 자동 조정합니다. 편집 지도에서 전체 원형 범위는 파란 실선, 마지막 장소 기준 범위는 초록 점선으로 표시합니다. 후보는 두 범위의 교집합에서만 고릅니다. 첫 장소는 두 범위 모두 출발지 기준입니다. ‘두 범위 보기’는 두 원 전체를, ‘전체 코스’는 출발지·코스·후보 전체를 지도 안에 맞춥니다. 메인 지도는 전체 원형 범위만 표시합니다. 지도 내 별도 장소 목록은 표시하지 않습니다.
 - ‘편집 완료’에서만 메인 코스·지도를 갱신하며, 메인 지도도 선택한 원형 범위 전체가 보이도록 맞춥니다. ‘취소’는 편집본을 버리고 마지막 확정본을 유지합니다. 완료는 DB 저장이 아니며 앱 종료 후 보관·회원별 재조회는 아직 지원하지 않습니다. 장소를 모두 삭제해도 완료할 수 있으며, 취소 버튼은 편집 취소하고 돌아가기로 표시합니다. 빈 코스 반영 후 메인 버튼은 코스 만들기로 표시합니다.
@@ -139,8 +162,8 @@ window.KAKAO_MAP_KEY = "YOUR_KAKAO_JAVASCRIPT_KEY";
 ### 1. 사용할 DB 선택
 
 - Aiven 등에서 이미 생성된 DB가 있으면 해당 DB를 사용합니다. 예: defaultdb.
-- 로컬에서 새 DB가 필요하면 생성 권한이 있는 계정으로 [01_create_database.sql](database/01_create_database.sql)을 실행할 수 있습니다. 이 스크립트는 university_project라는 DB를 만드는 선택적 초기화 도구입니다.
-- DBeaver 등의 SQL 편집기에서 **앱과 같은 서버 및 DB를 선택한 뒤** [02_create_tables.sql](database/02_create_tables.sql)을 실행합니다.
+- 로컬에서 새 DB가 필요하면 생성 권한이 있는 계정으로 [01_create_database.sql](data/sql/01_create_database.sql)을 실행할 수 있습니다. 이 스크립트는 university_project라는 DB를 만드는 선택적 초기화 도구입니다.
+- DBeaver 등의 SQL 편집기에서 **앱과 같은 서버 및 DB를 선택한 뒤** [02_create_tables.sql](data/sql/02_create_tables.sql)을 실행합니다.
 
 기본 테이블은 members, categories, data_records입니다. 테이블 생성 스크립트는 DB를 임의로 전환하지 않습니다.
 
@@ -161,7 +184,27 @@ db.password=YOUR_PASSWORD
 - 비어 있지 않은 환경변수 DB_URL, DB_USER, DB_PASSWORD는 각각 파일 설정보다 우선합니다.
 - 실제 db.properties는 Git 제외 대상입니다. 접속 비밀번호를 커밋하지 않습니다.
 
-앱 시작 시 회원 저장소는 필요에 따라 members.password_hash를 확장하고 app_admins 테이블을 준비합니다. 접속 계정에는 해당 작업에 필요한 ALTER·CREATE 및 기능에 필요한 조회·변경 권한이 있어야 합니다. [06_membership.sql](database/06_membership.sql)은 수동 준비용입니다.
+앱 시작 시 회원 저장소는 필요에 따라 members.password_hash를 확장하고 app_admins 테이블을 준비합니다. 접속 계정에는 해당 작업에 필요한 ALTER·CREATE 및 기능에 필요한 조회·변경 권한이 있어야 합니다. [06_membership.sql](data/sql/06_membership.sql)은 수동 준비용입니다.
+
+## 코스 저장 설계 · DB-01
+
+저장 항목과 복원 규칙은 [코스 저장 설계](docs/site/content/코스_저장_설계.md), 테이블 생성안은 [07_saved_courses.sql](data/sql/07_saved_courses.sql)에 정리했습니다. 기존 회원 테이블 준비 후 선택한 DB에서 실행하는 MySQL 8.0.16 이상용 SQL입니다. 실제 DB에는 실행하지 않았습니다. 현재 저장·조회·화면 연결은 [코스 저장과 다시 열기](docs/코스_저장과_다시열기.md)를 참고하세요.
+
+설계 검사는 실제 DB에 접속하지 않는 H2 메모리 DB에서 실행합니다.
+
+```powershell
+.\gradlew.bat test --tests kr.ac.university.localdb.db.SavedCourseSchemaTest
+```
+
+## 코스 저장 로직 · DB-02
+
+`MemberRepository.savedCourses()`에서 기존 연결 풀을 공유하는 `SavedCourseRepository`를 얻습니다. `save(session, plan)`은 신규 저장, `save(session, courseId, plan)`은 본인 코스를 같은 ID로 갱신합니다. 결과 `SavedCourse`는 커밋 성공 후에만 반환됩니다. 실패하면 기본 정보와 방문 장소를 함께 롤백합니다.
+
+로그인 앱의 헤더의 **코스 저장** 버튼에서 호출합니다. 편집 완료만으로 DB가 저장되지는 않습니다. 새 저장 코드에는 `07_saved_courses.sql`과 [08_saved_course_price_estimates.sql](data/sql/08_saved_course_price_estimates.sql)이 필요합니다. 08은 07 이후 한 번 실행하는 가격 범위·미확인·출처 확장입니다. 실제 DB에는 실행하지 않았으며 실제 MySQL 접속 검증도 아직 수행하지 않았습니다.
+
+```powershell
+.\gradlew.bat test --tests kr.ac.university.localdb.db.SavedCourseRepositoryTest --tests kr.ac.university.localdb.db.SavedCourseSchemaTest
+```
 
 ## 회원가입·로그인 동작
 
@@ -181,7 +224,7 @@ db.password=YOUR_PASSWORD
 
 ## 장소 데이터 적재
 
-[data/integrated_places.csv](data/integrated_places.csv)는 원본 데이터 파일입니다.
+[data/places/current/integrated_places.csv](data/places/current/integrated_places.csv)는 원본 데이터 파일입니다.
 
 | category | 분류 | 건수 |
 |---|---|---:|
@@ -198,7 +241,7 @@ db.password=YOUR_PASSWORD
 
 기본 테이블과 접속 설정을 준비한 다음, IntelliJ에서 **kr.ac.university.localdb.ReplaceIntegratedData.main()**을 실행합니다. Working directory는 프로젝트 루트로 지정합니다.
 
-현재 프로그램은 CSV를 직접 해석하지 않고 [05_replace_integrated_data.sql](database/05_replace_integrated_data.sql)을 읽습니다. CSV만 변경해도 적재 내용이 자동으로 바뀌지는 않습니다.
+현재 프로그램은 CSV를 직접 해석하지 않고 [05_replace_integrated_data.sql](data/sql/05_replace_integrated_data.sql)을 읽습니다. CSV만 변경해도 적재 내용이 자동으로 바뀌지는 않습니다.
 
 처리 순서:
 
@@ -242,7 +285,7 @@ IntelliJ에서 **kr.ac.university.localdb.db.PlaceQueryDemo.main()**을 실행�
 - 조회 건수와 앞의 장소 3개를 출력합니다.
 - DB 데이터를 변경하지 않고 종료 시 데모의 연결 풀을 닫습니다.
 
-Place의 recordId는 DB 기본 키, placeId는 MEAL_0001 같은 원본 ID입니다. JSON의 lon은 Java 모델의 lng에 연결합니다.
+기존 DB 목록에서 Place의 recordId는 DB 기본 키, placeId는 MEAL_0001 같은 원본 ID입니다. 시연 목록은 별도 `DCA-DEMO-...` ID와 고정 숫자 ID를 사용하고 원본·외부 ID는 details에 구분합니다. JSON의 lon은 Java 모델의 lng에 연결합니다.
 
 ## 빌드와 테스트
 
@@ -293,21 +336,22 @@ src/main/resources
 ├─ map              지도 HTML·JavaScript, 카카오 키 설정 예제
 └─ 기타             FXML, 스타일, DB 설정 예제
 src/test/java       단위·동작 테스트
-database            DB 초기화·적재 SQL
-data                원본 장소 CSV
-archive             과거 자료
+data/sql            DB 초기화·적재·저장 SQL
+data/places         기존·공공·실험·앱 시연 장소 자료
+docs                설명 문서, site(팀 사이트), research(조사), archive(과거 자료)
+tools               별도 검증 도구
 ~~~
 
 ### 현재 흐름의 코드 읽는 순서
 
 1. [condition-view.fxml](src/main/resources/condition-view.fxml), [ConditionController](src/main/java/com/datecourse/controller/ConditionController.java): 공통 조건과 확정 코스를 관리하고 편집 화면 진입·완료 반영을 처리합니다.
 2. [RoutePlan](src/main/java/com/datecourse/model/RoutePlan.java): 출발지·인원·전체 반경·이름·장소 목록을 전달합니다. 목록은 복사하며 장소 가격은 1인 기준으로 유지합니다.
-3. [route-editor-view.fxml](src/main/resources/route-editor-view.fxml), [RouteEditorController](src/main/java/com/datecourse/controller/RouteEditorController.java): 편집본에서 후보 추천·추가·삭제·순서 변경·누적 금액·완료·취소를 처리합니다.
+3. [route-editor-view.fxml](src/main/resources/route-editor-view.fxml), [RouteEditorController](src/main/java/com/datecourse/controller/RouteEditorController.java): 편집본에서 후보 추천·추가·삭제·순서 변경·누적 금액·완료·초안 유지·초기화를 처리합니다.
 4. [NextPlaceService](src/main/java/com/datecourse/service/NextPlaceService.java), [PlaceSearchService](src/main/java/com/datecourse/service/PlaceSearchService.java): 전체 원형 범위와 다음 장소 조건을 적용하고 중복을 제거합니다.
 5. [PlannerMap](src/main/java/com/datecourse/controller/PlannerMap.java), [MapBridge](src/main/java/com/datecourse/controller/MapBridge.java), [map.js](src/main/resources/map/map.js): 두 지도를 각각 연결하고 마커·직선 연결선·범위 맞춤을 처리합니다.
 6. [NumberStepper](src/main/java/com/datecourse/controller/NumberStepper.java): 인원·만원 단위 가격의 버튼·방향키·휠 입력을 처리합니다.
 
-`PlaceCalculationService`의 거리와 반경 단위는 **미터**입니다. `RoutePlan.totalCost()`는 1인 가격 합계 × 인원을 `long`으로 계산합니다.
+`PlaceCalculationService`의 거리와 반경 단위는 **미터**입니다. 현재 편집 흐름은 `RoutePlan.costEstimate()`로 가격 범위와 미확인 수를 계산합니다. `totalCost()`는 전체가 정확한 1인 가격일 때만 단일 합계를 반환하는 호환용 메서드입니다.
 
 ### 기존 화면·코드와의 구분
 
@@ -326,13 +370,13 @@ archive             과거 자료
 | 배포 전 우선 | 생성 JAR에 로컬 `db.properties` 포함 | 접속 설정을 배포 파일에서 분리해야 함. 지도 키 `map/kakao-config.js`는 빌드에서 제외하고 로컬 파일로 읽도록 수정됨 |
 
 
-전체 범위와 장소별 이동 반경 초과 시 완료 차단을 회귀 테스트로 확인했습니다. 거리는 후보 추천과 같은 직선 거리이며 경계를 포함합니다. 이동 반경은 도착 장소에 붙어 순서 변경 시 새 이전 장소부터 재계산합니다. 첫 장소는 출발지를 기준으로 검사합니다. 과거 생성 데이터에 반경 기록이 없으면 미기록으로 표시하고 값을 임의로 추정하지 않습니다. 빈 코스 확정 및 전체 삭제 후 취소 시 원본 보존도 지원합니다.
+전체 범위와 장소별 이동 반경 초과 시 완료 차단을 회귀 테스트로 확인했습니다. 거리는 후보 추천과 같은 직선 거리이며 경계를 포함합니다. 이동 반경은 도착 장소에 붙어 순서 변경 시 새 이전 장소부터 재계산합니다. 첫 장소는 출발지를 기준으로 검사합니다. 과거 생성 데이터에 반경 기록이 없으면 미기록으로 표시하고 값을 임의로 추정하지 않습니다. 빈 코스 확정을 지원합니다. 돌아가기는 초안을 유지하고, 편집 완료 전에는 메인 코스를 바꾸지 않습니다.
 
 후속 구현 범위:
 
 1. 위 DB 접속 설정 배포 문제 수정
 2. 실제 카카오 지도에서 줌 감도·애니메이션 중 마커 표시·상세창 배치 확인 및 조정
-3. 로그인한 회원별 코스 DB 저장·재조회·이름 변경·삭제
+3. 로그인한 회원별 코스 저장·재조회·수정·이름 변경·삭제의 실제 MySQL 수동 시연
 4. 시연 지역 장소의 좌표·분류·가격·평점 출처 검증과 데이터 정리
 5. 추천 품질 개선, 실제 이동 경로 확보·방문 순서 개선
 6. 부산 서비스 범위 검증, 배포 환경 설정 정리
@@ -342,12 +386,12 @@ archive             과거 자료
 
 카카오 지도 위에는 TMAP 보행자 API가 반환한 실제 도보 경로만 파란 실선으로 표시합니다. 장소 사이를 잇던 직선 연결선은 제외했습니다. 조회 전·실패 시에는 경로 선을 그리지 않고 상태를 안내합니다. 장소 마커·검색·반경 원은 그대로 사용합니다.
 
-1. 메인 화면에서 출발 위치와 코스를 정한 뒤 **도보 경로 조회**를 누릅니다.
-2. 편집 화면에서는 하단 **도보 경로 → TMAP 도보 경로 조회**를 선택합니다. 현재 코스와 선택한 추천 후보까지 방문 순서대로 조회합니다.
+1. 메인 화면에서 출발 위치와 코스를 정한 뒤 **도보 경로**를 누릅니다.
+2. 편집 화면에서는 하단 **도보 경로**를 누르면 바로 계산합니다. 현재 코스와 선택한 추천 후보까지 방문 순서대로 조회합니다.
 3. 지도 아래에 실제 도보 거리·예상 이동 시간·구간 수를 표시합니다. **구간별 도보 안내 보기**를 펼치면 횡단보도·회전 등 API가 제공한 안내 문구를 확인할 수 있습니다.
 4. 출발지·방문 장소·순서·선택 후보가 바뀌면 이전 도보 표시와 진행 중 요청을 무효화합니다. 새 코스는 버튼으로 다시 조회합니다. 반경이나 인원만 바뀌면 같은 경로를 유지합니다.
 
-사용자는 메인 화면의 **경로 탐색 방식**, 또는 편집 화면의 **도보 경로 → 경로 탐색 방식**에서 추천·대로 우선·최단·계단 제외를 선택합니다. 기존 앱의 코랄 색상과 카드 UI를 사용하며, 일반 사용자 화면에는 appKey 입력란이 없습니다. 경로가 선택된 상태에서 방식을 적용하면 새 조건으로 다시 조회합니다.
+사용자는 메인·편집 화면의 별도 **도보 설정**에서 추천·대로 우선·최단·계단 제외를 선택합니다. 기존 앱의 코랄 색상과 카드 UI를 사용하며, 일반 사용자 화면에는 appKey 입력란이 없습니다. 경로가 선택된 상태에서 방식을 적용하면 새 조건으로 다시 조회합니다.
 
 앱 제공자의 **SK open API TMAP appKey**를 모든 사용자가 공통으로 사용합니다. 개발·빌드용 키는 Git 제외 대상 `.local/tmap.properties` 또는 환경변수 `TMAP_APP_KEY`에서 준비합니다.
 

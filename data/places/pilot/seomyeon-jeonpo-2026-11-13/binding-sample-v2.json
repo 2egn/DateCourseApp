@@ -1,0 +1,175 @@
+{
+  "seed": "balanced-v2",
+  "selection_note": "Original five plus hash-ranked diversity sample; frozen before API calls; not population-random",
+  "dataset_sha256": "eadae051e2272312c23de2cbafa06bf50f637f0c85cbdaf9bbda5ffab1b0f2d7",
+  "rows": [
+    {
+      "place_id": "SBIZ:MA0101202607A0151351",
+      "name": "대모골",
+      "branch": "",
+      "category": "MEAL",
+      "subcategory": "백반/한정식"
+    },
+    {
+      "place_id": "SBIZ:MA010120220813751543",
+      "name": "부잣집밀면",
+      "branch": "",
+      "category": "MEAL",
+      "subcategory": "냉면/밀면"
+    },
+    {
+      "place_id": "SBIZ:MA0106202201A2364418",
+      "name": "스타벅스",
+      "branch": "서면역",
+      "category": "CAFE",
+      "subcategory": "카페"
+    },
+    {
+      "place_id": "SBIZ:MA0101202406A0012647",
+      "name": "파노라믹커피부산",
+      "branch": "",
+      "category": "CAFE",
+      "subcategory": "카페"
+    },
+    {
+      "place_id": "STD:15017323:e33f9aadac190db685befd1a",
+      "name": "부산포민속박물관",
+      "branch": "",
+      "category": "CULTURE",
+      "subcategory": "박물관·미술관"
+    },
+    {
+      "place_id": "SBIZ:MA010120220810619677",
+      "name": "장충동족발",
+      "branch": "",
+      "category": "MEAL",
+      "subcategory": "족발/보쌈"
+    },
+    {
+      "place_id": "SBIZ:MA0101202603A0035991",
+      "name": "쥬바",
+      "branch": "",
+      "category": "MEAL",
+      "subcategory": "중국집"
+    },
+    {
+      "place_id": "SBIZ:MA010120220802888675",
+      "name": "바램",
+      "branch": "",
+      "category": "MEAL",
+      "subcategory": "돼지고기 구이/찜"
+    },
+    {
+      "place_id": "SBIZ:MA010120220805402285",
+      "name": "전포히카루",
+      "branch": "",
+      "category": "MEAL",
+      "subcategory": "일식 회/초밥"
+    },
+    {
+      "place_id": "SBIZ:MA0101202502A0010557",
+      "name": "빅포하노이",
+      "branch": "",
+      "category": "MEAL",
+      "subcategory": "베트남식 전문"
+    },
+    {
+      "place_id": "SBIZ:MA010120220807078377",
+      "name": "통영아구찜",
+      "branch": "",
+      "category": "MEAL",
+      "subcategory": "해산물 구이/찜"
+    },
+    {
+      "place_id": "SBIZ:MA0101202305A0165509",
+      "name": "연운당",
+      "branch": "",
+      "category": "CAFE",
+      "subcategory": "카페"
+    },
+    {
+      "place_id": "SBIZ:MA010120220808476057",
+      "name": "카페팟츠",
+      "branch": "",
+      "category": "CAFE",
+      "subcategory": "카페"
+    },
+    {
+      "place_id": "SBIZ:MA010120220808556189",
+      "name": "그루빙",
+      "branch": "",
+      "category": "CAFE",
+      "subcategory": "카페"
+    },
+    {
+      "place_id": "SBIZ:MA010120220807139757",
+      "name": "행복을주는가게",
+      "branch": "",
+      "category": "CAFE",
+      "subcategory": "카페"
+    },
+    {
+      "place_id": "SBIZ:MA0106202201A2364057",
+      "name": "스타벅스",
+      "branch": "서면문화로",
+      "category": "CAFE",
+      "subcategory": "카페"
+    },
+    {
+      "place_id": "SBIZ:MA010120220810600686",
+      "name": "금호다방",
+      "branch": "",
+      "category": "CAFE",
+      "subcategory": "카페"
+    },
+    {
+      "place_id": "STD:15017323:b89cdda823e5b9669483edf9",
+      "name": "부산여대차박물관",
+      "branch": "",
+      "category": "CULTURE",
+      "subcategory": "박물관·미술관"
+    },
+    {
+      "place_id": "STD:15017323:b6b6e11b0673809a1375a7f7",
+      "name": "KT&G상상마당부산미술관",
+      "branch": "",
+      "category": "CULTURE",
+      "subcategory": "박물관·미술관"
+    },
+    {
+      "place_id": "LIB:73",
+      "name": "연지동작은도서관",
+      "branch": "",
+      "category": "CULTURE",
+      "subcategory": "도서관"
+    },
+    {
+      "place_id": "LIB:21",
+      "name": "부전도서관",
+      "branch": "",
+      "category": "CULTURE",
+      "subcategory": "도서관"
+    },
+    {
+      "place_id": "LIB:69",
+      "name": "범천작은도서관",
+      "branch": "",
+      "category": "CULTURE",
+      "subcategory": "도서관"
+    },
+    {
+      "place_id": "STD:15012890:37ac03de03f1fe426869c6db",
+      "name": "돌산공원",
+      "branch": "",
+      "category": "CULTURE",
+      "subcategory": "공원"
+    },
+    {
+      "place_id": "STD:15012890:448526d11fc945f06d87e37a",
+      "name": "화지공원",
+      "branch": "",
+      "category": "CULTURE",
+      "subcategory": "공원"
+    }
+  ]
+}

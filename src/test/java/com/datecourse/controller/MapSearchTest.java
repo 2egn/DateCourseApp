@@ -29,6 +29,554 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
     @Test
+    void myPageUsesSharedLoadingAndMenuLogoutClearsPlannerSession() throws Exception {
+        CountDownLatch loaded=new CountDownLatch(1);
+        var opened=new java.util.concurrent.atomic.AtomicInteger();
+        MyPageController page=fx(() -> {
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/my-page-view.fxml"));
+            Parent root=loader.load();
+            StackPane host=new StackPane(root);new Scene(host,960,680);
+            host.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+            MyPageController controller=loader.getController();
+            controller.useFeedback(new PageFeedback(host));
+            ((javafx.scene.control.Label)field(controller,"statusLabel")).textProperty()
+                    .addListener((o,old,text)->{if(text.isEmpty())loaded.countDown();});
+            controller.configure(()->new kr.ac.university.localdb.db.MemberRepository.Profile("me@test","내 이름",null),
+                    opened::incrementAndGet,opened::incrementAndGet);
+            assertTrue(controller.isLoading());return controller;
+        });
+        assertTrue(loaded.await(10,TimeUnit.SECONDS));
+        fx(() -> {
+            assertEquals("내 이름",((javafx.scene.control.Label)field(page,"nameLabel")).getText());
+            assertEquals("me@test",((javafx.scene.control.Label)field(page,"emailLabel")).getText());
+            assertEquals("미등록",((javafx.scene.control.Label)field(page,"phoneLabel")).getText());
+            invoke(page,"onSavedCourses");invoke(page,"onBack");assertEquals(2,opened.get());
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/condition-view.fxml"));
+            Parent root=loader.load();new Scene(root,1440,960);
+            ConditionController main=loader.getController();
+            stubPlannerMap(main,"mapView");stubPlannerMap(field(main,"routeEditorController"),"editMapView");
+            main.setUserSession(new kr.ac.university.localdb.UserSession(7,"내 이름"));
+            var loggedOut=new java.util.concurrent.atomic.AtomicBoolean();
+            main.setAccountActions(null,()->loggedOut.set(true));
+            var menu=(javafx.scene.control.MenuButton)field(main,"userLabel");
+            assertEquals("내 이름님",menu.getText());assertFalse(menu.isDisabled());
+            assertEquals("내 페이지",menu.getItems().get(0).getText());
+            menu.getItems().get(2).fire();
+            assertTrue(loggedOut.get());assertNull(field(main,"userSession"));assertTrue(menu.isDisabled());
+            assertNull(field(main,"appliedPlan"));
+            return null;
+        });
+    }
+
+    @Test
+    void clickedWalkingPopupSurvivesMouseoutAndRouteClicksDoNotMoveOrigin() throws Exception {
+        WebEngine engine=loadMap();
+        script(engine,"""
+            window.blocked=0;javaMapBridge.onOriginChangeBlocked=function(){blocked++;};
+            window.selectMapLocation(35.1579,129.059,'출발');window.setOriginLocked(true);
+            window.testPath=[[{lat:35.1579,lng:129.059},{lat:35.158,lng:129.059}]];
+            window.showWalkingRoute({totalDistance:200,totalTime:160,legs:[
+              {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:80,paths:testPath,steps:[]},
+              {from:{name:'첫 장소'},to:{name:'둘째 장소'},distance:100,time:80,paths:testPath,steps:[]}
+            ]},'',false);
+            routeLines[1].onclick({latLng:new kakao.maps.LatLng(35.158,129.059)});
+            testMap.onclick({latLng:new kakao.maps.LatLng(35.158,129.059)});
+            routeLines[1].onmouseout();routeLines[3].onmouseover({latLng:new kakao.maps.LatLng(35.158,129.059)});
+            """);
+        assertEquals(true,script(engine,"blocked===0 && routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('1구간')"));
+        assertEquals(true,script(engine,"routeLines[3].zIndex===12 && routeLines[1].zIndex===4"));
+        script(engine,"routeLines[3].onmouseout()");
+        assertEquals(true,script(engine,"routeLines[1].zIndex===12 && routeLines[3].zIndex===4 && routeOverlays[0].attached"));
+        script(engine,"routeLines[3].onclick();routeLines[3].onmouseout()");
+        assertEquals(true,script(engine,"routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('2구간')"));
+        Thread.sleep(50);
+        script(engine,"testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
+        assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
+        script(engine,"routeLines[1].onmouseover();testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
+        assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
+    }
+
+    @Test
+    void emptyPlannerDisablesResetAndLoadingSavedCourseRequestsWalking() throws Exception {
+        CountDownLatch requested=new CountDownLatch(1);
+        fx(() -> {
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/condition-view.fxml"));
+            Parent root=loader.load();new Scene(root,1440,960);
+            ConditionController main=loader.getController();stubPlannerMap(main,"mapView");
+            var reset=(javafx.scene.control.Button)field(main,"newCourseButton");
+            assertTrue(reset.isDisabled());
+            ((TextField)field(main,"peopleField")).setText("3");assertFalse(reset.isDisabled());
+            invoke(main,"resetCourse");assertTrue(reset.isDisabled());
+            PlannerMap map=(PlannerMap)field(main,"map");
+            map.setWalkingRouter(stops -> { requested.countDown();return new com.datecourse.model.WalkingRoute(java.util.List.of(),100,60); });
+            var p=new com.datecourse.model.Place(1,"a","식당","MEAL",35.158,129.059,1000,0);
+            var plan=new com.datecourse.model.RoutePlan(35.1579,129.059,2,1000,"저장 코스",java.util.List.of(p));
+            callWith(main,"restoreSavedCourse",com.datecourse.model.SavedCourse.class,new com.datecourse.model.SavedCourse(1,7,plan));
+            assertFalse(reset.isDisabled());return null;
+        });
+        assertTrue(requested.await(10,TimeUnit.SECONDS));
+    }
+
+    @Test
+    void mapAndSearchCannotMoveLockedOriginAndResetUnlocksIt() throws Exception {
+        WebEngine engine = loadMap();
+        script(engine, """
+            window.blockedOrigins=0; javaMapBridge.onOriginChangeBlocked=function(){blockedOrigins++;};
+            window.selectMapLocation(35.1579,129.059,'기존 출발지');
+            window.originCount=bridgeSelections.length;
+            window.setOriginLocked(true);
+            testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)});
+            window.submitQuery('부산역');
+            requests[0].callback([{place_name:'부산역',y:'35.115',x:'129.04',address_name:'부산 동구'}],kakao.maps.services.Status.OK);
+            document.querySelector('#search-results button').click();
+            """);
+        assertEquals(true, script(engine, "blockedOrigins===2 && bridgeSelections.length===originCount"));
+        assertEquals("기존 출발지", script(engine, "document.getElementById('map-status').textContent"));
+        script(engine, "window.setOriginLocked(false);testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
+        assertEquals(true, script(engine, "bridgeSelections.length===originCount+1"));
+
+        fx(() -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
+            Parent root = loader.load(); new Scene(root, 1440, 960);
+            ConditionController main = loader.getController();
+            RouteEditorController editor = (RouteEditorController) field(main, "routeEditorController");
+            stubPlannerMap(main, "mapView"); stubPlannerMap(editor, "editMapView");
+            var place = new com.datecourse.model.Place(1,"a","식당","MEAL",35.158,129.059,1000,0);
+            var plan = new com.datecourse.model.RoutePlan(35.1579,129.059,2,1000,"",java.util.List.of());
+            callWith(main,"presentPlan",com.datecourse.model.RoutePlan.class,plan);
+            setField(main,"placesLoaded",true);setField(main,"allPlaces",java.util.List.of(place));
+            invoke(main,"onRecommendClick");invoke(editor,"onRecommendNext");invoke(editor,"onAddCandidate");invoke(main,"onHome");
+            PlannerMap map = (PlannerMap) field(main,"map");
+            MapBridge bridge = (MapBridge) field(map,"bridge");
+            assertEquals(true,field(map,"originLocked"));
+            bridge.onLocationSelected(35.16,129.06);
+            assertEquals(35.1579,field(main,"selectedLatitude"));
+            assertEquals(129.059,field(main,"selectedLongitude"));
+            assertTrue(((javafx.scene.control.Label)field(field(main,"feedback"),"message")).getText().contains("초기화"));
+            invoke(main,"resetCourse");
+            assertEquals(false,field(map,"originLocked"));
+            bridge.onLocationSelected(35.16,129.06);
+            assertEquals(35.16,field(main,"selectedLatitude"));
+            return null;
+        });
+    }
+
+    @Test
+    void routeDescriptionIsOptInAndPinsSelectTheirIncomingWalkingLeg() throws Exception {
+        WebEngine engine = loadMap(640,600);
+        script(engine,"""
+            window.presentRoute({startLat:35.1579,startLng:129.059,radius:1000,people:2,places:[
+              {recordId:1,placeId:'a',name:'첫 장소',category:'MEAL',lat:35.158,lng:129.059},
+              {recordId:2,placeId:'b',name:'두 번째 장소',category:'CAFE',lat:35.1582,lng:129.059}
+            ]},null,500,false,false,[]);
+            window.pathOne=[[{lat:35.1579,lng:129.059},{lat:35.158,lng:129.059}]];
+            window.showWalkingRoute({totalDistance:200,totalTime:160,legs:[
+              {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:80,paths:pathOne,steps:[{description:'첫 구간 안내'}]},
+              {from:{name:'첫 장소'},to:{name:'긴 이름이 있는 두 번째 장소'},distance:100,time:80,paths:pathOne,steps:[{description:'둘째 구간 안내'}]}
+            ]},'',false);
+            routeLines[3].onclick();
+            """);
+        assertEquals(true,script(engine,"document.getElementById('walking-panel').hidden"));
+        assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
+        script(engine,"window.toggleWalkingExplanation();pins.filter(p=>p.coursePin && p.attached)[0].onclick()");
+        assertEquals(false,script(engine,"document.getElementById('walking-panel').hidden"));
+        assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('1구간')"));
+        assertEquals(1,((Number)script(engine,"document.querySelectorAll('#walking-directions > li:not([hidden])').length")).intValue());
+        script(engine,"""
+            pins.filter(p=>p.coursePin && p.attached)[1].onclick();
+            routeLines[3].onmouseover({latLng:new kakao.maps.LatLng(35.16,129.062)});
+            window.tooltip=routeOverlays[0].options.content;
+            document.getElementById('map-surface').appendChild(tooltip);
+            tooltip.style.position='absolute';tooltip.style.right='16px';tooltip.style.top='180px';
+            """);
+        assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
+        assertEquals(248,((Number)script(engine,"tooltip.getBoundingClientRect().width")).intValue());
+        assertEquals(true,script(engine,"tooltip.getBoundingClientRect().height<120 && tooltip.querySelector('.walking-tooltip-facts').textContent.includes('분')"));
+        // Show the test scene briefly: WebKit may skip painting in a detached Scene.
+        var previewWindow = fx(() -> {
+            var window = new javafx.stage.Stage();window.setScene(previewView.getScene());window.show();return window;
+        });
+        try {
+            Thread.sleep(150);
+            fx(() -> {
+                Path preview=Path.of("build/ui-preview/walking-leg-tooltip.png");Files.createDirectories(preview.getParent());
+                ImageIO.write(SwingFXUtils.fromFXImage(previewView.snapshot(null,null),null),"png",preview.toFile());
+                return null;
+            });
+        } finally { fx(() -> { previewWindow.close();return null; }); }
+    }
+
+    @Test
+    void noticeCountsDownFadesAndNewNoticeRestartsItsLifetime() throws Exception {
+        CountDownLatch hidden = new CountDownLatch(1);
+        fx(() -> {
+            StackPane root = new StackPane();
+            new Scene(root, 960, 680);
+            PageFeedback feedback = new PageFeedback(root);
+            feedback.show(PageFeedback.Kind.INFO, "저장했어요.");
+            var timer = (javafx.animation.Timeline) field(feedback, "countdown");
+            var fade = (javafx.animation.FadeTransition) field(feedback, "fade");
+            var toast = (javafx.scene.layout.VBox) field(feedback, "toast");
+            var bar = (javafx.scene.control.ProgressBar) field(feedback, "remaining");
+            timer.jumpTo(javafx.util.Duration.seconds(2.5));
+            assertEquals(0.5, bar.getProgress(), 0.05);
+            timer.stop();
+            timer.getOnFinished().handle(new javafx.event.ActionEvent());
+            fade.jumpTo(javafx.util.Duration.millis(125));
+            assertTrue(toast.getOpacity() < 1);
+            feedback.show(PageFeedback.Kind.ERROR, "다시 시도해 주세요.");
+            assertEquals(1, toast.getOpacity());
+            assertEquals(1, bar.getProgress());
+            feedback.show(PageFeedback.Kind.ERROR, "요청 실패. 연결을 확인한 후 다시 시도해 주세요.");
+            var copy = (javafx.scene.control.Label) field(feedback, "message");
+            assertEquals("요청 실패.", copy.getText());
+            assertTrue(copy.getTooltip().getText().contains("연결을 확인"));
+            ((javafx.scene.control.Button) toast.lookup(".feedback-close")).fire();
+            assertFalse(toast.isVisible());
+            assertEquals(javafx.animation.Animation.Status.STOPPED, timer.getStatus());
+            feedback.show(PageFeedback.Kind.ERROR, "오류 알림도 자동으로 닫혀요.");
+            toast.visibleProperty().addListener((o, old, visible) -> { if (!visible) hidden.countDown(); });
+            timer.setRate(100);
+            fade.setRate(100);
+            return null;
+        });
+        assertTrue(hidden.await(5, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void overlappingWalkingLegsCanBeSelectedHoveredAndRemovedWithoutResizingMap() throws Exception {
+        WebEngine engine = loadMap(640, 600);
+        script(engine, """
+            window.surfaceBefore = document.getElementById('map-surface').clientHeight;
+            window.sharedPath = [[{lat:35.1796,lng:129.0756},{lat:35.1801,lng:129.076}]];
+            window.showWalkingRoute({totalDistance:200,totalTime:160,legs:[
+              {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:80,paths:sharedPath,steps:[]},
+              {from:{name:'첫 장소'},to:{name:'<img src=x>'},distance:100,time:80,paths:sharedPath,steps:[]}
+            ]},'',false);
+            """);
+        assertEquals(true, script(engine, "routeLines[1].options.strokeColor!==routeLines[3].options.strokeColor"));
+        assertEquals(2, ((Number) script(engine, "document.querySelectorAll('.walking-leg-button').length")).intValue());
+        script(engine, "document.querySelectorAll('.walking-leg-button')[1].click()");
+        assertEquals(true, script(engine, "routeLines[3].zIndex===12 && routeLines[1].zIndex===4"));
+        assertEquals("true", script(engine, "document.querySelectorAll('.walking-leg-button')[1].getAttribute('aria-pressed')"));
+        script(engine, "routeLines[3].onmouseover({latLng:new kakao.maps.LatLng(35.1801,129.076)})");
+        assertEquals(true, script(engine, "routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('2구간')"));
+        assertEquals(0, ((Number) script(engine, "routeOverlays[0].options.content.querySelectorAll('img').length")).intValue());
+        assertEquals(true, script(engine, "document.getElementById('map-surface').clientHeight===surfaceBefore"));
+        script(engine, "routeLines[3].onmouseout(); window.showWalkingRoute(null,'',false)");
+        assertEquals(true, script(engine, "routeOverlays.every(o=>!o.attached) && routeLines.every(l=>!l.attached && !l.onmouseover)"));
+        assertEquals(0, ((Number) script(engine, "document.querySelectorAll('.walking-leg-button').length")).intValue());
+    }
+
+    @Test
+    void navigationPreservesCandidateAndConditionsAndOnlyExplicitResetClearsDraft() throws Exception {
+        fx(() -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
+            Parent root = loader.load(); new Scene(root, 1440, 960);
+            ConditionController main = loader.getController();
+            RouteEditorController editor = (RouteEditorController) field(main, "routeEditorController");
+            stubPlannerMap(main, "mapView"); stubPlannerMap(editor, "editMapView");
+            var a = new com.datecourse.model.Place(1, "a", "식당 A", "MEAL", 35.158, 129.059, 1000, 0);
+            var b = new com.datecourse.model.Place(2, "b", "식당 B", "MEAL", 35.1582, 129.059, 1000, 0);
+            var plan = new com.datecourse.model.RoutePlan(35.1579, 129.059, 2, 1000, "초안", java.util.List.of());
+            callWith(main, "presentPlan", com.datecourse.model.RoutePlan.class, plan);
+            setField(main, "placesLoaded", true); setField(main, "allPlaces", java.util.List.of(a,b));
+            invoke(main, "onRecommendClick");
+            invoke(editor, "onRecommendNext"); invoke(editor, "onAddCandidate");
+            invoke(editor, "onRecommendNext");
+            var candidates = (javafx.scene.control.ListView<?>) field(editor, "candidateList");
+            candidates.getSelectionModel().selectFirst();
+            Object choice = candidates.getSelectionModel().getSelectedItem();
+            invoke(main, "onHome");
+            assertEquals(true, field(main, "editorPaused"));
+            assertEquals(plan, field(main, "appliedPlan"));
+            assertFalse(((javafx.scene.layout.HBox) field(main, "headerBar")).isDisabled());
+            invoke(main, "onRecommendClick");
+            assertEquals(java.util.List.of(a), editor.draftSnapshot().places());
+            assertSame(choice, candidates.getSelectionModel().getSelectedItem());
+            assertTrue(((javafx.scene.control.TitledPane) field(editor, "choicePane")).isExpanded());
+            editor.resetDraft();
+            assertTrue(editor.draftSnapshot().places().isEmpty());
+            assertTrue(editor.draftSnapshot().arrivalRadii().isEmpty());
+            assertTrue(candidates.getItems().isEmpty());
+            assertEquals(plan, field(main, "appliedPlan"));
+            ((javafx.animation.Timeline) field(main, "screenAnimation")).stop();
+            return null;
+        });
+    }
+
+    @Test
+    void startupWaitsForFirstPlaceReadAndCompletesOnSuccessOrFailure() throws Exception {
+        for (boolean failRead : new boolean[]{false, true}) {
+            CountDownLatch release = new CountDownLatch(1), ready = new CountDownLatch(1);
+            var source = new kr.ac.university.localdb.db.PlaceRepository(null) {
+                @Override public java.util.List<com.datecourse.model.Place> findAll() throws java.sql.SQLException {
+                    try { release.await(10, TimeUnit.SECONDS); }
+                    catch (InterruptedException failure) { Thread.currentThread().interrupt(); throw new java.sql.SQLException(failure); }
+                    if (failRead) throw new java.sql.SQLException("테스트용 실패");
+                    return java.util.List.of();
+                }
+            };
+            var main = fx(() -> {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
+                Parent root = loader.load();
+                new Scene(root, 960, 680);
+                ConditionController controller = loader.getController();
+                stubPlannerMap(controller, "mapView");
+                stubPlannerMap(field(controller, "routeEditorController"), "editMapView");
+                controller.setPlaceRepository(source);
+                controller.prepareStartup(ready::countDown);
+                assertNotNull(field(controller, "savedPage"));
+                assertTrue(controller.isLoading());
+                assertEquals(1, ready.getCount());
+                return controller;
+            });
+            try {
+                release.countDown();
+                assertTrue(ready.await(10, TimeUnit.SECONDS));
+                fx(() -> { assertFalse(main.isLoading()); assertEquals(!failRead, field(main, "placesLoaded")); return null; });
+            } finally { release.countDown(); }
+        }
+    }
+
+    @Test
+    void commonLoadingKeepsOverlayUntilAllWorkEndsAndShowsSharedNotice() throws Exception {
+        CountDownLatch releaseFirst = new CountDownLatch(1), releaseSecond = new CountDownLatch(1);
+        CountDownLatch firstDone = new CountDownLatch(1), secondDone = new CountDownLatch(1);
+        Object[] fixture = fx(() -> {
+            StackPane root = new StackPane();
+            new Scene(root, 960, 680);
+            root.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+            root.resize(960, 680);
+            PageFeedback feedback = new PageFeedback(root);
+            BasePageController page = new BasePageController() {};
+            page.useFeedback(feedback);
+            page.runWork("첫 작업", () -> { releaseFirst.await(); return true; }, ignored -> firstDone.countDown(), error -> fail(error));
+            page.runWork("두 번째 작업", () -> { releaseSecond.await(); throw new java.io.IOException("확인용 실패"); },
+                    ignored -> fail("실패해야 함"), error -> { page.notifyUser(PageFeedback.Kind.ERROR, "작업에 실패했어요. 다시 시도해 주세요."); secondDone.countDown(); });
+            assertTrue(page.loadingProperty().get());
+            return new Object[]{root, page};
+        });
+        try {
+            releaseFirst.countDown();
+            assertTrue(firstDone.await(10, TimeUnit.SECONDS));
+            fx(() -> { assertTrue(((BasePageController) fixture[1]).isLoading()); return null; });
+            releaseSecond.countDown();
+            assertTrue(secondDone.await(10, TimeUnit.SECONDS));
+            fx(() -> {
+                StackPane root = (StackPane) fixture[0];
+                assertFalse(((BasePageController) fixture[1]).isLoading());
+                root.applyCss(); root.layout();
+                assertFalse(root.lookup(".loading-shade").isVisible());
+                assertTrue(root.lookup(".feedback-toast").isVisible());
+                assertEquals(960, root.getWidth()); assertEquals(680, root.getHeight());
+                Path preview = Path.of("build/ui-preview/shared-notice.png");
+                Files.createDirectories(preview.getParent());
+                ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null, null), null), "png", preview.toFile());
+                return null;
+            });
+        } finally { releaseFirst.countDown(); releaseSecond.countDown(); }
+    }
+
+    @Test
+    void savesLoadsAndUpdatesSameCourseThroughRealFxmlControllers() throws Exception {
+        var config = new com.zaxxer.hikari.HikariConfig();
+        config.setJdbcUrl("jdbc:h2:mem:" + java.util.UUID.randomUUID() + ";MODE=MySQL");
+        config.setUsername("sa");
+        config.setMaximumPoolSize(2);
+        try (var pool = new com.zaxxer.hikari.HikariDataSource(config)) {
+            try (var connection = pool.getConnection()) {
+                for (String sql : java.util.List.of("02_create_tables.sql", "07_saved_courses.sql", "08_saved_course_price_estimates.sql")) {
+                    try (var reader = Files.newBufferedReader(Path.of("data/sql", sql))) {
+                        org.h2.tools.RunScript.execute(connection, reader);
+                    }
+                }
+                connection.createStatement().execute("INSERT INTO members(member_id,email,password_hash,name) VALUES(7,'flow@test','test','Flow')");
+            }
+            var repository = new kr.ac.university.localdb.db.SavedCourseRepository(pool);
+            var session = new kr.ac.university.localdb.UserSession(7, "Flow");
+            var place = new com.datecourse.model.Place(11, "test-one", "미확인 식당", "MEAL", 35.158, 129.059,
+                    com.datecourse.model.PriceEstimate.unknown(), 0, com.datecourse.model.PlaceDetails.EMPTY);
+            var plan = new com.datecourse.model.RoutePlan(35.1579, 129.059, 2, 1000, "흐름 검증", java.util.List.of(place));
+            var main = fx(() -> {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
+                Parent root = loader.load();
+                new Scene(root, 1440, 960);
+                ConditionController controller = loader.getController();
+                stubPlannerMap(controller, "mapView");
+                controller.setUserSession(session);
+                controller.setSavedCourseRepository(repository);
+                callWith(controller, "presentPlan", com.datecourse.model.RoutePlan.class, plan);
+                return controller;
+            });
+            fx(() -> {
+                setField(main, "titlePrompt", (java.util.function.Function<com.datecourse.model.RoutePlan, java.util.Optional<String>>) p -> java.util.Optional.empty());
+                invoke(main, "onSaveCourse");
+                return null;
+            });
+            assertTrue(repository.findAll(session).isEmpty());
+            fx(() -> {
+                setField(main, "titlePrompt", (java.util.function.Function<com.datecourse.model.RoutePlan, java.util.Optional<String>>) p -> java.util.Optional.of(" "));
+                invoke(main, "onSaveCourse");
+                assertTrue(((javafx.scene.control.Label) field(main, "saveStatusLabel")).getText().contains("1~20자"));
+                return null;
+            });
+            assertTrue(repository.findAll(session).isEmpty());
+            saveAndAwait(main);
+            long id = repository.findAll(session).get(0).courseId();
+            assertEquals(plan, repository.findAll(session).get(0).plan());
+            CountDownLatch listed = new CountDownLatch(1);
+            var list = fx(() -> {
+                invoke(main, "prepareSavedPage");
+                Object page = field(main, "savedPage");
+                invoke(main, "prepareSavedPage");
+                assertSame(page, field(main, "savedPage"));
+                SavedCourseController controller = (SavedCourseController) field(main, "savedController");
+                ((javafx.scene.control.Label) field(controller, "messageLabel")).textProperty()
+                        .addListener((o, old, text) -> { if (text.isEmpty()) listed.countDown(); });
+                invoke(main, "onSavedCourses");
+                assertTrue(((StackPane) field(main, "savedPageHost")).isVisible());
+                return controller;
+            });
+            assertTrue(listed.await(10, TimeUnit.SECONDS));
+            fx(() -> {
+                invoke(list, "onOpenClick");
+                assertFalse(((StackPane) field(main, "savedPageHost")).isVisible());
+                assertEquals(id, field(main, "savedCourseId"));
+                assertEquals(plan, field(main, "appliedPlan"));
+                assertTrue(((javafx.scene.control.Label) field(list, "detailSummary")).getText().contains("가격 미확인"));
+                assertTrue(((javafx.scene.control.Label) field(list, "detailSummary")).getText().contains("최근 수정"));
+                ((TextField) field(main, "peopleField")).setText("3");
+                return null;
+            });
+            saveAndAwait(main);
+            assertEquals(1, repository.findAll(session).size());
+            assertEquals(id, repository.findAll(session).get(0).courseId());
+            assertEquals(3, repository.findAll(session).get(0).plan().people());
+            fx(() -> {
+                invoke(main, "onNewCourse");
+                assertNull(field(main, "savedCourseId"));
+                callWith(main, "presentPlan", com.datecourse.model.RoutePlan.class, plan);
+                return null;
+            });
+            saveAndAwait(main);
+            assertEquals(2, repository.findAll(session).size());
+            CountDownLatch failed = new CountDownLatch(1);
+            fx(() -> {
+                ((javafx.scene.control.Label) field(main, "saveStatusLabel")).textProperty()
+                        .addListener((o, old, text) -> { if (text.startsWith("저장 실패")) failed.countDown(); });
+                pool.close();
+                invoke(main, "onSaveCourse");
+                return null;
+            });
+            assertTrue(failed.await(10, TimeUnit.SECONDS));
+            fx(() -> { assertEquals(plan, field(main, "appliedPlan")); assertEquals(false, field(main, "saving")); return null; });
+        }
+    }
+
+    private static <T> T fx(java.util.concurrent.Callable<T> work) throws Exception {
+        FutureTask<T> task = new FutureTask<>(work);
+        Platform.runLater(task);
+        return task.get(15, TimeUnit.SECONDS);
+    }
+
+    private static void callWith(Object target, String name, Class<?> type, Object value) throws Exception {
+        var method = target.getClass().getDeclaredMethod(name, type);
+        method.setAccessible(true);
+        method.invoke(target, value);
+    }
+
+    private static void saveAndAwait(ConditionController main) throws Exception {
+        CountDownLatch saved = new CountDownLatch(1);
+        fx(() -> {
+            setField(main, "titlePrompt", (java.util.function.Function<com.datecourse.model.RoutePlan, java.util.Optional<String>>)
+                    plan -> java.util.Optional.of(plan.title()));
+            ((javafx.scene.control.Label) field(main, "saveStatusLabel")).textProperty()
+                    .addListener((o, old, text) -> { if (text.equals("코스를 저장했어요.")) saved.countDown(); });
+            invoke(main, "onSaveCourse");
+            return null;
+        });
+        assertTrue(saved.await(10, TimeUnit.SECONDS));
+    }
+
+    @Test
+    void pilotSourceWinsOverLateDatabaseLoadAndUnknownPriceSurvivesEditing() throws Exception {
+        CountDownLatch dbStarted = new CountDownLatch(1), releaseDb = new CountDownLatch(1), dbFinished = new CountDownLatch(1);
+        CountDownLatch pilotLoaded = new CountDownLatch(1);
+        var delayed = new kr.ac.university.localdb.db.PlaceRepository(null) {
+            @Override public java.util.List<com.datecourse.model.Place> findAll() {
+                dbStarted.countDown();
+                while (releaseDb.getCount() > 0) {
+                    try { releaseDb.await(20, TimeUnit.MILLISECONDS); }
+                    catch (InterruptedException ignored) { /* Model JDBC work that cannot stop immediately. */ }
+                }
+                dbFinished.countDown();
+                return java.util.List.of(new com.datecourse.model.Place(7, "old", "늦은 DB 결과", "MEAL", 35.1578, 129.06, 1000, 0));
+            }
+        };
+        FutureTask<Object[]> create = new FutureTask<>(() -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
+            Parent root = loader.load();
+            new Scene(root, 1440, 960); root.resize(1440, 960);
+            ConditionController main = loader.getController();
+            RouteEditorController editor = (RouteEditorController) loader.getNamespace().get("routeEditorController");
+            stubPlannerMap(main, "mapView"); stubPlannerMap(editor, "editMapView");
+            var status = (javafx.scene.control.Label) field(main, "sourceStatusLabel");
+            status.textProperty().addListener((o, old, value) -> { if (value.startsWith("9곳")) pilotLoaded.countDown(); });
+            main.setPlaceRepository(delayed);
+            return new Object[]{main, editor, root};
+        });
+        Platform.runLater(create);
+        Object[] fixture = create.get(10, TimeUnit.SECONDS);
+        try {
+            assertTrue(dbStarted.await(5, TimeUnit.SECONDS));
+            FutureTask<Void> choose = new FutureTask<>(() -> { ((ConditionController) fixture[0]).usePilotPlaces(); return null; });
+            Platform.runLater(choose); choose.get(10, TimeUnit.SECONDS);
+            assertTrue(pilotLoaded.await(5, TimeUnit.SECONDS));
+        } finally { releaseDb.countDown(); }
+        assertTrue(dbFinished.await(5, TimeUnit.SECONDS));
+        FutureTask<Void> inspect = new FutureTask<>(() -> {
+            ConditionController main = (ConditionController) fixture[0];
+            RouteEditorController editor = (RouteEditorController) fixture[1];
+            var places = (java.util.List<com.datecourse.model.Place>) field(main, "allPlaces");
+            assertEquals(9, places.size());
+            assertTrue(places.stream().allMatch(p -> p.placeId().startsWith("DCA-DEMO-")));
+            invoke(main, "onRecommendClick"); invoke(editor, "onRecommendNext");
+            assertTrue(((java.util.List<?>) field(editor, "candidates")).isEmpty());
+            ((CheckBox) field(editor, "includeUncertainPrice")).setSelected(true);
+            invoke(editor, "onRecommendNext");
+            assertFalse(((java.util.List<?>) field(editor, "candidates")).isEmpty());
+            invoke(editor, "onAddCandidate");
+            assertTrue(((javafx.scene.control.Label) field(editor, "summaryLabel")).getText().contains("가격 미확인 1곳"));
+            invoke(editor, "onFinish");
+            var applied = (com.datecourse.model.RoutePlan) field(main, "appliedPlan");
+            assertEquals(1, applied.costEstimate().unknownPlaces());
+            String summary = ((javafx.scene.control.Label) field(main, "resultLabel")).getText();
+            assertTrue(summary.contains("가격 미확인 1곳")); assertFalse(summary.contains("0원"));
+            WebEngine engine = ((WebView) field(main, "mapView")).getEngine();
+            assertEquals("가격 미확인", engine.executeScript("presentCalls[presentCalls.length-1][0].places[0].priceText"));
+            return null;
+        });
+        Platform.runLater(inspect); inspect.get(15, TimeUnit.SECONDS);
+    }
+
+    @Test
+    void placeDetailShowsUnknownPriceAndPublicSourceAsText() throws Exception {
+        WebEngine engine = loadMap();
+        script(engine, """
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:500,people:2,places:[
+              {recordId:1000001,placeId:'DCA-DEMO-001',name:'자료 확인 장소',category:'CAFE',lat:35.158,lng:129.06,
+               priceText:'가격 미확인',priceEstimate:{minimum:null,maximum:null,unit:'UNKNOWN',basis:'1인 가격 미확인'},
+               details:{address:'공개 원본 주소',sourceDate:'2026-09-30',sourceUrl:'https://example.test/<img src=x>'}}
+            ]},null,500,false,true,[]);
+            window.openRoutePlace(1000001);
+            """);
+        assertEquals(true, script(engine, "document.getElementById('detail-facts').textContent.includes('가격 미확인')"));
+        assertEquals(true, script(engine, "document.getElementById('detail-extra').textContent.includes('공개 원본 주소')"));
+        assertEquals(0, ((Number) script(engine, "document.querySelectorAll('#detail-extra img').length")).intValue());
+    }
+
+    @Test
     void onlyTmapWalkingGeometryIsShownAndFailuresDoNotRestoreStraightRoutes() throws Exception {
         WebEngine engine = loadMap();
         script(engine, """
@@ -67,12 +615,13 @@ class MapSearchTest {
         view.getEngine().getLoadWorker().cancel();
         view.getEngine().executeScript("window.presentCalls=[];window.fitCalls=[];window.detailCalls=[];window.ensureCalls=0;window.ensureRouteRangesVisible=function(){ensureCalls++;};window.openRoutePlace=function(id){detailCalls.push(id);};window.presentRoute=function(plan,candidate,radius,locked,fit){presentCalls.push([plan,candidate,radius,locked,fit]);};window.fitRouteView=function(whole){fitCalls.push(whole);};");
         Object map = field(controller, "map");
+        ((PlannerMap) map).setWalkingRouter(stops -> new com.datecourse.model.WalkingRoute(java.util.List.of(), 0, 0));
         setField(map, "ready", true);
         setField(map, "loaded", true);
     }
 
     @Test
-    void oneByOneEditingIsIsolatedUntilCompleteAndCancelDiscardsDraft() throws Exception {
+    void oneByOneEditingIsIsolatedUntilCompleteAndReturningKeepsDraft() throws Exception {
         FutureTask<Void> task = new FutureTask<>(() -> {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
             Parent root = loader.load();
@@ -106,7 +655,6 @@ class MapSearchTest {
             invoke(editor,"onRecommendNext");
             invoke(editor,"onAddCandidate");
             assertEquals(java.util.List.of(first,second),list.getItems());
-            ((TextField)field(editor,"titleField")).setText("내 데이트");
             list.getSelectionModel().select(1);
             invoke(editor,"onMoveUp");
             assertEquals(java.util.List.of(second,first),list.getItems());
@@ -119,7 +667,7 @@ class MapSearchTest {
             root.resize(960,680);root.applyCss();root.layout();
             WebView editMap=(WebView)field(editor,"editMapView");
             assertTrue(editMap.getWidth() >= 500);
-            assertTrue(editMap.getHeight() >= 400);
+            assertTrue(editMap.getHeight() >= 400, "지도 높이: " + editMap.getHeight());
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",
                     Path.of("build","ui-preview","route-editor-small.png").toFile());
             invoke(editor,"onFinish");
@@ -141,7 +689,7 @@ class MapSearchTest {
             assertEquals(2,applied.places().size());
             assertEquals(1, ((Number)((WebView)nodes.get("mapView")).getEngine().executeScript("presentCalls.length")).intValue());
             invoke(main,"onRecommendClick");
-            assertEquals(applied.places(),list.getItems());
+            assertEquals(java.util.List.of(first),list.getItems()); // Returning keeps the edited draft.
             TextField price=(TextField)field(editor,"placePriceField");
             price.setText("0");
             ((javafx.scene.control.Button)field(editor,"priceDown")).fire();assertEquals("0",price.getText());
@@ -220,7 +768,7 @@ class MapSearchTest {
             assertEquals(saved.people(),cleared.people());assertEquals(saved.radius(),cleared.radius());
             WebEngine engine=((WebView)field(main,"mapView")).getEngine();
             assertEquals(0,((Number)engine.executeScript("presentCalls[presentCalls.length-1][0].places.length")).intValue());
-            assertTrue(((javafx.scene.control.Label)field(main,"resultLabel")).getText().contains("0원"));
+            assertTrue(((javafx.scene.control.Label)field(main,"resultLabel")).getText().contains("선택한 장소 없음"));
             assertEquals("코스 만들기 →",((javafx.scene.control.Button)field(main,"recommendButton")).getText());
             // Reopen the empty course and complete without adding a place.
             invoke(main,"onRecommendClick");invoke(editor,"onFinish");
@@ -344,7 +892,7 @@ class MapSearchTest {
             var course=(javafx.scene.control.TitledPane)field(editor,"coursePane");course.setExpanded(true);root.applyCss();root.layout();
             assertEquals(mapHeight,map.getHeight(),0.1);assertEquals(footerY,footer.localToScene(footer.getBoundsInLocal()).getMinY(),0.1);
             assertTrue(root.lookupAll(".list-cell").stream().anyMatch(node->node instanceof javafx.scene.control.ListCell<?> cell
-                    && first.equals(cell.getItem()) && cell.getText().contains("1인 5,000원") && cell.getText().contains("2명 10,000원")));
+                    && first.equals(cell.getItem()) && cell.getText().contains("5,000원/인") && cell.getText().contains("2명 예상 총비용 10,000원")));
             invoke(editor,"onRecommendNext");root.applyCss();root.layout();
             assertEquals(mapHeight,map.getHeight(),0.1);assertEquals(footerY,footer.localToScene(footer.getBoundsInLocal()).getMinY(),0.1);
             course.setExpanded(false);root.layout();assertEquals(mapHeight,map.getHeight(),0.1);
@@ -563,6 +1111,7 @@ class MapSearchTest {
             window.bridgeSelections = [];
             window.externalLinks = [];
             window.routeLines = [];
+            window.routeOverlays = [];
             window.pins = [];
             window.mapPans = [];
             window.zoomCalls = [];
@@ -591,7 +1140,15 @@ class MapSearchTest {
                 Polyline: function (options) {
                     this.options = options;
                     this.setMap = function (map) { this.attached = map !== null; };
+                    this.setOptions = function (value) { Object.assign(this.options, value); };
+                    this.setZIndex = function (value) { this.zIndex = value; };
                     routeLines.push(this);
+                },
+                CustomOverlay: function (options) {
+                    this.options = options;
+                    this.setMap = function (map) { this.attached = map !== null; };
+                    this.setPosition = function (position) { this.position = position; };
+                    routeOverlays.push(this);
                 },
                 Map: function (element, options) {
                     window.testMap = this;

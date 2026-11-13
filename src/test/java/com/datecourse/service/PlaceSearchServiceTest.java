@@ -47,10 +47,11 @@ class PlaceSearchServiceTest {
         assertTrue(result.course().isEmpty());
     }
 
-    @Test void excludesBrokenCoordinatesAndNegativePrices() {
+    @Test void excludesBrokenCoordinatesAndRejectsNegativePricesAtConstruction() {
         assertTrue(service.nearby(List.of(place(1, "MEAL", Double.NaN, 100),
-                place(2, "MEAL", 100, 100), place(3, "MEAL", 35.157, -1)),
+                place(2, "MEAL", 100, 100)),
                 35.157, 129.06, 500, List.of()).isEmpty());
+        assertThrows(IllegalArgumentException.class, () -> place(3, "MEAL", 35.157, -1));
     }
 
     @Test void groupCostDoesNotOverflowInteger() {

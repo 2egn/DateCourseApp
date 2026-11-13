@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-13T13:03:12.935706+00:00",
+  "dataset_sha256": "eadae051e2272312c23de2cbafa06bf50f637f0c85cbdaf9bbda5ffab1b0f2d7",
+  "origin": "Official public facility pages, not Google response content",
+  "updates": [
+    {
+      "local_place_id": "LIB:73",
+      "expected": {
+        "name": "연지동작은도서관",
+        "phone": "051-605-6562",
+        "website": "https://www.smalllibrary.org/library/detail/1047549"
+      },
+      "values": {
+        "phone": "051-605-6579",
+        "website": "https://www.mcst.go.kr/slibrary/library/detail/1047549",
+        "website_identity_verified": true,
+        "website_aliases": [
+          "https://www.smalllibrary.org/library/detail/1047549"
+        ]
+      },
+      "source_url": "https://www.mcst.go.kr/slibrary/library/detail/1047549",
+      "source_note": "Current official facility page; prior phone differs; original URL redirects to this same facility."
+    },
+    {
+      "local_place_id": "LIB:69",
+      "expected": {
+        "name": "범천작은도서관",
+        "phone": "051-605-6976",
+        "website": "https://www.smalllibrary.org/library/detail/1047659"
+      },
+      "values": {
+        "phone": "051-605-6971",
+        "website": "https://www.mcst.go.kr/slibrary/library/detail/1047532",
+        "website_identity_verified": true
+      },
+      "source_url": "https://www.mcst.go.kr/slibrary/library/detail/1047532",
+      "source_note": "Prior website points to a different library; phone and facility page verified against the official record."
+    },
+    {
+      "local_place_id": "LIB:21",
+      "expected": {
+        "name": "부전도서관",
+        "phone": "051-802-5902(내선1)",
+        "website": "https://home.pen.go.kr/bujunlib/main.do"
+      },
+      "values": {
+        "phone": "051-802-5901",
+        "website": "https://home.pen.go.kr/bujunlib/main.do",
+        "website_identity_verified": true,
+        "visit_available": false
+      },
+      "source_url": "https://home.pen.go.kr/bujunlib/main.do",
+      "source_note": "Official library footer phone; main page announces closure until normal operation resumes."
+    }
+  ]
+}

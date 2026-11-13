@@ -12,6 +12,7 @@ public final class MapBridge {
     private final Consumer<String> failed;
     private final Consumer<String> externalLink;
     private final Consumer<Long> placeSelected;
+    private final Runnable originChangeBlocked;
     public MapBridge(
             Runnable ready,
             BiConsumer<Double, Double> selected,
@@ -27,14 +28,21 @@ public final class MapBridge {
 
     public MapBridge(Runnable ready, BiConsumer<Double, Double> selected,
                      Consumer<String> failed, Consumer<String> externalLink, Consumer<Long> placeSelected) {
+        this(ready, selected, failed, externalLink, placeSelected, () -> {});
+    }
+
+    public MapBridge(Runnable ready, BiConsumer<Double, Double> selected, Consumer<String> failed,
+                     Consumer<String> externalLink, Consumer<Long> placeSelected, Runnable originChangeBlocked) {
         this.ready = ready;
         this.selected = selected;
         this.failed = failed;
         this.externalLink = externalLink;
         this.placeSelected = placeSelected;
+        this.originChangeBlocked = originChangeBlocked;
     }
 
     public void onMapReady() { ready.run(); }
+    public void onOriginChangeBlocked() { originChangeBlocked.run(); }
 
     public void onLocationSelected(double latitude, double longitude) {
         if (Double.isFinite(latitude) && Double.isFinite(longitude)

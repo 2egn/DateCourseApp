@@ -48,7 +48,7 @@ class ReplaceIntegratedDataTest {
                     throw new UnsupportedOperationException(method.getName());
                 });
         ReplaceIntegratedData.executeScript(recording,
-                Files.readAllLines(Path.of("database/05_replace_integrated_data.sql")), 250, progress::add);
+                Files.readAllLines(Path.of("data/sql/05_replace_integrated_data.sql")), 250, progress::add);
         assertEquals(25, batches.size());
         assertEquals(6139, progress.get(progress.size() - 1));
         assertEquals(250, progress.get(0));

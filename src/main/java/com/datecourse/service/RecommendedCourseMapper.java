@@ -14,6 +14,8 @@ public final class RecommendedCourseMapper {
         if (places.isEmpty() || people < 1) {
             throw new IllegalArgumentException("추천 장소와 인원을 확인해 주세요.");
         }
+        if (places.stream().anyMatch(p -> !p.priceEstimate().exact()))
+            throw new IllegalArgumentException("이전 편집 모델에는 가격 미확인·범위를 전달할 수 없습니다.");
         List<CoursePlace> coursePlaces = places.stream()
                 .map(place -> new CoursePlace(
                         place.placeId() == null || place.placeId().isBlank()

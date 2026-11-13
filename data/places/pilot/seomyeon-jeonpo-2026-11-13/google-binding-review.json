@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "dataset_sha256": "eadae051e2272312c23de2cbafa06bf50f637f0c85cbdaf9bbda5ffab1b0f2d7",
+  "checked_at": "2026-11-13T12:28:09.256925+00:00",
+  "pending": [
+    {
+      "local_place_id": "SBIZ:MA010120220813751543",
+      "candidate_google_place_id": "ChIJiYlDsmjraDURn7UoK53tA6I",
+      "reasons": [
+        "NAME_OR_BRANCH_DIFFERS"
+      ]
+    },
+    {
+      "local_place_id": "SBIZ:MA0106202201A2364418",
+      "candidate_google_place_id": "ChIJV0Y63GTraDURXVD_ROmxm28",
+      "reasons": [
+        "NAME_OR_BRANCH_DIFFERS",
+        "LOCATION_OVER_200M",
+        "ROAD_OR_BUILDING_DIFFERS"
+      ]
+    },
+    {
+      "local_place_id": "STD:15017323:e33f9aadac190db685befd1a",
+      "candidate_google_place_id": "ChIJ4YoP9G_raDURGq1G7z_IP1o",
+      "reasons": [
+        "ROAD_OR_BUILDING_DIFFERS",
+        "OPERATION_NOT_CONFIRMED"
+      ]
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 package kr.ac.university.localdb.db;
 
 import com.datecourse.model.Place;
+import com.datecourse.model.PlaceDetails;
+import com.datecourse.model.PriceEstimate;
+import com.datecourse.service.PlaceSource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -13,7 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceRepository {
+public class PlaceRepository implements PlaceSource {
     private final DataSource dataSource;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -46,8 +49,11 @@ public class PlaceRepository {
                             data.path("category").asText(),
                             data.path("lat").asDouble(),
                             data.path("lon").asDouble(),
-                            data.path("price").asInt(),
-                            data.path("rating").asDouble()
+                            data.path("price").isIntegralNumber() && data.path("price").canConvertToInt()
+                                    && data.path("price").asInt() > 0
+                                    ? PriceEstimate.exact(data.path("price").asInt()) : PriceEstimate.unknown(),
+                            data.path("rating").asDouble(),
+                            PlaceDetails.EMPTY
                     );
                     places.add(place);
                 }

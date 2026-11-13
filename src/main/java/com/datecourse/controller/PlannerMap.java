@@ -33,6 +33,8 @@ final class PlannerMap {
     private List<Stop> walkingStops = List.of();
     private WalkingRoute walkingRoute;
     private Task<WalkingRoute> walkingTask;
+    private java.util.function.Function<String, Runnable> loadingUi = text -> () -> {};
+    void setLoadingUi(java.util.function.Function<String, Runnable> ui) { loadingUi = ui; }
     private long walkingVersion;
     private boolean walkingRequested;
     private String walkingMessage = "";
@@ -52,6 +54,8 @@ final class PlannerMap {
     private Consumer<Long> placeSelected = ignored -> {};
     private int radius = 500;
     private boolean locked;
+    private boolean originLocked, walkingPending;
+    private Runnable originChangeBlocked = () -> {};
 
     PlannerMap(WebView view, BiConsumer<Double, Double> selected, Consumer<String> error) {
         this(view, selected, error, MapPageServer::sharedPage);
@@ -61,7 +65,11 @@ final class PlannerMap {
         this.view = view;
         this.error = error;
         this.pageSource = pageSource;
-        bridge = new MapBridge(() -> { ready = true; render(true); }, selected, message -> {
+        bridge = new MapBridge(() -> {
+            ready = true;
+            render(true);
+            if (walkingPending) requestWalkingRoute(false);
+        }, selected, message -> {
             ready = false;
             loaded = false;
             error.accept(message);
@@ -72,7 +80,7 @@ final class PlannerMap {
             }, "planner-external-link");
             worker.setDaemon(true);
             worker.start();
-        }, id -> placeSelected.accept(id));
+        }, id -> placeSelected.accept(id), () -> originChangeBlocked.run());
         view.getEngine().getLoadWorker().stateProperty().addListener((obs, old, state) -> {
             if (state == Worker.State.SCHEDULED) ready = false;
             else if (state == Worker.State.SUCCEEDED) {
@@ -107,6 +115,15 @@ final class PlannerMap {
         load();
     }
 
+    void dispose() {
+        walkingPending = false;
+        walkingVersion++;
+        if (walkingTask != null) walkingTask.cancel();
+        ready = false;
+        view.getEngine().getLoadWorker().cancel();
+        view.getEngine().load(null);
+    }
+
     void present(RoutePlan plan, Place candidate, int radius, boolean locked, boolean fit) {
         presentCandidates(plan, candidate == null ? List.of() : List.of(candidate), candidate, radius, locked, fit);
     }
@@ -124,6 +141,7 @@ final class PlannerMap {
     private void render(boolean fit) {
         if (!ready || plan == null) return;
         try {
+            sendOriginLock();
             ObjectMapper mapper = new ObjectMapper();
             view.getEngine().executeScript("window.presentRoute(" + mapper.writeValueAsString(plan) + ","
                     + mapper.writeValueAsString(candidate) + "," + radius + "," + locked + "," + fit + ","
@@ -151,6 +169,16 @@ final class PlannerMap {
     }
 
     void setOnPlaceSelected(Consumer<Long> listener) { placeSelected = listener; }
+    void setOnOriginChangeBlocked(Runnable listener) { originChangeBlocked = listener; }
+
+    void setOriginLocked(boolean value) { originLocked = value; if (ready) sendOriginLock(); }
+    private void sendOriginLock() {
+        view.getEngine().executeScript("if (typeof window.setOriginLocked === 'function') window.setOriginLocked(" + originLocked + ")");
+    }
+
+    void toggleWalkingExplanation() {
+        if (ready) view.getEngine().executeScript("if (typeof window.toggleWalkingExplanation === 'function') window.toggleWalkingExplanation()");
+    }
 
     private List<Stop> currentWalkingStops() {
         if (plan == null) return List.of();
@@ -168,18 +196,30 @@ final class PlannerMap {
         if (current.equals(walkingStops)) return;
         walkingStops = current;
         walkingVersion++;
+        walkingPending = false;
         if (walkingTask != null) walkingTask.cancel();
         walkingRoute = null;
         walkingMessage = walkingRequested ? "코스가 바뀌었어요. 도보 경로 조회를 눌러 다시 확인하세요." : "";
     }
 
     void requestWalkingRoute() {
+        requestWalkingRoute(true);
+    }
+
+    void requestWalkingRouteWhenReady() {
+        if (currentWalkingStops().size() < 2) return;
+        if (!ready) { walkingPending = true; return; }
+        requestWalkingRoute(false);
+    }
+
+    private void requestWalkingRoute(boolean fitResult) {
         synchronizeWalkingRoute();
         walkingRequested = true;
         if (!ready) {
             error.accept("지도를 불러온 뒤 도보 경로를 조회해 주세요.");
             return;
         }
+        walkingPending = false;
         if (walkingStops.size() < 2) {
             walkingMessage = "출발 위치를 선택하고 코스에 장소를 담거나 추천 후보를 선택해 주세요.";
             renderWalkingRoute(false);
@@ -195,19 +235,24 @@ final class PlannerMap {
             @Override protected WalkingRoute call() throws Exception { return walkingRouter.route(stops); }
         };
         walkingTask = task;
+        Runnable finishLoading = loadingUi.apply("도보 경로를 조회하고 있어요");
+        task.setOnCancelled(event -> finishLoading.run());
         task.setOnSucceeded(event -> {
+            finishLoading.run();
             if (walkingVersion != version || walkingTask != task) return;
             walkingRoute = task.getValue();
             walkingMessage = "";
-            renderWalkingRoute(true);
+            renderWalkingRoute(fitResult);
         });
         task.setOnFailed(event -> {
+            finishLoading.run();
             if (walkingVersion != version || walkingTask != task) return;
             walkingRoute = null;
             walkingMessage = task.getException() instanceof java.io.IOException
                     || task.getException() instanceof IllegalArgumentException ? task.getException().getMessage()
                     : "도보 경로를 불러오지 못했어요. 다시 조회해 주세요.";
             renderWalkingRoute(false);
+            error.accept(walkingMessage);
         });
         Thread worker = new Thread(task, "planner-walking-route");
         worker.setDaemon(true);

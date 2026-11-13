@@ -18,7 +18,7 @@ public final class PlaceSearchService {
                 .filter(p -> valid(p) && (categories.isEmpty() || categories.contains(categoryName(p.category()))))
                 .map(p -> new NearbyPlace(p, calculation.calculateDistance(lat, lng, p.lat(), p.lng())))
                 .filter(p -> p.distanceMeters() <= radius)
-                .sorted(Comparator.comparingInt((NearbyPlace p) -> p.place().price())
+                .sorted(Comparator.comparingLong((NearbyPlace p) -> p.place().priceEstimate().sortUpperBound())
                         .thenComparingDouble(NearbyPlace::distanceMeters)
                         .thenComparingLong(p -> p.place().recordId()))
                 .toList();
@@ -55,7 +55,10 @@ public final class PlaceSearchService {
         Comparator<NearbyPlace> cheapest = Comparator.comparingInt((NearbyPlace p) -> p.place().price())
                 .thenComparingDouble(NearbyPlace::distanceMeters).thenComparingLong(p -> p.place().recordId());
         Map<String, NearbyPlace> unique = new LinkedHashMap<>();
-        nearby.stream().sorted(cheapest).forEach(p -> unique.putIfAbsent(identity(p.place()), p));
+        // This older batch recommendation model has one exact total only.
+        // Do not pretend an unknown/range price satisfies its whole-group budget.
+        nearby.stream().filter(p -> p.place().priceEstimate().exact()).sorted(cheapest)
+                .forEach(p -> unique.putIfAbsent(identity(p.place()), p));
         List<NearbyPlace> course = new ArrayList<>();
         List<String> missing = new ArrayList<>();
         Set<String> chosen = new HashSet<>();
@@ -99,6 +102,6 @@ public final class PlaceSearchService {
     private boolean valid(Place p) {
         return Double.isFinite(p.lat()) && Double.isFinite(p.lng())
                 && p.lat() >= -90 && p.lat() <= 90 && p.lng() >= -180 && p.lng() <= 180
-                && !(p.lat() == 0 && p.lng() == 0) && p.price() >= 0;
+                && !(p.lat() == 0 && p.lng() == 0);
     }
 }

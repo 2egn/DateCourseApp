@@ -14,6 +14,8 @@
     let nextRadiusMeter = 500;
     let selectedPosition;
     let selectedPlaceName = "";
+    let originLocked = false;
+    window.setOriginLocked = function (value) { originLocked = !!value; };
     let locationVersion = 0;
     let locationNameTimer;
     let radiusMeter = 500;
@@ -123,7 +125,7 @@
             button.addEventListener("click", function () {
                 const latitude = Number(place.y);
                 const longitude = Number(place.x);
-                window.selectMapLocation(latitude, longitude, place.place_name);
+                if (window.selectMapLocation(latitude, longitude, place.place_name) === false) return;
                 map.setCenter(new kakao.maps.LatLng(latitude, longitude));
                 searchInput.value = place.place_name;
                 clearSearchResults();
@@ -302,6 +304,11 @@
     }
 
     window.selectMapLocation = function (latitude, longitude, placeName) {
+        if (originLocked && !suppressLocationNotification) {
+            if (window.javaMapBridge && typeof window.javaMapBridge.onOriginChangeBlocked === 'function')
+                window.javaMapBridge.onOriginChangeBlocked();
+            return false;
+        }
         if (!ready || !Number.isFinite(latitude) || !Number.isFinite(longitude)
             || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) return;
         const version = ++locationVersion;
@@ -320,6 +327,7 @@
         updateStatus();
         notifyLocation();
         if (!hasName) resolveSelectedAddress(latitude, longitude, version);
+        return true;
     };
 
     let resultMarkers = [];
@@ -480,6 +488,9 @@
             if (connectRoute || panelManaged || routePresentation) {
                 pin.visitId = visits[index].visitId;
                 pin.visitClick = function () {
+                    const legIndex = courseIndex >= 0 ? courseIndex
+                        : routeCandidate && routeCandidate.recordId === item.recordId ? plannerCourse.length : -1;
+                    if (legIndex >= 0 && window.selectWalkingLeg(legIndex, point)) return;
                     if (routePresentation && nearby && window.javaMapBridge && typeof window.javaMapBridge.onPlaceSelected === 'function')
                         window.javaMapBridge.onPlaceSelected(String(item.recordId));
                     itinerary.openVisit(pin.visitId);
@@ -636,18 +647,42 @@
     };
 
     let walkingShapes = [];
+    let walkingListeners = [];
+    let walkingExplanationOpen = false;
+    let walkingSelection = 0;
+    let walkingPinnedSelection = -1;
+    let walkingClick = false;
+    function claimWalkingClick() {
+        walkingClick = true;
+        if (kakao.maps.event.preventMap) kakao.maps.event.preventMap();
+        setTimeout(function () { walkingClick = false; }, 0);
+    }
+    window.dismissWalkingPopup = function () { return false; };
+    window.selectWalkingLeg = function () { return false; };
+    window.toggleWalkingExplanation = function () {
+        walkingExplanationOpen = !walkingExplanationOpen;
+        document.getElementById('walking-panel').hidden = !walkingExplanationOpen;
+    };
     window.showWalkingRoute = function (route, message, fit) {
+        window.selectWalkingLeg = function () { return false; };
+        walkingListeners.forEach(function (entry) { kakao.maps.event.removeListener(entry[0], entry[1], entry[2]); });
+        walkingListeners = [];
         walkingShapes.forEach(function (shape) { shape.setMap(null); });
         walkingShapes = [];
         const panel = document.getElementById('walking-panel');
         const summary = document.getElementById('walking-summary');
         const details = document.getElementById('walking-details');
         const directions = document.getElementById('walking-directions');
+        const legList = document.getElementById('walking-leg-list');
         directions.textContent = '';
-        panel.hidden = !route && !message;
+        legList.textContent = '';
+        panel.hidden = !walkingExplanationOpen;
         details.hidden = !route;
         if (!route || !ready) {
-            summary.textContent = message || '';
+            walkingSelection = 0;
+            walkingPinnedSelection = -1;
+            window.dismissWalkingPopup = function () { return false; };
+            summary.textContent = message || '도보 경로를 계산해 주세요.';
             return;
         }
         // Draw only the actual TMAP walking geometry on the Kakao map.
@@ -655,9 +690,98 @@
         let points = 0;
         function meters(value) { return value >= 1000 ? (value / 1000).toFixed(2) + 'km' : value + 'm'; }
         function duration(seconds) { return seconds === 0 ? '0분' : '약 ' + Math.ceil(seconds / 60) + '분'; }
+        const colors = ['#2563eb', '#b45309', '#15803d', '#9333ea', '#be185d', '#0e7490'];
+        const groups = [];
+        let selected = Math.min(walkingSelection, Math.max(0, route.legs.length - 1));
+        let emphasized = -1;
+        const popupBody = document.createElement('div');
+        popupBody.className = 'walking-route-tooltip';
+        const popupTitle = document.createElement('div');
+        const popupFacts = document.createElement('div');
+        popupFacts.className = 'walking-tooltip-facts';
+        popupBody.appendChild(popupTitle);
+        popupBody.appendChild(popupFacts);
+        const popup = new kakao.maps.CustomOverlay({content:popupBody, yAnchor:1.35, zIndex:40});
+        let popupVisible = false;
+        walkingShapes.push(popup);
+        window.dismissWalkingPopup = function () {
+            const visible = popupVisible;
+            walkingPinnedSelection = -1;
+            popup.setMap(null);
+            popupVisible = false;
+            return visible;
+        };
+        function showPopup(index, position) {
+            const leg = route.legs[index];
+            popupTitle.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
+            popupFacts.textContent = meters(leg.distance) + ' · ' + duration(leg.time);
+            const surface = document.getElementById('map');
+            const width = Math.max(1, Math.min(248, surface.clientWidth - 24));
+            popupBody.style.width = width + 'px';
+            popup.setMap(map);
+            popupVisible = true;
+            const projection = map.getProjection();
+            const point = projection.containerPointFromCoords(position || groups[index].anchor);
+            const height = popupBody.offsetHeight || 80;
+            popup.setPosition(projection.coordsFromContainerPoint(new kakao.maps.Point(
+                Math.max(width / 2 + 8, Math.min(surface.clientWidth - width / 2 - 8, point.x)),
+                Math.max(height * 1.35 + 8, Math.min(surface.clientHeight - 8, point.y)))));
+        }
+        function listen(target, event, callback) {
+            kakao.maps.event.addListener(target, event, callback);
+            walkingListeners.push([target, event, callback]);
+        }
+        function emphasize(index) {
+            groups.forEach(function (group, number) { group.button.setAttribute('aria-pressed', String(number === selected)); });
+            if (emphasized === index) return;
+            emphasized = index;
+            groups.forEach(function (group, number) {
+                const active = number === index;
+                group.lines.forEach(function (line) {
+                    line.setOptions({strokeWeight:active ? 6 : 4, strokeOpacity:active ? 1 : 0.55});
+                    line.setZIndex(active ? 12 : 4);
+                });
+                group.outlines.forEach(function (line) { line.setZIndex(active ? 11 : 3); });
+            });
+        }
+        function choose(index, position, pinPopup) {
+            if (!Number.isInteger(index) || index < 0 || index >= groups.length) return false;
+            selected = index;
+            walkingSelection = index;
+            emphasize(index);
+            const leg = route.legs[index];
+            summary.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name
+                + ' · ' + meters(leg.distance) + ' · ' + duration(leg.time);
+            Array.from(directions.children).forEach(function (item, number) {
+                item.hidden = number !== index;
+            });
+            if (pinPopup !== false && groups[index].anchor) {
+                walkingPinnedSelection = index;
+                claimWalkingClick();
+                showPopup(index, position);
+            }
+            return true;
+        }
         summary.textContent = 'TMAP 도보 · ' + meters(route.totalDistance) + ' · ' + duration(route.totalTime)
-            + ' · ' + route.legs.length + '구간 (파란 실선)';
+            + ' · ' + route.legs.length + '구간';
         route.legs.forEach(function (leg, index) {
+            const color = colors[index % colors.length];
+            const caption = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
+            const facts = meters(leg.distance) + ' · ' + duration(leg.time);
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'walking-leg-button';
+            button.style.borderLeftColor = color;
+            button.textContent = (index + 1) + ' · ' + leg.to.name + ' · ' + facts;
+            button.title = caption + ' · ' + facts;
+            button.setAttribute('aria-label', button.title);
+            button.addEventListener('click', function () { choose(index); });
+            button.addEventListener('mouseenter', function () { emphasize(index); });
+            button.addEventListener('mouseleave', function () { emphasize(selected); });
+            legList.appendChild(button);
+            const group = {lines:[], outlines:[], button:button};
+            groups.push(group);
+            let badgePosition = null;
             leg.paths.forEach(function (coordinates) {
                 const path = coordinates.map(function (point) {
                     const position = new kakao.maps.LatLng(point.lat, point.lng);
@@ -665,18 +789,44 @@
                     return position;
                 });
                 if (path.length < 2) return;
+                if (!badgePosition) badgePosition = path[Math.floor(path.length / 2)];
                 const outline = new kakao.maps.Polyline({path:path, strokeWeight:7, strokeColor:'#ffffff',
                     strokeOpacity:0.95, strokeStyle:'solid', zIndex:3});
-                const line = new kakao.maps.Polyline({path:path, strokeWeight:4, strokeColor:'#2563eb',
+                const line = new kakao.maps.Polyline({path:path, strokeWeight:4, strokeColor:color,
                     strokeOpacity:0.95, strokeStyle:'solid', zIndex:4});
                 outline.setMap(map); line.setMap(map);
                 walkingShapes.push(outline, line);
+                group.lines.push(line);
+                group.outlines.push(outline);
+                function show(event) {
+                    emphasize(index);
+                    if (walkingPinnedSelection >= 0) return;
+                    showPopup(index, event && event.latLng ? event.latLng : path[0]);
+                }
+                listen(line, 'mouseover', show);
+                listen(line, 'mousemove', show);
+                listen(line, 'mouseout', function () {
+                    if (walkingPinnedSelection < 0) { popup.setMap(null); popupVisible = false; }
+                    emphasize(selected);
+                });
+                listen(line, 'click', function (event) { choose(index, event && event.latLng); });
             });
+            group.anchor = badgePosition;
+            if (badgePosition) {
+                const badge = document.createElement('button');
+                badge.type = 'button';
+                badge.className = 'walking-leg-badge';
+                badge.textContent = String(index + 1);
+                badge.style.backgroundColor = color;
+                badge.title = caption + ' · ' + facts;
+                badge.setAttribute('aria-label', badge.title);
+                badge.addEventListener('click', function () { choose(index, badgePosition); });
+                const marker = new kakao.maps.CustomOverlay({position:badgePosition, content:badge,
+                    clickable:true, yAnchor:1.2 + index % 3, zIndex:15});
+                marker.setMap(map);
+                walkingShapes.push(marker);
+            }
             const item = document.createElement('li');
-            const title = document.createElement('strong');
-            title.textContent = (index + 1) + '. ' + leg.from.name + ' → ' + leg.to.name
-                + ' · ' + meters(leg.distance) + ' · ' + duration(leg.time);
-            item.appendChild(title);
             const instructions = document.createElement('ol');
             leg.steps.forEach(function (step) {
                 const instruction = document.createElement('li');
@@ -684,8 +834,13 @@
                 instructions.appendChild(instruction);
             });
             if (leg.steps.length) item.appendChild(instructions);
+            else item.textContent = '상세 안내가 없어요.';
             directions.appendChild(item);
         });
+        window.selectWalkingLeg = choose;
+        choose(selected, null, false);
+        if (walkingPinnedSelection >= 0 && groups[walkingPinnedSelection] && groups[walkingPinnedSelection].anchor)
+            showPopup(walkingPinnedSelection);
         if (fit && points) map.setBounds(bounds, 48, 48, 48, 48);
     };
 
@@ -735,6 +890,8 @@
                     strokeStyle: "solid", fillOpacity: 0, zIndex: -1
                 });
                 function select(event) {
+                    if (walkingClick) return;
+                    if (window.dismissWalkingPopup()) return;
                     if (routeLocked) return;
                     dismissSearch();
                     window.selectMapLocation(event.latLng.getLat(), event.latLng.getLng());

@@ -150,7 +150,11 @@ public final class UiTheme {
         JPanel panel=new JPanel(new BorderLayout(0,30));
         panel.add(heading("다시 만나서 반가워요","아이디와 비밀번호로 로그인해 주세요"),BorderLayout.NORTH);
         JPanel fields=new JPanel();fields.setLayout(new BoxLayout(fields,BoxLayout.Y_AXIS));
-        fields.add(inputRow("아이디",id));fields.add(Box.createVerticalStrut(22));fields.add(inputRow("비밀번호",password));
+        fields.add(inputRow("아이디",id));fields.add(Box.createVerticalStrut(22));
+        JPanel passwordRow = inputRow("비밀번호",password);
+        passwordRow.add(new CapsLockHint(password), BorderLayout.SOUTH);
+        passwordRow.setMaximumSize(new Dimension(Integer.MAX_VALUE,110));
+        fields.add(passwordRow);
         rememberId.setFont(BODY.deriveFont(14f));rememberId.setForeground(TEXT);
         rememberId.setOpaque(false);rememberId.setAlignmentX(Component.LEFT_ALIGNMENT);
         rememberId.setIcon(new RememberIdIcon());
