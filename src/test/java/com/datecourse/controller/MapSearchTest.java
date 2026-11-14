@@ -31,6 +31,7 @@ class MapSearchTest {
     @Test
     void myPageUsesSharedLoadingAndMenuLogoutClearsPlannerSession() throws Exception {
         CountDownLatch loaded=new CountDownLatch(1);
+        CountDownLatch releaseProfile=new CountDownLatch(1);
         var opened=new java.util.concurrent.atomic.AtomicInteger();
         MyPageController page=fx(() -> {
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/my-page-view.fxml"));
@@ -41,10 +42,12 @@ class MapSearchTest {
             controller.useFeedback(new PageFeedback(host));
             ((javafx.scene.control.Label)field(controller,"statusLabel")).textProperty()
                     .addListener((o,old,text)->{if(text.isEmpty())loaded.countDown();});
-            controller.configure(()->new kr.ac.university.localdb.db.MemberRepository.Profile("me@test","내 이름",null),
+            controller.configure(new com.datecourse.service.UserContext(new kr.ac.university.localdb.UserSession(7,"내 이름"),
+                    ()->{releaseProfile.await();return new kr.ac.university.localdb.db.MemberRepository.Profile("me@test","내 이름",null);},java.util.List::of),
                     opened::incrementAndGet,opened::incrementAndGet);
             assertTrue(controller.isLoading());return controller;
         });
+        releaseProfile.countDown();
         assertTrue(loaded.await(10,TimeUnit.SECONDS));
         fx(() -> {
             assertEquals("내 이름",((javafx.scene.control.Label)field(page,"nameLabel")).getText());
@@ -94,6 +97,98 @@ class MapSearchTest {
         assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
         script(engine,"routeLines[1].onmouseover();testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
         assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
+    }
+
+    @Test void accountPagesSharePrefetchedDataAndDoNotQueryOnRepeatedVisits() throws Exception {
+        var profileQueries=new java.util.concurrent.atomic.AtomicInteger();
+        var courseQueries=new java.util.concurrent.atomic.AtomicInteger();
+        var profile=new kr.ac.university.localdb.db.MemberRepository.Profile("cached@test","캐시 회원",null);
+        var plan=new com.datecourse.model.RoutePlan(35,129,2,500,"저장된 코스",java.util.List.of());
+        var saved=new com.datecourse.model.SavedCourse(1,7,plan);
+        try(var context=new com.datecourse.service.UserContext(new kr.ac.university.localdb.UserSession(7,"캐시 회원"),
+                ()->{profileQueries.incrementAndGet();return profile;},
+                ()->{courseQueries.incrementAndGet();return java.util.List.of(saved);})) {
+            context.preload();context.profile().get(5,TimeUnit.SECONDS);context.courses().get(5,TimeUnit.SECONDS);
+            var savedPage=fx(()->{
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/saved-course-view.fxml"));loader.load();
+                SavedCourseController controller=loader.getController();
+                var repository=new kr.ac.university.localdb.db.SavedCourseRepository(new org.h2.jdbcx.JdbcDataSource());
+                controller.configure(repository,context,c->{});controller.configure(repository,context,c->{});
+                assertSame(context,field(controller,"userContext"));assertFalse(controller.isLoading());
+                assertEquals(1,((javafx.scene.control.ListView<?>)field(controller,"courseList")).getItems().size());
+                FXMLLoader profileLoader=new FXMLLoader(getClass().getResource("/my-page-view.fxml"));profileLoader.load();
+                MyPageController page=profileLoader.getController();
+                page.configure(context,()->{},()->{});page.configure(context,()->{},()->{});
+                assertSame(context,field(page,"userContext"));assertFalse(page.isLoading());
+                assertEquals("캐시 회원",((javafx.scene.control.Label)field(page,"nameLabel")).getText());
+                return controller;
+            });
+            assertEquals(1,profileQueries.get());assertEquals(1,courseQueries.get());
+            CountDownLatch refreshed=new CountDownLatch(1);
+            fx(()->{
+                ((javafx.scene.control.Label)field(savedPage,"messageLabel")).textProperty().addListener((o,a,b)->{if(b.isEmpty())refreshed.countDown();});
+                invoke(savedPage,"onRefreshClick");return null;
+            });
+            assertTrue(refreshed.await(5,TimeUnit.SECONDS));
+            assertEquals(2,courseQueries.get());assertEquals(1,profileQueries.get());
+        }
+    }
+
+    @Test void oldAccountProfileCannotRepopulateThePageAfterLogout() throws Exception {
+        CountDownLatch release=new CountDownLatch(1);
+        var oldContext=new com.datecourse.service.UserContext(new kr.ac.university.localdb.UserSession(1,"이전 회원"),()->{
+            release.await(5,TimeUnit.SECONDS);return new kr.ac.university.localdb.db.MemberRepository.Profile("old@test","이전 회원",null);
+        },null);
+        var oldFuture=oldContext.profile();
+        try(var next=new com.datecourse.service.UserContext(new kr.ac.university.localdb.UserSession(2,"새 회원"),
+                ()->new kr.ac.university.localdb.db.MemberRepository.Profile("new@test","새 회원",null),null)) {
+            next.profile().get(5,TimeUnit.SECONDS);
+            var page=fx(()->{
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/my-page-view.fxml"));loader.load();
+                MyPageController controller=loader.getController();controller.configure(oldContext,()->{},()->{});
+                oldContext.close();controller.clear();controller.configure(next,()->{},()->{});return controller;
+            });
+            release.countDown();oldFuture.get(5,TimeUnit.SECONDS);
+            fx(()->{assertEquals("새 회원",((javafx.scene.control.Label)field(page,"nameLabel")).getText());return null;});
+        } finally {release.countDown();oldContext.close();}
+    }
+
+    @Test void editingLegRangeFocusAndCandidateCountFollowTheActiveSection() throws Exception {
+        fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();
+            RouteEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
+            var a=new com.datecourse.model.Place(1,"a","A","MEAL",35.001,129,3000,4);
+            var b=new com.datecourse.model.Place(2,"b","B","MEAL",35.002,129,3000,4);
+            editor.begin(new com.datecourse.model.RoutePlan(35,129,2,1000,"",java.util.List.of(a,b),java.util.Map.of(1L,500,2L,500)),java.util.List.of(a,b),p->{},()->{});
+            var list=(javafx.scene.control.ListView<?>)field(editor,"placeList");
+            var map=field(editor,"map");
+            list.getSelectionModel().select(1);
+            ((javafx.scene.control.Slider)field(editor,"selectedRadiusSlider")).setValue(700);
+            assertEquals(1,field(map,"editingLegIndex"));assertEquals(700,field(map,"editingLegRadius"));
+            assertEquals(700,editor.draftSnapshot().arrivalRadii().get(2L));
+            invoke(editor,"onModifyConditions");
+            assertEquals(-1,list.getSelectionModel().getSelectedIndex());
+            assertNull(field(map,"editingLegIndex"));assertNull(field(map,"editingLegRadius"));
+            var conditionCount=(javafx.scene.control.ComboBox<Integer>)field(editor,"conditionCandidateLimitBox");
+            var resultCount=(javafx.scene.control.ComboBox<Integer>)field(editor,"candidateLimitBox");
+            conditionCount.setValue(10);assertEquals(10,resultCount.getValue());
+            resultCount.setValue(20);assertEquals(20,conditionCount.getValue());
+            return null;
+        });
+        WebEngine engine=loadMap(640,600);
+        script(engine,"""
+            window.presentRoute({startLat:35,startLng:129,radius:1000,places:[
+                {recordId:1,placeId:'a',name:'A',category:'MEAL',lat:35.001,lng:129},
+                {recordId:2,placeId:'b',name:'B',category:'MEAL',lat:35.002,lng:129}
+            ]},null,500,true,false,[]);
+            window.green=pins.find(function(p){return p.options.strokeColor==='#15803d';});
+            window.focusRouteLeg(1,700);
+            """);
+        assertEquals(true,script(engine,"green.position.getLat()===35.001 && green.radius===700 && document.getElementById('next-range-label').textContent.includes('A → B')"));
+        script(engine,"window.focusRouteLeg(0,300)");
+        assertEquals(true,script(engine,"green.position.getLat()===35 && green.radius===300"));
+        script(engine,"window.focusRouteLeg(null,null)");
+        assertEquals(true,script(engine,"green.position.getLat()===35.002 && green.radius===500 && document.getElementById('next-range-label').textContent.includes('마지막 장소')"));
     }
 
     @Test void commonResetRestoresDefaultsAndClearsSelectedOriginAndMapSnapshot() throws Exception {
@@ -1277,8 +1372,8 @@ class MapSearchTest {
             assertFalse(finish.isDisabled());
             assertTrue(((javafx.scene.control.Label)field(editor,"rangeWarning")).getText().isEmpty());
             assertEquals(500,next.getValue());assertSame(candidates,field(editor,"candidates"));
-            assertEquals("CHOICE",field(editor,"state").toString());
-            assertEquals(true,engine.executeScript("presentCalls.length===0 && fitCalls.length===0 && ensureCalls===0"));
+            assertEquals("COURSE",field(editor,"state").toString());
+            assertEquals(true,engine.executeScript("presentCalls.length>0 && presentCalls.every(function(c){return c[4]===false;}) && fitCalls.length===0 && ensureCalls===0"));
             list.getSelectionModel().select(0);assertEquals(200,slider.getValue());
             list.getSelectionModel().select(1);assertEquals(300,slider.getValue());
             assertEquals(200,saved.arrivalRadii().get(3L));
@@ -1358,6 +1453,11 @@ class MapSearchTest {
             activity.getSelectionModel().select(1);price.setText("1");radius.setValue(700);
             new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
             assertEquals(javafx.scene.Cursor.DEFAULT,condition.getChildrenUnmodifiable().stream().filter(node->node.getStyleClass().contains("title")).findFirst().orElseThrow().getCursor());
+            root.resize(960,680);root.applyCss();root.layout();
+            var countControl=(javafx.scene.control.ComboBox<?>)field(editor,"conditionCandidateLimitBox");
+            assertTrue(searchButton.localToScene(searchButton.getBoundsInLocal()).getMaxX()<=960);
+            assertTrue(countControl.localToScene(countControl.getBoundsInLocal()).getMaxX()<=960);
+            root.resize(1440,960);root.applyCss();root.layout();
             Path dir=Path.of("build","ui-preview");Files.createDirectories(dir);
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",dir.resolve("editor-condition.png").toFile());
             invoke(editor,"onRecommendNext");

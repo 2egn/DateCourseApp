@@ -30,6 +30,7 @@ public final class RouteEditorController extends BasePageController {
     @FXML private ComboBox<String> subtypeBox;
     @FXML private ComboBox<PlaceTag> tagBox;
     @FXML private ComboBox<Integer> candidateLimitBox;
+    @FXML private ComboBox<Integer> conditionCandidateLimitBox;
     @FXML private Label candidateStatus, candidateCount;
     @FXML private Button recommendNextButton;
     private List<PlaceSearchService.NearbyPlace> matchingCandidates = List.of();
@@ -109,6 +110,8 @@ public final class RouteEditorController extends BasePageController {
         activityBox.getSelectionModel().selectFirst();
         candidateLimitBox.getItems().setAll(5,10,20,30);
         candidateLimitBox.setValue(5);
+        conditionCandidateLimitBox.setItems(candidateLimitBox.getItems());
+        conditionCandidateLimitBox.valueProperty().bindBidirectional(candidateLimitBox.valueProperty());
         subtypeBox.setPromptText("전체 종류"); tagBox.setPromptText("특징 제한 없음");
         subtypeBox.setCellFactory(v->new ListCell<>() {
             @Override protected void updateItem(String s,boolean empty){super.updateItem(s,empty);setText(empty?null:s==null?"전체 종류":s);}
@@ -207,7 +210,11 @@ public final class RouteEditorController extends BasePageController {
                         + walking);
             }
         });
-        placeList.getSelectionModel().selectedIndexProperty().addListener((obs, old, value) -> updateButtons());
+        placeList.getSelectionModel().selectedIndexProperty().addListener((obs, old, value) -> {
+            if (value.intValue() >= 0 && !changingState) setState(EditorState.COURSE);
+            updateButtons();
+            refreshMap(false);
+        });
         placeList.setOnMouseClicked(event -> { if (event.getClickCount() == 2) onPlaceDetail(); });
         selectedRadiusSlider.valueProperty().addListener((obs, old, value) -> {
             if (!syncingSelectedRadius) onUpdateSelectedRadius();
@@ -342,11 +349,16 @@ public final class RouteEditorController extends BasePageController {
         arrivalRadii.put(place.recordId(), radius());
         draftPlaces.add(place);
         placeList.getSelectionModel().selectLast();
-        changed();
+        changed(false);
     }
 
-    private void changed() {
+    private void changed(boolean editingCourse) {
+        int selected = placeList.getSelectionModel().getSelectedIndex();
         clearCandidate();
+        if (editingCourse && !draftPlaces.isEmpty()) {
+            placeList.getSelectionModel().select(Math.max(0, Math.min(selected, draftPlaces.size() - 1)));
+            setState(EditorState.COURSE);
+        }
         refreshSummary();
         refreshMap(false);
     }
@@ -442,6 +454,7 @@ public final class RouteEditorController extends BasePageController {
         int limit = (int) Math.round(selectedRadiusSlider.getValue() / 100) * 100;
         arrivalRadii.put(selected.recordId(), limit);
         refreshSummary(); // Revalidate only; keep next-place conditions, candidates and map camera.
+        refreshMap(false);
     }
 
     @FXML private void onMoveUp() { move(-1); }
@@ -452,14 +465,14 @@ public final class RouteEditorController extends BasePageController {
         if (from < 0 || to < 0 || to >= draftPlaces.size()) return;
         Collections.swap(draftPlaces, from, to);
         placeList.getSelectionModel().select(to);
-        changed();
+        changed(true);
     }
     @FXML private void onRemove() {
         int index = placeList.getSelectionModel().getSelectedIndex();
         if (index >= 0) {
             arrivalRadii.remove(draftPlaces.get(index).recordId());
             draftPlaces.remove(index);
-            changed();
+            changed(true);
         }
     }
     @FXML private void onFinish() {
@@ -475,6 +488,7 @@ public final class RouteEditorController extends BasePageController {
         resetDraftButton.setVisible(!draftPlaces.isEmpty()||!candidates.isEmpty());
         state = requested == EditorState.CHOICE && candidates.isEmpty()
                 || requested == EditorState.COURSE && draftPlaces.isEmpty() ? EditorState.CONDITION : requested;
+        if (state == EditorState.CONDITION) placeList.getSelectionModel().clearSelection();
         changingState = true;
         try {
             coursePane.setExpanded(state == EditorState.COURSE);
@@ -584,6 +598,9 @@ public final class RouteEditorController extends BasePageController {
 
     private void refreshMap(boolean fit) {
         map.setCandidateActionsEnabled(!candidatesDirty);
+        int index = placeList.getSelectionModel().getSelectedIndex();
+        boolean editingLeg = state == EditorState.COURSE && index >= 0 && index < draftPlaces.size();
+        map.setEditingLeg(editingLeg ? index : null, editingLeg ? (int)Math.round(selectedRadiusSlider.getValue()/100)*100 : null);
         if (original != null) map.presentCandidates(draft(), state == EditorState.CHOICE
                         ? candidates.stream().map(PlaceSearchService.NearbyPlace::place).toList() : List.of(),
                 state == EditorState.CHOICE ? candidate() : null, radius(), true, fit);

@@ -12,6 +12,7 @@
     let nextCircle;
     let nextCircleOutline;
     let nextRadiusMeter = 500;
+    let displayedNextRange = null;
     let selectedPosition;
     let selectedPlaceName = "";
     let originLocked = false;
@@ -565,6 +566,7 @@
             nextRadiusMeter = Number.isFinite(radius) ? Math.max(200, Math.min(2000, radius)) : 500;
             const last = plan.places.length ? plan.places[plan.places.length - 1] : {lat:plan.startLat, lng:plan.startLng};
             const nextCenter = new kakao.maps.LatLng(last.lat, last.lng);
+            displayedNextRange = {lat:last.lat, lng:last.lng, radius:nextRadiusMeter};
             if (!nextCircle) {
                 nextCircleOutline = new kakao.maps.Circle({
                     center: nextCenter, radius: nextRadiusMeter,
@@ -593,6 +595,26 @@
         if (fit) window.fitRouteView(false);
     };
 
+    window.focusRouteLeg = function (index, radius) {
+        if (!routePresentation || !routeLocked || !nextCircle) return;
+        const plan = routePresentation;
+        const editing = Number.isInteger(index) && index >= 0 && index < plan.places.length;
+        const previous = editing ? (index ? plan.places[index - 1] : {lat:plan.startLat,lng:plan.startLng,name:'출발지'})
+            : (plan.places.length ? plan.places[plan.places.length - 1] : {lat:plan.startLat,lng:plan.startLng,name:'출발지'});
+        const limit = editing && Number.isFinite(radius) ? radius : nextRadiusMeter;
+        displayedNextRange = {lat:previous.lat, lng:previous.lng, radius:limit};
+        [nextCircle, nextCircleOutline].forEach(function(shape) {
+            shape.setPosition(new kakao.maps.LatLng(previous.lat, previous.lng));
+            shape.setRadius(limit);
+        });
+        document.getElementById('next-range-label').textContent = editing
+            ? previous.name + ' → ' + plan.places[index].name + ' · ' + limit + 'm'
+            : (plan.places.length ? '마지막 장소' : '출발지') + ' 기준 · ' + limit + 'm';
+        const focused = editing ? plan.places[index] : routeCandidate || plan.places[plan.places.length - 1];
+        const visit = focused && itinerary.getVisits().find(function(item) { return item.recordId === focused.recordId; });
+        highlightVisit(visit ? visit.visitId : null);
+    };
+
     window.resetPlannerMap = function () {
         dismissSearch();
         searchInput.value = '';
@@ -607,6 +629,7 @@
         routeCandidates = [];
         plannerCourse = [];
         radiusMeter = nextRadiusMeter = 500;
+        displayedNextRange = null;
         resultSignature = renderedRouteKey = '';
         window.showResultPlaces([], false, false, []);
         itinerary.dismissDetail();
@@ -647,8 +670,8 @@
         const plan = routePresentation;
         includeCircle(plan.startLat, plan.startLng, radiusMeter);
         if (routeLocked) {
-            const last = plan.places.length ? plan.places[plan.places.length-1] : {lat:plan.startLat,lng:plan.startLng};
-            includeCircle(last.lat,last.lng,nextRadiusMeter);
+            const range = displayedNextRange;
+            if (range) includeCircle(range.lat,range.lng,range.radius);
         }
         const current = map.getLevel();
         let target = current;
@@ -682,8 +705,8 @@
             }
             includeCircle(plan.startLat, plan.startLng, radiusMeter);
             if (routeLocked) {
-                const last = plan.places.length ? plan.places[plan.places.length - 1] : {lat:plan.startLat, lng:plan.startLng};
-                includeCircle(last.lat, last.lng, nextRadiusMeter);
+                const range = displayedNextRange;
+                if (range) includeCircle(range.lat, range.lng, range.radius);
             }
         }
         map.setBounds(bounds, 48, 48, 48, 48);

@@ -9,6 +9,20 @@ import java.util.function.Consumer;
 
 /** Common UI state only. DB pools, sessions and maps retain their original owners. */
 public abstract class BasePageController {
+    protected final <T> void showFuture(String label, java.util.concurrent.CompletableFuture<T> future,
+                                      Consumer<T> success, Consumer<Throwable> failure) {
+        if (future.isDone()) {
+            try { success.accept(future.join()); }
+            catch (java.util.concurrent.CompletionException problem) { failure.accept(problem.getCause()); }
+            return;
+        }
+        Runnable finish = beginLoading(label);
+        future.whenComplete((value, problem) -> javafx.application.Platform.runLater(() -> {
+            finish.run();
+            if (problem == null) success.accept(value);
+            else failure.accept(problem);
+        }));
+    }
     private final ReadOnlyBooleanWrapper loading = new ReadOnlyBooleanWrapper();
     private int pending;
     private PageFeedback feedback;

@@ -43,6 +43,7 @@ public class ConditionController extends BasePageController {
     private Timeline screenAnimation;
     private boolean fitOnReturn;
     private UserSession userSession;
+    private com.datecourse.service.UserContext userContext;
     private static final String EXISTING = "기존 장소 목록", PILOT = "서면·전포 시연 목록";
     private static final String PUBLIC_DEMO="서면 공공자료 · 추정 가격";
     private kr.ac.university.localdb.db.InformationReportRepository informationReports;
@@ -146,11 +147,13 @@ public class ConditionController extends BasePageController {
     }
 
     public void setUserSession(UserSession session) {
+        if (!java.util.Objects.equals(userSession, session)) clearUserContext();
         userSession = session;
         userLabel.setText(session == null ? "시연 모드" : session.name() + "님");
         userLabel.setDisable(session == null);
     }
     public void setAccountActions(kr.ac.university.localdb.db.MemberRepository repository, Runnable logout) {
+        if (accountRepository != repository) clearUserContext();
         accountRepository = repository;
         logoutHandler = logout;
         informationReports=repository==null?null:repository.informationReports();
@@ -182,9 +185,7 @@ public class ConditionController extends BasePageController {
             }
             myPageHost.setVisible(true); myPageHost.setManaged(true);
             selectNavigation(null);
-            var repository = accountRepository;
-            var session = userSession;
-            myPageController.configure(() -> repository.profile(session), this::onSavedCourses, this::onHome);
+            myPageController.configure(ensureUserContext(), this::onSavedCourses, this::onHome);
         } catch (java.io.IOException failure) {
             onHome();
             notifyUser(PageFeedback.Kind.ERROR, "내 페이지를 열지 못했어요.");
@@ -219,10 +220,34 @@ public class ConditionController extends BasePageController {
         logoutHandler = null;
         if (logout != null) logout.run();
     }
-    public void setSavedCourseRepository(SavedCourseRepository repository) { savedCourseRepository = repository; }
+    public void setSavedCourseRepository(SavedCourseRepository repository) {
+        if (savedCourseRepository != repository) clearUserContext();
+        savedCourseRepository = repository;
+    }
+
+    private void clearUserContext() {
+        if (userContext != null) userContext.close();
+        userContext = null;
+        if (savedController != null) savedController.clear();
+        if (myPageController != null) myPageController.clear();
+    }
+
+    private com.datecourse.service.UserContext ensureUserContext() {
+        if (userContext == null && userSession != null) {
+            var session = userSession;
+            var accounts = accountRepository;
+            var courses = savedCourseRepository;
+            userContext = new com.datecourse.service.UserContext(session,
+                    accounts == null ? null : () -> accounts.profile(session),
+                    courses == null ? null : () -> courses.findAll(session));
+        }
+        return userContext;
+    }
 
     /** Precreate the secondary form; wait only for the initial local/DB list, not external map services. */
     public void prepareStartup(Runnable ready) {
+        var context = ensureUserContext();
+        if (context != null) context.preload();
         routeEditorController.prepareMap();
         try { prepareSavedPage(); }
         catch (java.io.IOException failure) { errorLabel.setText("저장 목록 화면을 준비하지 못했어요. 탭에서 다시 시도할 수 있어요."); }
@@ -272,17 +297,20 @@ public class ConditionController extends BasePageController {
                     appliedPlan.places(), appliedPlan.arrivalRadii());
         } catch (IllegalArgumentException invalid) { saveStatusLabel.setText(invalid.getMessage()); return; }
         Long id = savedCourseId;
+        var context = ensureUserContext();
         saving = true;
         headerBar.setDisable(true);
         mainPage.setDisable(true);
         saveStatusLabel.setText("저장 중…");
-        runWork("코스를 저장하고 있어요", () -> id == null ? savedCourseRepository.save(userSession, snapshot)
-                        : savedCourseRepository.save(userSession, id, snapshot), saved -> {
+        runWork("코스를 저장하고 있어요", () -> id == null ? savedCourseRepository.save(context.session(), snapshot)
+                        : savedCourseRepository.save(context.session(), id, snapshot), saved -> {
             saving = false;
             headerBar.setDisable(false);
             mainPage.setDisable(false);
             savedCourseId = saved.courseId();
             lastSavedPlan = saved.plan();
+            context.invalidateCourses();
+            context.courses(); // Refresh once after a successful write, without blocking the form.
             presentPlan(saved.plan());
             saveStatusLabel.setText("코스를 저장했어요.");
             notifyUser(PageFeedback.Kind.SUCCESS, saveStatusLabel.getText());
@@ -313,7 +341,7 @@ public class ConditionController extends BasePageController {
             savedPageHost.setVisible(true);
             savedPageHost.setManaged(true);
             selectNavigation(savedCoursesButton);
-            savedController.configure(savedCourseRepository, userSession, saved -> {
+            savedController.configure(savedCourseRepository, ensureUserContext(), saved -> {
                 if (!confirmReplace()) return;
                 restoreSavedCourse(saved);
                 onHome();

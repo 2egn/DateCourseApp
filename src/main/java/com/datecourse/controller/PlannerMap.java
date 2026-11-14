@@ -70,6 +70,12 @@ final class PlannerMap {
     private boolean locked;
     private boolean originLocked, walkingPending;
     private boolean resetPending;
+    private Integer editingLegIndex, editingLegRadius;
+
+    void setEditingLeg(Integer index, Integer radius) {
+        editingLegIndex = index;
+        editingLegRadius = radius;
+    }
     private Runnable originChangeBlocked = () -> {};
 
     PlannerMap(WebView view, BiConsumer<Double, Double> selected, Consumer<String> error) {
@@ -176,6 +182,8 @@ final class PlannerMap {
             view.getEngine().executeScript("window.presentRoute(" + mapper.writeValueAsString(plan) + ","
                     + mapper.writeValueAsString(candidate) + "," + radius + "," + locked + "," + fit + ","
                     + mapper.writeValueAsString(candidates) + ")");
+            view.getEngine().executeScript("if(window.focusRouteLeg)window.focusRouteLeg("
+                    + editingLegIndex + "," + editingLegRadius + ")");
             renderWalkingRoute(false);
             if (pendingDetail != null) {
                 view.getEngine().executeScript("window.openRoutePlace(" + pendingDetail.recordId() + ")");
@@ -189,6 +197,7 @@ final class PlannerMap {
         candidate = null;
         candidates = List.of();
         pendingDetail = null;
+        editingLegIndex = editingLegRadius = null;
         radius = 500;
         locked = false;
         originLocked = false;
