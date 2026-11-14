@@ -38,6 +38,7 @@ public class MemberRepository implements AutoCloseable {
     public SavedCourseRepository savedCourses() {
         return new SavedCourseRepository(pool);
     }
+    public PlaceCatalogRepository placeCatalog() { return new PlaceCatalogRepository(pool); }
     public InformationReportRepository informationReports() { return new InformationReportRepository(pool); }
 
     public MemberRepository() {

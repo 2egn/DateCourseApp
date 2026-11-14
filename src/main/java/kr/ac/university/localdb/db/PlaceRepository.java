@@ -25,6 +25,8 @@ public class PlaceRepository implements PlaceSource {
     }
 
     public List<Place> findAll() throws SQLException, IOException{
+        var catalog = new PlaceCatalogRepository(dataSource).findImported();
+        if (catalog.isPresent()) return catalog.get();
         String sql = """
                 SELECT record_id, data_payload
                 FROM data_records

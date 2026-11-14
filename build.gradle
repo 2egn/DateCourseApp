@@ -46,6 +46,7 @@ test {
 processResources {
     doFirst { delete layout.buildDirectory.file('resources/main/db.properties').get().asFile }
     exclude 'map/kakao-config.js', 'db.properties'
+    from('data/sql') { include '10_place_catalog.sql'; into 'db' }
     from('data/places/demo') {
         include 'seomyeon-jeonpo-demo.json', 'seomyeon-public-estimates.json'
         into 'datasets'
@@ -112,4 +113,17 @@ tasks.register('tmapLiveTest', Test) {
     include '**/WalkingRouteLiveTest.class'
     useJUnitPlatform()
     environment 'RUN_TMAP_LIVE_TEST', 'true'
+}
+
+// Explicit operational import; the preview task does not connect to any database.
+tasks.register('previewPlaceImport', JavaExec) {
+    group = 'verification'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.PublicPlaceImport'
+}
+tasks.register('importPublicPlaces', JavaExec) {
+    group = 'application'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.PublicPlaceImport'
+    args '--apply'
 }
