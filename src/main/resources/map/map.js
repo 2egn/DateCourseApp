@@ -495,18 +495,58 @@
     }
     // One preview owns its overlay and lifecycle; hovering never selects a place or route.
     const placePinPreview = (function () {
-        let overlay = null, body = null, activePin = null, leaveTimer = null;
+        let overlay = null, body = null, activePin = null, leaveTimer = null, pointer = null;
         function hide(pin) {
             if (pin && pin !== activePin) return;
             clearTimeout(leaveTimer); leaveTimer = null;
             activePin = null;
             if (overlay) overlay.setMap(null);
         }
-        function leave(pin) {
-            if (pin !== activePin) return;
-            clearTimeout(leaveTimer);
+        function scheduleLeave(pin) {
+            if (!pin || pin !== activePin || leaveTimer !== null) return;
             leaveTimer = setTimeout(function () { hide(pin); }, 150);
         }
+        function reconcilePointer() {
+            if (!pointer) return;
+            const viewport = document.getElementById('map'), rect = viewport.getBoundingClientRect();
+            if (!ready || pointer.blocked || !rect.width || !rect.height || pointer.x < rect.left || pointer.x > rect.right
+                    || pointer.y < rect.top || pointer.y > rect.bottom) { scheduleLeave(activePin); return; }
+            const x = (pointer.x - rect.left) * viewport.clientWidth / rect.width;
+            const y = (pointer.y - rect.top) * viewport.clientHeight / rect.height;
+            const projection = map.getProjection();
+            let nearest = null, active = null;
+            resultMarkers.forEach(function (pin) {
+                if (!pin.coursePin || !pin.previewPlace) return;
+                const place = pin.previewPlace;
+                const point = projection.containerPointFromCoords(new kakao.maps.LatLng(place.lat, place.lng));
+                const dx = x - point.x, dy = y - point.y;
+                const match = {pin:pin, score:dx*dx + (dy+26)*(dy+26), inside:Math.abs(dx)<=28 && dy>=-60 && dy<=8,
+                    nearby:Math.abs(dx)<=34 && dy>=-66 && dy<=14};
+                if (pin === activePin) active = match;
+                if (match.inside && (!nearest || match.score < nearest.score)) nearest = match;
+            });
+            // A small exit margin and tie allowance prevent boundary noise without trapping nearby pins.
+            if (active && active.inside && nearest && active.score <= nearest.score + 36) nearest = active;
+            if (!nearest && active && active.nearby) nearest = active;
+            if (nearest) show(nearest.pin, nearest.pin.previewPlace, nearest.pin.previewLabel);
+            else scheduleLeave(activePin);
+        }
+        function enter(pin, place, label) {
+            if (resultMarkers.indexOf(pin) < 0) return;
+            if (pointer) reconcilePointer(); else show(pin, place, label);
+        }
+        function leave(pin) {
+            if (pointer) reconcilePointer(); else scheduleLeave(pin);
+        }
+        // Capture real pointer coordinates before SDK child elements synthesize enter/exit events.
+        document.addEventListener('mousemove', function (event) {
+            const target = event.target;
+            pointer = {x:event.clientX, y:event.clientY, blocked:!!event.buttons || !!(target.closest
+                && target.closest('.place-detail,.itinerary-rail,#place-search,#walking-panel'))};
+            reconcilePointer();
+        }, true);
+        document.documentElement.addEventListener('mouseleave', function () { pointer = null; scheduleLeave(activePin); });
+        window.addEventListener('blur', function () { pointer = null; hide(); });
         function show(pin, place, label) {
             if (!ready || resultMarkers.indexOf(pin) < 0) return;
             clearTimeout(leaveTimer); leaveTimer = null;
@@ -539,7 +579,7 @@
             const shiftY = Math.max(12 + height - point.y, Math.min(viewport.clientHeight - 12 - point.y, preferredY));
             body.style.transform = 'translate(' + shiftX + 'px,' + shiftY + 'px)';
         }
-        return {show: show, hide: hide, leave: leave};
+        return {enter: enter, hide: hide, leave: leave};
     }());
     function removeResultPin(pin) {
         placePinPreview.hide(pin);
@@ -573,7 +613,8 @@
             }
             pin.coursePin = courseIndex >= 0;
             if (pin.coursePin) {
-                pin.visitEnter = function () { placePinPreview.show(pin, item, courseIndex + 1); };
+                pin.previewPlace = item; pin.previewLabel = courseIndex + 1;
+                pin.visitEnter = function () { placePinPreview.enter(pin, item, courseIndex + 1); };
                 pin.visitLeave = function () { placePinPreview.leave(pin); };
                 kakao.maps.event.addListener(pin, 'mouseover', pin.visitEnter);
                 kakao.maps.event.addListener(pin, 'mouseout', pin.visitLeave);

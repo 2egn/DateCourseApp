@@ -28,6 +28,60 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
+    @Test void pointerInsidePinKeepsPreviewDespiteRepeatedSdkExitEvents() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.coordinatePlace={recordId:1,placeId:'a',name:'좌표 판정 장소',lat:35.1578,lng:129.06};
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[coordinatePlace]},null,500,true,false,[]);
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));
+            window.coordinatePin=pins.find(p=>p.coursePin && p.attached);
+            window.movePinPointer=function(place,dx,dy,target){
+                var element=document.getElementById('map'),rect=element.getBoundingClientRect();
+                var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(place.lat,place.lng));
+                (target||element).dispatchEvent(new MouseEvent('mousemove',{bubbles:true,clientX:rect.left+(point.x+dx)*rect.width/element.clientWidth,
+                    clientY:rect.top+(point.y+dy)*rect.height/element.clientHeight}));
+            };
+            coordinatePin.onmouseover();movePinPointer(coordinatePlace,0,-30);
+            window.coordinatePreview=routeOverlays.find(p=>p.options.content.classList.contains('place-pin-preview'));
+            coordinatePin.onmouseout();
+            """);
+        Thread.sleep(250);
+        assertEquals(true,script(engine,"coordinatePreview.attached"));
+        for(int x:new int[]{-15,12,-8,18}) {
+            script(engine,"movePinPointer(coordinatePlace,"+x+",-25);coordinatePin.onmouseout()");Thread.sleep(180);
+            assertEquals(true,script(engine,"coordinatePreview.attached"));
+        }
+        script(engine,"movePinPointer(coordinatePlace,100,-30)");Thread.sleep(250);
+        assertEquals(false,script(engine,"coordinatePreview.attached"));
+    }
+    @Test void pointerCoordinatesCanEnterAndSwitchPinsWithoutSdkMouseover() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.coordinatePlaces=[{recordId:1,placeId:'a',name:'첫 좌표 장소',lat:35.1578,lng:129.06},
+                {recordId:2,placeId:'b',name:'두 번째 좌표 장소',lat:35.159,lng:129.06}];
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:coordinatePlaces},null,500,true,false,[]);
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));
+            document.getElementById('map').style.transform='scale(1.1)';
+            window.moveCoordinates=function(place,dx,dy){
+                var element=document.getElementById('map'),rect=element.getBoundingClientRect();
+                var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(place.lat,place.lng));
+                element.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,clientX:rect.left+(point.x+dx)*rect.width/element.clientWidth,
+                    clientY:rect.top+(point.y+dy)*rect.height/element.clientHeight}));
+            };
+            moveCoordinates(coordinatePlaces[0],0,-30);
+            window.coordinatePreview=routeOverlays.find(p=>p.options.content.classList.contains('place-pin-preview'));
+            """);
+        assertEquals(true,script(engine,"!!coordinatePreview && coordinatePreview.attached"));
+        script(engine,"moveCoordinates(coordinatePlaces[0],31,-30)");Thread.sleep(220);
+        assertEquals(true,script(engine,"coordinatePreview.attached"));
+        script(engine,"moveCoordinates(coordinatePlaces[1],0,-30)");
+        assertTrue(((String)script(engine,"coordinatePreview.options.content.textContent")).contains("두 번째 좌표 장소"));
+        script(engine,"moveCoordinates(coordinatePlaces[1],100,-30)");Thread.sleep(250);
+        assertEquals(false,script(engine,"coordinatePreview.attached"));
+        script(engine,"moveCoordinates(coordinatePlaces[0],0,-30);window.resetPlannerMap()");Thread.sleep(220);
+        assertEquals(false,script(engine,"coordinatePreview.attached"));
+    }
+
     @Test void placePinHitAreaAndAnchorStayFixedAcrossSelection() throws Exception {
         WebEngine engine=loadMap(850,720);
         script(engine,"""
