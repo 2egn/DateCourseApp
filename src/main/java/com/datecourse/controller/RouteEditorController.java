@@ -32,7 +32,10 @@ public final class RouteEditorController extends BasePageController {
     @FXML private ComboBox<PlaceTag> tagBox;
     @FXML private ComboBox<Integer> candidateLimitBox;
     @FXML private ComboBox<Integer> conditionCandidateLimitBox;
-    @FXML private Label candidateStatus, candidateCount;
+    @FXML private Label candidateStatus, candidateCount, priceWonLabel, emptyResultMessage;
+    @FXML private VBox emptyResults;
+    @FXML private Button includeUnknownRecovery, clearFacetsRecovery, expandRadiusRecovery, reviewPriceRecovery;
+    private final com.datecourse.service.CandidateRecoveryService recovery=new com.datecourse.service.CandidateRecoveryService();
     @FXML private Button recommendNextButton;
     private List<PlaceSearchService.NearbyPlace> matchingCandidates = List.of();
     private boolean candidatesDirty;
@@ -129,6 +132,13 @@ public final class RouteEditorController extends BasePageController {
         });
         candidateLimitBox.valueProperty().addListener((o,a,b)->{if(b!=null)displayCandidates();});
         NumberStepper.installPrice(placePriceField, priceUp, priceDown);
+        priceWonLabel.textProperty().bind(javafx.beans.binding.Bindings.createStringBinding(()->{
+            try{return String.format("%,d원 / 1인",NumberStepper.readWon(placePriceField));}
+            catch(IllegalArgumentException invalid){return "금액을 확인해 주세요.";}
+        },placePriceField.textProperty()));
+        emptyResults.managedProperty().bind(emptyResults.visibleProperty());
+        for(Button button:List.of(includeUnknownRecovery,clearFacetsRecovery,expandRadiusRecovery,reviewPriceRecovery))
+            button.managedProperty().bind(button.visibleProperty());
         placePriceField.setTooltip(new Tooltip("만원 단위 · 예: 0.7 = 7,000원, 0.82 = 8,200원\n화살표·스크롤은 0.1만원(1,000원)씩 조절해요."));
         includeUncertainPrice.setTooltip(new Tooltip("금액 또는 상한을 모르는 장소도 표시해요. 이 경우 가격 상한 충족 여부를 보장할 수 없어요. 숫자가 있는 추정 가격은 기본적으로 계산에 활용해요."));
         candidateList.setPlaceholder(new Label("조건을 정하고 추천받기를 눌러 주세요."));
@@ -166,7 +176,9 @@ public final class RouteEditorController extends BasePageController {
                 name.setTooltip(new Tooltip(nearby.place().name()+"\n"+nearby.place().details().address()+"\n"+nearby.place().details().identityText()));
                 meta.setText(String.format("%.0fm · %s", nearby.distanceMeters(), nearby.place().priceText()));
                 var presentation=placePresenter.present(nearby.place());
-                badges.setText(presentation.candidateSummary());
+                String reason=presentation.badges().stream().limit(2).map(com.datecourse.service.PlacePresenter.Badge::label)
+                        .collect(java.util.stream.Collectors.joining(" · "));
+                badges.setText(reason.isBlank()?PlaceFacets.subtype(nearby.place()):reason);
                 badges.setTooltip(new Tooltip(presentation.candidateDescription()));
                 setAccessibleText(nearby.place().name() + " · 선택하면 상세 카드 열기");
                 setGraphic(row);
@@ -315,7 +327,9 @@ public final class RouteEditorController extends BasePageController {
                 allPlaces=List.copyOf(response.source());
                 extendFacets();
                 matchingCandidates=result;candidatesDirty=false;displayCandidates();
-                editorError.setText(result.isEmpty()?"조건에 맞는 새 장소가 없어요. 세부 조건·가격·반경을 조정해 주세요.":"");
+                editorError.setText("");
+                emptyResults.setVisible(result.isEmpty());
+                if(result.isEmpty())showRecovery(recovery.analyze(response.source(),context,condition,(int)radiusSlider.getMax()));
                 candidateStatus.setText(result.isEmpty()?"일치하는 장소가 없어요. 세부 조건·가격·반경을 조정해 주세요.":
                     result.stream().anyMatch(p->p.place().priceEstimate().estimated())?"추정 가격 기준 후보가 포함돼요.":"조건 적용됨");
                 setState(result.isEmpty()?EditorState.CONDITION:EditorState.CHOICE);
@@ -331,6 +345,28 @@ public final class RouteEditorController extends BasePageController {
         }
     }
 
+    private void showRecovery(com.datecourse.service.CandidateRecoveryService.Advice advice) {
+        emptyResultMessage.setText(advice.message());
+        for(Button button:List.of(includeUnknownRecovery,clearFacetsRecovery,expandRadiusRecovery,reviewPriceRecovery))button.setVisible(false);
+        for(var suggestion:advice.suggestions()) {
+            Button button=switch(suggestion.change()) {
+                case INCLUDE_UNKNOWN->includeUnknownRecovery;case CLEAR_FACETS->clearFacetsRecovery;
+                case EXPAND_RADIUS->expandRadiusRecovery;case REVIEW_PRICE->reviewPriceRecovery;
+            };
+            String label=switch(suggestion.change()) {
+                case INCLUDE_UNKNOWN->"가격 미확인 포함 · "+suggestion.matches()+"곳";
+                case CLEAR_FACETS->"세부 조건 해제 · "+suggestion.matches()+"곳";
+                case EXPAND_RADIUS->"반경 "+(int)radiusSlider.getMax()+"m로 검색 · "+suggestion.matches()+"곳";
+                case REVIEW_PRICE->"가격 상한 수정";
+            };
+            button.setText(label);button.setVisible(true);
+        }
+    }
+    @FXML private void onIncludeUnknownRecovery(){includeUncertainPrice.setSelected(true);onRecommendNext();}
+    @FXML private void onClearFacetsRecovery(){subtypeBox.setValue(null);tagBox.setValue(null);onRecommendNext();}
+    @FXML private void onExpandRadiusRecovery(){radiusSlider.setValue(radiusSlider.getMax());onRecommendNext();}
+    @FXML private void onReviewPriceRecovery(){placePriceField.requestFocus();placePriceField.selectAll();}
+
     private Place candidate() { return candidateIndex < 0 || candidateIndex >= candidates.size() ? null : candidates.get(candidateIndex).place(); }
 
     private void showCandidate() {
@@ -339,6 +375,7 @@ public final class RouteEditorController extends BasePageController {
 
     private void clearCandidate() {
         searchVersion++;
+        emptyResults.setVisible(false);
         matchingCandidates=List.of();candidatesDirty=false;
         candidates = List.of();
         candidateIndex = -1;
@@ -536,6 +573,7 @@ public final class RouteEditorController extends BasePageController {
                 .forEach(title -> title.setCursor(pane.isExpanded() ? javafx.scene.Cursor.DEFAULT : javafx.scene.Cursor.HAND));
     }
     private void markCandidatesDirty() {
+        emptyResults.setVisible(false);
         searchVersion++; candidatesDirty=true;
         map.setCandidateActionsEnabled(false);
         candidateStatus.setText(matchingCandidates.isEmpty()?"조건을 적용해 후보를 찾아 주세요.":"조건 변경됨 · 후보 업데이트 필요");

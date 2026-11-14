@@ -402,3 +402,7 @@
 .condition-screen .account-menu > .label { -fx-padding: 0; -fx-label-padding: 0; }
 .condition-screen .button.place-count-arrow { -fx-min-height: 0; -fx-pref-height: 18; -fx-max-height: 18; -fx-padding: 0; -fx-border-width: 0; }
 .condition-screen .button.feedback-close { -fx-min-height: 24; -fx-pref-height: 24; -fx-max-height: 24; -fx-padding: 0; }
+
+/* Course review and persistent search recovery reuse native JavaFX controls. */
+.course-overview-stops { -fx-font-size: 13px; -fx-text-fill: #334155; -fx-line-spacing: 6px; }
+.search-empty-state { -fx-padding: 14px; -fx-background-color: #f5f7fa; -fx-background-radius: 10px; }

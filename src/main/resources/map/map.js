@@ -759,7 +759,7 @@
         window.showResultPlaces(plan.places.concat(rankedCandidates), false, false, plan.places);
         if (candidate) itinerary.activatePlace(candidate.recordId);
         document.getElementById('itinerary-rail').hidden = true;
-        status.textContent = locked ? '분홍 번호는 코스 순서, 옅은 파랑 번호는 후보 순위입니다. 도보 경로 조회로 실제 이동 경로를 확인하세요.' : '확정한 코스 · 도보 경로 조회로 실제 이동 경로를 확인하세요.';
+        status.textContent = locked ? '분홍 번호는 코스 순서, 옅은 파랑 번호는 후보 순위입니다. 경로에 마우스를 올리면 구간 안내를 볼 수 있어요.' : '확정한 코스 · 경로에 마우스를 올리면 구간 안내를 볼 수 있어요.';
         if (fit) window.fitRouteView(false, originChanged ? 'FOCUS' : null);
     };
 

@@ -31,7 +31,12 @@ public class ConditionController extends BasePageController {
     @FXML private TextField peopleField;
     @FXML private Button peopleUp, peopleDown, recommendButton;
     @FXML private Label errorLabel, resultLabel, hintLabel, radiusLabel;
-    @FXML private Label walkingSummaryLabel;
+    @FXML private Label walkingSummaryLabel, completedStopsLabel, originHintLabel;
+    @FXML private VBox courseOverview;
+    @FXML private TitledPane commonConditionsPane;
+    @FXML private ScrollPane mainSidebar;
+    @FXML private Button reloadMapButton;
+    private com.datecourse.model.WalkingRoute overviewWalking;
     @FXML private Slider radiusSlider;
     @FXML private ComboBox<String> sourceBox;
     @FXML private Label sourceStatusLabel;
@@ -87,12 +92,18 @@ public class ConditionController extends BasePageController {
         walkingToolbar.managedProperty().bind(walkingToolbar.visibleProperty());
         watchNotice(errorLabel, PageFeedback.Kind.ERROR);
         watchNotice(saveStatusLabel, PageFeedback.Kind.INFO);
+        mainSidebar.prefWidthProperty().bind(mainPage.widthProperty().multiply(.45));
+        reloadMapButton.managedProperty().bind(reloadMapButton.visibleProperty());
+        reloadMapButton.setVisible(false);
+        errorLabel.textProperty().addListener((o,a,b)->reloadMapButton.setVisible(b!=null && (b.contains("지도")||b.contains("8080"))));
         NumberStepper.install(peopleField, peopleUp, peopleDown, 1, 20, 2);
         errorLabel.managedProperty().bind(errorLabel.textProperty().isNotEmpty());
         errorLabel.visibleProperty().bind(errorLabel.managedProperty());
         map = new PlannerMap(mapView, this::onLocationSelected, errorLabel::setText);
         map.setOnReport(this::reportInformation);
         map.setWalkingResultListener((route,message)->{
+            overviewWalking=route;
+            updateCourseOverview();
             boolean hasPlaces=appliedPlan!=null&&!appliedPlan.places().isEmpty();
             walkingSummaryLabel.setText(!hasPlaces?"":route==null?"도보 이동시간 미확인"
                 :"누적 도보 "+com.datecourse.model.WalkingRoute.durationText(route.totalTime())+" · 체류시간 제외");
@@ -536,6 +547,15 @@ public class ConditionController extends BasePageController {
     private void updateResetButton() {
         boolean hasPlaces=appliedPlan!=null&&!appliedPlan.places().isEmpty();
         saveCourseButton.setVisible(hasPlaces);walkingToolbar.setVisible(hasPlaces);
+        courseOverview.setVisible(hasPlaces);courseOverview.setManaged(hasPlaces);
+        if(!hasPlaces)commonConditionsPane.setExpanded(true);
+        updateCourseOverview();
+        recommendButton.getStyleClass().removeAll("planner-primary","drawer-toggle");
+        recommendButton.getStyleClass().add(hasPlaces?"drawer-toggle":"planner-primary");
+        originHintLabel.setText(selectedLatitude==null ? "지도에서 출발 위치를 선택해 주세요."
+                :hasCoursePlaces()?"코스의 출발지는 고정돼 있어요. 장소별 조건은 코스 편집에서 바꿀 수 있어요."
+                :"출발지를 선택했어요. 지도에서 바꾸거나 아래에서 코스 만들기를 눌러 주세요.");
+        if(hasPlaces)hintLabel.setText(editorPaused?"편집 중인 초안이 있어요. 이어서 편집해 주세요.":"코스 순서와 이동 시간을 확인하고 저장해 주세요.");
         newCourseButton.setDisable(!commonSettingsChanged && appliedPlan == null && savedCourseId == null && !editorPaused && !editorOpen);
     }
 
@@ -587,6 +607,8 @@ public class ConditionController extends BasePageController {
 
     private void presentPlan(RoutePlan edited) {
         appliedPlan = edited;
+        commonConditionsPane.setExpanded(edited.places().isEmpty());
+        updateCourseOverview();
         updateOriginProtection();
         selectedLatitude = edited.startLat();
         selectedLongitude = edited.startLng();
@@ -597,6 +619,25 @@ public class ConditionController extends BasePageController {
         recommendButton.setText(edited.places().isEmpty() ? "코스 만들기 →" : "코스 편집 →");
         map.present(edited, null, edited.radius(), false, true);
         updateResetButton();
+    }
+
+    private void updateCourseOverview() {
+        if(appliedPlan==null){completedStopsLabel.setText("");return;}
+        try {
+            int people=NumberStepper.read(peopleField,1,20,"인원");
+            var preview=new RoutePlan(appliedPlan.startLat(),appliedPlan.startLng(),people,radius(),appliedPlan.title(),appliedPlan.places(),appliedPlan.arrivalRadii());
+            resultLabel.setText(String.format("%s · %d곳 · %d명 · %s",preview.title().isBlank()?"내 코스":preview.title(),
+                    preview.places().size(),people,preview.costEstimate().display()));
+        } catch(IllegalArgumentException invalid) {resultLabel.setText("인원 수정 중 · 1~20명을 입력해 주세요.");}
+        var lines=new java.util.ArrayList<String>();
+        for(int i=0;i<appliedPlan.places().size();i++) {
+            Place place=appliedPlan.places().get(i);
+            String time=overviewWalking!=null && overviewWalking.legs().size()==appliedPlan.places().size()
+                    ? " · 이동 "+com.datecourse.model.WalkingRoute.durationText(overviewWalking.legs().get(i).time()) : "";
+            lines.add((i+1)+". "+place.name()+" · "+com.datecourse.service.PlaceSearchService.categoryName(place.category())
+                    +"\n"+place.priceText()+time);
+        }
+        completedStopsLabel.setText(String.join("\n\n",lines));
     }
 
     private void pauseEdits() {
@@ -621,6 +662,8 @@ public class ConditionController extends BasePageController {
         routeEditor.setManaged(false);
         routeEditor.setDisable(true);
         mainPage.setTranslateX(0);
+        mainPage.setOpacity(1);
+        routeEditor.setOpacity(1);
         mainPage.setDisable(false);
     }
 
@@ -630,19 +673,23 @@ public class ConditionController extends BasePageController {
         saveCourseButton.setDisable(open || editorPaused);
         selectNavigation(homeButton);
         if (screenAnimation != null) screenAnimation.stop();
-        double width = Math.max(1, plannerRoot.getWidth());
-        if (open && !routeEditor.isVisible()) routeEditor.setTranslateX(width);
+        mainPage.setTranslateX(0);
+        routeEditor.setTranslateX(0);
+        if (open && !routeEditor.isVisible()) routeEditor.setOpacity(0);
+        if (!open) mainPage.setOpacity(0);
         routeEditor.setVisible(true);
         routeEditor.setManaged(true);
         routeEditor.setDisable(!open);
         mainPage.setDisable(open);
-        screenAnimation = new Timeline(new KeyFrame(Duration.millis(280),
-                new KeyValue(mainPage.translateXProperty(), open ? -width : 0, Interpolator.EASE_BOTH),
-                new KeyValue(routeEditor.translateXProperty(), open ? 0 : width, Interpolator.EASE_BOTH)));
+        screenAnimation = new Timeline(new KeyFrame(Duration.millis(160),
+                new KeyValue(mainPage.opacityProperty(), open ? 0 : 1, Interpolator.EASE_BOTH),
+                new KeyValue(routeEditor.opacityProperty(), open ? 1 : 0, Interpolator.EASE_BOTH)));
         screenAnimation.setOnFinished(event -> {
             routeEditor.setVisible(open);
             routeEditor.setManaged(open);
             mainPage.setVisible(!open);
+            mainPage.setOpacity(1);
+            routeEditor.setOpacity(1);
             if (open) routeEditorController.fitRange();
             else {
                 mainPage.setTranslateX(0);

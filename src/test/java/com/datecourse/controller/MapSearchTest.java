@@ -29,6 +29,58 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
     private final MapBridge cameraPolicyBridge = new MapBridge(()->{},(lat,lng)->{},message->{});
+    @Test void emptySearchOffersExplicitRecoveryAndPriceConversionStaysVisible() throws Exception {
+        FutureTask<Void> task=new FutureTask<>(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();
+            RouteEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
+            var place=new com.datecourse.model.Place(1,"unknown","미확인 식당","MEAL",35.1579,129.06,
+                    com.datecourse.model.PriceEstimate.unknown(),0,com.datecourse.model.PlaceDetails.EMPTY);
+            editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,1000,"",java.util.List.of()),java.util.List.of(place),p->{},()->{});
+            ((TextField)field(editor,"placePriceField")).setText("0.82");
+            assertEquals("8,200원 / 1인",((javafx.scene.control.Label)field(editor,"priceWonLabel")).getText());
+            invoke(editor,"onRecommendNext");
+            assertTrue(((javafx.scene.layout.VBox)field(editor,"emptyResults")).isVisible());
+            assertFalse(((CheckBox)field(editor,"includeUncertainPrice")).isSelected());
+            assertTrue(((javafx.scene.control.Button)field(editor,"includeUnknownRecovery")).isVisible());
+            assertTrue(((javafx.scene.control.Label)field(editor,"emptyResultMessage")).getText().contains("가격 미확인"));
+            invoke(editor,"onIncludeUnknownRecovery");
+            assertTrue(((CheckBox)field(editor,"includeUncertainPrice")).isSelected());
+            assertEquals("CHOICE",field(editor,"state").toString());
+            assertFalse(((javafx.scene.layout.VBox)field(editor,"emptyResults")).isVisible());
+            assertEquals(1,((javafx.scene.control.ListView<?>)field(editor,"candidateList")).getItems().size());
+            return null;
+        });Platform.runLater(task);task.get(15,TimeUnit.SECONDS);
+    }
+
+    @Test void completedCoursePrioritizesReviewAndKeepsMapOnTheLeftInCompactWindow() throws Exception {
+        FutureTask<Void> task=new FutureTask<>(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/condition-view.fxml"));Parent root=loader.load();
+            ConditionController main=loader.getController();stubPlannerMap(main,"mapView");
+            var a=new com.datecourse.model.Place(1,"a","첫 식당","MEAL",35.1579,129.06,8000,4);
+            var b=new com.datecourse.model.Place(2,"b","다음 카페","CAFE",35.158,129.06,4000,4);
+            callWith(main,"presentPlan",com.datecourse.model.RoutePlan.class,new com.datecourse.model.RoutePlan(35.1578,129.06,2,1000,"검토할 코스",java.util.List.of(a,b)));
+            assertTrue(((javafx.scene.layout.VBox)field(main,"courseOverview")).isVisible());
+            assertFalse(((javafx.scene.control.TitledPane)field(main,"commonConditionsPane")).isExpanded());
+            assertTrue(((javafx.scene.control.Button)field(main,"saveCourseButton")).isVisible());
+            String summary=((javafx.scene.control.Label)field(main,"completedStopsLabel")).getText();
+            assertTrue(summary.indexOf("첫 식당")<summary.indexOf("다음 카페"));
+            ((TextField)field(main,"peopleField")).setText("3");
+            assertTrue(((javafx.scene.control.Label)field(main,"resultLabel")).getText().contains("36,000"));
+            assertEquals(2,((com.datecourse.model.RoutePlan)field(main,"appliedPlan")).people());
+            ((TextField)field(main,"peopleField")).setText("2");
+            assertFalse(((javafx.scene.control.Label)field(main,"originHintLabel")).getText().contains("출발 위치를 선택"));
+            new Scene(root,1100,760);root.resize(1100,760);root.applyCss();root.layout();
+            var sidebar=root.lookup("#mainSidebar").localToScene(root.lookup("#mainSidebar").getBoundsInLocal());
+            var map=root.lookup("#mapView").localToScene(root.lookup("#mapView").getBoundsInLocal());
+            assertTrue(map.getMaxX()<=sidebar.getMinX()+1);assertTrue(map.getWidth()>400);
+            var save=root.lookup("#saveCourseButton").localToScene(root.lookup("#saveCourseButton").getBoundsInLocal());
+            assertTrue(save.getMinX()>=sidebar.getMinX() && save.getMaxX()<=1100 && save.getMaxY()<760);
+            Path directory=Path.of("build/ui-preview");Files.createDirectories(directory);
+            ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",directory.resolve("ux-course-review-compact.png").toFile());
+            return null;
+        });Platform.runLater(task);task.get(15,TimeUnit.SECONDS);
+    }
+
     @Test void cameraKeepsOnlyLatestGoalAndManualInputCancelsWaitingMove() throws Exception {
         WebEngine engine=loadMap(1100,720,false);
         script(engine,"""
@@ -1870,7 +1922,7 @@ class MapSearchTest {
             condition.setExpanded(false);assertTrue(condition.isExpanded());
             invoke(editor,"onRecommendNext");
             assertEquals("CONDITION",field(editor,"state").toString());
-            assertTrue(((javafx.scene.control.Label)field(editor,"editorError")).getText().contains("없어요"));
+            assertTrue(((javafx.scene.control.Label)field(editor,"emptyResultMessage")).getText().contains("없어요"));
             assertTrue(choice.isDisabled());
             return null;
         });Platform.runLater(task);task.get(10,TimeUnit.SECONDS);
@@ -2824,7 +2876,8 @@ class MapSearchTest {
             assertNull(root.lookup("#editCourseButton"));
             assertNotNull(root.lookup("#radiusSlider"));
             TextField people = (TextField) root.lookup("#peopleField");
-            assertTrue(people.localToScene(people.getBoundsInLocal()).getMaxX() <= 300);
+            assertTrue(people.localToScene(people.getBoundsInLocal()).getMinX()
+                    > root.lookup("#mapView").localToScene(root.lookup("#mapView").getBoundsInLocal()).getMaxX());
             assertTrue(root.lookup("#mapView").getBoundsInLocal().getWidth() > 500);
             assertFalse(root.lookup("#routeEditor").isVisible());
             assertTrue(root.lookup("#resultSummary").getBoundsInLocal().getHeight() < 100);

@@ -115,9 +115,7 @@ class WalkingRouteLiveTest {
                 stage.setScene(new Scene(root,1200,850));stage.show();
                 RoutePlan planned=new RoutePlan(35.1796,129.0756,2,1000,"도보 시험",List.of(
                         new Place(1,"live","부산 도보 시험 도착지","CULTURE",35.1813,129.0797,0,0)));
-                var applied=ConditionController.class.getDeclaredField("appliedPlan");applied.setAccessible(true);applied.set(controller,planned);
-                ((javafx.scene.control.Label)loader.getNamespace().get("resultLabel")).setText("TMAP 도보 경로 실제 연동 확인 · 1곳");
-                map.present(planned,null,1000,false,true);
+                var present=ConditionController.class.getDeclaredMethod("presentPlan",RoutePlan.class);present.setAccessible(true);present.invoke(controller,planned);
                 return new Context(stage,root,view,map);
             } catch(Exception failure){throw new RuntimeException(failure);}
         });
