@@ -394,6 +394,14 @@ public class ConditionController extends BasePageController {
         savedCourseId = null;
         lastSavedPlan = null;
         appliedPlan = null;
+        selectedLatitude = null;
+        selectedLongitude = null;
+        peopleField.setText("2");
+        radiusSlider.setValue(500);
+        map.reset();
+        errorLabel.setText("");
+        walkingSummaryLabel.setText("");
+        hintLabel.setText("부산의 출발 장소를 검색하거나 지도를 클릭해 주세요.");
         resultLabel.setText("아직 확정된 코스가 없어요.");
         saveStatusLabel.setText("코스를 초기화했어요.");
         recommendButton.setText("코스 만들기 →");

@@ -96,6 +96,57 @@ class MapSearchTest {
         assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
     }
 
+    @Test void commonResetRestoresDefaultsAndClearsSelectedOriginAndMapSnapshot() throws Exception {
+        fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/condition-view.fxml"));loader.load();
+            ConditionController main=loader.getController();stubPlannerMap(main,"mapView");
+            stubPlannerMap(field(main,"routeEditorController"),"editMapView");
+            var people=(TextField)field(main,"peopleField");
+            var radius=(javafx.scene.control.Slider)field(main,"radiusSlider");
+            var source=(javafx.scene.control.ComboBox<?>)field(main,"sourceBox");
+            Object originalSource=source.getValue();
+            people.setText("7");radius.setValue(1600);
+            setField(main,"selectedLatitude",35.0);setField(main,"selectedLongitude",129.0);
+            invoke(main,"updateRange");
+            assertNotNull(field(field(main,"map"),"plan"));
+            assertFalse(((javafx.scene.control.Button)field(main,"newCourseButton")).isDisabled());
+            invoke(main,"onNewCourse");
+            assertEquals("2",people.getText());assertEquals(500,radius.getValue());
+            assertNull(field(main,"selectedLatitude"));assertNull(field(main,"selectedLongitude"));
+            assertNull(field(main,"appliedPlan"));assertNull(field(main,"savedCourseId"));
+            assertNull(field(field(main,"map"),"plan"));
+            assertFalse((Boolean)field(field(main,"map"),"originLocked"));
+            assertEquals(originalSource,source.getValue());
+            assertTrue(((javafx.scene.control.Button)field(main,"newCourseButton")).isDisabled());
+            setField(main,"placesLoaded",true);invoke(main,"onRecommendClick");
+            assertTrue(((javafx.scene.control.Label)field(main,"errorLabel")).getText().contains("출발 위치"));
+            return null;
+        });
+    }
+
+    @Test void mapResetRemovesOriginShapesAndDoesNotRestoreOriginOnReconnect() throws Exception {
+        WebEngine engine=loadMap(640,600);
+        script(engine,"""
+            window.presentRoute({startLat:35,startLng:129,radius:1600,places:[
+                {recordId:1,placeId:'a',name:'식당',category:'MEAL',lat:35.001,lng:129,price:5000}
+            ]},null,500,true,false,[]);
+            window.openRoutePlace(1);window.setOriginLocked(true);
+            window.showWalkingRoute({totalDistance:100,totalTime:60,legs:[
+                {from:{name:'출발'},to:{name:'식당'},distance:100,time:60,
+                 paths:[[{lat:35,lng:129},{lat:35.001,lng:129}]],steps:[]}
+            ]},'',false);
+            window.resetPlannerMap();window.connectJavaMapBridge();
+            """);
+        assertEquals(true,script(engine,"pins.every(function(p){return !p.attached;}) && routeOverlays.every(function(o){return !o.attached;}) && routeLines.every(function(l){return !l.attached;})"));
+        assertEquals("[]",script(engine,"JSON.stringify(bridgeSelections)"));
+        assertEquals("true",script(engine,"document.getElementById('place-detail').getAttribute('aria-hidden')"));
+        assertEquals(true,script(engine,"document.getElementById('walking-panel').hidden && document.getElementById('next-range-legend').hidden"));
+        assertEquals(35.1796,((Number)script(engine,"testMap.getCenter().getLat()")).doubleValue(),0.000001);
+        assertEquals(5,((Number)script(engine,"testMap.getLevel()")).intValue());
+        script(engine,"testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
+        assertEquals("[[35.16,129.06]]",script(engine,"JSON.stringify(bridgeSelections)"));
+    }
+
     @Test void numberedBadgeHoverHighlightsItsLegAndKeepsClickedDetailsPinned() throws Exception {
         WebEngine engine=loadMap(640,600);
         script(engine,"""
@@ -1300,15 +1351,22 @@ class MapSearchTest {
             var activity=(javafx.scene.control.ComboBox<?>)field(editor,"activityBox");
             TextField price=(TextField)field(editor,"placePriceField");
             var radius=(javafx.scene.control.Slider)field(editor,"radiusSlider");
+            var searchButton=(javafx.scene.control.Button)field(editor,"recommendNextButton");
+            assertEquals("후보 검색",searchButton.getText());
             assertEquals("CONDITION",field(editor,"state").toString());
             assertTrue(condition.isExpanded());assertFalse(choice.isExpanded());
             activity.getSelectionModel().select(1);price.setText("1");radius.setValue(700);
             new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
+            assertEquals(javafx.scene.Cursor.DEFAULT,condition.getChildrenUnmodifiable().stream().filter(node->node.getStyleClass().contains("title")).findFirst().orElseThrow().getCursor());
             Path dir=Path.of("build","ui-preview");Files.createDirectories(dir);
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",dir.resolve("editor-condition.png").toFile());
             invoke(editor,"onRecommendNext");
             assertEquals("CHOICE",field(editor,"state").toString());
             assertFalse(condition.isExpanded());assertTrue(choice.isExpanded());
+            root.applyCss();root.layout();
+            assertEquals("후보 업데이트",searchButton.getText());
+            assertEquals(javafx.scene.Cursor.DEFAULT,choice.getChildrenUnmodifiable().stream().filter(node->node.getStyleClass().contains("title")).findFirst().orElseThrow().getCursor());
+            assertEquals(javafx.scene.Cursor.HAND,condition.getChildrenUnmodifiable().stream().filter(node->node.getStyleClass().contains("title")).findFirst().orElseThrow().getCursor());
             invoke(editor,"onCandidateDetail");assertEquals("CHOICE",field(editor,"state").toString());
             invoke(editor,"onModifyConditions");
             assertEquals("CONDITION",field(editor,"state").toString());
@@ -1320,6 +1378,7 @@ class MapSearchTest {
             assertEquals("CONDITION",field(editor,"state").toString());
             assertEquals(java.util.List.of(place),((javafx.scene.control.ListView<?>)field(editor,"placeList")).getItems());
             assertFalse(choice.isExpanded());assertEquals("1",price.getText());
+            assertEquals("후보 검색",searchButton.getText());
             var course=(javafx.scene.control.TitledPane)field(editor,"coursePane");
             course.setExpanded(true);assertTrue(course.isExpanded());assertFalse(condition.isExpanded());assertFalse(choice.isExpanded());
             course.setExpanded(false);assertTrue(course.isExpanded());

@@ -42,7 +42,7 @@
  <VBox fx:id="subtypeField" spacing="4" HBox.hgrow="ALWAYS" minWidth="0"><Label text="종류" styleClass="planner-caption"/><ComboBox fx:id="subtypeBox" maxWidth="Infinity"/></VBox>
  <VBox fx:id="tagField" spacing="4" HBox.hgrow="ALWAYS" minWidth="0"><Label text="특징 · 해당 장소만" styleClass="planner-caption"/><ComboBox fx:id="tagBox" maxWidth="Infinity"/></VBox>
  </HBox></content></TitledPane>
- <HBox spacing="8" alignment="CENTER_LEFT"><CheckBox fx:id="includeUncertainPrice" text="가격 미확인도 포함" selected="false" HBox.hgrow="ALWAYS"/><Region HBox.hgrow="ALWAYS"/><Button fx:id="recommendNextButton" text="후보 업데이트" onAction="#onRecommendNext" styleClass="planner-primary" minWidth="-Infinity"/></HBox>
+ <HBox spacing="8" alignment="CENTER_LEFT"><CheckBox fx:id="includeUncertainPrice" text="가격 미확인도 포함" selected="false" HBox.hgrow="ALWAYS"/><Region HBox.hgrow="ALWAYS"/><Button fx:id="recommendNextButton" text="후보 검색" onAction="#onRecommendNext" styleClass="planner-primary" minWidth="-Infinity"/></HBox>
  </VBox></content></TitledPane>
  <TitledPane fx:id="choicePane" text="추천 후보" expanded="false" collapsible="true" animated="false" styleClass="compact-pane"><content><VBox spacing="5">
  <HBox alignment="CENTER_LEFT" spacing="6"><Label fx:id="candidateCount" text="추천 전" styleClass="planner-caption"/><Region HBox.hgrow="ALWAYS"/><Label text="최대" styleClass="planner-caption"/><ComboBox fx:id="candidateLimitBox" prefWidth="76"/><Label text="곳" styleClass="planner-caption"/></HBox>

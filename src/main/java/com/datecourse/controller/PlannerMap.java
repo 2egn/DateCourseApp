@@ -69,6 +69,7 @@ final class PlannerMap {
     private int radius = 500;
     private boolean locked;
     private boolean originLocked, walkingPending;
+    private boolean resetPending;
     private Runnable originChangeBlocked = () -> {};
 
     PlannerMap(WebView view, BiConsumer<Double, Double> selected, Consumer<String> error) {
@@ -162,8 +163,13 @@ final class PlannerMap {
     }
 
     private void render(boolean fit) {
-        if (!ready || plan == null) return;
+        if (!ready) return;
         try {
+            if (resetPending) {
+                view.getEngine().executeScript("if(window.resetPlannerMap)window.resetPlannerMap()");
+                resetPending = false;
+            }
+            if (plan == null) return;
             sendOriginLock();
             setCandidateActionsEnabled(candidateActionsEnabled);
             ObjectMapper mapper = new ObjectMapper();
@@ -176,6 +182,21 @@ final class PlannerMap {
                 pendingDetail = null;
             }
         } catch (Exception failure) { error.accept("코스를 지도에 표시하지 못했어요."); }
+    }
+
+    void reset() {
+        plan = null;
+        candidate = null;
+        candidates = List.of();
+        pendingDetail = null;
+        radius = 500;
+        locked = false;
+        originLocked = false;
+        walkingRequested = false;
+        walkingPending = false;
+        synchronizeWalkingRoute();
+        resetPending = true;
+        render(true);
     }
 
     void fit(boolean wholeRoute) {

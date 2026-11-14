@@ -329,6 +329,7 @@ public final class RouteEditorController extends BasePageController {
         candidateIndex = -1;
         candidateList.getItems().clear();
         candidateCount.setText("추천 전");candidateStatus.setText("조건을 정하고 후보를 찾아 주세요.");
+        recommendNextButton.setText("후보 검색");
         setState(EditorState.CONDITION);
         editorError.setText("");
     }
@@ -486,7 +487,19 @@ public final class RouteEditorController extends BasePageController {
         refreshMap(false);
     }
     private void wirePane(TitledPane pane, EditorState target) {
+        pane.getChildrenUnmodifiable().addListener((javafx.collections.ListChangeListener<javafx.scene.Node>) change -> {
+            while (change.next()) for (javafx.scene.Node child : change.getAddedSubList()) {
+                if (!child.getStyleClass().contains("title")) continue;
+                // Watch the actual skin title as it is attached, including later skin replacements.
+                child.cursorProperty().addListener((property, previous, cursor) -> {
+                    if (pane.isExpanded() && cursor != javafx.scene.Cursor.DEFAULT)
+                        child.setCursor(javafx.scene.Cursor.DEFAULT);
+                });
+                child.setCursor(pane.isExpanded() ? javafx.scene.Cursor.DEFAULT : javafx.scene.Cursor.HAND);
+            }
+        });
         pane.expandedProperty().addListener((observable, old, expanded) -> {
+            updatePaneCursor(pane);
             if (changingState) return;
             if (expanded) setState(target);
             else if (state == target) {
@@ -494,6 +507,10 @@ public final class RouteEditorController extends BasePageController {
                 try { pane.setExpanded(true); } finally { changingState = false; }
             }
         });
+    }
+    private void updatePaneCursor(TitledPane pane) {
+        pane.getChildrenUnmodifiable().stream().filter(node -> node.getStyleClass().contains("title"))
+                .forEach(title -> title.setCursor(pane.isExpanded() ? javafx.scene.Cursor.DEFAULT : javafx.scene.Cursor.HAND));
     }
     private void markCandidatesDirty() {
         searchVersion++; candidatesDirty=true;
@@ -510,6 +527,7 @@ public final class RouteEditorController extends BasePageController {
             .filter(i->candidates.get(i).place().placeId().equals(selected.placeId())).findFirst().orElse(-1);
         candidateList.getSelectionModel().select(index>=0?index:candidates.isEmpty()?-1:0);
         candidateCount.setText("일치 "+matchingCandidates.size()+"곳 · 표시 "+candidates.size()+"곳");
+        recommendNextButton.setText(candidates.isEmpty() ? "후보 검색" : "후보 업데이트");
         candidateList.refresh();refreshMap(false);
     }
     private void refreshFacets() {

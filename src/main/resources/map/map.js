@@ -593,6 +593,39 @@
         if (fit) window.fitRouteView(false);
     };
 
+    window.resetPlannerMap = function () {
+        dismissSearch();
+        searchInput.value = '';
+        locationVersion++;
+        clearTimeout(locationNameTimer);
+        selectedPosition = null;
+        selectedPlaceName = '';
+        originLocked = false;
+        routeLocked = false;
+        routePresentation = null;
+        routeCandidate = null;
+        routeCandidates = [];
+        plannerCourse = [];
+        radiusMeter = nextRadiusMeter = 500;
+        resultSignature = renderedRouteKey = '';
+        window.showResultPlaces([], false, false, []);
+        itinerary.dismissDetail();
+        window.showWalkingRoute(null, '', false);
+        walkingExplanationOpen = false;
+        document.getElementById('walking-panel').hidden = true;
+        document.getElementById('next-range-legend').hidden = true;
+        document.getElementById('route-range-label').textContent = '출발지 중심 전체 범위';
+        [marker, circle, circleOutline, nextCircle, nextCircleOutline].forEach(function(shape) {
+            if (shape) shape.setMap(null);
+        });
+        searchForm.hidden = false;
+        if (ready) {
+            map.setCenter(new kakao.maps.LatLng(35.1796, 129.0756));
+            map.setLevel(5);
+        }
+        status.textContent = '지도에서 출발 위치를 클릭해 주세요.';
+    };
+
     // Keep both circles visible; zoom back in only when the next level has ample space.
     window.ensureRouteRangesVisible = function () {
         if (!ready || !routePresentation) return;
