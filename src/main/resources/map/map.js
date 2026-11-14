@@ -495,7 +495,7 @@
     }
     // One preview owns its overlay and lifecycle; hovering never selects a place or route.
     const placePinPreview = (function () {
-        let overlay = null, body = null, activePin = null, leaveTimer = null, pointer = null;
+        let overlay = null, body = null, activePin = null, leaveTimer = null, pointer = null, pointerDown = null;
         function hide(pin) {
             if (pin && pin !== activePin) return;
             clearTimeout(leaveTimer); leaveTimer = null;
@@ -506,11 +506,11 @@
             if (!pin || pin !== activePin || leaveTimer !== null) return;
             leaveTimer = setTimeout(function () { hide(pin); }, 150);
         }
-        function reconcilePointer() {
-            if (!pointer) return;
+        function hitTest(pointer) {
+            if (!pointer) return null;
             const viewport = document.getElementById('map'), rect = viewport.getBoundingClientRect();
             if (!ready || pointer.blocked || !rect.width || !rect.height || pointer.x < rect.left || pointer.x > rect.right
-                    || pointer.y < rect.top || pointer.y > rect.bottom) { scheduleLeave(activePin); return; }
+                    || pointer.y < rect.top || pointer.y > rect.bottom) return null;
             const x = (pointer.x - rect.left) * viewport.clientWidth / rect.width;
             const y = (pointer.y - rect.top) * viewport.clientHeight / rect.height;
             const projection = map.getProjection();
@@ -528,8 +528,16 @@
             // A small exit margin and tie allowance prevent boundary noise without trapping nearby pins.
             if (active && active.inside && nearest && active.score <= nearest.score + 36) nearest = active;
             if (!nearest && active && active.nearby) nearest = active;
-            if (nearest) show(nearest.pin, nearest.pin.previewPlace, nearest.pin.previewLabel);
-            else scheduleLeave(activePin);
+            return nearest ? nearest.pin : null;
+        }
+        function reconcilePointer() {
+            const pin = hitTest(pointer);
+            if (pin) show(pin, pin.previewPlace, pin.previewLabel); else scheduleLeave(activePin);
+        }
+        function pointerFrom(event) {
+            const target = event.target;
+            return {x:event.clientX, y:event.clientY, blocked:event.type === 'mousemove' && !!event.buttons || !!(target.closest
+                && target.closest('.place-detail,.itinerary-rail,#place-search,#walking-panel,.walking-route-tooltip,.walking-leg-badge'))};
         }
         function enter(pin, place, label) {
             if (resultMarkers.indexOf(pin) < 0) return;
@@ -540,13 +548,24 @@
         }
         // Capture real pointer coordinates before SDK child elements synthesize enter/exit events.
         document.addEventListener('mousemove', function (event) {
-            const target = event.target;
-            pointer = {x:event.clientX, y:event.clientY, blocked:!!event.buttons || !!(target.closest
-                && target.closest('.place-detail,.itinerary-rail,#place-search,#walking-panel'))};
+            pointer = pointerFrom(event);
             reconcilePointer();
         }, true);
+        document.addEventListener('mousedown', function (event) {
+            pointerDown = event.button === 0 ? {x:event.clientX, y:event.clientY} : null;
+        }, true);
+        // Use the same hit test for clicks before SDK overlay wrappers can consume them.
+        document.addEventListener('click', function (event) {
+            const down = pointerDown; pointerDown = null;
+            if (event.button !== 0 || event.defaultPrevented || event.detail === 0 && event.clientX === 0 && event.clientY === 0) return;
+            if (down && Math.hypot(event.clientX - down.x, event.clientY - down.y) > 6) return;
+            const pin = hitTest(pointerFrom(event));
+            if (!pin || !pin.visitClick) return;
+            event.preventDefault(); event.stopImmediatePropagation();
+            pin.visitClick();
+        }, true);
         document.documentElement.addEventListener('mouseleave', function () { pointer = null; scheduleLeave(activePin); });
-        window.addEventListener('blur', function () { pointer = null; hide(); });
+        window.addEventListener('blur', function () { pointer = null; pointerDown = null; hide(); });
         function show(pin, place, label) {
             if (!ready || resultMarkers.indexOf(pin) < 0) return;
             clearTimeout(leaveTimer); leaveTimer = null;

@@ -28,6 +28,41 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
+    @Test void oneDomClickOnHoveredPinOpensDetailsThroughSdkOverlayWrapper() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.singleClickPlaces=[{recordId:1,placeId:'a',name:'한 번 클릭 장소',lat:35.1578,lng:129.06},
+                {recordId:2,placeId:'b',name:'다른 핀 장소',lat:35.159,lng:129.06}];
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:singleClickPlaces},null,500,true,false,[]);
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));
+            window.wrapperClicks=0;window.clickShield=document.createElement('div');clickShield.className='sdk-overlay-wrapper';
+            clickShield.addEventListener('click',function(){wrapperClicks++;if(!window.simulatingDrag)testMap.onclick({latLng:new kakao.maps.LatLng(35.1578,129.06)});});
+            document.getElementById('map').appendChild(clickShield);
+            window.dispatchAtPin=function(place,type,target,offsetX){
+                var mapElement=document.getElementById('map'),rect=mapElement.getBoundingClientRect();
+                var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(place.lat,place.lng));
+                (target||clickShield).dispatchEvent(new MouseEvent(type,{bubbles:true,cancelable:true,button:0,detail:type==='click'?1:0,
+                    clientX:rect.left+(point.x+(offsetX||0))*rect.width/mapElement.clientWidth,
+                    clientY:rect.top+(point.y-30)*rect.height/mapElement.clientHeight}));
+            };
+            dispatchAtPin(singleClickPlaces[0],'mousemove');window.panCountBefore=mapPans.length;
+            dispatchAtPin(singleClickPlaces[0],'click');
+            """);
+        assertEquals("한 번 클릭 장소",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
+        assertEquals(0,((Number)script(engine,"wrapperClicks")).intValue());
+        assertEquals(1,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
+        script(engine,"dispatchAtPin(singleClickPlaces[1],'mousemove');dispatchAtPin(singleClickPlaces[1],'click')");
+        assertEquals("다른 핀 장소",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(2,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
+        script(engine,"window.simulatingDrag=true;dispatchAtPin(singleClickPlaces[0],'mousedown',clickShield,-100);dispatchAtPin(singleClickPlaces[0],'click');window.simulatingDrag=false");
+        assertEquals("다른 핀 장소",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(2,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
+        script(engine,"window.routeControl=document.createElement('button');routeControl.className='walking-leg-badge';window.routeControlClicks=0;routeControl.onclick=function(){routeControlClicks++;};document.getElementById('map').appendChild(routeControl);dispatchAtPin(singleClickPlaces[1],'click',routeControl)");
+        assertEquals(1,((Number)script(engine,"routeControlClicks")).intValue());
+        assertEquals(2,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
+    }
+
     @Test void pointerInsidePinKeepsPreviewDespiteRepeatedSdkExitEvents() throws Exception {
         WebEngine engine=loadMap(850,720);
         script(engine,"""
