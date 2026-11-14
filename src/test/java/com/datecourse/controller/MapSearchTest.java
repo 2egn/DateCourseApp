@@ -28,6 +28,74 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
+    @Test void gestureStateResetsOnFreshInputWithoutTimeWindow() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        assertEquals(true,script(engine,"""
+            (function(){
+                var gesture=new PinPointerGesture({movementTolerance:4}),pin={};
+                for(var i=0;i<8;i++) {
+                    gesture.begin({x:10,y:10},pin);
+                    if(gesture.consumesClick({x:11,y:11}) || !gesture.blocksSdkClick(pin))return false;
+                    if(gesture.finish({x:11,y:11},function(){return true;})!==pin)return false;
+                    if(!gesture.blocksSdkClick(pin) || !gesture.consumesClick({x:11,y:11}))return false;
+                }
+                gesture.begin({x:10,y:10},pin);gesture.move({x:20,y:10});gesture.move({x:10,y:10});
+                if(!gesture.blocksSdkClick(pin))return false;
+                if(gesture.finish({x:10,y:10},function(){return true;})!==null)return false;
+                if(!gesture.blocksSdkClick(pin))return false;
+                gesture.reset();return !gesture.blocksSdkClick(pin) && !gesture.consumesClick({x:10,y:10});
+            }())
+            """));
+    }
+
+    @Test void pressReleaseOpensDetailsWhenHoverChangesTargetAndClickIsMissing() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.releasePlace={recordId:1,placeId:'release',name:'손 뗄 때 상세 열기',lat:35.1578,lng:129.06};
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[releasePlace]},null,500,true,false,[]);
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));
+            window.releasePin=pins.find(p=>p.coursePin && p.attached);
+            window.pressTarget=document.createElement('div');window.releaseTarget=document.createElement('div');
+            document.getElementById('map').appendChild(pressTarget);document.getElementById('map').appendChild(releaseTarget);
+            window.gesturePoint=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(releasePlace.lat,releasePlace.lng));
+            var viewport=document.getElementById('map'),rect=viewport.getBoundingClientRect();
+            window.gestureX=rect.left+gesturePoint.x*rect.width/viewport.clientWidth;
+            window.gestureY=rect.top+(gesturePoint.y-30)*rect.height/viewport.clientHeight;
+            window.gestureEvent=function(type,target,dx){target.dispatchEvent(new MouseEvent(type,{bubbles:true,cancelable:true,button:0,
+                buttons:type==='mousedown'||type==='mousemove'?1:0,detail:1,clientX:gestureX+(dx||0),clientY:gestureY}));};
+            releasePin.onmouseover();window.releasePreview=routeOverlays.find(p=>p.options.content.classList.contains('place-pin-preview'));
+            window.releasePanCount=mapPans.length;
+            gestureEvent('mousedown',pressTarget);gestureEvent('mousemove',pressTarget,1);releasePin.onmouseout();
+            """);
+        Thread.sleep(220);
+        assertEquals(true,script(engine,"releasePreview.attached"));
+        script(engine,"pressTarget.remove();gestureEvent('mouseup',releaseTarget,1)");
+        assertEquals("손 뗄 때 상세 열기",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
+        assertEquals(1,((Number)script(engine,"mapPans.length-releasePanCount")).intValue());
+        script(engine,"releasePin.onclick();gestureEvent('click',releaseTarget,1)");
+        assertEquals(1,((Number)script(engine,"mapPans.length-releasePanCount")).intValue());
+    }
+    @Test void pinPressDraggedBeforeReleaseDoesNotOpenDetails() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.dragPlace={recordId:1,placeId:'drag',name:'드래그 장소',lat:35.1578,lng:129.06};
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[dragPlace]},null,500,true,false,[]);
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));
+            window.dragPin=pins.find(p=>p.coursePin && p.attached);
+            var viewport=document.getElementById('map'),rect=viewport.getBoundingClientRect();
+            var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(dragPlace.lat,dragPlace.lng));
+            var x=rect.left+point.x*rect.width/viewport.clientWidth,y=rect.top+(point.y-30)*rect.height/viewport.clientHeight;
+            viewport.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,button:0,buttons:1,clientX:x,clientY:y}));
+            viewport.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:1,clientX:x+40,clientY:y}));
+            viewport.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:1,clientX:x,clientY:y}));
+            viewport.dispatchEvent(new MouseEvent('mouseup',{bubbles:true,button:0,clientX:x,clientY:y}));
+            dragPin.onclick();
+            viewport.dispatchEvent(new MouseEvent('click',{bubbles:true,button:0,detail:1,clientX:x,clientY:y}));
+            """);
+        assertEquals(true,script(engine,"document.getElementById('place-detail').hidden"));
+    }
+
     @Test void oneDomClickOnHoveredPinOpensDetailsThroughSdkOverlayWrapper() throws Exception {
         WebEngine engine=loadMap(850,720);
         script(engine,"""
@@ -2050,6 +2118,10 @@ class MapSearchTest {
              var railCss = getClass().getResourceAsStream("/map/itinerary-rail.css")) {
             html = html.replace("<script src=\"./itinerary-rail.js\"></script>", "<script>" + new String(railJs.readAllBytes(), StandardCharsets.UTF_8) + "</script>")
                     .replace("<link rel=\"stylesheet\" href=\"./itinerary-rail.css\">", "<style>" + new String(railCss.readAllBytes(), StandardCharsets.UTF_8) + "</style>");
+        }
+        try (var gesture = getClass().getResourceAsStream("/map/pin-pointer-gesture.js")) {
+            html = html.replace("<script src=\"./pin-pointer-gesture.js\"></script>",
+                    "<script>" + new String(gesture.readAllBytes(), StandardCharsets.UTF_8) + "</script>");
         }
         try (var instantZoom = getClass().getResourceAsStream("/map/instant-zoom.js")) {
             html = html.replace("<script src=\"./instant-zoom.js\"></script>",

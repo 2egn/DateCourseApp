@@ -14,7 +14,7 @@ class MapPageServerTest {
 
     @Test void servesAllMapDependenciesAndDoesNotExposeOtherProjectFiles() throws Exception {
         try (MapPageServer server = new MapPageServer(0, root, Map.of())) {
-            for (String file : new String[]{"map.html", "map.js", "instant-zoom.js", "itinerary-rail.js", "itinerary-rail.css", "kakao-config.js"}) {
+            for (String file : new String[]{"map.html", "map.js", "pin-pointer-gesture.js", "instant-zoom.js", "itinerary-rail.js", "itinerary-rail.css", "kakao-config.js"}) {
                 HttpURLConnection connection = request(server, file);
                 try {
                     assertEquals(200, connection.getResponseCode(), file);

@@ -5,6 +5,9 @@
     // Experimental map-only scaling inside WebView; false restores SDK-level wheel behavior.
     const USE_FRACTIONAL_ZOOM = false;
 
+    const PIN_INPUT = Object.freeze({width:56, height:68, anchorX:28, anchorY:60,
+        exitMargin:6, tieTolerance:6, movementTolerance:6, leaveDelay:150});
+
     let map;
     let marker;
     let circle;
@@ -480,22 +483,23 @@
         // Keep one padded canvas and anchor even when the artwork grows on selection.
         // The explicit rectangle also accepts pointer input just outside the visible pin.
         const artworkWidth = active ? 44 : 38, artworkHeight = active ? 56 : 48;
-        const padded = origin ? svg : '<svg xmlns="http://www.w3.org/2000/svg" width="56" height="68" viewBox="0 0 56 68">'
-            + svg.replace('<svg ', '<svg x="' + ((56 - artworkWidth) / 2) + '" y="' + (60 - (active ? 54 : 46)) + '" ')
+        const padded = origin ? svg : '<svg xmlns="http://www.w3.org/2000/svg" width="' + PIN_INPUT.width + '" height="' + PIN_INPUT.height + '" viewBox="0 0 ' + PIN_INPUT.width + ' ' + PIN_INPUT.height + '">'
+            + svg.replace('<svg ', '<svg x="' + ((PIN_INPUT.width - artworkWidth) / 2) + '" y="' + (PIN_INPUT.anchorY - (active ? 54 : 46)) + '" ')
                 .replace('width="38" height="48"', 'width="' + artworkWidth + '" height="' + artworkHeight + '"') + '</svg>';
         const info = {
             src: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(padded.replace('#e54870', nearby ? (active || routePresentation ? '#2563eb' : '#64748b') : active ? '#9d174d' : '#e54870')),
-            width: origin ? 48 : 56, height: origin ? 46 : 68,
-            x: origin ? 24 : 28, y: origin ? 35 : 60
+            width: origin ? 48 : PIN_INPUT.width, height: origin ? 46 : PIN_INPUT.height,
+            x: origin ? 24 : PIN_INPUT.anchorX, y: origin ? 35 : PIN_INPUT.anchorY
         };
         const hitOptions = { offset: new kakao.maps.Point(info.x, info.y) };
-        if (!origin) { hitOptions.shape = 'rect'; hitOptions.coords = '0,0,56,68'; }
+        if (!origin) { hitOptions.shape = 'rect'; hitOptions.coords = [0,0,PIN_INPUT.width,PIN_INPUT.height].join(','); }
         const image = new kakao.maps.MarkerImage(info.src, new kakao.maps.Size(info.width, info.height), hitOptions);
         return image;
     }
     // One preview owns its overlay and lifecycle; hovering never selects a place or route.
     const placePinPreview = (function () {
-        let overlay = null, body = null, activePin = null, leaveTimer = null, pointer = null, pointerDown = null;
+        let overlay = null, body = null, activePin = null, leaveTimer = null, pointer = null;
+        const gesture = new window.PinPointerGesture(PIN_INPUT);
         function hide(pin) {
             if (pin && pin !== activePin) return;
             clearTimeout(leaveTimer); leaveTimer = null;
@@ -503,8 +507,9 @@
             if (overlay) overlay.setMap(null);
         }
         function scheduleLeave(pin) {
-            if (!pin || pin !== activePin || leaveTimer !== null) return;
-            leaveTimer = setTimeout(function () { hide(pin); }, 150);
+            if (!pin || pin !== activePin || leaveTimer !== null
+                    || gesture.heldPin === pin) return;
+            leaveTimer = setTimeout(function () { hide(pin); }, PIN_INPUT.leaveDelay);
         }
         function hitTest(pointer) {
             if (!pointer) return null;
@@ -520,17 +525,22 @@
                 const place = pin.previewPlace;
                 const point = projection.containerPointFromCoords(new kakao.maps.LatLng(place.lat, place.lng));
                 const dx = x - point.x, dy = y - point.y;
-                const match = {pin:pin, score:dx*dx + (dy+26)*(dy+26), inside:Math.abs(dx)<=28 && dy>=-60 && dy<=8,
-                    nearby:Math.abs(dx)<=34 && dy>=-66 && dy<=14};
+                const left = -PIN_INPUT.anchorX, right = PIN_INPUT.width - PIN_INPUT.anchorX;
+                const top = -PIN_INPUT.anchorY, bottom = PIN_INPUT.height - PIN_INPUT.anchorY, margin = PIN_INPUT.exitMargin;
+                const centerX = (left+right)/2, centerY = (top+bottom)/2;
+                const match = {pin:pin, score:(dx-centerX)**2 + (dy-centerY)**2,
+                    inside:dx>=left && dx<=right && dy>=top && dy<=bottom,
+                    nearby:dx>=left-margin && dx<=right+margin && dy>=top-margin && dy<=bottom+margin};
                 if (pin === activePin) active = match;
                 if (match.inside && (!nearest || match.score < nearest.score)) nearest = match;
             });
             // A small exit margin and tie allowance prevent boundary noise without trapping nearby pins.
-            if (active && active.inside && nearest && active.score <= nearest.score + 36) nearest = active;
+            if (active && active.inside && nearest && active.score <= nearest.score + PIN_INPUT.tieTolerance**2) nearest = active;
             if (!nearest && active && active.nearby) nearest = active;
             return nearest ? nearest.pin : null;
         }
         function reconcilePointer() {
+            if (gesture.heldPin) return;
             const pin = hitTest(pointer);
             if (pin) show(pin, pin.previewPlace, pin.previewLabel); else scheduleLeave(activePin);
         }
@@ -540,7 +550,7 @@
                 && target.closest('.place-detail,.itinerary-rail,#place-search,#walking-panel,.walking-route-tooltip,.walking-leg-badge'))};
         }
         function enter(pin, place, label) {
-            if (resultMarkers.indexOf(pin) < 0) return;
+            if (resultMarkers.indexOf(pin) < 0 || gesture.heldPin) return;
             if (pointer) reconcilePointer(); else show(pin, place, label);
         }
         function leave(pin) {
@@ -548,24 +558,36 @@
         }
         // Capture real pointer coordinates before SDK child elements synthesize enter/exit events.
         document.addEventListener('mousemove', function (event) {
+            gesture.move({x:event.clientX, y:event.clientY});
             pointer = pointerFrom(event);
             reconcilePointer();
         }, true);
         document.addEventListener('mousedown', function (event) {
-            pointerDown = event.button === 0 ? {x:event.clientX, y:event.clientY} : null;
+            if (event.button !== 0) { gesture.reset(); return; }
+            const point = pointerFrom(event);
+            gesture.begin(point, hitTest(point));
+            if (gesture.heldPin) { clearTimeout(leaveTimer); leaveTimer = null; }
         }, true);
-        // Use the same hit test for clicks before SDK overlay wrappers can consume them.
+        document.addEventListener('mouseup', function (event) {
+            if (event.button !== 0) return;
+            const point = pointerFrom(event);
+            const pin = gesture.finish(point, target => !point.blocked && resultMarkers.includes(target));
+            // Deliver the command directly; SDK notifications are separately deduplicated by gesture identity.
+            if (pin && pin.openDetails) pin.openDetails();
+        }, true);
         document.addEventListener('click', function (event) {
-            const down = pointerDown; pointerDown = null;
             if (event.button !== 0 || event.defaultPrevented || event.detail === 0 && event.clientX === 0 && event.clientY === 0) return;
-            if (down && Math.hypot(event.clientX - down.x, event.clientY - down.y) > 6) return;
-            const pin = hitTest(pointerFrom(event));
-            if (!pin || !pin.visitClick) return;
-            event.preventDefault(); event.stopImmediatePropagation();
-            pin.visitClick();
+            const point = pointerFrom(event);
+            if (gesture.consumesClick(point)) { event.preventDefault(); event.stopImmediatePropagation(); return; }
+            const dragged = gesture.isDragAt(point); gesture.cancelPress();
+            if (dragged) return;
+            const pin = hitTest(point);
+            if (!pin || !pin.openDetails) return;
+            event.preventDefault(); event.stopImmediatePropagation(); pin.openDetails();
         }, true);
-        document.documentElement.addEventListener('mouseleave', function () { pointer = null; scheduleLeave(activePin); });
-        window.addEventListener('blur', function () { pointer = null; pointerDown = null; hide(); });
+        document.addEventListener('keydown', function () { gesture.reset(); }, true);
+        document.documentElement.addEventListener('mouseleave', function () { pointer = null; gesture.cancelPress(); scheduleLeave(activePin); });
+        window.addEventListener('blur', function () { pointer = null; gesture.reset(); hide(); });
         function show(pin, place, label) {
             if (!ready || resultMarkers.indexOf(pin) < 0) return;
             clearTimeout(leaveTimer); leaveTimer = null;
@@ -598,7 +620,7 @@
             const shiftY = Math.max(12 + height - point.y, Math.min(viewport.clientHeight - 12 - point.y, preferredY));
             body.style.transform = 'translate(' + shiftX + 'px,' + shiftY + 'px)';
         }
-        return {enter: enter, hide: hide, leave: leave};
+        return {enter: enter, hide: hide, leave: leave, shouldIgnoreClick: pin => gesture.blocksSdkClick(pin)};
     }());
     function removeResultPin(pin) {
         placePinPreview.hide(pin);
@@ -620,7 +642,8 @@
             pin.activeImage = markerImage(label, false, true, nearby);
             if (connectRoute || panelManaged || routePresentation) {
                 pin.visitId = visits[index].visitId;
-                pin.visitClick = function () {
+                pin.openDetails = function () {
+                    if (!resultMarkers.includes(pin)) return;
                     claimMapObjectClick();
                     placePinPreview.hide();
                     window.dismissWalkingPopup();
@@ -628,6 +651,7 @@
                         window.javaMapBridge.onPlaceSelected(String(item.recordId));
                     itinerary.openVisit(pin.visitId);
                 };
+                pin.visitClick = function () { if (!placePinPreview.shouldIgnoreClick(pin)) pin.openDetails(); };
                 kakao.maps.event.addListener(pin, 'click', pin.visitClick);
             }
             pin.coursePin = courseIndex >= 0;
