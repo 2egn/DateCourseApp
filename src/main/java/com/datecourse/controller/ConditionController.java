@@ -43,6 +43,8 @@ public class ConditionController extends BasePageController {
     private boolean fitOnReturn;
     private UserSession userSession;
     private static final String EXISTING = "기존 장소 목록", PILOT = "서면·전포 시연 목록";
+    private static final String PUBLIC_DEMO="서면 공공자료 · 추정 가격";
+    private kr.ac.university.localdb.db.InformationReportRepository informationReports;
     private Task<List<Place>> placeLoadTask;
     private long placeLoadVersion;
     private boolean restoringSource;
@@ -90,7 +92,7 @@ public class ConditionController extends BasePageController {
         peopleField.textProperty().addListener((o, old, value) -> { commonSettingsChanged = true; updateResetButton(); });
         radiusSlider.valueProperty().addListener((o, old, value) -> { commonSettingsChanged = true; updateResetButton(); });
         map.load();
-        sourceBox.getItems().setAll(EXISTING, PILOT);
+        sourceBox.getItems().setAll(EXISTING, PILOT, PUBLIC_DEMO);
         sourceBox.setValue(EXISTING);
         sourceBox.valueProperty().addListener((obs, old, selected) -> changeSource(old, selected));
         selectNavigation(homeButton);
@@ -119,7 +121,7 @@ public class ConditionController extends BasePageController {
         lastSavedPlan = null;
         saveStatusLabel.setText("");
         resultLabel.setText("아직 확정된 코스가 없어요.");
-        if (PILOT.equals(selected)) {
+        if (PILOT.equals(selected) || PUBLIC_DEMO.equals(selected)) {
             radiusSlider.setValue(2000);
             onLocationSelected(PilotPlaceRepository.START_LAT, PilotPlaceRepository.START_LNG);
             hintLabel.setText("서면역 주변 시연 목록이에요. 출발 위치·범위를 조정할 수 있어요.");
@@ -139,6 +141,18 @@ public class ConditionController extends BasePageController {
     public void setAccountActions(kr.ac.university.localdb.db.MemberRepository repository, Runnable logout) {
         accountRepository = repository;
         logoutHandler = logout;
+        informationReports=repository==null?null:repository.informationReports();
+        routeEditorController.setPlaceRefresh(informationReports==null?null:informationReports::apply);
+        routeEditorController.setOnReport(this::reportInformation);
+    }
+    private void reportInformation(Place place) {
+        if(userSession==null||informationReports==null){notifyUser(PageFeedback.Kind.INFO,"로그인 후 제보할 수 있어요.");return;}
+        InformationReportDialog.show(plannerRoot.getScene().getWindow(),place).ifPresent(form->{
+            var session=userSession;
+            runWork("제보를 접수하고 있어요",()->informationReports.submit(session,place,form.field(),form.value(),form.reason(),form.source()),
+                id->notifyUser(PageFeedback.Kind.SUCCESS,"제보 #"+id+" 접수 · 관리자 검토 후 반영돼요."),
+                failure->notifyUser(PageFeedback.Kind.ERROR,failure instanceof IllegalArgumentException?failure.getMessage():"제보를 접수하지 못했어요. 다시 시도해 주세요."));
+        });
     }
 
     @FXML private void onMyPage() {
@@ -187,6 +201,8 @@ public class ConditionController extends BasePageController {
         appliedPlan = null; lastSavedPlan = null; savedCourseId = null;
         editorPaused = false; editorOpen = false; allPlaces = List.of();
         accountRepository = null; savedCourseRepository = null; placeRepository = null;
+        informationReports=null;routeEditorController.setPlaceRefresh(null);
+        routeEditorController.setOnReport(p->notifyUser(PageFeedback.Kind.INFO,"로그인 후 제보할 수 있어요."));
         Runnable logout = logoutHandler;
         logoutHandler = null;
         if (logout != null) logout.run();
@@ -323,7 +339,8 @@ public class ConditionController extends BasePageController {
         savedCourseId = saved.courseId();
         lastSavedPlan = saved.plan();
         // Match the candidate source without clearing the restored course.
-        String source = saved.plan().places().stream().anyMatch(p -> p.placeId().startsWith("DCA-DEMO-")) ? PILOT : EXISTING;
+        String source = saved.plan().places().stream().anyMatch(p -> p.placeId().startsWith("DCA-DEMO-PUBLIC-")) ? PUBLIC_DEMO
+            : saved.plan().places().stream().anyMatch(p -> p.placeId().startsWith("DCA-DEMO-")) ? PILOT : EXISTING;
         if (!source.equals(sourceBox.getValue())) {
             restoringSource = true;
             sourceBox.setValue(source);
@@ -385,7 +402,8 @@ public class ConditionController extends BasePageController {
     }
 
     private void loadPlaces() {
-        PlaceSource source = PILOT.equals(sourceBox.getValue()) ? new PilotPlaceRepository() : placeRepository;
+        PlaceSource source = PUBLIC_DEMO.equals(sourceBox.getValue()) ? new com.datecourse.service.PublicDemoPlaceRepository()
+            : PILOT.equals(sourceBox.getValue()) ? new PilotPlaceRepository() : placeRepository;
         if (placeLoadTask != null) placeLoadTask.cancel();
         long version = ++placeLoadVersion;
         placesLoaded = false;
@@ -403,7 +421,10 @@ public class ConditionController extends BasePageController {
         recommendButton.setDisable(true);
         recommendButton.setText("장소 불러오는 중…");
         Task<List<Place>> task = new Task<>() {
-            @Override protected List<Place> call() throws Exception { return source.findAll(); }
+            @Override protected List<Place> call() throws Exception {
+                List<Place> places=source.findAll();
+                return informationReports==null?places:informationReports.apply(places);
+            }
         };
         Runnable finishLoading = beginLoading("장소 목록을 불러오고 있어요");
         task.setOnCancelled(event -> finishLoading.run());
@@ -415,7 +436,9 @@ public class ConditionController extends BasePageController {
             placesLoaded = true;
             placesLoading = false;
             long unknown = allPlaces.stream().filter(p -> !p.priceEstimate().finite()).count();
-            sourceStatusLabel.setText(allPlaces.size() + "곳 · 가격 상한 미확인 " + unknown + "곳");
+            long estimated=allPlaces.stream().filter(p->p.priceEstimate().estimated()).count();
+            sourceStatusLabel.setText(allPlaces.size() + "곳 · 추정 가격 "+estimated+"곳 · 가격 상한 미확인 " + unknown + "곳"
+                +(PUBLIC_DEMO.equals(sourceBox.getValue())?"\n공공자료 기준 장소 · 현재 영업 여부는 지도에서 확인해 주세요.":""));
             recommendButton.setDisable(false);
             recommendButton.setText(appliedPlan == null || appliedPlan.places().isEmpty() ? "코스 만들기 →" : "코스 편집 →");
             finishStartup();
@@ -480,7 +503,7 @@ public class ConditionController extends BasePageController {
     @FXML
     private void onRecommendClick() {
         if (!placesLoaded) {
-            if (placeRepository == null && !PILOT.equals(sourceBox.getValue())) errorLabel.setText("로그인하거나 서면·전포 시연 목록을 선택해 주세요.");
+            if (placeRepository == null && EXISTING.equals(sourceBox.getValue())) errorLabel.setText("로그인하거나 서면·전포 시연 목록을 선택해 주세요.");
             else loadPlaces();
             return;
         }

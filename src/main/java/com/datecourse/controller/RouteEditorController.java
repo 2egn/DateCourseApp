@@ -3,6 +3,9 @@ package com.datecourse.controller;
 import com.datecourse.model.Place;
 import com.datecourse.model.RoutePlan;
 import com.datecourse.model.CostEstimate;
+import com.datecourse.model.NextPlaceCondition;
+import com.datecourse.model.PlaceTag;
+import com.datecourse.service.PlaceFacets;
 import com.datecourse.service.NextPlaceService;
 import com.datecourse.service.PlaceSearchService;
 import com.datecourse.service.RouteRangeValidator;
@@ -24,6 +27,23 @@ import java.util.function.Consumer;
 public final class RouteEditorController extends BasePageController {
     @FXML private WebView editMapView;
     @FXML private ComboBox<String> activityBox;
+    @FXML private ComboBox<String> subtypeBox;
+    @FXML private ComboBox<PlaceTag> tagBox;
+    @FXML private ComboBox<Integer> candidateLimitBox;
+    @FXML private Label candidateStatus, candidateCount;
+    @FXML private Button recommendNextButton;
+    private List<PlaceSearchService.NearbyPlace> matchingCandidates = List.of();
+    private boolean candidatesDirty;
+    private long searchVersion;
+    private boolean updatingFacets;
+    private String facetsActivity;
+    private final java.util.Map<String,String> rememberedSubtypes = new java.util.HashMap<>();
+    private final java.util.Map<String,PlaceTag> rememberedTags = new java.util.HashMap<>();
+    private Consumer<Place> onReport = ignored -> notifyUser(PageFeedback.Kind.INFO,"로그인 후 제보할 수 있어요.");
+    @FunctionalInterface public interface PlaceRefresh { List<Place> apply(List<Place> places) throws Exception; }
+    private PlaceRefresh placeRefresh;
+    public void setPlaceRefresh(PlaceRefresh refresh) { placeRefresh = refresh; }
+    public void setOnReport(Consumer<Place> report) { onReport = report; }
     @FXML private CheckBox includeUncertainPrice;
     @FXML private TextField placePriceField;
     @FXML private Button priceUp, priceDown, finishButton;
@@ -73,28 +93,52 @@ public final class RouteEditorController extends BasePageController {
         });
         activityBox.getItems().setAll("식사", "카페", "문화");
         activityBox.getSelectionModel().selectFirst();
+        candidateLimitBox.getItems().setAll(5,10,20,30);
+        candidateLimitBox.setValue(5);
+        subtypeBox.setPromptText("전체 종류"); tagBox.setPromptText("특징 제한 없음");
+        subtypeBox.setCellFactory(v->new ListCell<>() {
+            @Override protected void updateItem(String s,boolean empty){super.updateItem(s,empty);setText(empty?null:s==null?"전체 종류":s);}
+        });
+        tagBox.setCellFactory(v->new ListCell<>() {
+            @Override protected void updateItem(PlaceTag t,boolean empty){super.updateItem(t,empty);setText(empty?null:t==null?"특징 제한 없음":t.label());}
+        });
+        subtypeBox.setButtonCell(new ListCell<>() {
+            @Override protected void updateItem(String s,boolean empty){super.updateItem(s,empty);setText(empty||s==null?"전체 종류":s);}
+        });
+        tagBox.setButtonCell(new ListCell<>() {
+            @Override protected void updateItem(PlaceTag t,boolean empty){super.updateItem(t,empty);setText(empty||t==null?"특징 제한 없음":t.label());}
+        });
+        candidateLimitBox.valueProperty().addListener((o,a,b)->{if(b!=null)displayCandidates();});
         NumberStepper.install(placePriceField, priceUp, priceDown, 0, 10000, 2);
+        includeUncertainPrice.setTooltip(new Tooltip("금액 또는 상한을 모르는 장소도 표시해요. 이 경우 가격 상한 충족 여부를 보장할 수 없어요. 숫자가 있는 추정 가격은 기본적으로 계산에 활용해요."));
         candidateList.setPlaceholder(new Label("조건을 정하고 추천받기를 눌러 주세요."));
         candidateList.setCellFactory(list -> new ListCell<>() {
             private final Label rank = new Label();
             private final Label name = new Label();
             private final Label meta = new Label();
+            private final Label badges = new Label();
             private final Button detail = new Button("상세");
             private final Button add = new Button("추가");
+            private final Button report = new Button("정정 제보");
             private final HBox row;
             {
                 rank.getStyleClass().add("candidate-rank");
                 name.getStyleClass().add("section");
                 meta.getStyleClass().add("planner-caption");
-                VBox copy = new VBox(3, name, meta);
+                badges.getStyleClass().add("candidate-evidence");
+                VBox copy = new VBox(2, name, meta, badges);
                 copy.setMinWidth(0);
                 HBox.setHgrow(copy, Priority.ALWAYS);
                 name.setMaxWidth(Double.MAX_VALUE);
+                name.setMinWidth(0);badges.setMinWidth(0);meta.setMinWidth(0);
                 detail.getStyleClass().add("candidate-row-detail");
                 add.getStyleClass().add("candidate-row-add");
                 detail.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
                 add.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
-                row = new HBox(8, rank, copy, detail, add);
+                VBox actions = new VBox(3,new HBox(4,detail,add),report);
+                report.getStyleClass().add("candidate-report");
+                report.setOnAction(e->{if(getItem()!=null)onReport.accept(getItem().place());});
+                row = new HBox(8, rank, copy, actions);
                 row.setAlignment(Pos.CENTER_LEFT);
                 detail.setOnAction(event -> {
                     candidateList.getSelectionModel().select(getIndex());
@@ -113,6 +157,11 @@ public final class RouteEditorController extends BasePageController {
                 name.setText(nearby.place().name());
                 name.setTooltip(new Tooltip(nearby.place().name()));
                 meta.setText(String.format("%.0fm · %s", nearby.distanceMeters(), nearby.place().priceText()));
+                badges.setText(nearby.place().priceEstimate().evidenceText()
+                    + nearby.place().details().tags().stream().limit(2).map(t->" · "+t.tag().label()).collect(java.util.stream.Collectors.joining()));
+                badges.setTooltip(new Tooltip(nearby.place().priceEstimate().explanation()
+                    + nearby.place().details().tags().stream().map(t->"\n"+t.tag().label()+" · "+t.basis()).collect(java.util.stream.Collectors.joining())));
+                add.setDisable(candidatesDirty);
                 detail.setAccessibleText(nearby.place().name() + " 상세 보기");
                 add.setAccessibleText(nearby.place().name() + " 코스에 추가");
                 setGraphic(row);
@@ -122,12 +171,17 @@ public final class RouteEditorController extends BasePageController {
             candidateIndex = value.intValue();
             showCandidate();
         });
-        activityBox.valueProperty().addListener((obs, old, value) -> clearCandidate());
-        placePriceField.textProperty().addListener((obs, old, value) -> clearCandidate());
-        includeUncertainPrice.selectedProperty().addListener((obs, old, value) -> clearCandidate());
+        activityBox.valueProperty().addListener((obs, old, value) -> {
+            if(old!=null){rememberedSubtypes.put(old,subtypeBox.getValue());rememberedTags.put(old,tagBox.getValue());}
+            refreshFacets();markCandidatesDirty();
+        });
+        subtypeBox.valueProperty().addListener((o,a,b)->{if(!updatingFacets)markCandidatesDirty();});
+        tagBox.valueProperty().addListener((o,a,b)->{if(!updatingFacets)markCandidatesDirty();});
+        placePriceField.textProperty().addListener((obs, old, value) -> markCandidatesDirty());
+        includeUncertainPrice.selectedProperty().addListener((obs, old, value) -> markCandidatesDirty());
         radiusSlider.valueProperty().addListener((obs, old, value) -> {
-            radiusLabel.setText("이전 장소에서 · " + radius() + "m 이내");
-            clearCandidate();
+            radiusLabel.setText("직선 반경 · " + radius() + "m");
+            markCandidatesDirty();
             refreshMap(false);
             map.ensureRangesVisible();
         });
@@ -160,18 +214,12 @@ public final class RouteEditorController extends BasePageController {
         candidateList.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) { onCandidateDetail(); event.consume(); }
         });
-        conditionPane.expandedProperty().addListener((obs, old, expanded) -> {
-            if (!changingState) setState(expanded ? EditorState.CONDITION : EditorState.CHOICE);
-        });
-        choicePane.expandedProperty().addListener((obs, old, expanded) -> {
-            if (!changingState) setState(expanded ? EditorState.CHOICE : EditorState.CONDITION);
-        });
         updateButtons();
         setState(EditorState.CONDITION);
     }
 
     public void prepareMap() { map.load(); }
-    public void dispose() { map.dispose(); }
+    public void dispose() { searchVersion++;map.dispose(); }
 
     /** Reuse the live form so selected candidates and conditions also survive navigation. */
     public void resume(RoutePlan context, List<Place> places) {
@@ -179,6 +227,7 @@ public final class RouteEditorController extends BasePageController {
                 || original.people() != context.people() || original.radius() != context.radius();
         original = context;
         allPlaces = List.copyOf(places);
+        refreshFacets();
         commonLabel.setText(String.format("%d명 · 출발지 중심 %dm 범위", context.people(), context.radius()));
         if (changed) clearCandidate();
         refreshSummary();
@@ -207,6 +256,7 @@ public final class RouteEditorController extends BasePageController {
     public void begin(RoutePlan snapshot, List<Place> places, Consumer<RoutePlan> complete, Runnable cancel) {
         original = snapshot;
         allPlaces = List.copyOf(places);
+        refreshFacets();
         onComplete = complete;
         onCancel = cancel;
         arrivalRadii.clear();
@@ -237,17 +287,25 @@ public final class RouteEditorController extends BasePageController {
         if (original == null) return;
         try {
             int price = NumberStepper.read(placePriceField, 0, 10000, "1인 가격 상한(만원)") * 10000;
-            candidates = search.candidates(allPlaces, draftPlaces, original.startLat(), original.startLng(),
-                    radius(), activityBox.getValue(), price, original.people(), original.radius(), includeUncertainPrice.isSelected());
-            candidateIndex = -1;
-            candidateList.getItems().setAll(candidates);
-            candidateList.getSelectionModel().clearSelection();
-            if (!candidates.isEmpty()) candidateList.getSelectionModel().selectFirst();
-            editorError.setText(candidates.isEmpty() ? "조건에 맞는 새 장소가 없어요. 가격·반경·활동을 바꾸거나 가격 미확인 포함을 확인해 주세요."
-                    : candidates.stream().anyMatch(p -> !p.place().priceEstimate().finite())
-                        ? "가격 상한을 확인할 수 없는 후보가 포함돼요. 선택 후 실제 가격을 확인해 주세요." : "");
-            showCandidate();
-            setState(candidates.isEmpty() ? EditorState.CONDITION : EditorState.CHOICE);
+            NextPlaceCondition condition=new NextPlaceCondition(activityBox.getValue(),price,radius(),includeUncertainPrice.isSelected(),
+                subtypeBox.getValue()==null?java.util.Set.of():java.util.Set.of(subtypeBox.getValue()),
+                tagBox.getValue()==null?java.util.Set.of():java.util.Set.of(tagBox.getValue()),candidateLimitBox.getValue());
+            long version=++searchVersion;
+            RoutePlan context=draft(); List<Place> source=allPlaces;
+            candidatesDirty=true;candidateList.refresh();candidateStatus.setText("후보 갱신 중…");
+            Consumer<List<PlaceSearchService.NearbyPlace>> present=result->{
+                if(version!=searchVersion)return;
+                matchingCandidates=result;candidatesDirty=false;displayCandidates();
+                editorError.setText(result.isEmpty()?"조건에 맞는 새 장소가 없어요. 세부 조건·가격·반경을 조정해 주세요.":"");
+                candidateStatus.setText(result.isEmpty()?"일치하는 장소가 없어요. 세부 조건·가격·반경을 조정해 주세요.":
+                    result.stream().anyMatch(p->p.place().priceEstimate().estimated())?"추정 가격 기준 후보가 포함돼요.":"조건 적용됨");
+                setState(result.isEmpty()?EditorState.CONDITION:EditorState.CHOICE);
+            };
+            if(placeRefresh==null)present.accept(search.matching(source,context.places(),context.startLat(),context.startLng(),context.people(),context.radius(),condition));
+            else runWork("후보를 찾고 있어요",()-> {
+                List<Place> fresh=placeRefresh.apply(source);
+                return search.matching(fresh,context.places(),context.startLat(),context.startLng(),context.people(),context.radius(),condition);
+            },present,failure->{if(version==searchVersion){markCandidatesDirty();editorError.setText("후보 갱신에 실패했어요. 다시 시도해 주세요.");}});
         } catch (IllegalArgumentException invalid) {
             clearCandidate();
             editorError.setText(invalid.getMessage());
@@ -261,16 +319,19 @@ public final class RouteEditorController extends BasePageController {
     }
 
     private void clearCandidate() {
+        searchVersion++;
+        matchingCandidates=List.of();candidatesDirty=false;
         candidates = List.of();
         candidateIndex = -1;
         candidateList.getItems().clear();
+        candidateCount.setText("추천 전");candidateStatus.setText("조건을 정하고 후보를 찾아 주세요.");
         setState(EditorState.CONDITION);
         editorError.setText("");
     }
 
     @FXML
     private void onAddCandidate() {
-        if (state != EditorState.CHOICE) return;
+        if (state != EditorState.CHOICE || candidatesDirty) return;
         Place place = candidate();
         if (place == null) return;
         arrivalRadii.put(place.recordId(), radius());
@@ -375,19 +436,59 @@ public final class RouteEditorController extends BasePageController {
         state = requested == EditorState.CHOICE && candidates.isEmpty() ? EditorState.CONDITION : requested;
         changingState = true;
         try {
-            conditionPane.setExpanded(state == EditorState.CONDITION);
-            choicePane.setExpanded(state == EditorState.CHOICE);
-            choicePane.setDisable(candidates.isEmpty());
+            conditionPane.setExpanded(true);
+            choicePane.setExpanded(true);
+            choicePane.setDisable(false);
             choicePane.setText(candidates.isEmpty() ? "추천 후보" : "추천 후보 · " + candidates.size() + "곳");
-            conditionPane.setText(state == EditorState.CONDITION ? "다음 장소의 조건"
-                    : String.format("조건 · %s · %s만원 이하 · %dm", activityBox.getValue(), placePriceField.getText(), radius()));
+            conditionPane.setText("다음 장소의 조건");
         } finally { changingState = false; }
         refreshMap(false);
+    }
+    private void markCandidatesDirty() {
+        searchVersion++; candidatesDirty=true;
+        candidateStatus.setText(matchingCandidates.isEmpty()?"조건을 적용해 후보를 찾아 주세요.":"조건 변경됨 · 후보 업데이트 필요");
+        candidateList.refresh();
+    }
+    private void displayCandidates() {
+        if(candidateLimitBox.getValue()==null)return;
+        Place selected=candidate();
+        candidates=matchingCandidates.stream().limit(candidateLimitBox.getValue()).toList();
+        candidateIndex=-1;candidateList.getItems().setAll(candidates);
+        int index=selected==null?-1:java.util.stream.IntStream.range(0,candidates.size())
+            .filter(i->candidates.get(i).place().placeId().equals(selected.placeId())).findFirst().orElse(-1);
+        candidateList.getSelectionModel().select(index>=0?index:candidates.isEmpty()?-1:0);
+        candidateCount.setText("일치 "+matchingCandidates.size()+"곳 · 표시 "+candidates.size()+"곳");
+        candidateList.refresh();refreshMap(false);
+    }
+    private void refreshFacets() {
+        if(subtypeBox==null)return;
+        updatingFacets=true;
+        try {
+            var category=activityBox.getValue();
+            if(java.util.Objects.equals(category,facetsActivity)) {
+                rememberedSubtypes.put(category,subtypeBox.getValue());rememberedTags.put(category,tagBox.getValue());
+            }
+            var source=allPlaces.stream().filter(p->PlaceSearchService.categoryName(p.category()).equals(category)).toList();
+            var subtypes=new java.util.ArrayList<String>();subtypes.add(null);
+            subtypes.addAll(source.stream().map(PlaceFacets::subtype).distinct().sorted().toList());
+            subtypeBox.getItems().setAll(subtypes);
+            String remembered=rememberedSubtypes.get(category);
+            subtypeBox.setValue(subtypes.contains(remembered)?remembered:null);
+            var tags=new java.util.ArrayList<PlaceTag>();tags.add(null);
+            tags.addAll(source.stream().flatMap(p->p.details().tags().stream()).map(t->t.tag()).distinct().sorted().toList());
+            tagBox.getItems().setAll(tags);
+            tagBox.setValue(tags.contains(rememberedTags.get(category))?rememberedTags.get(category):null);
+            facetsActivity=category;
+        } finally {updatingFacets=false;}
     }
     @FXML private void onCandidateDetail() { if (state == EditorState.CHOICE && candidate() != null) map.showDetail(candidate()); }
     @FXML private void onPlaceDetail() {
         Place selected = placeList.getSelectionModel().getSelectedItem();
         if (selected != null) map.showDetail(selected);
+    }
+    @FXML private void onReportPlace() {
+        Place selected=placeList.getSelectionModel().getSelectedItem();
+        if(selected!=null)onReport.accept(selected);
     }
     @FXML private void onFitRange() { map.fit(false); }
     @FXML private void onFitRoute() { map.fit(true); }

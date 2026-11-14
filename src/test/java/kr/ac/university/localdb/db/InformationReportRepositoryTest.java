@@ -1,0 +1,127 @@
+package kr.ac.university.localdb.db;
+
+import com.datecourse.model.*;
+import com.zaxxer.hikari.HikariDataSource;
+import kr.ac.university.localdb.UserSession;
+import org.h2.tools.RunScript;
+import org.junit.jupiter.api.*;
+import java.nio.file.*;
+import java.util.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+class InformationReportRepositoryTest {
+    HikariDataSource pool; InformationReportRepository reports;
+    UserSession owner=new UserSession(7,"사용자");
+    Place original=new Place(1,"public:one","식당","MEAL",35,129,
+        new PriceEstimate(6000,6000,PriceEstimate.Unit.PER_PERSON,"추정",PriceEstimate.Evidence.SIMILAR_ESTIMATE,"",""),0,PlaceDetails.EMPTY);
+    @BeforeEach void setup() throws Exception {
+        pool=DatabasePool.create(new DbSettings("jdbc:h2:mem:"+UUID.randomUUID()+";MODE=MySQL","sa",""));
+        try(var c=pool.getConnection()) {
+            for(String f:List.of("02_create_tables.sql","07_saved_courses.sql","08_saved_course_price_estimates.sql"))
+                try(var reader=Files.newBufferedReader(Path.of("data/sql",f))){RunScript.execute(c,reader);}
+            try(var s=c.createStatement()){s.executeUpdate("INSERT INTO members(member_id,email,password_hash,name) VALUES (7,'demo@example.test','test','사용자')");}
+        }
+        reports=new InformationReportRepository(pool);
+    }
+    @AfterEach void close(){pool.close();}
+    @Test void pendingDoesNotChangeSourceAndApprovalSurvivesNewRepository() throws Exception {
+        long id=reports.submit(owner,original,InformationReport.Field.PRICE,"9000","메뉴판 확인","https://example.test/menu");
+        assertEquals(original,reports.apply(List.of(original)).getFirst());
+        reports.review(id,true,"9500","1인 식사 기준 확인");
+        Place updated=new InformationReportRepository(pool).apply(List.of(original)).getFirst();
+        assertEquals(9500,updated.price());assertEquals(PriceEstimate.Evidence.ADMIN_REVIEWED,updated.priceEstimate().evidence());
+        assertEquals(6000,original.price());assertEquals("APPROVED",reports.reports().getFirst().status());
+        assertEquals("9500",reports.reports().getFirst().reviewedValue());
+        assertThrows(IllegalArgumentException.class,()->reports.review(id,true,"10000","중복 승인"));
+    }
+    @Test void rejectionAndInvalidApprovalNeverChangePlace() throws Exception {
+        long id=reports.submit(owner,original,InformationReport.Field.PRICE,"9000","제보","" );
+        assertThrows(IllegalArgumentException.class,()->reports.review(id,true,"-1","오류"));
+        assertEquals("PENDING",reports.reports().getFirst().status());
+        reports.review(id,false,"","확인 근거 부족");assertEquals(original,reports.apply(List.of(original)).getFirst());
+        assertEquals("REJECTED",reports.reports().getFirst().status());
+    }
+    @Test void validatesMembershipAndInputAndReclassifiesReviewedSubtype() throws Exception {
+        assertThrows(IllegalArgumentException.class,()->reports.submit(null,original,InformationReport.Field.PRICE,"0","제보",""));
+        assertThrows(IllegalArgumentException.class,()->reports.submit(new UserSession(99,"없음"),original,InformationReport.Field.NAME,"수정","제보",""));
+        assertThrows(IllegalArgumentException.class,()->reports.submit(owner,original,InformationReport.Field.PRICE,"-1","제보",""));
+        assertThrows(IllegalArgumentException.class,()->reports.submit(owner,original,InformationReport.Field.NAME,"수정","제보","javascript:alert(1)"));
+        long id=reports.submit(owner,original,InformationReport.Field.SUBCATEGORY,"일식 회/초밥","업종 오류","" );
+        reports.review(id,true,"일식 회/초밥","확인");
+        assertEquals("일식",com.datecourse.service.PlaceFacets.subtype(reports.apply(List.of(original)).getFirst()));
+    }
+    @Test void savedSnapshotRetainsEstimateAfterApprovalAndNewSaveKeepsReviewedEvidence() throws Exception {
+        var saved=new SavedCourseRepository(pool);var plan=new RoutePlan(35,129,2,1000,"추정 코스",List.of(original));
+        var first=saved.save(owner,plan);
+        long id=reports.submit(owner,original,InformationReport.Field.PRICE,"9000","메뉴판","" );reports.review(id,true,"9000","확인");
+        assertEquals(plan,saved.findAll(owner).getFirst().plan());
+        assertTrue(saved.findAll(owner).getFirst().plan().places().getFirst().priceEstimate().estimated());
+        var updated=reports.apply(List.of(original));
+        saved.save(owner,first.courseId(),new RoutePlan(35,129,2,1000,"수정",updated));
+        assertEquals(PriceEstimate.Evidence.ADMIN_REVIEWED,saved.findAll(owner).getFirst().plan().places().getFirst().priceEstimate().evidence());
+    }
+    @Test void publicIdentitySharesCorrectionAcrossDatasetsWithoutChangingOtherPlaces() throws Exception {
+        var details=new PlaceDetails("","카페","","","source","","","",Map.of("public","shared-source"));
+        Place a=new Place(1,"old-demo","카페","CAFE",35,129,original.priceEstimate(),0,details);
+        Place b=new Place(2,"expanded-demo","카페","CAFE",35,129,original.priceEstimate(),0,details);
+        long id=reports.submit(owner,a,InformationReport.Field.NAME,"수정된 이름","동일 공공 ID","" );
+        reports.review(id,true,"수정된 이름","확인");
+        var rows=reports.apply(List.of(a,b,original));assertEquals("수정된 이름",rows.get(0).name());
+        assertEquals("수정된 이름",rows.get(1).name());assertEquals(original,rows.get(2));
+    }
+    @Test void onlyVerifiedAdminLoginReceivesReviewCapability() throws Exception {
+        char[] fixture="test-only-admin-password".toCharArray();
+        try(var c=pool.getConnection();var s=c.createStatement()) {
+            s.executeUpdate("CREATE TABLE app_admins(username VARCHAR(50) PRIMARY KEY,password_hash VARCHAR(255))");
+        }
+        try(var c=pool.getConnection();var s=c.prepareStatement("INSERT INTO app_admins VALUES (?,?)")) {
+            s.setString(1,MemberRepository.ADMIN_USERNAME);s.setString(2,kr.ac.university.localdb.PasswordHash.create(fixture));s.executeUpdate();
+        }
+        var members=new MemberRepository(pool);
+        assertThrows(IllegalArgumentException.class,()->members.login(MemberRepository.ADMIN_USERNAME,"wrong".toCharArray()));
+        var admin=members.login(MemberRepository.ADMIN_USERNAME,fixture).adminSession();assertNotNull(admin);
+        long id=reports.submit(owner,original,InformationReport.Field.PRICE,"9000","확인","" );
+        assertEquals(1,admin.informationReports().size());admin.reviewInformation(id,true,"9000","검토 완료");
+        assertEquals(9000,reports.apply(List.of(original)).getFirst().price());
+        try(var c=pool.getConnection();var s=c.prepareStatement("UPDATE members SET password_hash=? WHERE member_id=7")) {
+            s.setString(1,kr.ac.university.localdb.PasswordHash.create(fixture));s.executeUpdate();
+        }
+        assertNull(members.login("demo@example.test",fixture).adminSession());
+    }
+    @Test void administratorScreenApprovesPendingRowThroughItsActualButton() throws Exception {
+        char[] fixture="test-only-admin-password".toCharArray();
+        try(var c=pool.getConnection();var s=c.createStatement()) {s.executeUpdate("CREATE TABLE app_admins(username VARCHAR(50) PRIMARY KEY,password_hash VARCHAR(255))");}
+        try(var c=pool.getConnection();var s=c.prepareStatement("INSERT INTO app_admins VALUES (?,?)")) {
+            s.setString(1,MemberRepository.ADMIN_USERNAME);s.setString(2,kr.ac.university.localdb.PasswordHash.create(fixture));s.executeUpdate();
+        }
+        var session=new MemberRepository(pool).login(MemberRepository.ADMIN_USERNAME,fixture).adminSession();
+        reports.submit(owner,original,InformationReport.Field.PRICE,"9000","메뉴판 확인","https://example.test/menu");
+        var started=new java.util.concurrent.CountDownLatch(1);
+        try{javafx.application.Platform.startup(()->{javafx.application.Platform.setImplicitExit(false);started.countDown();});}
+        catch(IllegalStateException alreadyStarted){javafx.application.Platform.runLater(started::countDown);}
+        assertTrue(started.await(10,java.util.concurrent.TimeUnit.SECONDS));
+        javafx.scene.Parent root=fx(()->{
+            var loader=new javafx.fxml.FXMLLoader(getClass().getResource("/information-review-view.fxml"));
+            javafx.scene.Parent page=loader.load();new javafx.scene.Scene(page,1020,690);page.resize(1020,690);page.applyCss();page.layout();
+            ((com.datecourse.controller.InformationReviewController)loader.getController()).configure(session);return page;
+        });
+        long end=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(10);
+        while(fx(()->((javafx.scene.control.ListView<?>)root.lookup("#reports")).getItems().isEmpty())&&System.nanoTime()<end)Thread.sleep(20);
+        fx(()->{
+            var list=(javafx.scene.control.ListView<?>)root.lookup("#reports");assertEquals(1,list.getItems().size());list.getSelectionModel().selectFirst();
+            ((javafx.scene.control.TextField)root.lookup("#correctedValue")).setText("9500");
+            ((javafx.scene.control.TextArea)root.lookup("#reviewNote")).setText("기준 메뉴를 재확인해 9,500원으로 수정 승인");
+            root.resize(1020,690);root.applyCss();root.layout();
+            var file=Path.of("build/ui-preview/information-review.png");Files.createDirectories(file.getParent());
+            javax.imageio.ImageIO.write(javafx.embed.swing.SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",file.toFile());
+            var button=(javafx.scene.control.Button)root.lookup("#approveButton");assertFalse(button.isDisabled());button.fire();return null;
+        });
+        while(!"APPROVED".equals(reports.reports().getFirst().status())&&System.nanoTime()<end)Thread.sleep(20);
+        assertEquals("APPROVED",reports.reports().getFirst().status());assertEquals(9500,reports.apply(List.of(original)).getFirst().price());
+        // Wait for the follow-up list refresh before the test's pool is closed.
+        while(fx(()->((javafx.scene.control.ListView<InformationReport>)root.lookup("#reports")).getItems().stream().anyMatch(r->r.status().equals("PENDING")))&&System.nanoTime()<end)Thread.sleep(20);
+    }
+    private static <T>T fx(java.util.concurrent.Callable<T> work) throws Exception {
+        var task=new java.util.concurrent.FutureTask<T>(work);javafx.application.Platform.runLater(task);return task.get(10,java.util.concurrent.TimeUnit.SECONDS);
+    }
+}

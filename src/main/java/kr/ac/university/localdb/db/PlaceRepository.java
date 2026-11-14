@@ -53,7 +53,7 @@ public class PlaceRepository implements PlaceSource {
                                     && data.path("price").asInt() > 0
                                     ? PriceEstimate.exact(data.path("price").asInt()) : PriceEstimate.unknown(),
                             data.path("rating").asDouble(),
-                            PlaceDetails.EMPTY
+                            data.path("details").isObject()?objectMapper.treeToValue(data.path("details"),PlaceDetails.class):PlaceDetails.EMPTY
                     );
                     places.add(place);
                 }

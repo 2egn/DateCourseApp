@@ -47,7 +47,7 @@ processResources {
     doFirst { delete layout.buildDirectory.file('resources/main/db.properties').get().asFile }
     exclude 'map/kakao-config.js', 'db.properties'
     from('data/places/demo') {
-        include 'seomyeon-jeonpo-demo.json'
+        include 'seomyeon-jeonpo-demo.json', 'seomyeon-public-estimates.json'
         into 'datasets'
     }
 }
@@ -74,6 +74,13 @@ tasks.register('runPilotDemo', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'com.datecourse.demo.PilotPlannerLauncher'
     jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
+}
+
+tasks.register('setupInformationReports', JavaExec) {
+    group = 'verification'
+    description = 'Prepare additive information-report tables without changing existing records'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.InformationReportSetup'
 }
 
 // Provider keys are fetched at runtime, never copied into application resources.

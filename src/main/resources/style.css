@@ -1,4 +1,6 @@
 /* ===== 색상 (여기만 바꾸면 전체 색이 바뀜) ===== */
+.candidate-evidence { -fx-font-size: 11px; -fx-text-fill: #626773; }
+.candidate-report { -fx-font-size: 11px; -fx-padding: 2 8; -fx-background-color: #f1f2f4; -fx-text-fill: #505661; -fx-background-radius: 5; }
 .root {
     -app-primary: #ff6b81;
     -app-primary-dark: #e8506a;
@@ -314,8 +316,10 @@
 .route-sidebar-note { -fx-padding: 8 16 12; -fx-background-color: white; }
 .route-form-scroll { -fx-background-color: white; -fx-border-color: transparent; }
 .route-form-scroll > .viewport { -fx-background-color: white; }
-.compact-pane > .title { -fx-background-color: #f2f4f6; -fx-background-radius: 8; -fx-padding: 10 12; -fx-font-size: 13px; }
-.compact-pane > .content { -fx-background-color: white; -fx-border-color: #e5e8eb; -fx-border-radius: 0 0 8 8; -fx-padding: 12; }
+.compact-pane > .title { -fx-background-color: #f2f4f6; -fx-background-radius: 8; -fx-padding: 6 10; -fx-font-size: 13px; }
+.compact-pane > .content { -fx-background-color: white; -fx-border-color: #e5e8eb; -fx-border-radius: 0 0 8 8; -fx-padding: 8; }
+.condition-screen .route-edit-form .planner-primary { -fx-font-size: 13px; -fx-padding: 8 14; }
+.condition-screen .candidate-report { -fx-font-size: 11px; -fx-padding: 2 8; -fx-background-color: #f1f2f4; -fx-text-fill: #505661; }
 .candidate-rank { -fx-min-width: 18; -fx-font-weight: bold; -fx-text-fill: #64748b; }
 .condition-screen .candidate-row-detail { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-padding: 6 9; -fx-font-size: 12px; }
 .condition-screen .candidate-row-detail:hover { -fx-background-color: #e5e8eb; }

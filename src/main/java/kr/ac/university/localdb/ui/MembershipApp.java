@@ -425,7 +425,19 @@ public class MembershipApp {
         JPanel header=new JPanel(new BorderLayout(0,24));header.add(UiTheme.heading("회원 관리","가입한 회원의 정보를 한눈에 확인하세요"),BorderLayout.NORTH);header.add(top,BorderLayout.SOUTH);
         JScrollPane list=new JScrollPane(table);list.setBorder(BorderFactory.createEmptyBorder());
         content.add(header,BorderLayout.NORTH); content.add(list,BorderLayout.CENTER); content.add(bottom,BorderLayout.SOUTH);
-        window.setContentPane(content); window.setSize(1080,780); window.setLocationRelativeTo(home); window.setVisible(true); reload.run();
+        JTabbedPane tabs=new JTabbedPane();tabs.addTab("회원 관리",content);
+        JFXPanel reportPanel=new JFXPanel();tabs.addTab("장소 정보 제보",reportPanel);
+        Platform.runLater(()->{
+            try {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/information-review-view.fxml"));
+                Parent page=loader.load();
+                com.datecourse.controller.InformationReviewController controller=loader.getController();
+                controller.configure(session);reportPanel.setScene(new Scene(page));
+            } catch(IOException failure) {
+                reportPanel.setScene(new Scene(new javafx.scene.control.Label("제보 화면을 열지 못했어요.")));
+            }
+        });
+        window.setContentPane(tabs); window.setSize(1080,780); window.setLocationRelativeTo(home); window.setVisible(true); reload.run();
     }
 
     /** 별도 마무리 처리가 없는 작업은 빈 완료 콜백을 사용합니다. */

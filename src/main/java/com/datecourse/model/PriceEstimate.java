@@ -3,14 +3,29 @@ package com.datecourse.model;
 import java.util.Locale;
 
 /** Amounts are KRW. Null means unknown, never free. */
-public record PriceEstimate(Integer minimum, Integer maximum, Unit unit, String basis) {
+public record PriceEstimate(Integer minimum, Integer maximum, Unit unit, String basis,
+                            Evidence evidence, String sourceUrl, String checkedAt) {
     public enum Unit { PER_PERSON, PER_DRINK, ADULT_TICKET, UNKNOWN }
+    public enum Evidence {
+        LEGACY_REFERENCE("기존 참고 가격"), REFERENCE("공개 자료 참고"), GOOGLE_PROVIDED("Google 제공"),
+        SIMILAR_ESTIMATE("유사 장소 기준 추정"), DEMO_ASSUMPTION("시연용 추정"),
+        ADMIN_REVIEWED("관리자 검토"), UNKNOWN("가격 미확인");
+        private final String label;
+        Evidence(String label) { this.label = label; }
+        public String label() { return label; }
+    }
+    public PriceEstimate(Integer minimum, Integer maximum, Unit unit, String basis) {
+        this(minimum, maximum, unit, basis, minimum == null ? Evidence.UNKNOWN : Evidence.LEGACY_REFERENCE, "", "");
+    }
 
     public PriceEstimate {
         if (unit == null || minimum == null && maximum != null
                 || minimum != null && minimum < 0 || maximum != null && maximum < minimum)
             throw new IllegalArgumentException("가격 범위·단위를 확인해 주세요.");
         basis = basis == null ? "" : basis;
+        evidence = evidence == null ? (minimum == null ? Evidence.UNKNOWN : Evidence.LEGACY_REFERENCE) : evidence;
+        sourceUrl = sourceUrl == null ? "" : sourceUrl;
+        checkedAt = checkedAt == null ? "" : checkedAt;
     }
 
     public static PriceEstimate unknown() { return new PriceEstimate(null, null, Unit.UNKNOWN, "가격 미확인"); }
@@ -18,6 +33,11 @@ public record PriceEstimate(Integer minimum, Integer maximum, Unit unit, String 
     public boolean usablePerPerson() { return minimum != null && unit != Unit.UNKNOWN; }
     public boolean finite() { return usablePerPerson() && maximum != null; }
     public boolean exact() { return finite() && minimum.equals(maximum); }
+    public boolean estimated() { return evidence == Evidence.SIMILAR_ESTIMATE || evidence == Evidence.DEMO_ASSUMPTION; }
+    public String evidenceText() { return evidence.label(); }
+    public String explanation() { return evidenceText() + "\n" + basis
+            + (checkedAt.isBlank() ? "" : "\n자료/검토일 · " + checkedAt)
+            + (sourceUrl.isBlank() ? "" : "\n" + sourceUrl); }
     public boolean withinCap(int cap) { return finite() && maximum <= cap; }
     public long sortUpperBound() { return finite() ? maximum : Long.MAX_VALUE; }
 
@@ -33,7 +53,7 @@ public record PriceEstimate(Integer minimum, Integer maximum, Unit unit, String 
                 : minimum.equals(maximum) ? won(minimum) : won(minimum) + "~" + won(maximum);
         String suffix = switch (unit) { case PER_PERSON -> "/인"; case PER_DRINK -> "/잔";
             case ADULT_TICKET -> "/성인"; case UNKNOWN -> ""; };
-        return amount + suffix;
+        return (estimated() ? "약 " : "") + amount + suffix;
     }
 
     private static String won(long amount) { return String.format(Locale.KOREA, "%,d원", amount); }

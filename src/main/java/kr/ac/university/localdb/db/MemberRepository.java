@@ -38,6 +38,7 @@ public class MemberRepository implements AutoCloseable {
     public SavedCourseRepository savedCourses() {
         return new SavedCourseRepository(pool);
     }
+    public InformationReportRepository informationReports() { return new InformationReportRepository(pool); }
 
     public MemberRepository() {
         this(DatabasePool.create(DbSettings.load()));
@@ -106,6 +107,18 @@ public class MemberRepository implements AutoCloseable {
         try (Connection c = connect()) {
             long connected = System.nanoTime();
 
+            // The admin window requires a capability issued only after checking the stored admin hash.
+            if (ADMIN_USERNAME.equals(username)) {
+                try (PreparedStatement s=c.prepareStatement("SELECT password_hash FROM app_admins WHERE username=?")) {
+                    s.setString(1,username);
+                    try (ResultSet row=s.executeQuery()) {
+                        if(row.next()&&PasswordHash.verify(password,row.getString("password_hash")))
+                            return new Login(0,"관리자",new AdminSession());
+                    }
+                }
+                throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
+            }
+
             try (PreparedStatement s = c.prepareStatement(
                     "SELECT member_id,name,password_hash,status FROM members WHERE email=?")) {
                 s.setString(1, username.toLowerCase(Locale.ROOT));
@@ -142,6 +155,12 @@ public class MemberRepository implements AutoCloseable {
     /** 관리자 인증에 성공했을 때만 관리 메서드에 접근할 수 있습니다. */
     public final class AdminSession {
         private AdminSession() {}
+        public java.util.List<com.datecourse.model.InformationReport> informationReports() throws SQLException {
+            return MemberRepository.this.informationReports().reports();
+        }
+        public void reviewInformation(long id, boolean approve, String corrected, String note) throws SQLException {
+            MemberRepository.this.informationReports().review(id,approve,corrected,note);
+        }
         public void deleteInactive(long id) throws SQLException {
             try (Connection c = connect(); PreparedStatement s = c.prepareStatement(
                     "DELETE FROM members WHERE member_id=? AND status='INACTIVE'")) {

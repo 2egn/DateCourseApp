@@ -133,10 +133,14 @@
             const facts = document.getElementById('detail-facts');
             facts.textContent = '';
             fact('예상 가격', priceText(place));
+            const evidenceLabels = { LEGACY_REFERENCE:'기존 참고 가격', REFERENCE:'공개 자료 참고', GOOGLE_PROVIDED:'Google 제공', SIMILAR_ESTIMATE:'유사 장소 기준 추정', DEMO_ASSUMPTION:'시연용 추정', ADMIN_REVIEWED:'관리자 검토', UNKNOWN:'가격 미확인' };
+            if (place.priceEstimate && place.priceEstimate.evidence) fact('가격 출처', evidenceLabels[place.priceEstimate.evidence] || place.priceEstimate.evidence);
             if (Number.isFinite(place.rating) && place.rating > 0) fact('평점', place.rating.toFixed(1));
             const extra = document.getElementById('detail-extra');
             extra.textContent = '';
             const info = place.details || {};
+            const tagLabels = {GOOD_PRICE:'착한가격',MODEL_RESTAURANT:'모범음식점',FREE_ADMISSION:'무료입장',NEAR_SUBWAY:'역 가까움',NEAR_BUS:'정류장 가까움'};
+            (info.tags || []).forEach(function (tag) { const p=document.createElement('p');p.textContent=(tagLabels[tag.tag] || tag.tag)+' · '+tag.basis;extra.appendChild(p); });
             [['주소', place.address || info.address], ['세부 분류', info.subcategory], ['연락처', info.phone],
              ['자료 기준일', info.sourceDate], ['장소 확인일', info.identityCheckedAt],
              ['자료 출처', info.sourceUrl], ['확인 출처', info.verificationUrl],

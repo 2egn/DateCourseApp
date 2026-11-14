@@ -474,6 +474,59 @@ class MapSearchTest {
         }
     }
 
+    @Test void compactFiltersAndDisplayLimitPreserveSelectionAndBlockStaleAdds() throws Exception {
+        fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));
+            Parent root=loader.load();RouteEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
+            var rows=new com.datecourse.service.PublicDemoPlaceRepository().findAll();
+            editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),rows,p->{},()->{});
+            ((javafx.scene.control.Slider)field(editor,"radiusSlider")).setValue(2000);
+            new Scene(root,1280,800);root.resize(1280,800);root.applyCss();root.layout();
+            invoke(editor,"onRecommendNext");
+            var list=(javafx.scene.control.ListView<?>)field(editor,"candidateList");assertEquals(5,list.getItems().size());
+            list.getSelectionModel().select(2);Object selected=list.getSelectionModel().getSelectedItem();
+            var limit=(javafx.scene.control.ComboBox<Integer>)field(editor,"candidateLimitBox");limit.setValue(30);
+            assertEquals(30,list.getItems().size());assertEquals(selected,list.getSelectionModel().getSelectedItem());
+            TextField price=(TextField)field(editor,"placePriceField");price.setText("1");
+            assertEquals(30,list.getItems().size());invoke(editor,"onAddCandidate");
+            assertTrue(((javafx.scene.control.ListView<?>)field(editor,"placeList")).getItems().isEmpty());
+            var subtype=(javafx.scene.control.ComboBox<String>)field(editor,"subtypeBox");subtype.setValue("일식");
+            invoke(editor,"onRecommendNext");assertFalse(list.getItems().isEmpty());
+            assertTrue(list.getItems().stream().allMatch(v->com.datecourse.service.PlaceFacets.subtype(((com.datecourse.service.PlaceSearchService.NearbyPlace)v).place()).equals("일식")));
+            editor.resume(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),rows);
+            assertEquals("일식",subtype.getValue());
+            root.applyCss();root.layout();
+            Path preview=Path.of("build","ui-preview","compact-public-candidates.png");Files.createDirectories(preview.getParent());
+            ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",preview.toFile());
+            return null;
+        });
+    }
+
+    @Test void staleBackgroundSearchCannotRestoreCandidatesAfterReset() throws Exception {
+        var started=new CountDownLatch(1);var release=new CountDownLatch(1);var finished=new CountDownLatch(1);
+        RouteEditorController editor=fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();
+            RouteEditorController e=loader.getController();stubPlannerMap(e,"editMapView");
+            var p=new com.datecourse.model.Place(1,"p","식당","MEAL",35.1578,129.06,5000,0);
+            e.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),java.util.List.of(p),v->{},()->{});
+            e.setPlaceRefresh(rows->{started.countDown();release.await(5,TimeUnit.SECONDS);return rows;});
+            e.loadingProperty().addListener((o,a,b)->{if(!b)finished.countDown();});invoke(e,"onRecommendNext");return e;
+        });
+        assertTrue(started.await(5,TimeUnit.SECONDS));
+        fx(()->{editor.resetDraft();return null;});release.countDown();assertTrue(finished.await(5,TimeUnit.SECONDS));
+        fx(()->{assertTrue(((javafx.scene.control.ListView<?>)field(editor,"candidateList")).getItems().isEmpty());return null;});
+    }
+
+    @Test void reviewScreenLoadsWithoutGrantingAnonymousManagementActions() throws Exception {
+        fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/information-review-view.fxml"));
+            Parent root=loader.load();new Scene(root,1020,690);root.resize(1020,690);root.applyCss();root.layout();
+            assertTrue(((javafx.scene.control.Button)root.lookup("#approveButton")).isDisabled());
+            assertTrue(((javafx.scene.control.Button)root.lookup("#rejectButton")).isDisabled());
+            assertThrows(NullPointerException.class,()->((InformationReviewController)loader.getController()).configure(null));return null;
+        });
+    }
+
     private static <T> T fx(java.util.concurrent.Callable<T> work) throws Exception {
         FutureTask<T> task = new FutureTask<>(work);
         Platform.runLater(task);
@@ -922,28 +975,28 @@ class MapSearchTest {
             TextField price=(TextField)field(editor,"placePriceField");
             var radius=(javafx.scene.control.Slider)field(editor,"radiusSlider");
             assertEquals("CONDITION",field(editor,"state").toString());
-            assertTrue(condition.isExpanded());assertFalse(choice.isExpanded());
+            assertTrue(condition.isExpanded());assertTrue(choice.isExpanded());
             activity.getSelectionModel().select(1);price.setText("1");radius.setValue(700);
             new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
             Path dir=Path.of("build","ui-preview");Files.createDirectories(dir);
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",dir.resolve("editor-condition.png").toFile());
             invoke(editor,"onRecommendNext");
             assertEquals("CHOICE",field(editor,"state").toString());
-            assertFalse(condition.isExpanded());assertTrue(choice.isExpanded());
+            assertTrue(condition.isExpanded());assertTrue(choice.isExpanded());
             invoke(editor,"onCandidateDetail");assertEquals("CHOICE",field(editor,"state").toString());
             invoke(editor,"onModifyConditions");
             assertEquals("CONDITION",field(editor,"state").toString());
             assertEquals("카페",activity.getValue());assertEquals("1",price.getText());assertEquals(700,radius.getValue());
-            choice.setExpanded(true);assertEquals("CHOICE",field(editor,"state").toString());
+            invoke(editor,"onRecommendNext");assertEquals("CHOICE",field(editor,"state").toString());
             root.applyCss();root.layout();
             var add=(javafx.scene.control.Button)root.lookup(".candidate-row-add");assertNotNull(add);add.fire();
             assertEquals("CONDITION",field(editor,"state").toString());
             assertEquals(java.util.List.of(place),((javafx.scene.control.ListView<?>)field(editor,"placeList")).getItems());
-            assertFalse(choice.isExpanded());assertEquals("1",price.getText());
+            assertTrue(choice.isExpanded());assertEquals("1",price.getText());
             invoke(editor,"onRecommendNext");
             assertEquals("CONDITION",field(editor,"state").toString());
             assertTrue(((javafx.scene.control.Label)field(editor,"editorError")).getText().contains("없어요"));
-            assertTrue(choice.isDisabled());
+            assertFalse(choice.isDisabled());
             return null;
         });Platform.runLater(task);task.get(10,TimeUnit.SECONDS);
     }
@@ -1005,6 +1058,27 @@ class MapSearchTest {
         script(engine,"window.presentRoute(testPlan,null,500,false,true,[]);pins.find(function(p){return p.attached && p.options.title==='1. 확정 식당';}).onclick()");
         assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
         assertEquals(true,script(engine,"document.getElementById('itinerary-rail').hidden"));
+    }
+
+    @Test void thirtyCandidatePinsKeepTheirRanksAndShowEvidenceWithoutAddingStops() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.selectedRecords=[];javaMapBridge.onPlaceSelected=function(id){selectedRecords.push(id);};
+            window.largeCandidates=Array.from({length:30},function(_,i){return {recordId:i+1,placeId:'p'+i,
+                name:'후보 '+(i+1),category:'MEAL',lat:35.157+i*0.00001,lng:129.06,priceText:'약 7,000원/인',
+                priceEstimate:{evidence:'SIMILAR_ESTIMATE',basis:'동종 업종 기준 메뉴 평균'},
+                details:{tags:[{tag:'GOOD_PRICE',basis:'공공 지정자료'}]}};});
+            window.emptyPlan={startLat:35.157,startLng:129.06,radius:2000,places:[]};
+            window.presentRoute(emptyPlan,largeCandidates[0],2000,true,true,largeCandidates);
+            """);
+        assertEquals(30,((Number)script(engine,"pins.filter(function(p){return p.attached && p.options.title && p.options.title.indexOf('추천 후보.')===0;}).length")).intValue());
+        assertEquals(true,script(engine,"pins.some(function(p){return p.attached && p.options.title==='추천 후보. 후보 30' && decodeURIComponent(p.normalImage.src).indexOf('>30</text>')>=0;})"));
+        script(engine,"pins.find(function(p){return p.attached && p.options.title==='추천 후보. 후보 30';}).onclick()");
+        assertEquals("후보 30",script(engine,"document.getElementById('detail-title').textContent"));
+        assertTrue(((String)script(engine,"document.getElementById('detail-facts').textContent")).contains("유사 장소 기준 추정"));
+        assertTrue(((String)script(engine,"document.getElementById('detail-extra').textContent")).contains("착한가격"));
+        assertEquals("[\"30\"]",script(engine,"JSON.stringify(selectedRecords)"));
+        assertEquals(0,((Number)script(engine,"emptyPlan.places.length")).intValue());
     }
 
     @Test
