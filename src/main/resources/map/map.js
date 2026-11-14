@@ -709,6 +709,9 @@
         const popupBody = document.createElement('div');
         popupBody.className = 'walking-route-tooltip';
         const popupTitle = document.createElement('div');
+        popupTitle.className = 'walking-tooltip-title';
+        popupTitle.setAttribute('role', 'heading');
+        popupTitle.setAttribute('aria-level', '3');
         const popupFacts = document.createElement('div');
         popupFacts.className = 'walking-tooltip-facts';
         const popupSteps = document.createElement('ol');
@@ -718,8 +721,9 @@
         popupBody.appendChild(popupTitle);
         popupBody.appendChild(popupFacts);
         popupBody.appendChild(popupSteps);
-        const popup = new kakao.maps.CustomOverlay({content:popupBody, yAnchor:1.35, zIndex:40});
+        const popup = new kakao.maps.CustomOverlay({content:popupBody, yAnchor:1, zIndex:40});
         let popupVisible = false;
+        let popupIndex = -1;
         walkingShapes.push(popup);
         window.dismissWalkingPopup = function () {
             clearTimeout(walkingPopupHide);
@@ -732,25 +736,31 @@
         function showPopup(index, position) {
             clearTimeout(walkingPopupHide);
             const leg = route.legs[index];
-            popupTitle.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
-            popupFacts.textContent = meters(leg.distance) + ' · ' + duration(leg.time);
-            popupSteps.textContent = '';
-            (leg.steps || []).forEach(function(step) {
-                if(!step.description)return;
-                const item=document.createElement('li');item.textContent=step.description;popupSteps.appendChild(item);
-            });
-            if(!popupSteps.children.length){const item=document.createElement('li');item.textContent='상세 안내가 없어요.';popupSteps.appendChild(item);}
+            if (popupIndex !== index) {
+                popupIndex = index;
+                popupTitle.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
+                popupFacts.textContent = meters(leg.distance) + ' · ' + duration(leg.time);
+                popupSteps.textContent = '';
+                (leg.steps || []).forEach(function(step) {
+                    if(!step.description)return;
+                    const item=document.createElement('li');item.textContent=step.description;popupSteps.appendChild(item);
+                });
+                if(!popupSteps.children.length){const item=document.createElement('li');item.textContent='상세 안내가 없어요.';popupSteps.appendChild(item);}
+                popupSteps.scrollTop = 0;
+                popupBody.scrollTop = 0;
+            }
             const surface = document.getElementById('map');
-            const width = Math.max(1, Math.min(248, surface.clientWidth - 24));
+            const width = Math.max(1, Math.min(360, surface.clientWidth - 24));
             popupBody.style.width = width + 'px';
+            popupBody.style.maxHeight = Math.max(1, Math.min(420, surface.clientHeight - 24)) + 'px';
             popup.setMap(map);
             popupVisible = true;
             const projection = map.getProjection();
             const point = projection.containerPointFromCoords(position || groups[index].anchor);
             const height = popupBody.offsetHeight || 80;
             popup.setPosition(projection.coordsFromContainerPoint(new kakao.maps.Point(
-                Math.max(width / 2 + 8, Math.min(surface.clientWidth - width / 2 - 8, point.x)),
-                Math.max(height * 1.35 + 8, Math.min(surface.clientHeight - 8, point.y)))));
+                Math.max(width / 2 + 12, Math.min(surface.clientWidth - width / 2 - 12, point.x)),
+                Math.max(height + 12, Math.min(surface.clientHeight - 12, point.y - 12)))));
         }
         function restorePopup() {
             clearTimeout(walkingPopupHide);

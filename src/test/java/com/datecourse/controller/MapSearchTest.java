@@ -190,8 +190,8 @@ class MapSearchTest {
             tooltip.style.position='absolute';tooltip.style.right='16px';tooltip.style.top='180px';
             """);
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
-        assertEquals(248,((Number)script(engine,"tooltip.getBoundingClientRect().width")).intValue());
-        assertEquals(true,script(engine,"tooltip.getBoundingClientRect().height<120 && tooltip.querySelector('.walking-tooltip-facts').textContent.includes('분')"));
+        assertEquals(360,((Number)script(engine,"tooltip.getBoundingClientRect().width")).intValue());
+        assertEquals(true,script(engine,"tooltip.getBoundingClientRect().height<180 && tooltip.querySelector('.walking-tooltip-facts').textContent.includes('분')"));
         assertEquals(true,script(engine,"tooltip.querySelector('.walking-tooltip-steps').textContent.includes('둘째 구간 안내') && !tooltip.querySelector('.walking-tooltip-steps').textContent.includes('첫 구간 안내')"));
         // Show the test scene briefly: WebKit may skip painting in a detached Scene.
         var previewWindow = fx(() -> {
@@ -701,7 +701,7 @@ class MapSearchTest {
         script(engine,"""
             window.path=[[{lat:35.157,lng:129.06},{lat:35.158,lng:129.06}]];
             window.showWalkingRoute({totalDistance:200,totalTime:120,legs:[
-                {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:60,paths:path,steps:Array.from({length:30},function(_,i){return {description:'첫 구간 안내 '+i};})},
+                {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:60,paths:path,steps:Array.from({length:30},function(_,i){return {description:'첫 구간 안내 '+i+' · 횡단보도를 건넌 후 왼쪽 보행자 도로를 따라 350m 이동하세요. 아주긴공백없는장소이름도영역밖으로잘리지않아야합니다.'};})},
                 {from:{name:'첫 장소'},to:{name:'둘째 장소'},distance:100,time:60,paths:path,steps:[{description:'둘째 구간 전용 안내'}]}
             ]},'',false);
             routeLines[1].onmouseover();window.popup=routeOverlays[0].options.content;
@@ -716,6 +716,27 @@ class MapSearchTest {
         assertEquals(true,script(engine,"popup.querySelector('.walking-tooltip-steps').scrollHeight>popup.querySelector('.walking-tooltip-steps').clientHeight"));
         assertEquals(false,script(engine,"popup.textContent.includes('둘째 구간 전용 안내')"));
         assertEquals(true,script(engine,"zoomCalls.length===zoomBeforePopup && !popupWheel.defaultPrevented"));
+        assertEquals(true,script(engine,"Array.from(popup.querySelectorAll('li')).every(function(li){return li.scrollWidth<=li.clientWidth+1;})"));
+        script(engine,"popup.querySelector('.walking-tooltip-steps').scrollTop=120;routeLines[1].onmousemove()");
+        assertEquals(120,((Number)script(engine,"popup.querySelector('.walking-tooltip-steps').scrollTop")).intValue());
+        var previewWindow=fx(()->{var stage=new javafx.stage.Stage();stage.setScene(previewView.getScene());stage.show();return stage;});
+        try {
+            Thread.sleep(150);
+            fx(()->{
+                Path preview=Path.of("build/ui-preview/walking-tooltip-readable.png");Files.createDirectories(preview.getParent());
+                ImageIO.write(SwingFXUtils.fromFXImage(previewView.snapshot(null,null),null),"png",preview.toFile());return null;
+            });
+        } finally {fx(()->{previewWindow.close();return null;});}
+        script(engine,"""
+            var surface=document.getElementById('map');surface.style.flex='none';surface.style.width='280px';surface.style.height='240px';
+            surface.style.whiteSpace='nowrap';surface.style.color='blue';
+            routeLines[1].onmousemove({latLng:new kakao.maps.LatLng(90,180)});
+            window.popupPoint=testMap.getProjection().containerPointFromCoords(routeOverlays[0].position);
+            """);
+        assertEquals(true,script(engine,"popup.offsetWidth<=256 && popup.offsetHeight<=216 && popup.scrollWidth<=popup.clientWidth+1"));
+        assertEquals(true,script(engine,"popupPoint.x-popup.offsetWidth/2>=11 && popupPoint.x+popup.offsetWidth/2<=269 && popupPoint.y-popup.offsetHeight>=11 && popupPoint.y<=229"),script(engine,"JSON.stringify({x:popupPoint.x,y:popupPoint.y,w:popup.offsetWidth,h:popup.offsetHeight,mw:document.getElementById('map').clientWidth,mh:document.getElementById('map').clientHeight})").toString());
+        assertEquals("rgb(37, 50, 68)",script(engine,"getComputedStyle(popup.querySelector('li')).color"));
+        assertEquals("normal",script(engine,"getComputedStyle(popup.querySelector('li')).whiteSpace"));
         script(engine,"popup.dispatchEvent(new Event('mouseleave'))");Thread.sleep(170);
         assertEquals(false,script(engine,"routeOverlays[0].attached"));
         script(engine,"routeLines[3].onmouseover()");

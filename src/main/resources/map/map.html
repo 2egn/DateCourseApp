@@ -89,10 +89,16 @@
     #walking-leg-list { display: flex; gap: 6px; overflow-x: auto; margin-top: 8px; padding-bottom: 3px; }
     .walking-leg-button { flex: 0 0 auto; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid #d9e0e8; border-left-width: 4px; border-radius: 6px; padding: 6px 8px; background: #fff; color: #334155; font-size: 12px; }
     .walking-leg-button[aria-pressed="true"] { background: #edf2f7; font-weight: bold; }
-    .walking-route-tooltip { box-sizing: border-box; width: 248px; white-space: normal; word-break: keep-all; overflow-wrap: break-word; background: #fff; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 2px 7px #0002; font-size: 12px; line-height: 1.5; pointer-events: auto; }
-    .walking-tooltip-steps { margin: 6px 0 0; padding-left: 18px; max-height: 140px; overflow-y: auto; overscroll-behavior: contain; }
-    .walking-tooltip-steps li { margin: 3px 0; }
-    .walking-tooltip-facts { margin-top: 4px; color: #64748b; white-space: nowrap; }
+    .walking-route-tooltip { box-sizing: border-box; display: flex; flex-direction: column; width: 360px; white-space: normal; word-break: keep-all; overflow-wrap: break-word; background: #fff; color: #253244; padding: 14px 16px; border: 1px solid #dce2ea; border-radius: 12px; box-shadow: 0 6px 20px #18294b26; font: 13px/1.7 "Malgun Gothic", sans-serif; pointer-events: auto; overflow: auto; }
+    .walking-tooltip-title { flex: 0 0 auto; min-width: 0; white-space: normal; overflow-wrap: break-word; color: #191f28; font-size: 14px; font-weight: bold; line-height: 1.6; }
+    .walking-tooltip-steps { flex: 0 1 auto; min-height: 0; margin: 12px 0 0; padding: 0 8px 0 26px; max-height: 260px; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; border-top: 1px solid #eef0f3; white-space: normal; }
+    .walking-tooltip-steps li { padding: 9px 0 9px 3px; margin: 0; border-bottom: 1px solid #eef0f3; white-space: normal; overflow-wrap: break-word; color: #253244; }
+    .walking-tooltip-steps li:last-child { border-bottom: 0; }
+    .walking-tooltip-steps:focus-visible { outline: 2px solid #99b8e0; outline-offset: 2px; border-radius: 4px; }
+    .walking-tooltip-facts { flex: 0 0 auto; margin-top: 5px; color: #526174; font-size: 13px; white-space: normal; }
+    .walking-route-tooltip::-webkit-scrollbar, .walking-tooltip-steps::-webkit-scrollbar { width: 6px; height: 6px; }
+    .walking-route-tooltip::-webkit-scrollbar-thumb, .walking-tooltip-steps::-webkit-scrollbar-thumb { background: #b9c4d1; border-radius: 6px; }
+    .walking-route-tooltip::-webkit-scrollbar-track, .walking-tooltip-steps::-webkit-scrollbar-track { background: transparent; }
     .walking-leg-badge { border: 2px solid white; border-radius: 14px; min-width: 26px; height: 26px; padding: 0 5px; color: #fff; font-size: 12px; font-weight: bold; box-shadow: 0 1px 4px #0003; }
     #walking-panel details { margin-top: 6px; }
     #walking-panel summary { cursor: pointer; }
