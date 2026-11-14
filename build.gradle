@@ -127,3 +127,23 @@ tasks.register('importPublicPlaces', JavaExec) {
     mainClass = 'com.datecourse.demo.PublicPlaceImport'
     args '--apply'
 }
+
+// Isolated camera motion comparison: no member DB or production planner changes.
+tasks.register('runCameraMotionDemo', JavaExec) {
+    group = 'application'
+    description = 'Compare existing and proposed camera motion on two real Kakao maps'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.CameraMotionDemoLauncher'
+    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
+}
+
+// Opt-in network check, kept out of the ordinary offline test suite.
+tasks.named('test') { exclude '**/CameraMotionLiveTest.class' }
+tasks.register('cameraMotionLiveTest', Test) {
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    include '**/CameraMotionLiveTest.class'
+    useJUnitPlatform()
+    environment 'RUN_CAMERA_LIVE_TEST', 'true'
+}
