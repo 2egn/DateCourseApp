@@ -83,7 +83,7 @@ class MapSearchTest {
             testMap.onclick({latLng:new kakao.maps.LatLng(35.158,129.059)});
             routeLines[1].onmouseout();routeLines[3].onmouseover({latLng:new kakao.maps.LatLng(35.158,129.059)});
             """);
-        assertEquals(true,script(engine,"blocked===0 && routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('2구간')"));
+        assertEquals(true,script(engine,"blocked===0 && routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('1구간')"));
         assertEquals(true,script(engine,"routeLines[3].zIndex===12 && routeLines[1].zIndex===4"));
         script(engine,"routeLines[3].onmouseout()");
         assertEquals(true,script(engine,"routeLines[1].zIndex===12 && routeLines[3].zIndex===4 && routeOverlays[0].attached"));
@@ -94,6 +94,41 @@ class MapSearchTest {
         assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
         script(engine,"routeLines[1].onmouseover();testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
         assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
+    }
+
+    @Test void routeBadgeUsesHalfDistanceAndBlankMapDismissesBothCards() throws Exception {
+        WebEngine engine=loadMap(640,600);
+        script(engine,"""
+            window.presentRoute({startLat:35,startLng:129,radius:2000,places:[
+                {recordId:1,placeId:'a',name:'도착 가게',category:'CAFE',lat:35.01,lng:129,price:5000}
+            ]},null,500,true,false,[]);
+            window.showWalkingRoute({totalDistance:1112,totalTime:900,legs:[
+                {from:{name:'출발'},to:{name:'도착 가게'},distance:1112,time:900,
+                 paths:[[{lat:35,lng:129},{lat:35.0001,lng:129},{lat:35.0002,lng:129}],
+                        [{lat:35.0002,lng:129},{lat:35.01,lng:129}]],
+                 steps:[{description:'도착 가게까지 직진하세요.'}]}
+            ]},'',false);
+            window.badge=routeOverlays.find(function(o){return o.options.content.className==='walking-leg-badge';});
+            routeLines[1].onmouseover();window.popup=routeOverlays[0].options.content;
+            """);
+        assertEquals(35.005,((Number)script(engine,"badge.options.position.getLat()")).doubleValue(),0.0000001);
+        assertEquals(0.5,((Number)script(engine,"badge.options.yAnchor")).doubleValue());
+        assertEquals(true,script(engine,"popup.querySelector('.walking-tooltip-steps').hidden && popup.style.width==='280px'"));
+        script(engine,"routeLines[1].onclick()");
+        assertEquals(true,script(engine,"!popup.querySelector('.walking-tooltip-steps').hidden && popup.style.width==='360px'"));
+        script(engine,"window.openRoutePlace(1)");
+        assertEquals("false",script(engine,"document.getElementById('place-detail').getAttribute('aria-hidden')"));
+        Thread.sleep(50);
+        script(engine,"testMap.onclick({latLng:new kakao.maps.LatLng(36,130)})");
+        assertEquals(true,script(engine,"!routeOverlays[0].attached && document.getElementById('place-detail').getAttribute('aria-hidden')==='true' && bridgeSelections.length===0"));
+        // A place card alone consumes the dismissal click in the unlocked main map as well.
+        script(engine,"window.setOriginLocked(false);window.openRoutePlace(1);testMap.onclick({latLng:new kakao.maps.LatLng(36,130)})");
+        assertEquals(true,script(engine,"document.getElementById('place-detail').getAttribute('aria-hidden')==='true' && bridgeSelections.length===0"));
+        script(engine,"routeLines[1].onmouseover();routeLines[1].onmouseout()");
+        Thread.sleep(170);
+        assertEquals(false,script(engine,"routeOverlays[0].attached"));
+        script(engine,"routeLines[1].onclick();popup.querySelector('.walking-tooltip-close').click()");
+        assertEquals(false,script(engine,"routeOverlays[0].attached"));
     }
 
     @Test
@@ -696,7 +731,7 @@ class MapSearchTest {
         });
     }
 
-    @Test void routeHoverInstructionsCanBeReadAndScrolledWithoutShowingOtherLegs() throws Exception {
+    @Test void clickedRouteInstructionsCanBeReadAndScrolledWithoutShowingOtherLegs() throws Exception {
         WebEngine engine=loadMap(640,600);
         script(engine,"""
             window.path=[[{lat:35.157,lng:129.06},{lat:35.158,lng:129.06}]];
@@ -705,6 +740,8 @@ class MapSearchTest {
                 {from:{name:'첫 장소'},to:{name:'둘째 장소'},distance:100,time:60,paths:path,steps:[{description:'둘째 구간 전용 안내'}]}
             ]},'',false);
             routeLines[1].onmouseover();window.popup=routeOverlays[0].options.content;
+            window.summaryOnly=popup.querySelector('.walking-tooltip-steps').hidden && !popup.querySelector('.walking-tooltip-hint').hidden;
+            routeLines[1].onclick();
             document.getElementById('map').appendChild(popup);popup.style.position='absolute';popup.style.top='100px';
             routeLines[1].onmouseout();popup.dispatchEvent(new Event('mouseenter'));
             window.zoomBeforePopup=zoomCalls.length;
@@ -712,6 +749,7 @@ class MapSearchTest {
             popup.querySelector('.walking-tooltip-steps').dispatchEvent(popupWheel);
             """);
         Thread.sleep(170);
+        assertEquals(true,script(engine,"summaryOnly && !popup.querySelector('.walking-tooltip-steps').hidden && popup.querySelector('.walking-tooltip-hint').hidden"));
         assertEquals(true,script(engine,"routeOverlays[0].attached && popup.querySelector('.walking-tooltip-steps').children.length===30"));
         assertEquals(true,script(engine,"popup.querySelector('.walking-tooltip-steps').scrollHeight>popup.querySelector('.walking-tooltip-steps').clientHeight"));
         assertEquals(false,script(engine,"popup.textContent.includes('둘째 구간 전용 안내')"));
@@ -730,7 +768,7 @@ class MapSearchTest {
         script(engine,"""
             var surface=document.getElementById('map');surface.style.flex='none';surface.style.width='280px';surface.style.height='240px';
             surface.style.whiteSpace='nowrap';surface.style.color='blue';
-            routeLines[1].onmousemove({latLng:new kakao.maps.LatLng(90,180)});
+            routeLines[1].onclick({latLng:new kakao.maps.LatLng(90,180)});
             window.popupPoint=testMap.getProjection().containerPointFromCoords(routeOverlays[0].position);
             """);
         assertEquals(true,script(engine,"popup.offsetWidth<=256 && popup.offsetHeight<=216 && popup.scrollWidth<=popup.clientWidth+1"));
@@ -738,8 +776,10 @@ class MapSearchTest {
         assertEquals("rgb(37, 50, 68)",script(engine,"getComputedStyle(popup.querySelector('li')).color"));
         assertEquals("normal",script(engine,"getComputedStyle(popup.querySelector('li')).whiteSpace"));
         script(engine,"popup.dispatchEvent(new Event('mouseleave'))");Thread.sleep(170);
-        assertEquals(false,script(engine,"routeOverlays[0].attached"));
+        assertEquals(true,script(engine,"routeOverlays[0].attached"));
         script(engine,"routeLines[3].onmouseover()");
+        assertEquals(true,script(engine,"popup.textContent.includes('첫 구간 안내')"));
+        script(engine,"routeLines[3].onclick()");
         assertEquals(true,script(engine,"popup.textContent.includes('둘째 구간 전용 안내') && !popup.textContent.includes('첫 구간 안내')"));
     }
 

@@ -310,6 +310,11 @@
                 const visit = visits.find(function (v) { return String(v.recordId) === String(recordId); });
                 if (visit) select(visit.visitId, true);
             },
+            dismissDetail: function () {
+                const visible = expandedPlaceId !== null;
+                if (visible) closeDetail(false);
+                return visible;
+            },
             getVisits: function () { return visits; },
             getState: function () { return { activePlaceId: activePlaceId, expandedPlaceId: expandedPlaceId, activeTab: activeTab }; }
         };
