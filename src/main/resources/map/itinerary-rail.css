@@ -73,3 +73,9 @@
 
 .detail-badges { display: flex; flex-wrap: wrap; gap: 5px; margin: 4px 0 12px; }
 .detail-badge { border: 1px solid #dfe6ed; border-radius: 6px; padding: 2px 6px; background: #f1f5f9; color: #475569; font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
+
+.place-pin-preview { box-sizing: border-box; width: 240px; max-width: calc(100vw - 24px); padding: 11px 13px; border: 1px solid #eadce2; border-radius: 11px; background: #fff; color: #263248; box-shadow: 0 4px 16px #26334d24; white-space: normal; overflow-wrap: anywhere; pointer-events: none; }
+.place-pin-preview-category { font-size: 10px; color: #a52950; margin-bottom: 4px; }
+.place-pin-preview-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 13px; line-height: 1.4; }
+.place-pin-preview-facts { margin-top: 5px; font-size: 11px; line-height: 1.5; color: #526174; }
+.place-pin-preview-hint { margin-top: 6px; font-size: 10px; color: #718096; }

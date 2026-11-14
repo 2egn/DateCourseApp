@@ -412,8 +412,7 @@
         if (!renderingResults && currentPanelManaged && !currentCourseTab) {
             resultMarkers = resultMarkers.filter(function (pin) {
                 if (pin.coursePin || pin.visitId === id) return true;
-                if (pin.visitClick) kakao.maps.event.removeListener(pin, 'click', pin.visitClick);
-                pin.setMap(null); return false;
+                removeResultPin(pin); return false;
             });
             const visits = itinerary.getVisits();
             const index = visits.findIndex(function (p) { return p.visitId === id; });
@@ -443,6 +442,7 @@
         onAdd: function(id) {if(window.javaMapBridge && typeof window.javaMapBridge.addCandidate==='function')window.javaMapBridge.addCandidate(String(id));},
         onActive: highlightVisit,
         onOpen: function (place, detailBounds, railBounds) {
+            placePinPreview.hide();
             if (!ready) return;
             const bounds = document.getElementById('map').getBoundingClientRect();
             const narrow = window.matchMedia('(max-width: 760px)').matches;
@@ -485,6 +485,53 @@
             { offset: new kakao.maps.Point(info.x, info.y) });
         return image;
     }
+    // One preview owns its overlay and lifecycle; hovering never selects a place or route.
+    const placePinPreview = (function () {
+        let overlay = null, body = null, activePin = null;
+        function hide(pin) {
+            if (pin && pin !== activePin) return;
+            activePin = null;
+            if (overlay) overlay.setMap(null);
+        }
+        function show(pin, place, label) {
+            if (!ready || resultMarkers.indexOf(pin) < 0) return;
+            if (!body) {
+                body = document.createElement('div'); body.className = 'place-pin-preview';
+                body.setAttribute('role', 'tooltip');
+                overlay = new kakao.maps.CustomOverlay({ content: body, xAnchor: .5, yAnchor: 1, zIndex: 45 });
+            }
+            activePin = pin; body.textContent = '';
+            const eyebrow = document.createElement('div'); eyebrow.className = 'place-pin-preview-category';
+            eyebrow.textContent = label + '번째 장소';
+            const title = document.createElement('strong'); title.className = 'place-pin-preview-title'; title.textContent = place.name;
+            const facts = document.createElement('div'); facts.className = 'place-pin-preview-facts';
+            const presentation = place.presentation || {};
+            facts.textContent = presentation.priceText || place.priceText || '가격 미확인';
+            const badges = (presentation.badges || []).slice(0, 2).map(function (badge) { return badge.label; });
+            if (badges.length) facts.textContent += ' · ' + badges.join(' · ');
+            const hint = document.createElement('div'); hint.className = 'place-pin-preview-hint';
+            hint.textContent = '클릭해서 장소 상세 보기';
+            body.appendChild(eyebrow); body.appendChild(title); body.appendChild(facts); body.appendChild(hint);
+            body.style.transform = 'translateY(-54px)';
+            overlay.setPosition(new kakao.maps.LatLng(place.lat, place.lng)); overlay.setMap(map);
+            // Keep the preview readable at map edges without panning or changing selection.
+            const point = map.getProjection().containerPointFromCoords(new kakao.maps.LatLng(place.lat, place.lng));
+            const width = body.offsetWidth || 240, height = body.offsetHeight || 110;
+            const viewport = document.getElementById('map');
+            const shiftX = Math.max(12 + width / 2 - point.x, Math.min(0, viewport.clientWidth - 12 - width / 2 - point.x));
+            const preferredY = point.y < height + 66 ? height + 12 : -54;
+            const shiftY = Math.max(12 + height - point.y, Math.min(viewport.clientHeight - 12 - point.y, preferredY));
+            body.style.transform = 'translate(' + shiftX + 'px,' + shiftY + 'px)';
+        }
+        return {show: show, hide: hide};
+    }());
+    function removeResultPin(pin) {
+        placePinPreview.hide(pin);
+        [['click', pin.visitClick], ['mouseover', pin.visitEnter], ['mouseout', pin.visitLeave]].forEach(function (event) {
+            if (event[1]) kakao.maps.event.removeListener(pin, event[0], event[1]);
+        });
+        pin.setMap(null);
+    }
     function createResultPin(item, index, visits, connectRoute, panelManaged) {
             const point = new kakao.maps.LatLng(item.lat, item.lng);
             const courseIndex = plannerCourse.findIndex(function (p) { return p.placeId ? p.placeId === item.placeId : p.recordId === item.recordId; });
@@ -499,9 +546,9 @@
             if (connectRoute || panelManaged || routePresentation) {
                 pin.visitId = visits[index].visitId;
                 pin.visitClick = function () {
-                    const legIndex = courseIndex >= 0 ? courseIndex
-                        : routeCandidate && routeCandidate.recordId === item.recordId ? plannerCourse.length : -1;
-                    if (legIndex >= 0 && window.selectWalkingLeg(legIndex, point)) return;
+                    claimMapObjectClick();
+                    placePinPreview.hide();
+                    window.dismissWalkingPopup();
                     if (routePresentation && nearby && window.javaMapBridge && typeof window.javaMapBridge.onPlaceSelected === 'function')
                         window.javaMapBridge.onPlaceSelected(String(item.recordId));
                     itinerary.openVisit(pin.visitId);
@@ -509,6 +556,12 @@
                 kakao.maps.event.addListener(pin, 'click', pin.visitClick);
             }
             pin.coursePin = courseIndex >= 0;
+            if (pin.coursePin) {
+                pin.visitEnter = function () { placePinPreview.show(pin, item, courseIndex + 1); };
+                pin.visitLeave = function () { placePinPreview.hide(pin); };
+                kakao.maps.event.addListener(pin, 'mouseover', pin.visitEnter);
+                kakao.maps.event.addListener(pin, 'mouseout', pin.visitLeave);
+            }
             resultMarkers.push(pin);
             return pin;
     }
@@ -516,10 +569,8 @@
         const signature = JSON.stringify([items, !!connectRoute, routeItems, selectedPosition && [selectedPosition.getLat(), selectedPosition.getLng()]]);
         if (signature === resultSignature) return;
         resultSignature = signature;
-        resultMarkers.forEach(function (item) {
-            if (item.visitClick) kakao.maps.event.removeListener(item, 'click', item.visitClick);
-            item.setMap(null);
-        });
+        placePinPreview.hide();
+        resultMarkers.forEach(removeResultPin);
         resultMarkers = [];
         if (!ready) return;
         renderingResults = true;
@@ -717,7 +768,7 @@
     let walkingExplanationOpen = false;
     let walkingSelection = 0;
     let walkingPinnedSelection = -1;
-    let walkingClick = false;
+    let mapObjectClick = false;
     let walkingPopupHide = null;
     function walkingMidpoint(paths) {
         const segments = [];
@@ -744,10 +795,10 @@
         }
         return null;
     }
-    function claimWalkingClick() {
-        walkingClick = true;
+    function claimMapObjectClick() {
+        mapObjectClick = true;
         if (kakao.maps.event.preventMap) kakao.maps.event.preventMap();
-        setTimeout(function () { walkingClick = false; }, 0);
+        setTimeout(function () { mapObjectClick = false; }, 0);
     }
     window.dismissWalkingPopup = function () { return false; };
     window.selectWalkingLeg = function () { return false; };
@@ -874,11 +925,11 @@
         popupBody.addEventListener('focusout',restorePopup);
         ['mousedown','pointerdown','wheel','touchstart'].forEach(function(type){popupBody.addEventListener(type,function(e){e.stopPropagation();});});
         popupBody.addEventListener('click',function(e){
-            claimWalkingClick();e.stopPropagation();
+            claimMapObjectClick();e.stopPropagation();
             if (walkingPinnedSelection < 0) choose(popupIndex);
         });
         popupClose.addEventListener('click', function(e) {
-            claimWalkingClick();e.stopPropagation();window.dismissWalkingPopup();
+            claimMapObjectClick();e.stopPropagation();window.dismissWalkingPopup();
         });
         popupBody.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') { e.stopPropagation();window.dismissWalkingPopup(); }
@@ -913,7 +964,7 @@
             });
             if (pinPopup !== false && groups[index].anchor) {
                 walkingPinnedSelection = index;
-                claimWalkingClick();
+                claimMapObjectClick();
                 showPopup(index, position);
             }
             return true;
@@ -1058,7 +1109,8 @@
                     strokeStyle: "solid", fillOpacity: 0, zIndex: -1
                 });
                 function select(event) {
-                    if (walkingClick) return;
+                    if (mapObjectClick) return;
+                    placePinPreview.hide();
                     const closedWalking = window.dismissWalkingPopup();
                     const closedDetail = itinerary.dismissDetail();
                     if (closedWalking || closedDetail) return;

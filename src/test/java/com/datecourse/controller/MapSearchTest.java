@@ -28,6 +28,58 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
+    @Test void confirmedPinPreviewIsPassiveAndClickOpensDetailsWithWalkingRoutePresent() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        var place=new com.datecourse.service.PublicDemoPlaceRepository().findAll().getFirst();
+        var payload=new com.datecourse.service.PlaceMapPayload(new com.fasterxml.jackson.databind.ObjectMapper(),new com.datecourse.service.PlacePresenter());
+        script(engine,"window.previewPlace="+payload.place(place)+";window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[previewPlace]},null,500,false,false,[]);");
+        script(engine,"""
+            window.showWalkingRoute({totalDistance:100,totalTime:90,legs:[{from:{name:'출발'},to:{name:'대모골'},distance:100,time:90,
+                paths:[[{lat:35.1578,lng:129.06},{lat:35.1592,lng:129.0588}]],steps:[{description:'길을 따라 이동'}]}]},'',false);
+            window.redPin=pins.find(p=>p.coursePin && p.attached);window.beforePreviewSummary=document.getElementById('walking-summary').textContent;
+            redPin.onmouseover();window.pinPreview=routeOverlays.find(p=>p.options.content.classList.contains('place-pin-preview'));
+            """);
+        assertEquals(true,script(engine,"pinPreview.attached"));
+        assertEquals("대모골",script(engine,"pinPreview.options.content.querySelector('.place-pin-preview-title').textContent"));
+        assertTrue(((String)script(engine,"pinPreview.options.content.textContent")).contains("약 7,000원/인"));
+        assertTrue(((String)script(engine,"pinPreview.options.content.textContent")).contains("클릭해서 장소 상세 보기"));
+        assertEquals(true,script(engine,"document.getElementById('place-detail').hidden"));
+        assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent===beforePreviewSummary"));
+        script(engine,"document.getElementById('map-surface').appendChild(pinPreview.options.content);Object.assign(pinPreview.options.content.style,{position:'absolute',right:'24px',top:'140px',transform:'none'});");
+        var previewWindow=fx(()->{var stage=new javafx.stage.Stage();stage.setScene(previewView.getScene());stage.show();return stage;});
+        try {
+            Thread.sleep(200);
+            fx(()->{Path image=Path.of("build/ui-preview/place-pin-hover.png");Files.createDirectories(image.getParent());
+                ImageIO.write(SwingFXUtils.fromFXImage(previewView.snapshot(null,null),null),"png",image.toFile());return null;});
+        } finally {fx(()->{previewWindow.close();return null;});}
+        script(engine,"pinPreview.options.content.remove();redPin.onmouseout()");assertEquals(false,script(engine,"pinPreview.attached"));
+        script(engine,"redPin.onmouseover();redPin.onclick()");
+        assertEquals(false,script(engine,"pinPreview.attached"));
+        assertEquals("대모골",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
+        assertEquals(false,script(engine,"routeOverlays.some(p=>p.attached && p.options.content.classList.contains('walking-route-tooltip'))"));
+        script(engine,"routeLines.find(p=>p.onclick).onclick()");
+        assertEquals(true,script(engine,"routeOverlays.some(p=>p.attached && p.options.content.classList.contains('is-detailed'))"));
+    }
+    @Test void removedPinCannotReopenPreviewAndOldMouseoutCannotHideNewPin() throws Exception {
+        WebEngine engine=loadMap(420,680);
+        script(engine,"""
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[
+                {recordId:1,placeId:'a',name:'첫 장소',lat:35.1578,lng:129.06},
+                {recordId:2,placeId:'b',name:'<img src=x onerror=alert(1)> 두 번째 장소',lat:35.1579,lng:129.06}
+            ]},null,500,false,false,[]);
+            window.redPins=pins.filter(p=>p.coursePin && p.attached);
+            redPins[0].onmouseover();redPins[1].onmouseover();redPins[0].onmouseout();
+            window.pinPreview=routeOverlays.find(p=>p.options.content.classList.contains('place-pin-preview'));
+            """);
+        assertEquals(true,script(engine,"pinPreview.attached"));
+        assertEquals(0,((Number)script(engine,"pinPreview.options.content.querySelectorAll('img').length")).intValue());
+        assertTrue(((String)script(engine,"pinPreview.options.content.textContent")).contains("두 번째 장소"));
+        script(engine,"window.lateHover=redPins[1].onmouseover;window.resetPlannerMap();lateHover()");
+        assertEquals(false,script(engine,"pinPreview.attached"));
+        assertEquals("undefined",script(engine,"typeof redPins[1].onmouseover"));
+    }
+
     @Test void javaPresentationFlowsIntoMapCardWithoutOverflowOrSourceFields() throws Exception {
         var place=new com.datecourse.service.PublicDemoPlaceRepository().findAll().getFirst();
         var payload=new com.datecourse.service.PlaceMapPayload(new com.fasterxml.jackson.databind.ObjectMapper(),new com.datecourse.service.PlacePresenter());
@@ -408,7 +460,7 @@ class MapSearchTest {
     }
 
     @Test
-    void routeDescriptionLivesInHoverPopupAndPinsSelectTheirIncomingWalkingLeg() throws Exception {
+    void routeDescriptionLivesInHoverPopupAndPlacePinsOpenDetails() throws Exception {
         WebEngine engine = loadMap(640,600);
         script(engine,"""
             window.presentRoute({startLat:35.1579,startLng:129.059,radius:1000,people:2,places:[
@@ -426,7 +478,9 @@ class MapSearchTest {
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
         script(engine,"pins.filter(p=>p.coursePin && p.attached)[0].onclick()");
         assertEquals(true,script(engine,"document.getElementById('walking-panel').hidden"));
-        assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('1구간')"));
+        assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
+        assertEquals("첫 장소",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
         assertEquals(1,((Number)script(engine,"document.querySelectorAll('#walking-directions > li:not([hidden])').length")).intValue());
         script(engine,"""
             pins.filter(p=>p.coursePin && p.attached)[1].onclick();
@@ -435,8 +489,9 @@ class MapSearchTest {
             document.getElementById('map-surface').appendChild(tooltip);
             tooltip.style.position='absolute';tooltip.style.right='16px';tooltip.style.top='180px';
             """);
+        assertEquals("두 번째 장소",script(engine,"document.getElementById('detail-title').textContent"));
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
-        assertEquals(360,((Number)script(engine,"tooltip.getBoundingClientRect().width")).intValue());
+        assertEquals(280,((Number)script(engine,"tooltip.getBoundingClientRect().width")).intValue());
         assertEquals(true,script(engine,"tooltip.getBoundingClientRect().height<180 && tooltip.querySelector('.walking-tooltip-facts').textContent.includes('분')"));
         assertEquals(true,script(engine,"tooltip.querySelector('.walking-tooltip-steps').textContent.includes('둘째 구간 안내') && !tooltip.querySelector('.walking-tooltip-steps').textContent.includes('첫 구간 안내')"));
         // Show the test scene briefly: WebKit may skip painting in a detached Scene.
