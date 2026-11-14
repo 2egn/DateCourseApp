@@ -54,7 +54,7 @@
     document.addEventListener("click", function (event) {
         const target = event.target.nodeType === 1 ? event.target : event.target.parentElement;
         const link = target && target.closest("a[href]");
-        if (!link || !/^https?:/i.test(link.href)) return;
+        if (!link || link.id==='detail-report' || !/^https?:/i.test(link.href)) return;
         event.preventDefault();
         event.stopImmediatePropagation();
         openExternalLink(link.href);
@@ -425,6 +425,7 @@
             pin.setZIndex(active ? 6 : 3);
         });
     }
+    let candidateActionsEnabled=true;
     const itinerary = window.createItineraryRail({
         onTabChange: function (tab, items, user) {
             window.showResultPlaces(items, tab === 'course', true, plannerCourse);
@@ -434,6 +435,11 @@
         onReport: function(id) {
             if(window.javaMapBridge && typeof window.javaMapBridge.reportPlace==='function')window.javaMapBridge.reportPlace(String(id));
         },
+        isCandidate: function(id) {return !!routePresentation && routeLocked && routeCandidates.some(function(p){return p.recordId===id;})
+            && !plannerCourse.some(function(p){return p.recordId===id;});},
+        canAdd: function(id) {return !!routePresentation && candidateActionsEnabled && routeLocked && routeCandidates.some(function(p){return p.recordId===id;})
+            && !plannerCourse.some(function(p){return p.recordId===id;});},
+        onAdd: function(id) {if(window.javaMapBridge && typeof window.javaMapBridge.addCandidate==='function')window.javaMapBridge.addCandidate(String(id));},
         onActive: highlightVisit,
         onOpen: function (place, detailBounds, railBounds) {
             if (!ready) return;
@@ -453,6 +459,7 @@
             else map.panTo(center);
         }
     });
+    window.setCandidateActionsEnabled=function(enabled){candidateActionsEnabled=enabled;itinerary.refreshActions();};
     window.updatePlannerPlaces = function (course, nearby) {
         routePresentation = null;
         document.getElementById('map-surface').classList.remove('route-presentation');

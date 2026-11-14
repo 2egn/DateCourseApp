@@ -406,6 +406,7 @@
 .condition-screen .button.header-save:hover,
 .condition-screen .button.candidate-row-add:hover { -fx-background-color: #ff8294; }
 .condition-screen .button:focused { -fx-border-color: #64748b; }
-.condition-screen .account-menu { -fx-min-height: 36; -fx-pref-height: 36; -fx-max-height: 36; }
+.condition-screen .account-menu { -fx-min-height: 36; -fx-pref-height: 36; -fx-max-height: 40; -fx-padding: 4 12; -fx-label-padding: 0; }
+.condition-screen .account-menu > .label { -fx-padding: 0; -fx-label-padding: 0; }
 .condition-screen .button.place-count-arrow { -fx-min-height: 0; -fx-pref-height: 18; -fx-max-height: 18; -fx-padding: 0; -fx-border-width: 0; }
 .condition-screen .button.feedback-close { -fx-min-height: 24; -fx-pref-height: 24; -fx-max-height: 24; -fx-padding: 0; }

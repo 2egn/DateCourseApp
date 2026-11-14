@@ -57,6 +57,7 @@ public class ConditionController extends BasePageController {
     @FXML private Label saveStatusLabel;
     @FXML private MenuButton userLabel;
     @FXML private HBox headerBar;
+    @FXML private HBox walkingToolbar;
     @FXML private StackPane savedPageHost;
     @FXML private StackPane myPageHost;
     private MyPageController myPageController;
@@ -77,6 +78,10 @@ public class ConditionController extends BasePageController {
         feedback = new PageFeedback(plannerRoot);
         useFeedback(feedback);
         routeEditorController.useFeedback(feedback);
+        saveCourseButton.managedProperty().bind(saveCourseButton.visibleProperty());
+        newCourseButton.visibleProperty().bind(newCourseButton.disableProperty().not());
+        newCourseButton.managedProperty().bind(newCourseButton.visibleProperty());
+        walkingToolbar.managedProperty().bind(walkingToolbar.visibleProperty());
         watchNotice(errorLabel, PageFeedback.Kind.ERROR);
         watchNotice(saveStatusLabel, PageFeedback.Kind.INFO);
         NumberStepper.install(peopleField, peopleUp, peopleDown, 1, 20, 2);
@@ -493,6 +498,8 @@ public class ConditionController extends BasePageController {
 
     private void updateOriginProtection() { map.setOriginLocked(hasCoursePlaces()); }
     private void updateResetButton() {
+        boolean hasPlaces=appliedPlan!=null&&!appliedPlan.places().isEmpty();
+        saveCourseButton.setVisible(hasPlaces);walkingToolbar.setVisible(hasPlaces);
         newCourseButton.setDisable(!commonSettingsChanged && appliedPlan == null && savedCourseId == null && !editorPaused && !editorOpen);
     }
 

@@ -120,6 +120,18 @@
             return Number.isFinite(place.price) && place.price >= 0
                 ? place.price.toLocaleString('ko-KR') + '원/인' : '가격 미확인';
         }
+        function refreshActions() {
+            const place=visits.find(function(p){return p.visitId===expandedPlaceId;});
+            const add=document.getElementById('detail-add');
+            const candidate=place && options.isCandidate && options.isCandidate(place.recordId);
+            add.hidden=!candidate;add.disabled=!candidate || !options.canAdd || !options.canAdd(place.recordId);
+            add.textContent=add.disabled?'조건 업데이트 필요':'코스에 추가';
+            add.onclick=function(){
+                if(place && expandedPlaceId===place.visitId && options.canAdd && options.canAdd(place.recordId) && options.onAdd) {
+                    add.disabled=true;options.onAdd(place.recordId);
+                }
+            };
+        }
         function openDetail(id) {
             const index = visits.findIndex(function (v) { return v.visitId === id; });
             if (index < 0) return;
@@ -155,7 +167,8 @@
             extra.appendChild(summary);
             const report=document.getElementById('detail-report');
             report.hidden=typeof options.onReport!=='function';
-            report.onclick=function(){if(expandedPlaceId===id && options.onReport)options.onReport(place.recordId);};
+            report.onclick=function(event){event.preventDefault();event.stopPropagation();if(expandedPlaceId===id && options.onReport)options.onReport(place.recordId);};
+            refreshActions();
             const link = document.getElementById('detail-map-link');
             const version = ++linkVersion;
             link.href = 'https://map.kakao.com/link/search/' + encodeURIComponent('부산 ' + place.name);
@@ -288,6 +301,7 @@
                 return visits;
             },
             openVisit: function (id) { select(id, true); },
+            refreshActions: refreshActions,
             activatePlace: function (recordId) {
                 const visit = visits.find(function (v) { return String(v.recordId) === String(recordId); });
                 if (visit) activate(visit.visitId);

@@ -50,8 +50,12 @@ public final class RouteEditorController extends BasePageController {
     @FXML private Button priceUp, priceDown, finishButton;
     @FXML private Button upButton, downButton, removeButton;
     @FXML private Button placeInfoButton;
+    @FXML private Button fitRouteButton, walkingSettingsButton, resetDraftButton;
     @FXML private TitledPane coursePane, conditionPane, choicePane;
+    @FXML private TitledPane extraConditions;
+    @FXML private VBox subtypeField, tagField;
     @FXML private ListView<PlaceSearchService.NearbyPlace> candidateList;
+    @FXML private ScrollPane candidateScroll;
     @FXML private Slider radiusSlider;
     @FXML private Label radiusLabel, summaryLabel, editorError, commonLabel;
     @FXML private Label walkingTimeLabel;
@@ -84,6 +88,14 @@ public final class RouteEditorController extends BasePageController {
     @FXML
     private void initialize() {
         watchNotice(editorError, PageFeedback.Kind.ERROR);
+        coursePane.managedProperty().bind(coursePane.visibleProperty());
+        fitRouteButton.managedProperty().bind(fitRouteButton.visibleProperty());
+        walkingSettingsButton.managedProperty().bind(walkingSettingsButton.visibleProperty());
+        resetDraftButton.managedProperty().bind(resetDraftButton.visibleProperty());
+        selectedRadiusSlider.managedProperty().bind(selectedRadiusSlider.visibleProperty());
+        extraConditions.managedProperty().bind(extraConditions.visibleProperty());
+        subtypeField.managedProperty().bind(subtypeField.visibleProperty());
+        tagField.managedProperty().bind(tagField.visibleProperty());
         map = new PlannerMap(editMapView, (lat, lng) -> {}, editorError::setText);
         map.setAutomaticWalking(true);
         map.setOnReport(place->onReport.accept(place));
@@ -91,15 +103,8 @@ public final class RouteEditorController extends BasePageController {
             walkingRoute=route;walkingMessage=message;refreshWalkingSummary();placeList.refresh();
         });
         map.setLoadingUi(this::beginLoading);
-        map.setOnPlaceSelected(id -> {
-            for (int index = 0; index < candidates.size(); index++) {
-                if (candidates.get(index).place().recordId() == id) {
-                    setState(EditorState.CHOICE);
-                    candidateList.getSelectionModel().select(index);
-                    break;
-                }
-            }
-        });
+        map.setOnPlaceSelected(this::focusCandidate);
+        map.setOnAddCandidate(id->{if(!candidatesDirty&&focusCandidate(id))onAddCandidate();});
         activityBox.getItems().setAll("식사", "카페", "문화");
         activityBox.getSelectionModel().selectFirst();
         candidateLimitBox.getItems().setAll(5,10,20,30);
@@ -298,7 +303,7 @@ public final class RouteEditorController extends BasePageController {
                 tagBox.getValue()==null?java.util.Set.of():java.util.Set.of(tagBox.getValue()),candidateLimitBox.getValue());
             long version=++searchVersion;
             RoutePlan context=draft(); List<Place> source=allPlaces;
-            candidatesDirty=true;candidateList.refresh();candidateStatus.setText("후보 갱신 중…");
+            candidatesDirty=true;map.setCandidateActionsEnabled(false);candidateList.refresh();candidateStatus.setText("후보 갱신 중…");
             Consumer<CandidateSearch> present=response->{
                 if(version!=searchVersion)return;
                 List<PlaceSearchService.NearbyPlace> result=response.matches();
@@ -385,6 +390,8 @@ public final class RouteEditorController extends BasePageController {
     }
 
     private void updateButtons() {
+        boolean hasPlaces=!draftPlaces.isEmpty();
+        coursePane.setVisible(hasPlaces);fitRouteButton.setVisible(hasPlaces);walkingSettingsButton.setVisible(hasPlaces);
         int index = placeList.getSelectionModel().getSelectedIndex();
         upButton.setDisable(index <= 0);
         downButton.setDisable(index < 0 || index >= draftPlaces.size() - 1);
@@ -402,7 +409,7 @@ public final class RouteEditorController extends BasePageController {
                 .collect(java.util.stream.Collectors.joining("\n"));
         rangeWarning.setText(globalWarning + (globalWarning.isEmpty() || legWarning.isEmpty() ? "" : "\n")
                 + (legWarning.isEmpty() ? "" : "이동 거리 초과 — 허용 반경·순서를 조정하거나 장소를 삭제해 주세요.\n" + legWarning));
-        finishButton.setDisable(original == null || !outsideRange.isEmpty() || !exceededLegs.isEmpty());
+        finishButton.setDisable(original == null || !hasPlaces&&original.places().isEmpty() || !outsideRange.isEmpty() || !exceededLegs.isEmpty());
         syncSelectedRadius();
     }
 
@@ -412,6 +419,7 @@ public final class RouteEditorController extends BasePageController {
         syncingSelectedRadius = true;
         try {
             selectedRadiusSlider.setDisable(!selected);
+            selectedRadiusSlider.setVisible(selected);
             RouteRangeValidator.Leg leg = selected ? legs.get(index) : null;
             selectedRadiusSlider.setValue(leg == null || leg.radius() == null ? 500 : leg.radius());
             boolean missing = leg != null && leg.radius() == null;
@@ -460,6 +468,7 @@ public final class RouteEditorController extends BasePageController {
     @FXML private void onModifyConditions() { setState(EditorState.CONDITION); }
 
     private void setState(EditorState requested) {
+        resetDraftButton.setVisible(!draftPlaces.isEmpty()||!candidates.isEmpty());
         state = requested == EditorState.CHOICE && candidates.isEmpty() ? EditorState.CONDITION : requested;
         changingState = true;
         try {
@@ -473,6 +482,7 @@ public final class RouteEditorController extends BasePageController {
     }
     private void markCandidatesDirty() {
         searchVersion++; candidatesDirty=true;
+        map.setCandidateActionsEnabled(false);
         candidateStatus.setText(matchingCandidates.isEmpty()?"조건을 적용해 후보를 찾아 주세요.":"조건 변경됨 · 후보 업데이트 필요");
         candidateList.refresh();
     }
@@ -506,6 +516,7 @@ public final class RouteEditorController extends BasePageController {
             tagBox.getItems().setAll(tags);
             tagBox.setValue(tags.contains(rememberedTags.get(category))?rememberedTags.get(category):null);
             facetsActivity=category;
+            updateFacetVisibility();
         } finally {updatingFacets=false;}
     }
     /** New approved subtypes become selectable without changing the applied filter. */
@@ -515,7 +526,13 @@ public final class RouteEditorController extends BasePageController {
             var source=allPlaces.stream().filter(p->PlaceSearchService.categoryName(p.category()).equals(activityBox.getValue())).toList();
             source.stream().map(PlaceFacets::subtype).distinct().sorted().filter(s->!subtypeBox.getItems().contains(s)).forEach(subtypeBox.getItems()::add);
             source.stream().flatMap(p->p.details().tags().stream()).map(t->t.tag()).distinct().sorted().filter(t->!tagBox.getItems().contains(t)).forEach(tagBox.getItems()::add);
+            updateFacetVisibility();
         } finally {updatingFacets=false;}
+    }
+    private void updateFacetVisibility() {
+        subtypeField.setVisible(subtypeBox.getItems().size()>2);
+        tagField.setVisible(tagBox.getItems().size()>1);
+        extraConditions.setVisible(subtypeField.isVisible()||tagField.isVisible());
     }
     @FXML private void onCandidateDetail() { if (state == EditorState.CHOICE && candidate() != null) map.showDetail(candidate()); }
     @FXML private void onPlaceDetail() {
@@ -533,8 +550,23 @@ public final class RouteEditorController extends BasePageController {
     }
 
     private void refreshMap(boolean fit) {
+        map.setCandidateActionsEnabled(!candidatesDirty);
         if (original != null) map.presentCandidates(draft(), state == EditorState.CHOICE
                         ? candidates.stream().map(PlaceSearchService.NearbyPlace::place).toList() : List.of(),
                 state == EditorState.CHOICE ? candidate() : null, radius(), true, fit);
+    }
+    private boolean focusCandidate(long id) {
+        for(int i=0;i<candidates.size();i++)if(candidates.get(i).place().recordId()==id) {
+            state=EditorState.CHOICE;
+            candidateList.getSelectionModel().select(i);
+            candidateList.getFocusModel().focus(i);candidateList.scrollTo(i);candidateList.requestFocus();
+            double overflow=candidateScroll.getContent().getBoundsInLocal().getHeight()-candidateScroll.getViewportBounds().getHeight();
+            double top=choicePane.getBoundsInParent().getMinY();
+            double start=candidateScroll.getVvalue()*Math.max(0,overflow);
+            if(overflow>0&&(top<start||choicePane.getBoundsInParent().getMaxY()>start+candidateScroll.getViewportBounds().getHeight()))
+                candidateScroll.setVvalue(Math.max(0,Math.min(1,top/overflow)));
+            return true;
+        }
+        return false;
     }
 }

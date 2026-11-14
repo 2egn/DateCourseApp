@@ -39,11 +39,14 @@
 .detail-note { margin: 12px 0 0; font-size: 10px; line-height: 1.5; color: #718096; }
 .detail-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
 .detail-actions .detail-map-link { flex: 1 1 150px; }
-.detail-report { flex: 0 1 auto; padding: 9px 12px; border: 1px solid #dce2e8; border-radius: 10px; background: #f3f5f7; color: #334155; font-size: 12px; cursor: pointer; }
-.detail-report:hover { background: #e9edf1; }
+.detail-report { display: inline-block; margin-top: 10px; padding: 0; color: #6b7684; font-size: 12px; text-decoration: underline; cursor: pointer; }
+.detail-report:hover { color: #334155; }
 .detail-report[hidden] { display: none; }
 .detail-summary { color: #64748b; }
-.detail-actions .detail-map-link, .detail-actions .detail-report { box-sizing: border-box; min-height: 36px; padding: 8px 12px; border-radius: 8px; font-size: 13px; line-height: 18px; }
+.detail-actions .detail-map-link, .detail-actions .detail-add { box-sizing: border-box; min-height: 36px; padding: 8px 12px; border-radius: 8px; font-size: 13px; line-height: 18px; }
+.detail-add { flex: 1 1 150px; border: 1px solid transparent; background: #ff6b81; color: #191f28; font-weight: bold; cursor: pointer; }
+.detail-add:hover { background: #ff8294; }
+.detail-add:disabled { opacity: .5; cursor: default; }
 #map-surface #map-legend { left: 12px; right: auto; bottom: 34px; flex-wrap: wrap; max-width: calc(100% - 244px); font-size: 10px; gap: 6px 12px; }
 @media (max-width: 760px) {
     .itinerary-rail { width: 166px; right: 12px; top: 12px; transform: none; height: 45%; max-height: 260px; min-height: 130px; }

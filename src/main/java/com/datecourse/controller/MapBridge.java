@@ -14,6 +14,12 @@ public final class MapBridge {
     private final Consumer<Long> placeSelected;
     private final Runnable originChangeBlocked;
     private Consumer<Long> reportPlace = ignored -> {};
+    private Consumer<Long> addCandidate = ignored -> {};
+    public void setOnAddCandidate(Consumer<Long> listener) { addCandidate=listener; }
+    public void addCandidate(String recordId) {
+        try {long id=Long.parseLong(recordId);if(id>0)addCandidate.accept(id);}
+        catch(NumberFormatException ignored) { }
+    }
     public void setOnReportPlace(Consumer<Long> listener) { reportPlace=listener; }
     public void reportPlace(String recordId) {
         try { long id=Long.parseLong(recordId);if(id>0)reportPlace.accept(id); }

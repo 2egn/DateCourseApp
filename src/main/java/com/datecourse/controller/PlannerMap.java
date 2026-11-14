@@ -40,6 +40,13 @@ final class PlannerMap {
     private boolean automaticWalking;
     private BiConsumer<WalkingRoute,String> walkingResult = (route,message) -> {};
     private Consumer<Place> reportPlace = place -> {};
+    private Consumer<Long> addCandidate = id -> {};
+    private boolean candidateActionsEnabled=true;
+    void setOnAddCandidate(Consumer<Long> listener) { addCandidate=listener; }
+    void setCandidateActionsEnabled(boolean enabled) {
+        candidateActionsEnabled=enabled;
+        if(ready)view.getEngine().executeScript("if(window.setCandidateActionsEnabled)window.setCandidateActionsEnabled("+enabled+")");
+    }
     void setOnReport(Consumer<Place> listener) { reportPlace=listener; }
     void setAutomaticWalking(boolean enabled) { automaticWalking=enabled; }
     void setWalkingResultListener(BiConsumer<WalkingRoute,String> listener) { walkingResult=listener; }
@@ -88,7 +95,10 @@ final class PlannerMap {
             }, "planner-external-link");
             worker.setDaemon(true);
             worker.start();
-        }, id -> placeSelected.accept(id), () -> originChangeBlocked.run());
+        }, id -> Platform.runLater(()->placeSelected.accept(id)), () -> originChangeBlocked.run());
+        bridge.setOnAddCandidate(id -> Platform.runLater(()->{
+            if(candidateActionsEnabled && candidates.stream().anyMatch(p->p.recordId()==id))addCandidate.accept(id);
+        }));
         bridge.setOnReportPlace(id -> Platform.runLater(() -> {
             java.util.stream.Stream.concat(plan==null?java.util.stream.Stream.empty():plan.places().stream(),candidates.stream())
                 .filter(p->p.recordId()==id).findFirst().ifPresent(reportPlace);
@@ -155,6 +165,7 @@ final class PlannerMap {
         if (!ready || plan == null) return;
         try {
             sendOriginLock();
+            setCandidateActionsEnabled(candidateActionsEnabled);
             ObjectMapper mapper = new ObjectMapper();
             view.getEngine().executeScript("window.presentRoute(" + mapper.writeValueAsString(plan) + ","
                     + mapper.writeValueAsString(candidate) + "," + radius + "," + locked + "," + fit + ","
@@ -253,7 +264,7 @@ final class PlannerMap {
             @Override protected WalkingRoute call() throws Exception { return walkingRouter.route(stops); }
         };
         walkingTask = task;
-        Runnable finishLoading = loadingUi.apply("도보 경로를 조회하고 있어요");
+        Runnable finishLoading = fitResult ? loadingUi.apply("도보 경로를 조회하고 있어요") : () -> {};
         task.setOnCancelled(event -> finishLoading.run());
         task.setOnSucceeded(event -> {
             finishLoading.run();

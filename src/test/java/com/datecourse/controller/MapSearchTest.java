@@ -652,6 +652,13 @@ class MapSearchTest {
             """);
         assertEquals("[\"77\"]",script(engine,"JSON.stringify(reports)"));
         assertEquals(false,script(engine,"document.getElementById('detail-report').hidden"));
+        assertEquals("A",script(engine,"document.getElementById('detail-report').tagName"));
+        script(engine,"window.cardAdds=[];javaMapBridge.addCandidate=function(id){cardAdds.push(id);};document.getElementById('detail-add').click()");
+        assertEquals("[\"77\"]",script(engine,"JSON.stringify(cardAdds)"));
+        script(engine,"window.setCandidateActionsEnabled(false);document.getElementById('detail-add').click()");
+        assertEquals(true,script(engine,"document.getElementById('detail-add').disabled"));
+        assertEquals("[\"77\"]",script(engine,"JSON.stringify(cardAdds)"));
+        script(engine,"window.setCandidateActionsEnabled(true)");
         String text=(String)script(engine,"document.getElementById('place-detail').textContent");
         assertTrue(text.contains("부산 착한가격업소 기준 추정 가격"));
         assertFalse(text.contains("115"));assertFalse(text.contains("자료 출처"));assertFalse(text.contains("https://example.test"));
@@ -713,6 +720,50 @@ class MapSearchTest {
         assertEquals(false,script(engine,"routeOverlays[0].attached"));
         script(engine,"routeLines[3].onmouseover()");
         assertEquals(true,script(engine,"popup.textContent.includes('둘째 구간 전용 안내') && !popup.textContent.includes('첫 구간 안내')"));
+    }
+
+    @Test void mapSelectionFocusesCandidateAndCardAdditionUsesTheSameValidatedFlow() throws Exception {
+        var rootRef=new java.util.concurrent.atomic.AtomicReference<Parent>();
+        RouteEditorController editor=fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));Parent root=loader.load();rootRef.set(root);
+            RouteEditorController e=loader.getController();stubPlannerMap(e,"editMapView");new Scene(root,1440,960);root.resize(1440,960);
+            var rows=new java.util.ArrayList<com.datecourse.model.Place>();
+            for(int i=1;i<=30;i++)rows.add(new com.datecourse.model.Place(i,"p"+i,"장소 "+i,"MEAL",35.1578+i*.00001,129.06,5000,0));
+            e.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),rows,p->{},()->{});
+            ((javafx.scene.control.ComboBox<Integer>)field(e,"candidateLimitBox")).setValue(30);invoke(e,"onRecommendNext");
+            root.applyCss();root.layout();
+            ((MapBridge)field(field(e,"map"),"bridge")).onPlaceSelected("30");return e;
+        });
+        fx(()->{
+            var list=(javafx.scene.control.ListView<?>)field(editor,"candidateList");assertEquals(29,list.getSelectionModel().getSelectedIndex());
+            assertEquals(29,list.getFocusModel().getFocusedIndex());assertEquals(list,rootRef.get().getScene().getFocusOwner());
+            ((MapBridge)field(field(editor,"map"),"bridge")).addCandidate("30");return null;
+        });
+        fx(()->{
+            assertEquals(java.util.List.of(30L),editor.draftSnapshot().places().stream().map(p->p.recordId()).toList());
+            ((MapBridge)field(field(editor,"map"),"bridge")).addCandidate("30");return null;
+        });
+        fx(()->{
+            assertEquals(1,editor.draftSnapshot().places().size());invoke(editor,"onRecommendNext");
+            ((TextField)field(editor,"placePriceField")).setText("0.1");
+            ((MapBridge)field(field(editor,"map"),"bridge")).addCandidate("29");return null;
+        });
+        fx(()->{assertEquals(1,editor.draftSnapshot().places().size());return null;});
+    }
+
+    @Test void userMenuTextFitsAndInitialScreenHidesActionsThatNeedACourse() throws Exception {
+        fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/condition-view.fxml"));Parent root=loader.load();new Scene(root,1200,850);root.resize(1200,850);
+            ConditionController main=loader.getController();stubPlannerMap(main,"mapView");stubPlannerMap(field(main,"routeEditorController"),"editMapView");
+            main.setUserSession(new kr.ac.university.localdb.UserSession(7,"테스트 사용자"));
+            root.applyCss();root.layout();
+            var menu=(javafx.scene.control.MenuButton)field(main,"userLabel");var label=(javafx.scene.control.Label)menu.lookup(".label");
+            assertNotNull(label);assertTrue(label.getHeight()>=label.prefHeight(-1)-1);
+            assertFalse(((javafx.scene.control.Button)field(main,"saveCourseButton")).isVisible());
+            assertFalse(((javafx.scene.layout.HBox)field(main,"walkingToolbar")).isVisible());
+            var file=Path.of("build/ui-preview/user-menu-and-initial-actions.png");Files.createDirectories(file.getParent());
+            ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",file.toFile());return null;
+        });
     }
 
     private static <T> T fx(java.util.concurrent.Callable<T> work) throws Exception {
