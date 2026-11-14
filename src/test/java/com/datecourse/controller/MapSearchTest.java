@@ -83,7 +83,7 @@ class MapSearchTest {
             testMap.onclick({latLng:new kakao.maps.LatLng(35.158,129.059)});
             routeLines[1].onmouseout();routeLines[3].onmouseover({latLng:new kakao.maps.LatLng(35.158,129.059)});
             """);
-        assertEquals(true,script(engine,"blocked===0 && routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('1구간')"));
+        assertEquals(true,script(engine,"blocked===0 && routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('2구간')"));
         assertEquals(true,script(engine,"routeLines[3].zIndex===12 && routeLines[1].zIndex===4"));
         script(engine,"routeLines[3].onmouseout()");
         assertEquals(true,script(engine,"routeLines[1].zIndex===12 && routeLines[3].zIndex===4 && routeOverlays[0].attached"));
@@ -162,7 +162,7 @@ class MapSearchTest {
     }
 
     @Test
-    void routeDescriptionIsOptInAndPinsSelectTheirIncomingWalkingLeg() throws Exception {
+    void routeDescriptionLivesInHoverPopupAndPinsSelectTheirIncomingWalkingLeg() throws Exception {
         WebEngine engine = loadMap(640,600);
         script(engine,"""
             window.presentRoute({startLat:35.1579,startLng:129.059,radius:1000,people:2,places:[
@@ -178,8 +178,8 @@ class MapSearchTest {
             """);
         assertEquals(true,script(engine,"document.getElementById('walking-panel').hidden"));
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
-        script(engine,"window.toggleWalkingExplanation();pins.filter(p=>p.coursePin && p.attached)[0].onclick()");
-        assertEquals(false,script(engine,"document.getElementById('walking-panel').hidden"));
+        script(engine,"pins.filter(p=>p.coursePin && p.attached)[0].onclick()");
+        assertEquals(true,script(engine,"document.getElementById('walking-panel').hidden"));
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('1구간')"));
         assertEquals(1,((Number)script(engine,"document.querySelectorAll('#walking-directions > li:not([hidden])').length")).intValue());
         script(engine,"""
@@ -192,6 +192,7 @@ class MapSearchTest {
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
         assertEquals(248,((Number)script(engine,"tooltip.getBoundingClientRect().width")).intValue());
         assertEquals(true,script(engine,"tooltip.getBoundingClientRect().height<120 && tooltip.querySelector('.walking-tooltip-facts').textContent.includes('분')"));
+        assertEquals(true,script(engine,"tooltip.querySelector('.walking-tooltip-steps').textContent.includes('둘째 구간 안내') && !tooltip.querySelector('.walking-tooltip-steps').textContent.includes('첫 구간 안내')"));
         // Show the test scene briefly: WebKit may skip painting in a detached Scene.
         var previewWindow = fx(() -> {
             var window = new javafx.stage.Stage();window.setScene(previewView.getScene());window.show();return window;
@@ -663,6 +664,55 @@ class MapSearchTest {
                 ImageIO.write(SwingFXUtils.fromFXImage(previewView.snapshot(null,null),null),"png",file.toFile());return null;
             });
         } finally {fx(()->{preview.close();return null;});}
+    }
+
+    @Test void editResetAppliesAnEmptyCourseAndReturnsToCommonConditionsWithoutDialog() throws Exception {
+        fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/condition-view.fxml"));Parent root=loader.load();new Scene(root,1440,960);
+            ConditionController main=loader.getController();RouteEditorController editor=(RouteEditorController)field(main,"routeEditorController");
+            stubPlannerMap(main,"mapView");stubPlannerMap(editor,"editMapView");
+            var place=new com.datecourse.model.Place(1,"a","식당","MEAL",35.158,129.059,7000,0);
+            var before=new com.datecourse.model.RoutePlan(35.1579,129.059,2,1000,"기존 코스",java.util.List.of(place),java.util.Map.of(1L,500));
+            callWith(main,"presentPlan",com.datecourse.model.RoutePlan.class,before);
+            setField(main,"placesLoaded",true);setField(main,"allPlaces",java.util.List.of(place));setField(main,"savedCourseId",77L);
+            invoke(main,"onRecommendClick");assertEquals(true,field(main,"editorOpen"));invoke(editor,"onResetDraft");
+            var after=(com.datecourse.model.RoutePlan)field(main,"appliedPlan");
+            assertTrue(after.places().isEmpty());assertTrue(after.arrivalRadii().isEmpty());
+            assertEquals(before.startLat(),after.startLat());assertEquals(before.people(),after.people());assertEquals(before.radius(),after.radius());
+            assertEquals(false,field(main,"editorOpen"));assertEquals(false,field(main,"editorPaused"));assertEquals(77L,field(main,"savedCourseId"));
+            assertEquals(java.util.List.of(place),before.places());
+            var animation=(javafx.animation.Timeline)field(main,"screenAnimation");animation.stop();animation.getOnFinished().handle(new javafx.event.ActionEvent());
+            assertTrue(root.lookup("#mainPage").isVisible());assertFalse(root.lookup("#routeEditor").isVisible());
+            assertFalse(root.lookupAll(".button").stream().filter(n->n instanceof javafx.scene.control.Button)
+                .map(n->((javafx.scene.control.Button)n).getText()).anyMatch(t->"도보 경로".equals(t)||"경로 설명".equals(t)));
+            return null;
+        });
+    }
+
+    @Test void routeHoverInstructionsCanBeReadAndScrolledWithoutShowingOtherLegs() throws Exception {
+        WebEngine engine=loadMap(640,600);
+        script(engine,"""
+            window.path=[[{lat:35.157,lng:129.06},{lat:35.158,lng:129.06}]];
+            window.showWalkingRoute({totalDistance:200,totalTime:120,legs:[
+                {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:60,paths:path,steps:Array.from({length:30},function(_,i){return {description:'첫 구간 안내 '+i};})},
+                {from:{name:'첫 장소'},to:{name:'둘째 장소'},distance:100,time:60,paths:path,steps:[{description:'둘째 구간 전용 안내'}]}
+            ]},'',false);
+            routeLines[1].onmouseover();window.popup=routeOverlays[0].options.content;
+            document.getElementById('map').appendChild(popup);popup.style.position='absolute';popup.style.top='100px';
+            routeLines[1].onmouseout();popup.dispatchEvent(new Event('mouseenter'));
+            window.zoomBeforePopup=zoomCalls.length;
+            window.popupWheel=new WheelEvent('wheel',{deltaY:120,bubbles:true,cancelable:true});
+            popup.querySelector('.walking-tooltip-steps').dispatchEvent(popupWheel);
+            """);
+        Thread.sleep(170);
+        assertEquals(true,script(engine,"routeOverlays[0].attached && popup.querySelector('.walking-tooltip-steps').children.length===30"));
+        assertEquals(true,script(engine,"popup.querySelector('.walking-tooltip-steps').scrollHeight>popup.querySelector('.walking-tooltip-steps').clientHeight"));
+        assertEquals(false,script(engine,"popup.textContent.includes('둘째 구간 전용 안내')"));
+        assertEquals(true,script(engine,"zoomCalls.length===zoomBeforePopup && !popupWheel.defaultPrevented"));
+        script(engine,"popup.dispatchEvent(new Event('mouseleave'))");Thread.sleep(170);
+        assertEquals(false,script(engine,"routeOverlays[0].attached"));
+        script(engine,"routeLines[3].onmouseover()");
+        assertEquals(true,script(engine,"popup.textContent.includes('둘째 구간 전용 안내') && !popup.textContent.includes('첫 구간 안내')"));
     }
 
     private static <T> T fx(java.util.concurrent.Callable<T> work) throws Exception {

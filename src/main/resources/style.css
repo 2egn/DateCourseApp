@@ -40,6 +40,10 @@
 
 /* ===== 버튼 ===== */
 .button {
+    -fx-min-height: 36;
+    -fx-pref-height: 36;
+    -fx-max-height: 36;
+    -fx-font-size: 13px;
     -fx-background-color: -app-primary;
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -364,3 +368,44 @@
 .loading-shade { -fx-background-color: rgba(245,247,250,0.72); }
 .loading-card { -fx-background-color: white; -fx-background-radius: 12; -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 16, 0, 0, 4); }
 .loading-card .label { -fx-font-size: 15px; -fx-text-fill: #334155; }
+
+/* Common action geometry; text length controls width, role controls color. */
+.condition-screen .button.planner-primary,
+.condition-screen .button.header-save,
+.condition-screen .button.header-secondary,
+.condition-screen .button.drawer-toggle,
+.condition-screen .button.candidate-row-detail,
+.condition-screen .button.candidate-row-add,
+.condition-screen .button.header-tab {
+    -fx-font-size: 13px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-border-color: transparent;
+    -fx-font-weight: normal;
+}
+.condition-screen .button.drawer-toggle,
+.condition-screen .button.header-secondary,
+.condition-screen .button.candidate-row-detail {
+    -fx-background-color: #f2f4f6;
+    -fx-border-color: #dce1e8;
+    -fx-text-fill: #334155;
+}
+.condition-screen .button.drawer-toggle:hover,
+.condition-screen .button.header-secondary:hover,
+.condition-screen .button.candidate-row-detail:hover { -fx-background-color: #e9edf1; }
+.condition-screen .button.planner-primary,
+.condition-screen .button.header-save,
+.condition-screen .button.candidate-row-add {
+    -fx-background-color: #ff6b81;
+    -fx-text-fill: #191f28;
+    -fx-font-weight: bold;
+}
+.condition-screen .button.planner-primary:hover,
+.condition-screen .button.header-save:hover,
+.condition-screen .button.candidate-row-add:hover { -fx-background-color: #ff8294; }
+.condition-screen .button:focused { -fx-border-color: #64748b; }
+.condition-screen .account-menu { -fx-min-height: 36; -fx-pref-height: 36; -fx-max-height: 36; }
+.condition-screen .button.place-count-arrow { -fx-min-height: 0; -fx-pref-height: 18; -fx-max-height: 18; -fx-padding: 0; -fx-border-width: 0; }
+.condition-screen .button.feedback-close { -fx-min-height: 24; -fx-pref-height: 24; -fx-max-height: 24; -fx-padding: 0; }

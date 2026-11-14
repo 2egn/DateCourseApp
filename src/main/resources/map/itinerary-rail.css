@@ -43,6 +43,7 @@
 .detail-report:hover { background: #e9edf1; }
 .detail-report[hidden] { display: none; }
 .detail-summary { color: #64748b; }
+.detail-actions .detail-map-link, .detail-actions .detail-report { box-sizing: border-box; min-height: 36px; padding: 8px 12px; border-radius: 8px; font-size: 13px; line-height: 18px; }
 #map-surface #map-legend { left: 12px; right: auto; bottom: 34px; flex-wrap: wrap; max-width: calc(100% - 244px); font-size: 10px; gap: 6px 12px; }
 @media (max-width: 760px) {
     .itinerary-rail { width: 166px; right: 12px; top: 12px; transform: none; height: 45%; max-height: 260px; min-height: 130px; }

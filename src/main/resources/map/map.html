@@ -13,14 +13,14 @@
         #search-form { padding: 14px 16px; }
         .search-row { display: flex; gap: 8px; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); }
-        #place-query { flex: 1; min-width: 0; padding: 12px 14px; border: 1.5px solid transparent; border-radius: 10px; font: inherit; background: #f2f4f6; color: #191f28; }
+        #place-query { flex: 1; min-width: 0; height: 36px; padding: 6px 12px; border: 1px solid transparent; border-radius: 8px; font: inherit; background: #f2f4f6; color: #191f28; }
         #place-query::placeholder { color: #6b7684; }
         #place-query:focus { outline: 2px solid #ffe3e8; border-color: #ff6b81; }
         button { font: inherit; cursor: pointer; }
-        #search-submit { border: 0; border-radius: 10px; padding: 0 18px; background: #fff0f3; color: #191f28; font-weight: bold; }
-        #search-submit:hover { background: #ffe3e8; }
+        #search-submit { height: 36px; border: 1px solid transparent; border-radius: 8px; padding: 6px 12px; background: #ff6b81; color: #191f28; font-weight: bold; }
+        #search-submit:hover { background: #ff8294; }
         #search-submit:disabled { opacity: 0.5; cursor: default; }
-        #search-close { border: 0; background: transparent; color: #667085; padding: 0 4px; }
+        #search-close { height: 36px; border: 1px solid #dce1e8; border-radius: 8px; background: #f2f4f6; color: #334155; padding: 6px 12px; }
         [hidden] { display: none !important; }
         #search-message { margin: 0; padding: 10px 14px; color: #6b7684; font-size: 12px; line-height: 1.5; }
         #search-message:empty { display: none; }
@@ -88,7 +88,9 @@
     #walking-leg-list { display: flex; gap: 6px; overflow-x: auto; margin-top: 8px; padding-bottom: 3px; }
     .walking-leg-button { flex: 0 0 auto; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid #d9e0e8; border-left-width: 4px; border-radius: 6px; padding: 6px 8px; background: #fff; color: #334155; font-size: 12px; }
     .walking-leg-button[aria-pressed="true"] { background: #edf2f7; font-weight: bold; }
-    .walking-route-tooltip { box-sizing: border-box; width: 248px; white-space: normal; word-break: keep-all; overflow-wrap: break-word; background: #fff; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 2px 7px #0002; font-size: 12px; line-height: 1.5; pointer-events: none; }
+    .walking-route-tooltip { box-sizing: border-box; width: 248px; white-space: normal; word-break: keep-all; overflow-wrap: break-word; background: #fff; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-shadow: 0 2px 7px #0002; font-size: 12px; line-height: 1.5; pointer-events: auto; }
+    .walking-tooltip-steps { margin: 6px 0 0; padding-left: 18px; max-height: 140px; overflow-y: auto; overscroll-behavior: contain; }
+    .walking-tooltip-steps li { margin: 3px 0; }
     .walking-tooltip-facts { margin-top: 4px; color: #64748b; white-space: nowrap; }
     .walking-leg-badge { border: 2px solid white; border-radius: 14px; min-width: 26px; height: 26px; padding: 0 5px; color: #fff; font-size: 12px; font-weight: bold; box-shadow: 0 1px 4px #0003; }
     #walking-panel details { margin-top: 6px; }

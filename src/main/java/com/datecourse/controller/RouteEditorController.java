@@ -246,10 +246,8 @@ public final class RouteEditorController extends BasePageController {
 
     @FXML private void onResetDraft() {
         if (original == null) return;
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "편집 중인 장소와 후보를 비울까요? 저장한 코스는 유지돼요.", ButtonType.OK, ButtonType.CANCEL);
-        confirm.initOwner(editMapView.getScene().getWindow());
-        if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) resetDraft();
+        resetDraft();
+        onFinish();
     }
 
     void resetDraft() {
@@ -383,7 +381,7 @@ public final class RouteEditorController extends BasePageController {
             long last=walkingRoute.legs().getLast().time();
             walkingTimeLabel.setText("최근 이동 "+minutes(last)+" · 누적 도보 "+minutes(walkingRoute.totalTime())+" · 체류시간 제외");
         } else walkingTimeLabel.setText(walkingMessage.contains("중")||walkingMessage.contains("준비")
-            ? "도보 이동시간 조회 중…" : "도보 시간 미확인 · 도보 경로 버튼으로 다시 조회할 수 있어요.");
+            ? "도보 이동시간 조회 중…" : "도보 시간 미확인 · 지도 새로고침으로 다시 시도해 주세요.");
     }
 
     private void updateButtons() {

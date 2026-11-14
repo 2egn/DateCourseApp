@@ -76,6 +76,7 @@ final class PlannerMap {
             ready = true;
             render(true);
             if (walkingPending) requestWalkingRoute(false);
+            else if(walkingRequested && walkingRoute==null && walkingTask==null)requestWalkingRouteWhenReady();
         }, selected, message -> {
             ready = false;
             loaded = false;
@@ -210,6 +211,7 @@ final class PlannerMap {
         walkingVersion++;
         walkingPending = false;
         if (walkingTask != null) walkingTask.cancel();
+        walkingTask=null;
         walkingRoute = null;
         walkingMessage = walkingRequested ? "코스가 바뀌었어요. 도보 경로 조회를 눌러 다시 확인하세요." : "";
         publishWalking();
@@ -257,6 +259,7 @@ final class PlannerMap {
             finishLoading.run();
             if (walkingVersion != version || walkingTask != task) return;
             walkingRoute = task.getValue();
+            walkingTask=null;
             walkingMessage = "";
             publishWalking();
             renderWalkingRoute(fitResult);
@@ -265,6 +268,7 @@ final class PlannerMap {
             finishLoading.run();
             if (walkingVersion != version || walkingTask != task) return;
             walkingRoute = null;
+            walkingTask=null;
             walkingMessage = task.getException() instanceof java.io.IOException
                     || task.getException() instanceof IllegalArgumentException ? task.getException().getMessage()
                     : "도보 경로를 불러오지 못했어요. 다시 조회해 주세요.";

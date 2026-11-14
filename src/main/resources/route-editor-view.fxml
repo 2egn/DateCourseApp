@@ -8,7 +8,7 @@
  stylesheets="@style.css" styleClass="condition-screen,route-editor-screen" prefWidth="1440" prefHeight="960" minHeight="0">
  <top><HBox alignment="CENTER_LEFT" spacing="20" styleClass="planner-header,editor-heading-bar">
  <VBox spacing="5"><Label text="02 · 장소를 하나씩 골라요" styleClass="planner-heading"/><Label fx:id="commonLabel" styleClass="planner-caption"/></VBox>
- <Region HBox.hgrow="ALWAYS"/><Button text="경로 설명" onAction="#onWalkingExplanation" styleClass="drawer-toggle"/><Button text="도보 설정" onAction="#onTmapSettings" styleClass="drawer-toggle"/>
+ <Region HBox.hgrow="ALWAYS"/><Button text="도보 설정" onAction="#onTmapSettings" styleClass="drawer-toggle"/>
  </HBox></top>
  <center><GridPane hgap="0" minHeight="0"><columnConstraints><ColumnConstraints percentWidth="55"/><ColumnConstraints percentWidth="45"/></columnConstraints>
  <rowConstraints><RowConstraints minHeight="0" percentHeight="100" vgrow="ALWAYS"/></rowConstraints>
@@ -52,5 +52,5 @@
  <bottom><VBox spacing="5" styleClass="route-sidebar-note"><Label fx:id="rangeWarning" text="" styleClass="error" wrapText="true"/><Label fx:id="editorError" text="" styleClass="error" wrapText="true"/><Label text="거리: 직선 기준 · 가격·평점: 참고 정보" styleClass="planner-caption" wrapText="true"/></VBox></bottom>
  </BorderPane>
  </GridPane></center>
- <bottom><HBox fx:id="editorFooter" alignment="CENTER_RIGHT" spacing="10" minHeight="76" prefHeight="76" maxHeight="76" styleClass="route-editor-footer"><Label text="돌아가도 편집 초안은 유지돼요." styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Button text="도보 경로" onAction="#onWalkingRoute" styleClass="drawer-toggle"/><Button text="지도 새로고침" onAction="#onReloadMap" styleClass="drawer-toggle"/><Button text="편집 초기화" onAction="#onResetDraft" styleClass="drawer-toggle"/><Button fx:id="cancelButton" text="돌아가기" onAction="#onCancel" styleClass="drawer-toggle"/><Button fx:id="finishButton" text="편집 완료" onAction="#onFinish" disable="true" styleClass="planner-primary"/></HBox></bottom>
+ <bottom><HBox fx:id="editorFooter" alignment="CENTER_RIGHT" spacing="10" minHeight="76" prefHeight="76" maxHeight="76" styleClass="route-editor-footer"><Label text="돌아가도 편집 초안은 유지돼요." styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Button text="지도 새로고침" onAction="#onReloadMap" styleClass="drawer-toggle"/><Button text="편집 초기화" onAction="#onResetDraft" styleClass="drawer-toggle"/><Button fx:id="cancelButton" text="돌아가기" onAction="#onCancel" styleClass="drawer-toggle"/><Button fx:id="finishButton" text="편집 완료" onAction="#onFinish" disable="true" styleClass="planner-primary"/></HBox></bottom>
 </BorderPane>

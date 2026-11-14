@@ -1,5 +1,8 @@
 (function () {
     'use strict';
+    function readingRoute(event) {
+        return event.target && typeof event.target.closest==='function' && event.target.closest('.walking-route-tooltip');
+    }
     // Shared by both maps. Accumulate wheel input before one SDK zoom level.
     window.installInstantZoom = function (element, map, options) {
         // Transform only the SDK map; search, details and legend are sibling elements.
@@ -31,6 +34,7 @@
             if (request) apply(request);
         }
         function wheel(event) {
+            if(readingRoute(event))return;
             if (!event.deltaY) return;
             event.preventDefault(); event.stopImmediatePropagation();
             const pixels = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? element.clientHeight : 1);
@@ -49,6 +53,7 @@
             if (wait <= 0) flush(); else timer = setTimeout(flush, wait);
         }
         function doubleClick(event) {
+            if(readingRoute(event))return;
             event.preventDefault(); event.stopImmediatePropagation();
             clearTimeout(timer); clearTimeout(resetTimer); timer = null; pending = null; delta = 0;
             // Double-click is an explicit one-level command; rapid repeats are ignored.
@@ -103,6 +108,7 @@
                 element.clientHeight / 2 + actual.y - y * element.clientHeight)));
         }
         function wheel(event) {
+            if(readingRoute(event))return;
             if (!event.deltaY) return;
             event.preventDefault(); event.stopImmediatePropagation();
             const pixels = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? element.clientHeight : 1);
@@ -110,6 +116,7 @@
             zoom(Math.max(-120, Math.min(120, pixels)) / 1200, event);
         }
         function doubleClick(event) {
+            if(readingRoute(event))return;
             event.preventDefault(); event.stopImmediatePropagation();
             zoom(event.shiftKey ? 0.25 : -0.25, event);
         }
