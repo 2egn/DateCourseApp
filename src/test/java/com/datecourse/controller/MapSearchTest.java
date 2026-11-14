@@ -28,6 +28,45 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
+    @Test void javaPresentationFlowsIntoMapCardWithoutOverflowOrSourceFields() throws Exception {
+        var place=new com.datecourse.service.PublicDemoPlaceRepository().findAll().getFirst();
+        var payload=new com.datecourse.service.PlaceMapPayload(new com.fasterxml.jackson.databind.ObjectMapper(),new com.datecourse.service.PlacePresenter());
+        for(int width:new int[]{850,420}) {
+            WebEngine engine=loadMap(width,720);
+            script(engine,"window.typedPlace="+payload.place(place)+";window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[]},typedPlace,500,true,true,[typedPlace]);window.openRoutePlace("+place.recordId()+");");
+            assertEquals(3,((Number)script(engine,"document.querySelectorAll('#detail-extra .detail-badge').length")).intValue());
+            assertTrue(((String)script(engine,"document.querySelector('#detail-facts dt').textContent")).contains("추정"));
+            assertTrue(((String)script(engine,"document.getElementById('detail-extra').textContent")).contains("부산 착한가격업소"));
+            assertFalse(((String)script(engine,"document.getElementById('detail-extra').textContent")).contains("https://"));
+            assertEquals(true,script(engine,"Array.from(document.querySelectorAll('.detail-badge')).some(function(n){return n.title.includes('계산 2026-11-14');})"));
+            assertEquals(true,script(engine,"document.getElementById('detail-extra').scrollWidth<=document.getElementById('detail-extra').clientWidth+1"));
+            assertEquals(true,script(engine,"document.getElementById('place-detail').getBoundingClientRect().left>=0 && document.getElementById('place-detail').getBoundingClientRect().right<=window.innerWidth+1"));
+            assertEquals(true,script(engine,"document.getElementById('detail-add').getBoundingClientRect().bottom<=document.getElementById('place-detail').getBoundingClientRect().bottom"));
+            var window=fx(()->{var stage=new javafx.stage.Stage();stage.setScene(previewView.getScene());stage.show();return stage;});
+            try {
+                Thread.sleep(300);
+                fx(()->{Path image=Path.of("build/ui-preview/public-data-detail-"+width+".png");Files.createDirectories(image.getParent());
+                    ImageIO.write(SwingFXUtils.fromFXImage(previewView.snapshot(null,null),null),"png",image.toFile());return null;});
+            } finally {fx(()->{window.close();return null;});}
+        }
+    }
+    @Test void editorDiscoversOnlyConfirmedFacilityOptionsFromTypedFacts() throws Exception {
+        fx(()->{
+            var evidence=new com.datecourse.model.SourceEvidence(com.datecourse.model.SourceEvidence.Origin.OFFICIAL_SITE,"운영 안내","https://example.test","2026-11-14","");
+            var fact=new com.datecourse.model.PlaceAttributeFact(com.datecourse.model.PlaceFeature.RESERVABLE,com.datecourse.model.FactState.AVAILABLE,evidence);
+            var details=new com.datecourse.model.PlaceDetails("주소","한식","","","https://example.test","2026-11-14","","",java.util.Map.of(),java.util.List.of(),java.util.List.of(fact),java.util.List.of());
+            var place=new com.datecourse.model.Place(1,"facility","예약 장소","MEAL",35.1578,129.06,com.datecourse.model.PriceEstimate.exact(5000),0,details);
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();RouteEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
+            editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,1000,"",java.util.List.of()),java.util.List.of(place),p->{},()->{});
+            var tags=(javafx.scene.control.ComboBox<com.datecourse.model.PlaceTag>)field(editor,"tagBox");
+            assertTrue(tags.getItems().contains(com.datecourse.model.PlaceTag.RESERVABLE));
+            assertFalse(tags.getItems().contains(com.datecourse.model.PlaceTag.PARKING));
+            tags.setValue(com.datecourse.model.PlaceTag.RESERVABLE);invoke(editor,"onRecommendNext");
+            assertEquals(1,((javafx.scene.control.ListView<?>)field(editor,"candidateList")).getItems().size());
+            return null;
+        });
+    }
+
     @Test
     void myPageUsesSharedLoadingAndMenuLogoutClearsPlannerSession() throws Exception {
         CountDownLatch loaded=new CountDownLatch(1);

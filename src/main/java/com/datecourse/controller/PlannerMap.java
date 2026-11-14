@@ -24,6 +24,9 @@ import java.util.function.Consumer;
 
 /** 두 WebView는 같은 지도 페이지를 사용하지만 브리지와 상태를 각각 소유한다. */
 final class PlannerMap {
+    private final com.datecourse.service.PlaceMapPayload placePayload = new com.datecourse.service.PlaceMapPayload(
+            new ObjectMapper(), new com.datecourse.service.PlacePresenter());
+
     @FunctionalInterface
     interface WalkingRouter {
         WalkingRoute route(List<Stop> stops) throws Exception;
@@ -178,10 +181,9 @@ final class PlannerMap {
             if (plan == null) return;
             sendOriginLock();
             setCandidateActionsEnabled(candidateActionsEnabled);
-            ObjectMapper mapper = new ObjectMapper();
-            view.getEngine().executeScript("window.presentRoute(" + mapper.writeValueAsString(plan) + ","
-                    + mapper.writeValueAsString(candidate) + "," + radius + "," + locked + "," + fit + ","
-                    + mapper.writeValueAsString(candidates) + ")");
+            view.getEngine().executeScript("window.presentRoute(" + placePayload.plan(plan) + ","
+                    + placePayload.place(candidate) + "," + radius + "," + locked + "," + fit + ","
+                    + placePayload.places(candidates) + ")");
             view.getEngine().executeScript("if(window.focusRouteLeg)window.focusRouteLeg("
                     + editingLegIndex + "," + editingLegRadius + ")");
             renderWalkingRoute(false);

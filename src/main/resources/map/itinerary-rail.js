@@ -144,10 +144,30 @@
                     : activeTab === 'nearby' ? '주변 장소 · ' : (index + 1) + '번째 방문 · ') + category(place.category);
             const facts = document.getElementById('detail-facts');
             facts.textContent = '';
-            fact('예상 가격', priceText(place));
+            fact(place.presentation ? place.presentation.priceLabel : '예상 가격', priceText(place));
             if (Number.isFinite(place.rating) && place.rating > 0) fact('평점', place.rating.toFixed(1));
             const extra = document.getElementById('detail-extra');
             extra.textContent = '';
+            const note = detail.querySelector('.detail-note');
+            if (note) note.hidden = !!place.presentation;
+            if (place.presentation) {
+                const presentation = place.presentation;
+                const badges = document.createElement('div'); badges.className = 'detail-badges';
+                (presentation.badges || []).forEach(function (badge) {
+                    const node = document.createElement('span'); node.className = 'detail-badge';
+                    node.textContent = badge.label; node.title = badge.description || '';
+                    node.setAttribute('aria-label', badge.label + (badge.description ? ' · ' + badge.description : ''));
+                    badges.appendChild(node);
+                });
+                if (badges.children.length) extra.appendChild(badges);
+                (presentation.lines || []).forEach(function (line) {
+                    const node = document.createElement('p'); node.textContent = line.label + ' · ' + line.value;
+                    node.title = line.description || ''; extra.appendChild(node);
+                });
+                const summary = document.createElement('p'); summary.className = 'detail-summary';
+                summary.textContent = presentation.priceSummary + ' ' + presentation.informationSummary;
+                extra.appendChild(summary);
+            } else {
             const info = place.details || {};
             const tagLabels = {GOOD_PRICE:'착한가격',MODEL_RESTAURANT:'모범음식점',FREE_ADMISSION:'무료입장',NEAR_SUBWAY:'역 가까움',NEAR_BUS:'정류장 가까움'};
             const tags=(info.tags || []).map(function(tag){return tagLabels[tag.tag] || tag.tag;});
@@ -165,6 +185,7 @@
             summary.textContent=(basis ? basis+(estimated?' 기준 추정 가격이에요.':' 참고 정보예요.')+' ' : '')
                 +(info.identityCheckedAt?'장소 대조 기록이 있어요.':'장소 정보는 추가 확인 전이에요.');
             extra.appendChild(summary);
+            }
             const report=document.getElementById('detail-report');
             report.hidden=typeof options.onReport!=='function';
             report.onclick=function(event){event.preventDefault();event.stopPropagation();if(expandedPlaceId===id && options.onReport)options.onReport(place.recordId);};

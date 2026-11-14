@@ -139,8 +139,7 @@ public final class InformationReportRepository {
         }).toList();
     }
     private static String key(Place p) {
-        String publicId=p.details().externalIds().get("public");
-        return publicId==null||publicId.isBlank()?p.placeId():publicId;
+        return p.stableKey();
     }
     public static String original(Place p, InformationReport.Field f) {
         return switch(f) {case PRICE->p.priceText();case NAME->p.name();case ADDRESS->p.details().address();case SUBCATEGORY->p.details().subcategory();};

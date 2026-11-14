@@ -68,6 +68,10 @@ public record PlaceDetails(String address, String subcategory, String phone, Str
                 .orElseGet(() -> tags.stream().anyMatch(t -> PlaceFeature.from(t.tag()) == feature)
                         ? FactState.AVAILABLE : FactState.UNKNOWN);
     }
+    /** One domain interpretation for legacy tags and evidence-backed facts. Missing is never false. */
+    public List<PlaceTag> availableTags() {
+        return java.util.Arrays.stream(PlaceTag.values()).filter(this::hasTag).toList();
+    }
     public boolean hasTag(PlaceTag tag) { return featureState(PlaceFeature.from(tag)) == FactState.AVAILABLE; }
     public PlaceDetails withPublicFacts(List<TagFact> publicTags, List<PlaceAttributeFact> facts) {
         return new PlaceDetails(address, subcategory, phone, website, sourceUrl, sourceDate,

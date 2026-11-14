@@ -37,7 +37,7 @@
  <Label fx:id="errorLabel" minHeight="-Infinity" wrapText="true" styleClass="error"/>
  <Button fx:id="recommendButton" text="코스 만들기 →" onAction="#onRecommendClick" maxWidth="Infinity" styleClass="planner-primary"/>
  <Region VBox.vgrow="ALWAYS"/>
- <Label text="가격·평점은 저장된 참고 정보입니다." wrapText="true" styleClass="planner-caption"/>
+ <Label text="가격은 근거에 따라 참고·추정값으로 표시돼요." wrapText="true" styleClass="planner-caption"/>
  </VBox></content></FormScrollPane></left>
  <center><VBox spacing="12"><padding><Insets top="18" right="20" bottom="20" left="20"/></padding>
  <HBox fx:id="walkingToolbar" spacing="8" alignment="CENTER_RIGHT"><Button text="도보 설정" onAction="#onTmapSettings" styleClass="drawer-toggle"/></HBox>

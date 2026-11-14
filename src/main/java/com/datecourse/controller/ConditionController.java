@@ -22,6 +22,8 @@ import java.util.List;
 
 /** 공통 조건과 확정본을 소유한다. 편집 화면은 별도의 복사본만 변경한다. */
 public class ConditionController extends BasePageController {
+    private final com.datecourse.service.PlacePresenter placePresenter = new com.datecourse.service.PlacePresenter();
+
     @FXML private StackPane plannerRoot;
     @FXML private BorderPane mainPage;
     @FXML private Parent routeEditor;
@@ -44,7 +46,7 @@ public class ConditionController extends BasePageController {
     private boolean fitOnReturn;
     private UserSession userSession;
     private com.datecourse.service.UserContext userContext;
-    private static final String EXISTING = "기존 장소 목록", PILOT = "서면·전포 시연 목록";
+    private static final String EXISTING = "운영 장소 목록", PILOT = "서면·전포 시연 목록";
     private static final String PUBLIC_DEMO="서면 공공자료 · 추정 가격";
     private kr.ac.university.localdb.db.InformationReportRepository informationReports;
     private Task<List<Place>> placeLoadTask;
@@ -460,7 +462,7 @@ public class ConditionController extends BasePageController {
             placesLoading = false;
             recommendButton.setDisable(false);
             recommendButton.setText("코스 만들기 →");
-            sourceStatusLabel.setText("기존 목록은 로그인 후 사용할 수 있어요.");
+            sourceStatusLabel.setText("운영 목록은 로그인 후 사용할 수 있어요.");
             finishStartup();
             return;
         }
@@ -483,10 +485,7 @@ public class ConditionController extends BasePageController {
             allPlaces = List.copyOf(task.getValue());
             placesLoaded = true;
             placesLoading = false;
-            long unknown = allPlaces.stream().filter(p -> !p.priceEstimate().finite()).count();
-            long estimated=allPlaces.stream().filter(p->p.priceEstimate().estimated()).count();
-            sourceStatusLabel.setText(allPlaces.size() + "곳 · 추정 가격 "+estimated+"곳 · 가격 상한 미확인 " + unknown + "곳"
-                +(PUBLIC_DEMO.equals(sourceBox.getValue())?"\n공공자료 기준 장소 · 현재 영업 여부는 지도에서 확인해 주세요.":""));
+            sourceStatusLabel.setText(placePresenter.datasetSummary(allPlaces));
             recommendButton.setDisable(false);
             recommendButton.setText(appliedPlan == null || appliedPlan.places().isEmpty() ? "코스 만들기 →" : "코스 편집 →");
             finishStartup();

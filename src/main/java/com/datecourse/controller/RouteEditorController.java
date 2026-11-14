@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 /** 편집본만 변경한다. 메인 화면으로의 전달은 완료 버튼에서만 일어난다. */
 public final class RouteEditorController extends BasePageController {
+    private final com.datecourse.service.PlacePresenter placePresenter = new com.datecourse.service.PlacePresenter();
     @FXML private WebView editMapView;
     @FXML private ComboBox<String> activityBox;
     @FXML private ComboBox<String> subtypeBox;
@@ -113,6 +114,7 @@ public final class RouteEditorController extends BasePageController {
         conditionCandidateLimitBox.setItems(candidateLimitBox.getItems());
         conditionCandidateLimitBox.valueProperty().bindBidirectional(candidateLimitBox.valueProperty());
         subtypeBox.setPromptText("전체 종류"); tagBox.setPromptText("특징 제한 없음");
+        tagBox.setTooltip(new Tooltip("선택한 특징이 확인된 장소만 보여줘요. 불가 또는 미확인인 장소는 제외돼요."));
         subtypeBox.setCellFactory(v->new ListCell<>() {
             @Override protected void updateItem(String s,boolean empty){super.updateItem(s,empty);setText(empty?null:s==null?"전체 종류":s);}
         });
@@ -163,9 +165,9 @@ public final class RouteEditorController extends BasePageController {
                 name.setText(nearby.place().name());
                 name.setTooltip(new Tooltip(nearby.place().name()+"\n"+nearby.place().details().address()+"\n"+nearby.place().details().identityText()));
                 meta.setText(String.format("%.0fm · %s", nearby.distanceMeters(), nearby.place().priceText()));
-                badges.setText(nearby.place().priceEstimate().evidenceText()
-                    + nearby.place().details().tags().stream().limit(2).map(t->" · "+t.tag().label()).collect(java.util.stream.Collectors.joining()));
-                badges.setTooltip(new Tooltip(nearby.place().priceEstimate().explanation()));
+                var presentation=placePresenter.present(nearby.place());
+                badges.setText(presentation.candidateSummary());
+                badges.setTooltip(new Tooltip(presentation.candidateDescription()));
                 setAccessibleText(nearby.place().name() + " · 선택하면 상세 카드 열기");
                 setGraphic(row);
             }
@@ -538,7 +540,7 @@ public final class RouteEditorController extends BasePageController {
         candidates=matchingCandidates.stream().limit(candidateLimitBox.getValue()).toList();
         candidateIndex=-1;candidateList.getItems().setAll(candidates);
         int index=selected==null?-1:java.util.stream.IntStream.range(0,candidates.size())
-            .filter(i->candidates.get(i).place().placeId().equals(selected.placeId())).findFirst().orElse(-1);
+            .filter(i->candidates.get(i).place().sameIdentityAs(selected)).findFirst().orElse(-1);
         candidateList.getSelectionModel().select(index>=0?index:candidates.isEmpty()?-1:0);
         candidateCount.setText("일치 "+matchingCandidates.size()+"곳 · 표시 "+candidates.size()+"곳");
         recommendNextButton.setText(candidates.isEmpty() ? "후보 검색" : "후보 업데이트");
@@ -559,7 +561,7 @@ public final class RouteEditorController extends BasePageController {
             String remembered=rememberedSubtypes.get(category);
             subtypeBox.setValue(subtypes.contains(remembered)?remembered:null);
             var tags=new java.util.ArrayList<PlaceTag>();tags.add(null);
-            tags.addAll(source.stream().flatMap(p->p.details().tags().stream()).map(t->t.tag()).distinct().sorted().toList());
+            tags.addAll(source.stream().flatMap(p->p.details().availableTags().stream()).distinct().sorted().toList());
             tagBox.getItems().setAll(tags);
             tagBox.setValue(tags.contains(rememberedTags.get(category))?rememberedTags.get(category):null);
             facetsActivity=category;
@@ -572,7 +574,7 @@ public final class RouteEditorController extends BasePageController {
         try {
             var source=allPlaces.stream().filter(p->PlaceSearchService.categoryName(p.category()).equals(activityBox.getValue())).toList();
             source.stream().map(PlaceFacets::subtype).distinct().sorted().filter(s->!subtypeBox.getItems().contains(s)).forEach(subtypeBox.getItems()::add);
-            source.stream().flatMap(p->p.details().tags().stream()).map(t->t.tag()).distinct().sorted().filter(t->!tagBox.getItems().contains(t)).forEach(tagBox.getItems()::add);
+            source.stream().flatMap(p->p.details().availableTags().stream()).distinct().sorted().filter(t->!tagBox.getItems().contains(t)).forEach(tagBox.getItems()::add);
             updateFacetVisibility();
         } finally {updatingFacets=false;}
     }

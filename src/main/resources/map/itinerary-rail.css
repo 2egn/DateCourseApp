@@ -52,7 +52,7 @@
     .itinerary-rail { width: 166px; right: 12px; top: 12px; transform: none; height: 45%; max-height: 260px; min-height: 130px; }
     .itinerary-heading { padding: 9px 10px 6px; }
     .itinerary-heading small { font-size: 9px; }
-    .place-detail { left: 12px; right: 12px; top: auto; bottom: 34px; width: auto; max-height: 42%; padding: 14px; transform: translateY(8px); }
+    .place-detail { left: 12px; right: 12px; top: auto; bottom: 34px; width: auto; max-height: 62%; padding: 14px; transform: translateY(8px); }
     .place-detail.is-open { transform: translateY(0); }
     .place-detail h2 { font-size: 16px; margin: 7px 0; }
     #map-surface #map-legend { max-width: calc(100% - 202px); bottom: 34px; }
@@ -70,3 +70,6 @@
 @media (max-width: 760px) {
     .route-presentation .place-detail { left: 12px; right: 12px; }
 }
+
+.detail-badges { display: flex; flex-wrap: wrap; gap: 5px; margin: 4px 0 12px; }
+.detail-badge { border: 1px solid #dfe6ed; border-radius: 6px; padding: 2px 6px; background: #f1f5f9; color: #475569; font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }

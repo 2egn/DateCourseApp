@@ -48,19 +48,10 @@ public final class NextPlaceService {
                     || includeUncertainPrice && !candidate.place().priceEstimate().finite()
                         && (!candidate.place().priceEstimate().usablePerPerson()
                             || candidate.place().priceEstimate().minimum() <= maxPricePerPerson))
-                .filter(candidate -> confirmed.stream().noneMatch(p -> samePlace(candidate.place(), p)))
+                .filter(candidate -> confirmed.stream().noneMatch(p -> candidate.place().sameIdentityAs(p)))
                 .filter(candidate -> condition.subtypes().isEmpty() || condition.subtypes().contains(PlaceFacets.subtype(candidate.place())))
                 .filter(candidate -> condition.tags().stream().allMatch(candidate.place().details()::hasTag))
                 .toList();
     }
 
-    private boolean samePlace(Place candidate, Place confirmed) {
-        return identity(candidate).equals(identity(confirmed)) || (candidate.name() != null
-                && candidate.name().equals(confirmed.name())
-                && candidate.lat() == confirmed.lat() && candidate.lng() == confirmed.lng());
-    }
-
-    private String identity(Place place) {
-        return place.placeId() == null || place.placeId().isBlank() ? "record:" + place.recordId() : place.placeId();
-    }
 }
