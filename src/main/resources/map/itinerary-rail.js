@@ -63,10 +63,10 @@
                 if (!standalone && cards[index]) cards[index].focus({ preventScroll: true });
             }
         }
-        function activate(id) {
+        function activate(id, preserveDetail) {
             const index = visits.findIndex(function (v) { return v.visitId === id; });
             if (index < 0) return;
-            if (id !== activePlaceId) closeDetail(false);
+            if (id !== activePlaceId && !standalone && !preserveDetail) closeDetail(false);
             activePlaceId = id;
             cards.forEach(function (card, i) {
                 card.setAttribute('aria-selected', String(i === index));
@@ -82,7 +82,7 @@
         function center(id, instant) {
             cancelScroll();
             const index = visits.findIndex(function (v) { return v.visitId === id; });
-            if (index < 0 || !viewport.clientHeight) return;
+            if (standalone || rail.hidden || index < 0 || !viewport.clientHeight) return;
             const target = targetScroll(index);
             const from = viewport.scrollTop;
             const version = animationVersion;
@@ -135,7 +135,7 @@
         function openDetail(id) {
             const index = visits.findIndex(function (v) { return v.visitId === id; });
             if (index < 0) return;
-            activate(id);
+            activate(id, true);
             const place = visits[index];
             expandedPlaceId = id;
             clearTimeout(closeTimer);
@@ -204,7 +204,7 @@
             detail.setAttribute('aria-hidden', 'false');
             detail.querySelectorAll('button,a').forEach(function (node) { node.tabIndex = 0; });
             surface.classList.add('has-detail');
-            cards[index].setAttribute('aria-expanded', 'true');
+            cards.forEach(function (card, i) { card.setAttribute('aria-expanded', String(i === index)); });
             // Force the initial transition state before entering; no delayed map callbacks.
             detail.getBoundingClientRect();
             detail.classList.add('is-open');
@@ -215,13 +215,14 @@
             return ({ MEAL: '식사', CAFE: '카페', CULTURE: '문화' })[code] || code || '';
         }
         function select(id, expand) {
-            activate(id); center(id, false);
+            activate(id, !!expand); center(id, false);
             if (expand) openDetail(id);
         }
         viewport.addEventListener('scroll', function () {
-            if (programmatic || !visits.length) return;
+            if (standalone || rail.hidden || programmatic || !visits.length) return;
             clearTimeout(scrollTimer);
             scrollTimer = setTimeout(function () {
+                if (standalone || rail.hidden || programmatic || !visits.length) return;
                 let nearest = 0, distance = Infinity;
                 visits.forEach(function (visit, i) {
                     const d = Math.abs(targetScroll(i) - viewport.scrollTop);

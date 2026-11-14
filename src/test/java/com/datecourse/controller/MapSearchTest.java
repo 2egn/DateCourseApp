@@ -28,6 +28,45 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
+    @Test void clickedPlaceDetailsSurviveHoverAndHiddenRailScrollUntilExplicitDismissal() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.stickyPlan={startLat:35.1578,startLng:129.06,radius:1000,places:[
+                {recordId:1,placeId:'a',name:'첫 장소',lat:35.1578,lng:129.06},
+                {recordId:2,placeId:'b',name:'두 번째 장소',lat:35.1579,lng:129.06}
+            ]};
+            window.presentRoute(stickyPlan,null,500,true,false,[]);
+            window.stickyPins=pins.filter(p=>p.coursePin && p.attached);stickyPins[1].onclick();
+            stickyPins[1].onmouseout();stickyPins[0].onmouseover();
+            document.getElementById('itinerary-viewport').dispatchEvent(new Event('scroll'));
+            """);
+        Thread.sleep(400);
+        assertEquals("두 번째 장소",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
+        assertEquals(true,script(engine,"document.getElementById('place-detail').classList.contains('is-open')"));
+        script(engine,"stickyPins[0].onclick();stickyPins[0].onmouseout();stickyPins[1].onmouseover()");
+        Thread.sleep(250);
+        assertEquals("첫 장소",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
+        script(engine,"testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.061)})");
+        Thread.sleep(250);
+        assertEquals(true,script(engine,"document.getElementById('place-detail').hidden"));
+    }
+    @Test void candidateFocusRefreshDoesNotDismissClickedCourseDetails() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.focusPlan={startLat:35.1578,startLng:129.06,radius:1000,places:[
+                {recordId:1,placeId:'a',name:'확정 장소',lat:35.1578,lng:129.06}]};
+            window.focusCandidate={recordId:2,placeId:'b',name:'후보',lat:35.1579,lng:129.06};
+            window.presentRoute(focusPlan,focusCandidate,500,true,false,[focusCandidate]);
+            pins.find(p=>p.coursePin && p.attached).onclick();
+            window.presentRoute(focusPlan,focusCandidate,500,true,false,[focusCandidate]);
+            """);
+        Thread.sleep(250);
+        assertEquals("확정 장소",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
+    }
+
     @Test void confirmedPinPreviewIsPassiveAndClickOpensDetailsWithWalkingRoutePresent() throws Exception {
         WebEngine engine=loadMap(850,720);
         var place=new com.datecourse.service.PublicDemoPlaceRepository().findAll().getFirst();
