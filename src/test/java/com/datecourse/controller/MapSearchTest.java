@@ -28,6 +28,64 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
+    private final MapBridge cameraPolicyBridge = new MapBridge(()->{},(lat,lng)->{},message->{});
+    @Test void cameraKeepsOnlyLatestGoalAndManualInputCancelsWaitingMove() throws Exception {
+        WebEngine engine=loadMap(1100,720,false);
+        script(engine,"""
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));mapPans=[];
+            testMap.panTo=function(p){this.setCenter(p);mapPans.push([p.getLat(),p.getLng()]);};
+            focusResultPlace(35.1588,129.06);
+            focusResultPlace(35.1598,129.06);focusResultPlace(35.1608,129.06);
+            """);
+        assertEquals(1,((Number)script(engine,"mapPans.length")).intValue());
+        assertEquals(true,script(engine,"inspectMapCamera().moving && inspectMapCamera().pending"));
+        script(engine,"testMap.onidle()");
+        assertEquals(2,((Number)script(engine,"mapPans.length")).intValue());
+        assertEquals(35.1608,((Number)script(engine,"testMap.getCenter().getLat()")).doubleValue(),1e-8);
+        script(engine,"focusResultPlace(35.1618,129.06);document.getElementById('map').dispatchEvent(new WheelEvent('wheel',{deltaY:120}));testMap.onidle()");
+        assertEquals(2,((Number)script(engine,"mapPans.length")).intValue());
+        assertEquals(false,script(engine,"inspectMapCamera().pending"));
+        script(engine,"focusResultPlace(35.1618,129.06);focusResultPlace(35.1628,129.06);testMap.ondragstart();testMap.onidle()");
+        assertEquals(3,((Number)script(engine,"mapPans.length")).intValue());
+        assertEquals(false,script(engine,"inspectMapCamera().moving || inspectMapCamera().pending"));
+    }
+
+    @Test void radiusDragUpdatesCircleWithoutZoomingInAndFitsOnRelease() throws Exception {
+        WebEngine engine=loadMap(1100,720);
+        script(engine,"""
+            testMap.getProjection=function(){
+                var unit=100000*Math.pow(2,5-testMap.getLevel()),element=document.getElementById('map');
+                return {containerPointFromCoords:function(p){var c=testMap.getCenter();return {
+                    x:(p.getLng()-c.getLng())*unit+element.clientWidth/2,
+                    y:(c.getLat()-p.getLat())*unit+element.clientHeight/2};}};
+            };
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));testMap.setLevel(8,{});
+            window.plan={startLat:35.1578,startLng:129.06,radius:2000,places:[]};
+            presentRoute(plan,null,2000,false,false,[]);
+            setCameraRangeAdjusting(true);plan.radius=200;presentRoute(plan,null,200,false,true,[]);
+            """);
+        assertEquals(8,((Number)script(engine,"testMap.getLevel()")).intValue());
+        assertEquals(true,script(engine,"pins.some(function(p){return p.attached && p.radius===200 && p.options.strokeColor==='#2563eb';})"));
+        script(engine,"setCameraRangeAdjusting(false);fitRouteView(false)");
+        assertTrue(((Number)script(engine,"testMap.getLevel()")).intValue()<8);
+        assertEquals("FIT",script(engine,"inspectMapCamera().last.intent"));
+    }
+
+    @Test void resetDiscardsWaitingGoalAndReducedMotionDoesNotAnimate() throws Exception {
+        WebEngine engine=loadMap(1100,720,false);
+        script(engine,"""
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));mapPans=[];
+            testMap.panTo=function(p){this.setCenter(p);mapPans.push([p.getLat(),p.getLng()]);};
+            focusResultPlace(35.1588,129.06);focusResultPlace(35.1598,129.06);resetPlannerMap();testMap.onidle();
+            """);
+        assertEquals(35.1796,((Number)script(engine,"testMap.getCenter().getLat()")).doubleValue(),1e-8);
+        assertEquals(false,script(engine,"inspectMapCamera().pending"));
+        script(engine,"window.matchMedia=function(){return {matches:true};};focusResultPlace(35.1806,129.0756)");
+        assertEquals(1,((Number)script(engine,"mapPans.length")).intValue());
+        assertEquals("IMMEDIATE",script(engine,"inspectMapCamera().last.movement"));
+        assertEquals(35.1806,((Number)script(engine,"testMap.getCenter().getLat()")).doubleValue(),1e-8);
+    }
+
     @Test void gestureStateResetsOnFreshInputWithoutTimeWindow() throws Exception {
         WebEngine engine=loadMap(850,720);
         assertEquals(true,script(engine,"""
@@ -1699,7 +1757,7 @@ class MapSearchTest {
             assertTrue(((javafx.scene.control.Label)field(editor,"rangeWarning")).getText().isEmpty());
             assertEquals(500,next.getValue());assertSame(candidates,field(editor,"candidates"));
             assertEquals("COURSE",field(editor,"state").toString());
-            assertEquals(true,engine.executeScript("presentCalls.length>0 && presentCalls.every(function(c){return c[4]===false;}) && fitCalls.length===0 && ensureCalls===0"));
+            assertEquals(true,engine.executeScript("presentCalls.length>0 && presentCalls.every(function(c){return c[4]===false;}) && fitCalls.length===0 && ensureCalls===1"));
             list.getSelectionModel().select(0);assertEquals(200,slider.getValue());
             list.getSelectionModel().select(1);assertEquals(300,slider.getValue());
             assertEquals(200,saved.arrivalRadii().get(3L));
@@ -1938,24 +1996,23 @@ class MapSearchTest {
         assertEquals(true,script(edit,"document.getElementById('place-search').hidden"));
         assertEquals(true,script(edit,"pins.some(function(p){return p.attached && p.options.title==='추천 후보. 후보' && decodeURIComponent(p.image.src).indexOf('#2563eb')>=0;})"));
         assertEquals(true,script(edit,"pins.some(function(p){if(!p.attached || p.options.title!=='추천 후보. 후보')return false;var svg=decodeURIComponent(p.normalImage.src);return svg.indexOf('opacity=\"0.55\"')>=0 && svg.indexOf('>1</text>')>=0 && svg.indexOf('?')<0;})"));
-        assertEquals(true,script(edit,"lastBounds[0][0]<35.157-1200/111320 && lastBounds[1][0]>35.157+1200/111320"));
-        assertEquals(4, ((Number)script(edit,"lastBounds.length")).intValue());
+        assertEquals(true,script(edit,"testMap.getLevel()>5 && Math.abs(testMap.getCenter().getLat()-35.157)<.001"));
         assertEquals(true, script(edit,"pins.some(function(p){return p.attached && p.options.strokeColor==='#2563eb' && p.radius===1200 && p.position.getLat()===35.157;})"));
         assertEquals(true, script(edit,"pins.some(function(p){return p.attached && p.options.strokeColor==='#15803d' && p.options.strokeStyle==='shortdash' && p.radius===1000 && p.position.getLat()===35.158;})"));
         assertEquals(false,script(edit,"document.getElementById('next-range-legend').hidden"));
-        assertEquals("[48,48,48,48]",script(edit,"JSON.stringify(boundsPadding)"));
+        assertEquals("FIT",script(edit,"inspectMapCamera().last.intent"));
         assertEquals("[]",script(edit,"JSON.stringify(bridgeSelections)"));
         script(edit,"testMap.onclick({latLng:new kakao.maps.LatLng(36,130)})");
         assertEquals("[]",script(edit,"JSON.stringify(bridgeSelections)"));
         assertEquals(mainPins,script(main,"JSON.stringify(pins.filter(function(p){return p.attached && p.options.title;}).map(function(p){return p.options.title;}))"));
         script(edit,"window.fitRouteView(true)");
-        assertEquals("[[35.157,129.06],[35.158,129.061],[35.159,129.062]]",script(edit,"JSON.stringify(lastBounds)"));
+        assertEquals(true,script(edit,"Math.abs(testMap.getCenter().getLat()-35.158)<1e-8 && Math.abs(testMap.getCenter().getLng()-129.061)<1e-8"));
         script(edit,"window.presentRoute({startLat:35.157,startLng:129.06,radius:800,places:[]},null,200,true,true)");
         assertEquals(true,script(edit,"pins.some(function(p){return p.attached && p.options.strokeColor==='#15803d' && p.radius===200 && p.position.getLat()===35.157;})"));
         script(edit,"window.presentRoute("+plan+",null,500,false,true)");
         assertEquals(true,script(edit,"document.getElementById('next-range-legend').hidden"));
         assertEquals(false,script(edit,"pins.some(function(p){return p.attached && p.options.strokeColor==='#15803d';})"));
-        assertEquals(2, ((Number)script(edit,"lastBounds.length")).intValue());
+        assertEquals(true,script(edit,"Math.abs(testMap.getCenter().getLat()-35.157)<1e-8 && Math.abs(testMap.getCenter().getLng()-129.06)<1e-8"));
     }
 
     @Test
@@ -2079,7 +2136,7 @@ class MapSearchTest {
                     var center = options.center;
                     this.getCenter = function () { return center; };
                     this.setCenter = function (p) { center = p; window.lastCenter = [p.getLat(), p.getLng()]; };
-                    this.panTo = function (p) { center = p; window.mapPans.push([p.getLat(),p.getLng()]); };
+                    this.panTo = function (p) { center = p; window.mapPans.push([p.getLat(),p.getLng()]); if(this.onidle)this.onidle(); };
                     this.getProjection = function () { return {
                         containerPointFromCoords: function(p) { return {x:(p.getLng()-center.getLng())*100000+element.clientWidth/2,y:(center.getLat()-p.getLat())*100000+element.clientHeight/2}; },
                         coordsFromContainerPoint: function(p) { return new Position(center.getLat()-(p.y-element.clientHeight/2)/100000,center.getLng()+(p.x-element.clientWidth/2)/100000); }
@@ -2123,6 +2180,10 @@ class MapSearchTest {
             html = html.replace("<script src=\"./pin-pointer-gesture.js\"></script>",
                     "<script>" + new String(gesture.readAllBytes(), StandardCharsets.UTF_8) + "</script>");
         }
+        try (var camera = getClass().getResourceAsStream("/map/camera-motion.js")) {
+            html = html.replace("<script src=\"./camera-motion.js\"></script>",
+                    "<script>" + new String(camera.readAllBytes(), StandardCharsets.UTF_8) + "</script>");
+        }
         try (var instantZoom = getClass().getResourceAsStream("/map/instant-zoom.js")) {
             html = html.replace("<script src=\"./instant-zoom.js\"></script>",
                     "<script>" + new String(instantZoom.readAllBytes(), StandardCharsets.UTF_8) + "</script>");
@@ -2154,6 +2215,12 @@ class MapSearchTest {
             assertTrue(System.nanoTime() < deadline, "Search SDK initialization failed");
             Thread.sleep(20);
         }
+        FutureTask<Void> connectPolicy = new FutureTask<>(() -> {
+            ((netscape.javascript.JSObject)engine.executeScript("window")).setMember("cameraPolicyBridge",cameraPolicyBridge);
+            engine.executeScript("javaMapBridge.decideCameraTransition=function(i,l,f,d,o,r){return cameraPolicyBridge.decideCameraTransition(i,l,f,d,o,r);}");
+            return null;
+        });
+        Platform.runLater(connectPolicy);connectPolicy.get(10,TimeUnit.SECONDS);
         return engine;
     }
 
@@ -2476,6 +2543,7 @@ class MapSearchTest {
             window.showResultPlaces(testCourse,true);
             """);
         Thread.sleep(80);
+        script(engine,"testMap.setLevel(5,{});zoomCalls=[];mapPans=[];");
     }
 
     @Test
@@ -2584,7 +2652,7 @@ class MapSearchTest {
             """);
         assertEquals(1, ((Number) script(engine, "document.querySelectorAll('#search-results button').length")).intValue());
         script(engine, "document.querySelector('#search-results button').click()");
-        assertEquals("[35.157,129.059]", script(engine, "JSON.stringify(lastCenter)"));
+        assertEquals("[35.157,129.059]", script(engine, "JSON.stringify([testMap.getCenter().getLat(),testMap.getCenter().getLng()])"));
         assertEquals("[[35.157,129.059]]", script(engine, "JSON.stringify(bridgeSelections)"));
         assertEquals("서면역", script(engine, "document.getElementById('map-status').textContent"));
         script(engine, "window.setMapRadius(1000)");
@@ -2713,7 +2781,7 @@ class MapSearchTest {
             window.focusResultPlace(35.158,129.06);
             """);
         assertEquals(2, ((Number) script(engine, "resultPins.length")).intValue());
-        assertEquals("[35.158,129.06]", script(engine, "JSON.stringify(lastCenter)"));
+        assertEquals("[35.158,129.06]", script(engine, "JSON.stringify([testMap.getCenter().getLat(),testMap.getCenter().getLng()])"));
         assertEquals("[[35.157,129.059]]", script(engine, "JSON.stringify(bridgeSelections)"));
         assertEquals(0, ((Number) script(engine, "routeLines.length")).intValue());
         script(engine, "window.showResultPlaces([])");

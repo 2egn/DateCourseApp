@@ -53,6 +53,18 @@ public final class MapBridge {
         this.originChangeBlocked = originChangeBlocked;
     }
 
+    private final com.datecourse.service.CameraMotionPolicy cameraPolicy = new com.datecourse.service.CameraMotionPolicy();
+    private final com.fasterxml.jackson.databind.ObjectMapper cameraJson = new com.fasterxml.jackson.databind.ObjectMapper();
+
+    /** Synchronous, pure decision; no UI mutation or SDK calls cross this bridge. */
+    public String decideCameraTransition(String intent, int level, int fitLevel, double distance, double overflow, boolean reduced) {
+        try {
+            var frame = new com.datecourse.service.CameraMotionPolicy.Frame(level, fitLevel, distance, overflow, reduced);
+            return cameraJson.writeValueAsString(cameraPolicy.decide(frame,
+                    com.datecourse.service.CameraMotionPolicy.Intent.valueOf(intent)));
+        } catch (Exception invalidRequest) { return "{\"movement\":\"NONE\",\"level\":5,\"duration\":0}"; }
+    }
+
     public void onMapReady() { ready.run(); }
     public void onOriginChangeBlocked() { originChangeBlocked.run(); }
 

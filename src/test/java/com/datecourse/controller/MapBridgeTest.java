@@ -6,6 +6,15 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapBridgeTest {
+    @Test void cameraBridgeUsesSharedPolicyAndIgnoresInvalidMeasurements() throws Exception {
+        var bridge=new MapBridge(()->{},(lat,lng)->{},message->{});
+        var json=new com.fasterxml.jackson.databind.ObjectMapper();
+        var near=json.readTree(bridge.decideCameraTransition("FOCUS",5,4,.2,.8,false));
+        assertEquals("PAN",near.get("movement").asText());assertEquals(5,near.get("level").asInt());
+        assertEquals("NONE",json.readTree(bridge.decideCameraTransition("FOCUS",5,4,Double.NaN,1,false)).get("movement").asText());
+        assertEquals("NONE",json.readTree(bridge.decideCameraTransition("unknown",5,4,.2,1,false)).get("movement").asText());
+    }
+
     @Test void reportsOnlyValidPositivePlaceIdentifiers() {
         var reported=new java.util.ArrayList<Long>();
         MapBridge bridge=new MapBridge(()->{},(lat,lng)->{},error->{});bridge.setOnReportPlace(reported::add);

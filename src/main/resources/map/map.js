@@ -1,5 +1,21 @@
 (function () {
     "use strict";
+    let camera, rangeAdjusting = false;
+    function decideCamera(frame, intent) {
+        const bridge = window.javaMapBridge;
+        if (bridge && typeof bridge.decideCameraTransition === 'function')
+            return JSON.parse(bridge.decideCameraTransition(intent, frame.level, frame.fitLevel,
+                frame.screenDistance, frame.overflowRatio, frame.reducedMotion));
+        // Standalone browser without Java: retain a usable map, without duplicating policy.
+        return {movement:'IMMEDIATE', level:intent === 'FOCUS' ? frame.level : frame.fitLevel, duration:0};
+    }
+    function circlePoints(lat, lng, radius) {
+        const dy = radius / 6378137 * 180 / Math.PI, dx = dy / Math.cos(lat * Math.PI / 180);
+        return [new kakao.maps.LatLng(lat - dy, lng - dx), new kakao.maps.LatLng(lat + dy, lng + dx)];
+    }
+    window.setCameraRangeAdjusting = function (value) {rangeAdjusting = !!value;};
+    window.inspectMapCamera = function () {return camera && camera.inspect();};
+
     // Set false to restore the original SDK wheel/double-click zoom behavior.
     const USE_INSTANT_ZOOM = true;
     // Experimental map-only scaling inside WebView; false restores SDK-level wheel behavior.
@@ -130,7 +146,7 @@
                 const latitude = Number(place.y);
                 const longitude = Number(place.x);
                 if (window.selectMapLocation(latitude, longitude, place.place_name) === false) return;
-                map.setCenter(new kakao.maps.LatLng(latitude, longitude));
+
                 searchInput.value = place.place_name;
                 clearSearchResults();
                 searchNotice("");
@@ -330,6 +346,7 @@
         circleOutline.setMap(map);
         updateStatus();
         notifyLocation();
+        if (!suppressLocationNotification && !routePresentation) camera.request({intent:'FOCUS', center:selectedPosition, points:circlePoints(latitude, longitude, radiusMeter)});
         if (!hasName) resolveSelectedAddress(latitude, longitude, version);
         return true;
     };
@@ -460,8 +477,7 @@
             const center = projection.coordsFromContainerPoint(new kakao.maps.Point(
                 point.x + (bounds.width / 2 - targetX) * document.getElementById('map').clientWidth / bounds.width,
                 point.y + (bounds.height / 2 - targetY) * document.getElementById('map').clientHeight / bounds.height));
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) map.setCenter(center);
-            else map.panTo(center);
+            camera.request({intent:'FOCUS', center:center});
         }
     });
     window.setCandidateActionsEnabled=function(enabled){candidateActionsEnabled=enabled;itinerary.refreshActions();};
@@ -688,12 +704,13 @@
         renderedRouteKey = routeKey;
     };
     window.focusResultPlace = function (lat, lng) {
-        if (ready) map.setCenter(new kakao.maps.LatLng(lat, lng));
+        if (ready) camera.request({intent:'FOCUS', center:new kakao.maps.LatLng(lat, lng)});
     };
 
     // 메인 지도와 편집 지도는 각 WebView 안에 이 상태를 별도로 보관한다.
     window.presentRoute = function (plan, candidate, radius, locked, fit, candidates) {
         if (!ready) return;
+        const originChanged = routePresentation && (routePresentation.startLat !== plan.startLat || routePresentation.startLng !== plan.startLng);
         routePresentation = plan;
         routeCandidate = candidate;
         routeCandidates = candidates || (candidate ? [candidate] : []);
@@ -743,7 +760,7 @@
         if (candidate) itinerary.activatePlace(candidate.recordId);
         document.getElementById('itinerary-rail').hidden = true;
         status.textContent = locked ? '분홍 번호는 코스 순서, 옅은 파랑 번호는 후보 순위입니다. 도보 경로 조회로 실제 이동 경로를 확인하세요.' : '확정한 코스 · 도보 경로 조회로 실제 이동 경로를 확인하세요.';
-        if (fit) window.fitRouteView(false);
+        if (fit) window.fitRouteView(false, originChanged ? 'FOCUS' : null);
     };
 
     window.focusRouteLeg = function (index, radius) {
@@ -794,73 +811,33 @@
         });
         searchForm.hidden = false;
         if (ready) {
-            map.setCenter(new kakao.maps.LatLng(35.1796, 129.0756));
-            map.setLevel(5);
+            rangeAdjusting = false;
+            camera.request({intent:'RESET', center:new kakao.maps.LatLng(35.1796, 129.0756), level:5});
         }
         status.textContent = '지도에서 출발 위치를 클릭해 주세요.';
     };
 
-    // Keep both circles visible; zoom back in only when the next level has ample space.
-    window.ensureRouteRangesVisible = function () {
-        if (!ready || !routePresentation) return;
-        const element = document.getElementById('map');
-        const width = element.clientWidth, height = element.clientHeight;
-        const padding = 8; // Allow for the circle's stroke, without constantly refitting the camera.
-        if (width <= padding * 2 || height <= padding * 2) return;
-        const projection = map.getProjection();
-        let ratio = 0;
-        function includeCircle(lat, lng, radius) {
-            const dy = radius / 110000;
-            const dx = radius / (110000 * Math.cos(lat * Math.PI / 180));
-            [[lat-dy,lng-dx],[lat-dy,lng+dx],[lat+dy,lng-dx],[lat+dy,lng+dx]].forEach(function (coordinate) {
-                const point = projection.containerPointFromCoords(new kakao.maps.LatLng(coordinate[0],coordinate[1]));
-                ratio = Math.max(ratio, Math.abs(point.x-width/2)/(width/2-padding),
-                    Math.abs(point.y-height/2)/(height/2-padding));
-            });
-        }
+    function rangePoints() {
         const plan = routePresentation;
-        includeCircle(plan.startLat, plan.startLng, radiusMeter);
-        if (routeLocked) {
+        let points = circlePoints(plan.startLat, plan.startLng, radiusMeter);
+        if (routeLocked && displayedNextRange) {
             const range = displayedNextRange;
-            if (range) includeCircle(range.lat,range.lng,range.radius);
+            points = points.concat(circlePoints(range.lat, range.lng, range.radius));
         }
-        const current = map.getLevel();
-        let target = current;
-        if (ratio > 1) target = Math.min(14,current + Math.ceil(Math.log(ratio)/Math.LN2));
-        else {
-            // A zoom-in doubles screen distances. Leave 15% spare room to avoid oscillation.
-            while (target > 1 && ratio * 2 <= 0.85) { target--; ratio *= 2; }
-        }
-        if (target !== current) map.setLevel(target, {
-            anchor: map.getCenter(),
-            animate: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? false : {duration:300}
-        });
+        return points;
+    }
+    window.ensureRouteRangesVisible = function (adjusting) {
+        if (!ready || !routePresentation) return;
+        camera.request({intent:adjusting ? 'RANGE_DRAG' : 'RANGE_COMMIT', points:rangePoints(), keepCenter:true});
     };
-
-    window.fitRouteView = function (wholeRoute) {
+    window.fitRouteView = function (wholeRoute, intent) {
         if (!ready || !routePresentation) return;
         if (window.resetMapZoom) window.resetMapZoom();
         map.relayout();
         const plan = routePresentation;
-        const bounds = new kakao.maps.LatLngBounds();
-        if (wholeRoute) {
-            bounds.extend(new kakao.maps.LatLng(plan.startLat, plan.startLng));
-            plan.places.forEach(function (p) { bounds.extend(new kakao.maps.LatLng(p.lat, p.lng)); });
-            routeCandidates.forEach(function (place) { bounds.extend(new kakao.maps.LatLng(place.lat, place.lng)); });
-        } else {
-            function includeCircle(lat, lng, radius) {
-                const latitudeSpan = radius / 110000;
-                const longitudeSpan = radius / (110000 * Math.cos(lat * Math.PI / 180));
-                bounds.extend(new kakao.maps.LatLng(lat - latitudeSpan, lng - longitudeSpan));
-                bounds.extend(new kakao.maps.LatLng(lat + latitudeSpan, lng + longitudeSpan));
-            }
-            includeCircle(plan.startLat, plan.startLng, radiusMeter);
-            if (routeLocked) {
-                const range = displayedNextRange;
-                if (range) includeCircle(range.lat, range.lng, range.radius);
-            }
-        }
-        map.setBounds(bounds, 48, 48, 48, 48);
+        const points = wholeRoute ? [new kakao.maps.LatLng(plan.startLat, plan.startLng)].concat(
+            plan.places.concat(routeCandidates).map(function (p) {return new kakao.maps.LatLng(p.lat, p.lng);})) : rangePoints();
+        camera.request({intent:intent || (rangeAdjusting ? 'RANGE_DRAG' : 'FIT'), points:points});
     };
 
     let walkingShapes = [];
@@ -930,7 +907,7 @@
             return;
         }
         // Draw only the actual TMAP walking geometry on the Kakao map.
-        const bounds = new kakao.maps.LatLngBounds();
+        const boundsPoints = [];
         let points = 0;
         function meters(value) { return value >= 1000 ? (value / 1000).toFixed(2) + 'km' : value + 'm'; }
         function duration(seconds) { return seconds === 0 ? '0분' : '약 ' + Math.ceil(seconds / 60) + '분'; }
@@ -1092,7 +1069,7 @@
             leg.paths.forEach(function (coordinates) {
                 const path = coordinates.map(function (point) {
                     const position = new kakao.maps.LatLng(point.lat, point.lng);
-                    bounds.extend(position); points++;
+                    boundsPoints.push(position); points++;
                     return position;
                 });
                 if (path.length < 2) return;
@@ -1160,7 +1137,7 @@
         choose(selected, null, false);
         if (walkingPinnedSelection >= 0 && groups[walkingPinnedSelection] && groups[walkingPinnedSelection].anchor)
             showPopup(walkingPinnedSelection);
-        if (fit && points) map.setBounds(bounds, 48, 48, 48, 48);
+        if (fit && points) camera.request({intent:'FIT', points:boundsPoints});
     };
 
     const key = window.KAKAO_MAP_KEY && window.KAKAO_MAP_KEY.trim();
@@ -1197,6 +1174,7 @@
                     disableDoubleClickZoom: USE_INSTANT_ZOOM
                 });
 
+                camera = window.createMapCamera(map, document.getElementById('map'), decideCamera);
                 marker = new kakao.maps.Marker({ image: markerImage('', true), title: '출발 위치 · 탐색 반경 중심', zIndex: 5 });
                 circle = new kakao.maps.Circle({
                     center: map.getCenter(), radius: radiusMeter,
@@ -1238,6 +1216,7 @@
                 window.addEventListener("resize", function () {
                     clearTimeout(resizeTimer);
                     resizeTimer = setTimeout(function () {
+                        camera.cancel();
                         const center = map.getCenter();
                         map.relayout();
                         map.setCenter(center);

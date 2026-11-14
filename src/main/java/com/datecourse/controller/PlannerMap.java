@@ -73,6 +73,7 @@ final class PlannerMap {
     private boolean locked;
     private boolean originLocked, walkingPending;
     private boolean resetPending;
+    private boolean rangeAdjusting;
     private Integer editingLegIndex, editingLegRadius;
 
     void setEditingLeg(Integer index, Integer radius) {
@@ -179,6 +180,7 @@ final class PlannerMap {
                 resetPending = false;
             }
             if (plan == null) return;
+            setRangeAdjusting(rangeAdjusting);
             sendOriginLock();
             setCandidateActionsEnabled(candidateActionsEnabled);
             view.getEngine().executeScript("window.presentRoute(" + placePayload.plan(plan) + ","
@@ -206,6 +208,7 @@ final class PlannerMap {
         walkingRequested = false;
         walkingPending = false;
         synchronizeWalkingRoute();
+        rangeAdjusting = false;
         resetPending = true;
         render(true);
     }
@@ -214,8 +217,14 @@ final class PlannerMap {
         if (ready) view.getEngine().executeScript("window.fitRouteView(" + wholeRoute + ")");
     }
 
-    void ensureRangesVisible() {
-        if (ready) view.getEngine().executeScript("window.ensureRouteRangesVisible()");
+    void setRangeAdjusting(boolean adjusting) {
+        rangeAdjusting = adjusting;
+        if (ready) view.getEngine().executeScript("if(window.setCameraRangeAdjusting)window.setCameraRangeAdjusting("+adjusting+")");
+    }
+
+    void ensureRangesVisible() { ensureRangesVisible(false); }
+    void ensureRangesVisible(boolean adjusting) {
+        if (ready) view.getEngine().executeScript("window.ensureRouteRangesVisible("+adjusting+")");
     }
 
     void showDetail(Place place) {

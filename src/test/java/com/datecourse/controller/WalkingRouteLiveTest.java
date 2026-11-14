@@ -128,8 +128,8 @@ class WalkingRouteLiveTest {
                 context.map().requestWalkingRoute();
                 return null;
             });
-            await(context,"!!window.verifiedWalking && window.verifiedWalking.totalDistance>0 && !document.getElementById('walking-panel').hidden",25);
-            assertTrue(fx(() -> context.view().getEngine().executeScript("document.getElementById('walking-summary').textContent")).toString().contains("TMAP 도보"));
+            await(context,"!!window.verifiedWalking && window.verifiedWalking.totalDistance>0 && document.querySelectorAll('.walking-leg-badge').length===window.verifiedWalking.legs.length",25);
+            assertTrue(fx(() -> context.view().getEngine().executeScript("document.getElementById('walking-summary').textContent")).toString().contains("1구간"));
             // Allow the newly fitted map tiles to arrive before recording the preview.
             Thread.sleep(1500);
             fx(() -> {
@@ -143,6 +143,38 @@ class WalkingRouteLiveTest {
         } finally { fx(() -> {context.view().getEngine().load(null);context.stage().close();return null;}); }
     }
 
+    @Test void productionCameraSettlesOnLatestGoalAndFitsRadiusAfterRelease() throws Exception {
+        {
+            java.net.URI page=com.datecourse.service.MapPageServer.sharedPage();
+            Context context=fx(()->{
+                WebView view=new WebView();var root=new javafx.scene.layout.StackPane(view);
+                Stage stage=new Stage();stage.setScene(new Scene(root,1100,800));stage.show();
+                PlannerMap map=new PlannerMap(view,(lat,lng)->{},message->{},()->page);
+                map.present(new RoutePlan(35.1796,129.0756,2,500,"camera",List.of()),null,500,false,true);
+                map.load();return new Context(stage,root,view,map);
+            });
+            try {
+                await(context,"!!window.inspectMapCamera && !!inspectMapCamera() && !!inspectMapCamera().last && !inspectMapCamera().moving && !inspectMapCamera().pending",25);
+                fx(()->{context.view().getEngine().executeScript("focusResultPlace(35.1806,129.0756);focusResultPlace(35.1816,129.0756);focusResultPlace(35.1826,129.0756)");return null;});
+                await(context,"Math.abs(inspectMapCamera().lat-35.1826)<.00005 && !inspectMapCamera().moving && !inspectMapCamera().pending",15);
+                assertEquals("PAN",fx(()->context.view().getEngine().executeScript("inspectMapCamera().last.movement")));
+                fx(()->{
+                    context.map().setRangeAdjusting(true);
+                    context.map().present(new RoutePlan(35.1796,129.0756,2,200,"camera",List.of()),null,200,false,true);
+                    return null;
+                });
+                await(context,"!inspectMapCamera().moving && !inspectMapCamera().pending",10);
+                int before=((Number)fx(()->context.view().getEngine().executeScript("inspectMapCamera().level"))).intValue();
+                fx(()->{context.map().setRangeAdjusting(false);context.map().fit(false);return null;});
+                await(context,"!inspectMapCamera().moving && !inspectMapCamera().pending && inspectMapCamera().last.intent==='FIT'",10);
+                int after=((Number)fx(()->context.view().getEngine().executeScript("inspectMapCamera().level"))).intValue();
+                assertTrue(after<=before,"Releasing the smaller radius should fit or keep zoom");
+                fx(()->{context.map().reset();return null;});
+                await(context,"Math.abs(inspectMapCamera().lat-35.1796)<.00005 && inspectMapCamera().level===5 && !inspectMapCamera().pending",10);
+            } finally {fx(()->{context.map().dispose();context.stage().close();return null;});}
+        }
+    }
+
     private void await(Context context,String condition,int seconds) throws Exception {
         long deadline=System.nanoTime()+TimeUnit.SECONDS.toNanos(seconds);
         while(System.nanoTime()<deadline){
@@ -150,7 +182,8 @@ class WalkingRouteLiveTest {
             Thread.sleep(100);
         }
         String diagnostic=fx(() -> context.view().getEngine().getLocation()+" / "+context.view().getEngine().getLoadWorker().getState()
-                +" / "+((javafx.scene.control.Label)context.root().lookup("#errorLabel")).getText()
+                +" / "+(context.root().lookup("#errorLabel")==null?"":((javafx.scene.control.Label)context.root().lookup("#errorLabel")).getText())
+                +" / camera="+context.view().getEngine().executeScript("window.inspectMapCamera ? JSON.stringify(inspectMapCamera()) : 'no camera'")
                 +" / "+context.view().getEngine().executeScript("document.body ? document.body.textContent.slice(-700) : 'no body'"));
         fail("Live map did not reach the expected state: "+condition+" / "+diagnostic);
     }

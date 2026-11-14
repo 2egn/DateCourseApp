@@ -27,7 +27,7 @@ public final class MapPageServer implements AutoCloseable {
             "/map.html", "text/html", "/map.js", "application/javascript",
             "/itinerary-rail.js", "application/javascript", "/instant-zoom.js", "application/javascript",
             "/itinerary-rail.css", "text/css", "/pin-pointer-gesture.js", "application/javascript",
-            "/camera-motion-demo.html", "text/html", "/camera-motion-demo.js", "application/javascript");
+            "/camera-motion.js", "application/javascript", "/camera-motion-demo.html", "text/html", "/camera-motion-demo.js", "application/javascript");
     private static MapPageServer shared;
     private final HttpServer server;
     private final ExecutorService executor;

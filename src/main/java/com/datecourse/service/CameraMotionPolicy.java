@@ -1,6 +1,6 @@
 package com.datecourse.service;
 
-/** Prototype policy in screen units. No SDK calls, JavaFX timers or venue-specific exceptions. */
+/** Shared planner policy in screen units. No SDK calls, JavaFX timers or venue-specific exceptions. */
 public final class CameraMotionPolicy {
     public enum Intent { FOCUS, RANGE_DRAG, RANGE_COMMIT, FIT, RESET }
     public enum Movement { NONE, PAN, COMBINED, IMMEDIATE }
@@ -17,11 +17,11 @@ public final class CameraMotionPolicy {
             if(liveOverflowTolerance<1 || negligibleDistance<0 || nearDistance<=negligibleDistance
                     || minimumDuration<0 || maximumDuration<minimumDuration)throw new IllegalArgumentException("이동 설정을 확인해 주세요.");
         }
-        public static Options preview() { return new Options(1.04, .01, .85, 220, 600); }
+        public static Options defaults() { return new Options(1.04, .01, .85, 220, 600); }
     }
     public record Transition(Movement movement, int level, int duration) {}
     private final Options options;
-    public CameraMotionPolicy() { this(Options.preview()); }
+    public CameraMotionPolicy() { this(Options.defaults()); }
     public CameraMotionPolicy(Options options) { this.options=java.util.Objects.requireNonNull(options); }
     public Transition decide(Frame frame, Intent intent) {
         int level=frame.level();

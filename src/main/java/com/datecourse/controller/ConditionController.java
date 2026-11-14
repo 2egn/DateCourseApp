@@ -104,6 +104,7 @@ public class ConditionController extends BasePageController {
         clip.heightProperty().bind(plannerRoot.heightProperty());
         plannerRoot.setClip(clip);
         radiusSlider.valueProperty().addListener((obs, old, value) -> updateRange());
+        radiusSlider.valueChangingProperty().addListener((obs, old, adjusting) -> {if(!adjusting) updateRange();});
         peopleField.textProperty().addListener((o, old, value) -> { commonSettingsChanged = true; updateResetButton(); });
         radiusSlider.valueProperty().addListener((o, old, value) -> { commonSettingsChanged = true; updateResetButton(); });
         map.load();
@@ -539,6 +540,7 @@ public class ConditionController extends BasePageController {
     }
 
     private void updateRange() {
+        map.setRangeAdjusting(radiusSlider.isValueChanging());
         updateOriginProtection();
         radiusLabel.setText("출발지 중심 · " + radius() + "m");
         if (selectedLatitude != null) {

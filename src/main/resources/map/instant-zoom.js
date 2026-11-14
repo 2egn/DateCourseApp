@@ -62,11 +62,16 @@
         }
         element.addEventListener('wheel', wheel, { capture: true, passive: false });
         element.addEventListener('dblclick', doubleClick, { capture: true });
-        return function dispose() {
-            clearTimeout(timer); clearTimeout(resetTimer); pending = null;
+        function cancel() {
+            clearTimeout(timer); clearTimeout(resetTimer); timer = null; pending = null; delta = 0;
+        }
+        function dispose() {
+            cancel();
             element.removeEventListener('wheel', wheel, true);
             element.removeEventListener('dblclick', doubleClick, true);
-        };
+        }
+        dispose.cancel = cancel;
+        return dispose;
     };
 
     function installFractionalZoom(element, map) {

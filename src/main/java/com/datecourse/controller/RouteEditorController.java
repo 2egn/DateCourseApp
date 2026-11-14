@@ -188,7 +188,13 @@ public final class RouteEditorController extends BasePageController {
             updateRadiusLabel();
             markCandidatesDirty();
             refreshMap(false);
-            map.ensureRangesVisible();
+            map.ensureRangesVisible(radiusSlider.isValueChanging());
+        });
+        radiusSlider.valueChangingProperty().addListener((obs, old, adjusting) -> {
+            if(!adjusting && original != null) map.ensureRangesVisible();
+        });
+        selectedRadiusSlider.valueChangingProperty().addListener((obs, old, adjusting) -> {
+            if(!adjusting && !syncingSelectedRadius && original != null) map.ensureRangesVisible();
         });
         editorError.managedProperty().bind(editorError.textProperty().isNotEmpty());
         editorError.visibleProperty().bind(editorError.managedProperty());
@@ -455,8 +461,9 @@ public final class RouteEditorController extends BasePageController {
         if (selected == null || original == null) return;
         int limit = (int) Math.round(selectedRadiusSlider.getValue() / 100) * 100;
         arrivalRadii.put(selected.recordId(), limit);
-        refreshSummary(); // Revalidate only; keep next-place conditions, candidates and map camera.
+        refreshSummary();
         refreshMap(false);
+        map.ensureRangesVisible(selectedRadiusSlider.isValueChanging());
     }
 
     @FXML private void onMoveUp() { move(-1); }
