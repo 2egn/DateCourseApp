@@ -24,5 +24,9 @@ public record PlaceDetails(String address, String subcategory, String phone, Str
         tags = tags == null ? List.of() : List.copyOf(tags);
     }
     public boolean hasTag(PlaceTag tag) { return tags.stream().anyMatch(fact -> fact.tag() == tag); }
+    public String identityText() {
+        if (!identityCheckedAt.isBlank()) return "장소 대조 기록 · " + identityCheckedAt.substring(0,Math.min(10,identityCheckedAt.length()));
+        return sourceUrl.isBlank() ? "장소 확인 기록 없음" : "공공자료 등록 · 지도 대조 전";
+    }
     private static String clean(String value) { return value == null ? "" : value; }
 }

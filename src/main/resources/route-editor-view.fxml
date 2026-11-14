@@ -34,8 +34,8 @@
  <VBox spacing="6" HBox.hgrow="ALWAYS" minWidth="0" prefWidth="150"><Label text="1인 가격 상한 (만원)" styleClass="planner-caption" wrapText="true"/><StackPane styleClass="place-count-stepper" minWidth="0">
  <TextField fx:id="placePriceField" text="2" accessibleText="1인 가격 상한 만원" styleClass="place-count-editor" minWidth="0" prefColumnCount="4"/>
  <VBox StackPane.alignment="CENTER_RIGHT" prefWidth="30" maxWidth="30" maxHeight="40" styleClass="place-count-buttons">
- <Button fx:id="priceUp" accessibleText="1인 가격 상한 만원 늘리기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-up"><graphic><SVGPath content="M 1 5 L 5 1 L 9 5" styleClass="place-count-chevron"/></graphic></Button>
- <Button fx:id="priceDown" accessibleText="1인 가격 상한 만원 줄이기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-down"><graphic><SVGPath content="M 1 1 L 5 5 L 9 1" styleClass="place-count-chevron"/></graphic></Button>
+ <Button fx:id="priceUp" accessibleText="1인 가격 상한 천원 늘리기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-up"><graphic><SVGPath content="M 1 5 L 5 1 L 9 5" styleClass="place-count-chevron"/></graphic></Button>
+ <Button fx:id="priceDown" accessibleText="1인 가격 상한 천원 줄이기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-down"><graphic><SVGPath content="M 1 1 L 5 5 L 9 1" styleClass="place-count-chevron"/></graphic></Button>
  </VBox></StackPane></VBox>
  <VBox spacing="6" HBox.hgrow="ALWAYS" minWidth="0" prefWidth="150"><Label fx:id="radiusLabel" text="직선 반경 · 500m" styleClass="planner-caption" wrapText="true"/><Slider fx:id="radiusSlider" min="200" max="2000" value="500" minWidth="60" prefWidth="120"/></VBox></HBox>
  <TitledPane text="세부 조건 · 선택 사항" expanded="false" animated="false" styleClass="compact-pane"><content><HBox spacing="8">

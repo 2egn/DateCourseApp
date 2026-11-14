@@ -10,6 +10,9 @@ import java.util.Optional;
 final class InformationReportDialog {
     record Submission(InformationReport.Field field,String value,String reason,String source) {}
     static Optional<Submission> show(Window owner,Place place) {
+        return create(owner,place).showAndWait();
+    }
+    static Dialog<Submission> create(Window owner,Place place) {
         Dialog<Submission> dialog=new Dialog<>();dialog.setTitle("정보 정정 제보 · "+place.name());
         if(owner!=null)dialog.initOwner(owner);
         ComboBox<InformationReport.Field> field=new ComboBox<>();field.getItems().setAll(InformationReport.Field.values());field.getSelectionModel().selectFirst();
@@ -18,6 +21,8 @@ final class InformationReportDialog {
         TextArea reason=new TextArea();reason.setPromptText("잘못된 내용과 확인한 근거를 적어 주세요.");reason.setPrefRowCount(3);reason.setWrapText(true);
         TextField source=new TextField();source.setPromptText("https:// 근거 링크 (선택)");
         Label error=new Label();error.getStyleClass().add("error");error.setWrapText(true);
+        field.setId("reportField");value.setId("reportValue");reason.setId("reportReason");
+        source.setId("reportSource");error.setId("reportError");
         field.valueProperty().addListener((o,a,b)->{current.setText("현재 · "+InformationReportRepository.original(place,b));value.clear();
             value.setPromptText(b==InformationReport.Field.PRICE?"원 단위 · 1인 기본 이용 기준":"수정할 내용을 입력해 주세요.");});
         current.setText("현재 · "+place.priceText());
@@ -39,6 +44,6 @@ final class InformationReportDialog {
             } catch(IllegalArgumentException ex){error.setText("근거 링크는 https 주소로 입력해 주세요.");e.consume();}
         });
         dialog.setResultConverter(b->b==send?new Submission(field.getValue(),value.getText(),reason.getText(),source.getText()):null);
-        return dialog.showAndWait();
+        return dialog;
     }
 }

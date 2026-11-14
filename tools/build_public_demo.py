@@ -24,6 +24,10 @@ def build():
     byid={p['place_id']:p for p in places}
     checked_snapshot=json.loads((ROOT/'data/places/demo/seomyeon-jeonpo-demo.json').read_text(encoding='utf-8'))
     checked={p['details']['externalIds']['public']:p['details'] for p in checked_snapshot['places']}
+    checks={}
+    documents=[json.loads(p.read_text(encoding='utf-8')) for p in (ROOT/'data/places/demo').glob('rehearsal-place-checks-*.json')]
+    for document in sorted(documents,key=lambda d:d['checkedAt']):
+        for row in document['places']:checks[row['publicId']]=dict(row,checkedAt=document['checkedAt'])
     shopids={s['price_shop_id']:s['linked_place_id'] for s in shops if s['linked_place_id']}
     good=set(shopids.values())
     # Narrow menu whitelist: no shared platters, weights, sets or hairdressing prices.
@@ -56,6 +60,7 @@ def build():
     near.sort(key=lambda p:(dist(p),p['place_id']))
     chosen={};seen=set();category_counts=Counter()
     def add(p):
+        if checks.get(p['place_id'],{}).get('decision')=='REVIEW_NEEDED':return
         key=(p['name'],p['road_address'])
         if key in seen:return
         seen.add(key);chosen[p['place_id']]=p;category_counts[p['category']]+=1
@@ -82,12 +87,16 @@ def build():
         if p['place_id'] in good:tags.append(dict(tag='GOOD_PRICE',basis='공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고',sourceUrl='https://www.data.go.kr/data/3045247/fileData.do',checkedAt='2026-09-30'))
         if price['minimum']==0 and price['evidence']=='REFERENCE':tags.append(dict(tag='FREE_ADMISSION',basis='성인 기본 관람료 0원 · 별도 프로그램 제외',sourceUrl=p['source_url'],checkedAt=p['source_reference_date']))
         identity=checked.get(p['place_id'],{})
+        verification=checks.get(p['place_id'],{})
         external_ids={'public':p['place_id']}
         if identity.get('externalIds',{}).get('google'):external_ids['google']=identity['externalIds']['google']
+        if verification.get('decision')=='MATCHED_AT_CHECK':
+            external_ids['google']=verification['googlePlaceId']
+            identity=dict(identity,identityCheckedAt=verification['checkedAt'])
         out.append(dict(recordId=2000000+index,placeId='DCA-DEMO-PUBLIC-'+p['place_id'],name=p['name']+(' '+p['branch'] if p['branch'] else ''),category=p['category'],lat=float(p['lat']),lng=float(p['lon']),priceEstimate=price,rating=0,
             details=dict(address=p['road_address'] or p['lot_address'],subcategory=p['industry_name'],phone=p['phone'],website=p['website'],sourceUrl=p['source_url'],sourceDate=p['source_reference_date'],identityCheckedAt=identity.get('identityCheckedAt',''),verificationUrl=identity.get('verificationUrl',''),externalIds=external_ids,tags=tags)))
     doc=dict(schemaVersion=1,title='서면 공공자료 · 추정 가격',startLat=35.1578,startLng=129.06,
-        note='Real public-source place records, not live business verification. Similar-place estimates assume per-person portions; inexpensive-shop sample is biased. Not Google-verified. Original nine-place dataset is unchanged.',places=out)
+        note='Real public-source place records. Only marked places have recorded identity checks; review-needed places are held out. Costs are not Google-verified. Similar-place estimates assume per-person portions; inexpensive-shop sample is biased. Original nine-place dataset is unchanged.',places=out)
     target=ROOT/'data/places/demo/seomyeon-public-estimates.json'
     target.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(json.dumps({'places':len(out),'categories':dict(category_counts),'estimate_samples':estimates,'estimated':sum(p['priceEstimate']['evidence']=='SIMILAR_ESTIMATE' for p in out),'unknown':sum(p['priceEstimate']['minimum'] is None for p in out)},ensure_ascii=False))

@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-11-14T06:20:47.224283+00:00",
+  "requests": 2,
+  "rule": "normalized_name_road_building_source_district_within_200m_operational_type",
+  "note": "Identity only. Does not validate prices, future operation, walking routes or other places.",
+  "places": [
+    {
+      "publicId": "STD:15017323:dd37d113291f15027d6931df",
+      "name": "증권박물관(부산관)",
+      "googlePlaceId": "ChIJkVoIm4LraDURPWURF6CHYB0",
+      "decision": "MATCHED_AT_CHECK",
+      "reasons": []
+    },
+    {
+      "publicId": "STD:15017323:caf50db5392e3768b953a3d8",
+      "name": "한국거래소자본시장역사박물관",
+      "googlePlaceId": "ChIJ2zjRyffraDURMtacdRDHUzQ",
+      "decision": "REVIEW_NEEDED",
+      "reasons": [
+        "ADDRESS_DIFFERS"
+      ]
+    }
+  ]
+}

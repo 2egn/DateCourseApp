@@ -3,7 +3,7 @@
   "title": "서면 공공자료 · 추정 가격",
   "startLat": 35.1578,
   "startLng": 129.06,
-  "note": "Real public-source place records, not live business verification. Similar-place estimates assume per-person portions; inexpensive-shop sample is biased. Not Google-verified. Original nine-place dataset is unchanged.",
+  "note": "Real public-source place records. Only marked places have recorded identity checks; review-needed places are held out. Costs are not Google-verified. Similar-place estimates assume per-person portions; inexpensive-shop sample is biased. Original nine-place dataset is unchanged.",
   "places": [
     {
       "recordId": 2000001,
@@ -29,7 +29,7 @@
         "website": "",
         "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
         "sourceDate": "2026-09-30",
-        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "identityCheckedAt": "2026-11-14T06:18:23.861847+00:00",
         "verificationUrl": "",
         "externalIds": {
           "public": "SBIZ:MA0101202607A0151351",
@@ -109,7 +109,7 @@
         "website": "",
         "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
         "sourceDate": "2026-09-30",
-        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "identityCheckedAt": "2026-11-14T06:18:23.861847+00:00",
         "verificationUrl": "",
         "externalIds": {
           "public": "SBIZ:MA0101202406A0012647",
@@ -3282,10 +3282,11 @@
         "website": "",
         "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
         "sourceDate": "2026-09-30",
-        "identityCheckedAt": "",
+        "identityCheckedAt": "2026-11-14T06:18:23.861847+00:00",
         "verificationUrl": "",
         "externalIds": {
-          "public": "SBIZ:MA010120220808336456"
+          "public": "SBIZ:MA010120220808336456",
+          "google": "ChIJlTR-SW_raDUReoVTjZG7EVM"
         },
         "tags": []
       }
@@ -3516,45 +3517,6 @@
     },
     {
       "recordId": 2000106,
-      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:e33f9aadac190db685befd1a",
-      "name": "부산포민속박물관",
-      "category": "CULTURE",
-      "lat": 35.15554992,
-      "lng": 129.0603702,
-      "priceEstimate": {
-        "minimum": 0,
-        "maximum": 0,
-        "unit": "ADULT_TICKET",
-        "basis": "공공자료 성인 기본 관람료 · 특별전/프로그램 제외",
-        "evidence": "REFERENCE",
-        "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
-        "checkedAt": "2025-11-27"
-      },
-      "rating": 0,
-      "details": {
-        "address": "부산광역시 부산진구 중앙대로702번길 21",
-        "subcategory": "전국박물관미술관정보표준데이터",
-        "phone": "051-803-4300",
-        "website": "http://blog.naver.com/busanpo4300",
-        "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
-        "sourceDate": "2025-11-27",
-        "identityCheckedAt": "",
-        "verificationUrl": "",
-        "externalIds": {
-          "public": "STD:15017323:e33f9aadac190db685befd1a"
-        },
-        "tags": [
-          {
-            "tag": "FREE_ADMISSION",
-            "basis": "성인 기본 관람료 0원 · 별도 프로그램 제외",
-            "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
-            "checkedAt": "2025-11-27"
-          }
-        ]
-      }
-    },
-    {
-      "recordId": 2000107,
       "placeId": "DCA-DEMO-PUBLIC-LIB:21",
       "name": "부전도서관",
       "category": "CULTURE",
@@ -3586,7 +3548,7 @@
       }
     },
     {
-      "recordId": 2000108,
+      "recordId": 2000107,
       "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b6b6e11b0673809a1375a7f7",
       "name": "KT&G상상마당부산미술관",
       "category": "CULTURE",
@@ -3618,7 +3580,7 @@
       }
     },
     {
-      "recordId": 2000109,
+      "recordId": 2000108,
       "placeId": "DCA-DEMO-PUBLIC-LIB:212",
       "name": "전포마루작은도서관",
       "category": "CULTURE",
@@ -3650,7 +3612,7 @@
       }
     },
     {
-      "recordId": 2000110,
+      "recordId": 2000109,
       "placeId": "DCA-DEMO-PUBLIC-LIB:23",
       "name": "중앙도서관분관부산영어도서관",
       "category": "CULTURE",
@@ -3682,7 +3644,7 @@
       }
     },
     {
-      "recordId": 2000111,
+      "recordId": 2000110,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:3323a88dfb94372735e06dca",
       "name": "전포2-1재개발공원",
       "category": "CULTURE",
@@ -3714,7 +3676,7 @@
       }
     },
     {
-      "recordId": 2000112,
+      "recordId": 2000111,
       "placeId": "DCA-DEMO-PUBLIC-LIB:213",
       "name": "전포어울더울작은도서관",
       "category": "CULTURE",
@@ -3746,7 +3708,7 @@
       }
     },
     {
-      "recordId": 2000113,
+      "recordId": 2000112,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8260f79acf2558731dc13ddc",
       "name": "시민공원",
       "category": "CULTURE",
@@ -3778,7 +3740,7 @@
       }
     },
     {
-      "recordId": 2000114,
+      "recordId": 2000113,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:27435b682df42e3910b6cca1",
       "name": "전포2-1재개발",
       "category": "CULTURE",
@@ -3810,7 +3772,7 @@
       }
     },
     {
-      "recordId": 2000115,
+      "recordId": 2000114,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:c235d63e829cc2713276086e",
       "name": "동천문화공원",
       "category": "CULTURE",
@@ -3842,7 +3804,7 @@
       }
     },
     {
-      "recordId": 2000116,
+      "recordId": 2000115,
       "placeId": "DCA-DEMO-PUBLIC-STD:15017323:dd37d113291f15027d6931df",
       "name": "증권박물관(부산관)",
       "category": "CULTURE",
@@ -3865,10 +3827,11 @@
         "website": "",
         "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
         "sourceDate": "2025-11-24",
-        "identityCheckedAt": "",
+        "identityCheckedAt": "2026-11-14T06:20:47.224283+00:00",
         "verificationUrl": "",
         "externalIds": {
-          "public": "STD:15017323:dd37d113291f15027d6931df"
+          "public": "STD:15017323:dd37d113291f15027d6931df",
+          "google": "ChIJkVoIm4LraDURPWURF6CHYB0"
         },
         "tags": [
           {
@@ -3881,7 +3844,7 @@
       }
     },
     {
-      "recordId": 2000117,
+      "recordId": 2000116,
       "placeId": "DCA-DEMO-PUBLIC-LIB:74",
       "name": "책마루작은도서관",
       "category": "CULTURE",
@@ -3913,7 +3876,7 @@
       }
     },
     {
-      "recordId": 2000118,
+      "recordId": 2000117,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:5fcc2f618cddea3c2a172681",
       "name": "금융지구공원",
       "category": "CULTURE",
@@ -3945,7 +3908,7 @@
       }
     },
     {
-      "recordId": 2000119,
+      "recordId": 2000118,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:86baa4cfbae327d03604313a",
       "name": "양정공원",
       "category": "CULTURE",
@@ -3977,46 +3940,7 @@
       }
     },
     {
-      "recordId": 2000120,
-      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:caf50db5392e3768b953a3d8",
-      "name": "한국거래소자본시장역사박물관",
-      "category": "CULTURE",
-      "lat": 35.14649173,
-      "lng": 129.0658548,
-      "priceEstimate": {
-        "minimum": 0,
-        "maximum": 0,
-        "unit": "ADULT_TICKET",
-        "basis": "공공자료 성인 기본 관람료 · 특별전/프로그램 제외",
-        "evidence": "REFERENCE",
-        "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
-        "checkedAt": "2025-11-24"
-      },
-      "rating": 0,
-      "details": {
-        "address": "부산광역시 남구 문현금융로 40",
-        "subcategory": "전국박물관미술관정보표준데이터",
-        "phone": "051-662-2424",
-        "website": "",
-        "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
-        "sourceDate": "2025-11-24",
-        "identityCheckedAt": "",
-        "verificationUrl": "",
-        "externalIds": {
-          "public": "STD:15017323:caf50db5392e3768b953a3d8"
-        },
-        "tags": [
-          {
-            "tag": "FREE_ADMISSION",
-            "basis": "성인 기본 관람료 0원 · 별도 프로그램 제외",
-            "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
-            "checkedAt": "2025-11-24"
-          }
-        ]
-      }
-    },
-    {
-      "recordId": 2000121,
+      "recordId": 2000119,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:37ac03de03f1fe426869c6db",
       "name": "돌산공원",
       "category": "CULTURE",
@@ -4048,7 +3972,7 @@
       }
     },
     {
-      "recordId": 2000122,
+      "recordId": 2000120,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:88c3e619f01b0ffe2051c3dd",
       "name": "문현IFC소공원1",
       "category": "CULTURE",
@@ -4080,46 +4004,7 @@
       }
     },
     {
-      "recordId": 2000123,
-      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b89cdda823e5b9669483edf9",
-      "name": "부산여대차박물관",
-      "category": "CULTURE",
-      "lat": 35.16923652,
-      "lng": 129.0720552,
-      "priceEstimate": {
-        "minimum": 0,
-        "maximum": 0,
-        "unit": "ADULT_TICKET",
-        "basis": "공공자료 성인 기본 관람료 · 특별전/프로그램 제외",
-        "evidence": "REFERENCE",
-        "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
-        "checkedAt": "2025-11-27"
-      },
-      "rating": 0,
-      "details": {
-        "address": "부산광역시 부산진구 진남로 506",
-        "subcategory": "전국박물관미술관정보표준데이터",
-        "phone": "051-850-3112",
-        "website": "https://www.bwc.ac.kr/sch/sub02/sub0203_08.asp",
-        "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
-        "sourceDate": "2025-11-27",
-        "identityCheckedAt": "",
-        "verificationUrl": "",
-        "externalIds": {
-          "public": "STD:15017323:b89cdda823e5b9669483edf9"
-        },
-        "tags": [
-          {
-            "tag": "FREE_ADMISSION",
-            "basis": "성인 기본 관람료 0원 · 별도 프로그램 제외",
-            "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
-            "checkedAt": "2025-11-27"
-          }
-        ]
-      }
-    },
-    {
-      "recordId": 2000124,
+      "recordId": 2000121,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:fd530d67ffef75d0f6e0b3e2",
       "name": "문현3 어린이공원2",
       "category": "CULTURE",
@@ -4151,7 +4036,7 @@
       }
     },
     {
-      "recordId": 2000125,
+      "recordId": 2000122,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:3a81bf5e7b66ace7492692f1",
       "name": "문현3 어린이공원1",
       "category": "CULTURE",
@@ -4183,7 +4068,7 @@
       }
     },
     {
-      "recordId": 2000126,
+      "recordId": 2000123,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:59518bfe5ce37a36c827c1c3",
       "name": "연지어린이공원",
       "category": "CULTURE",
@@ -4215,7 +4100,7 @@
       }
     },
     {
-      "recordId": 2000127,
+      "recordId": 2000124,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8faf72c85cd04fec60ae42ba",
       "name": "문현IFC소공원2",
       "category": "CULTURE",
@@ -4247,7 +4132,7 @@
       }
     },
     {
-      "recordId": 2000128,
+      "recordId": 2000125,
       "placeId": "DCA-DEMO-PUBLIC-LIB:71",
       "name": "양정1동 행복마루 작은도서관",
       "category": "CULTURE",
@@ -4279,7 +4164,7 @@
       }
     },
     {
-      "recordId": 2000129,
+      "recordId": 2000126,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:0a3b0593669d8d994af15a16",
       "name": "소공원",
       "category": "CULTURE",
@@ -4311,7 +4196,7 @@
       }
     },
     {
-      "recordId": 2000130,
+      "recordId": 2000127,
       "placeId": "DCA-DEMO-PUBLIC-STD:15012890:448526d11fc945f06d87e37a",
       "name": "화지공원",
       "category": "CULTURE",

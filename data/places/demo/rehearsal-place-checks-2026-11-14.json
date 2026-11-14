@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-11-14T06:18:23.861847+00:00",
+  "requests": 4,
+  "rule": "normalized_name_road_building_district_within_200m_operational_type",
+  "note": "Identity only. Does not validate prices, future operation, walking routes or other places.",
+  "places": [
+    {
+      "publicId": "SBIZ:MA0101202607A0151351",
+      "name": "대모골",
+      "googlePlaceId": "ChIJy9t_MG_raDURycqFmFmXVA8",
+      "decision": "MATCHED_AT_CHECK",
+      "reasons": []
+    },
+    {
+      "publicId": "SBIZ:MA010120220808336456",
+      "name": "카페이떼",
+      "googlePlaceId": "ChIJlTR-SW_raDUReoVTjZG7EVM",
+      "decision": "MATCHED_AT_CHECK",
+      "reasons": []
+    },
+    {
+      "publicId": "SBIZ:MA0101202406A0012647",
+      "name": "파노라믹커피부산",
+      "googlePlaceId": "ChIJXUD6AD7raDURKSQ_LWmWM8M",
+      "decision": "MATCHED_AT_CHECK",
+      "reasons": []
+    },
+    {
+      "publicId": "STD:15017323:e33f9aadac190db685befd1a",
+      "name": "부산포민속박물관",
+      "googlePlaceId": "ChIJ4YoP9G_raDURGq1G7z_IP1o",
+      "decision": "REVIEW_NEEDED",
+      "reasons": [
+        "ADDRESS_DIFFERS",
+        "OPERATION_NOT_CONFIRMED"
+      ]
+    }
+  ]
+}

@@ -39,5 +39,7 @@ class NextPlaceConditionsTest {
         assertTrue(rows.stream().allMatch(p->!p.details().sourceUrl().isBlank()&&p.details().externalIds().containsKey("public")));
         assertTrue(rows.stream().noneMatch(p->p.priceEstimate().evidence()==PriceEstimate.Evidence.GOOGLE_PROVIDED));
         var unique=new HashSet<String>();assertTrue(rows.stream().allMatch(p->unique.add(p.placeId())));
+        assertTrue(rows.stream().noneMatch(p->p.name().equals("부산포민속박물관")||p.name().equals("한국거래소자본시장역사박물관")||p.name().equals("부산여대차박물관")));
+        assertTrue(rows.stream().anyMatch(p->p.name().equals("증권박물관(부산관)")&&!p.details().identityCheckedAt().isBlank()));
     }
 }
