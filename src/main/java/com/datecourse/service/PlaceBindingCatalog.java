@@ -1,6 +1,7 @@
 package com.datecourse.service;
 
 import com.datecourse.model.Place;
+import com.datecourse.model.ExternalPlaceLink;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,9 +29,13 @@ public final class PlaceBindingCatalog {
             4, "contact_or_scoped_website_identity_v4",
             5, "official_source_corrected_contact_identity_v5");
     private final Map<String, String> googleIds;
+    private final String matchMethod;
+    private final String checkedAt;
 
-    private PlaceBindingCatalog(Map<String, String> googleIds) {
+    private PlaceBindingCatalog(Map<String, String> googleIds, String matchMethod, String checkedAt) {
         this.googleIds = Map.copyOf(googleIds);
+        this.matchMethod = matchMethod;
+        this.checkedAt = checkedAt;
     }
 
     /** Rejects the entire catalog when it belongs to another version of the dataset. */
@@ -66,7 +71,7 @@ public final class PlaceBindingCatalog {
                 throw new IOException("중복되거나 잘못된 장소 연결 ID가 있습니다.");
             }
         }
-        return new PlaceBindingCatalog(ids);
+        return new PlaceBindingCatalog(ids, requiredText(catalog, "match_rule"), requiredText(catalog, "checked_at"));
     }
 
     public Optional<String> googlePlaceId(String localPlaceId) {
@@ -76,6 +81,13 @@ public final class PlaceBindingCatalog {
     /** DB record numbers and venue names must not be used as fallback identities. */
     public Optional<String> googlePlaceId(Place place) {
         return place == null ? Optional.empty() : googlePlaceId(place.placeId());
+    }
+
+    /** Only catalogs that passed dataset/rule/eligibility checks can create a confirmed link. */
+    public Optional<ExternalPlaceLink> reviewedGoogleLink(String localPlaceId) {
+        return googlePlaceId(localPlaceId).map(id -> new ExternalPlaceLink(ExternalPlaceLink.Provider.GOOGLE_PLACES,
+                id, ExternalPlaceLink.Confidence.UNSPECIFIED, ExternalPlaceLink.ReviewStatus.CONFIRMED,
+                ExternalPlaceLink.EntityKind.VENUE, matchMethod, checkedAt, "자료 지문·장소 동일성·방문 가능 여부 검증 기록"));
     }
 
     public int size() { return googleIds.size(); }

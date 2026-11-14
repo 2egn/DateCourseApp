@@ -24,6 +24,35 @@ class InformationReportRepositoryTest {
         reports=new InformationReportRepository(pool);
     }
     @AfterEach void close(){pool.close();}
+    @Test void reviewedIdentityCorrectionInvalidatesLinkAndRetainsOtherEvidence() throws Exception {
+        var link=new ExternalPlaceLink(ExternalPlaceLink.Provider.GOOGLE_PLACES,"google_id",ExternalPlaceLink.Confidence.HIGH,
+            ExternalPlaceLink.ReviewStatus.CONFIRMED,ExternalPlaceLink.EntityKind.VENUE,"name_phone","2026-11-14T00:00:00Z","동일성 검토");
+        var fact=new PlaceAttributeFact(PlaceFeature.RESERVABLE,FactState.AVAILABLE,
+            new SourceEvidence(SourceEvidence.Origin.OFFICIAL_SITE,"예약 안내","https://example.test","2026-11-14",""));
+        var details=new PlaceDetails("이전 주소","한식","","","","","","",Map.of("google","google_id"),List.of(),List.of(fact),List.of(link));
+        var place=new Place(original.recordId(),original.placeId(),original.name(),original.category(),35,129,original.priceEstimate(),0,details);
+        long id=reports.submit(owner,place,InformationReport.Field.ADDRESS,"새 주소","주소 오류","https://example.test");
+        assertTrue(reports.apply(List.of(place)).getFirst().details().externalLinks().getFirst().usable());
+        reports.review(id,true,"새 주소","도로명 주소 확인");
+        var updated=reports.apply(List.of(place)).getFirst();
+        assertEquals("새 주소",updated.details().address());
+        assertFalse(updated.details().externalLinks().getFirst().usable());
+        assertEquals(FactState.AVAILABLE,updated.details().featureState(PlaceFeature.RESERVABLE));
+        assertEquals(SourceEvidence.Origin.ADMIN_REVIEW,updated.details().evidenceFor(PlaceField.ADDRESS).origin());
+    }
+    @Test void reviewedPaidPriceRemovesFreeFactWithoutDroppingOtherMetadata() throws Exception {
+        var evidence=new SourceEvidence(SourceEvidence.Origin.PUBLIC_DATA,"무료 입장","https://example.test","2026-11-14","");
+        var fact=new PlaceAttributeFact(PlaceFeature.FREE_ADMISSION,FactState.AVAILABLE,evidence);
+        var details=new PlaceDetails("","","","","","","","",Map.of(),
+            List.of(new PlaceDetails.TagFact(PlaceTag.FREE_ADMISSION,"무료","https://example.test","2026-11-14")),List.of(fact),List.of(),Map.of(PlaceField.NAME,evidence));
+        var place=new Place(1,"public:free","시설","CULTURE",35,129,PriceEstimate.exact(0),0,details);
+        long id=reports.submit(owner,place,InformationReport.Field.PRICE,"1000","유료 전환","");
+        reports.review(id,true,"1000","이용료 확인");
+        var updated=reports.apply(List.of(place)).getFirst();
+        assertFalse(updated.details().hasTag(PlaceTag.FREE_ADMISSION));
+        assertEquals(FactState.UNKNOWN,updated.details().featureState(PlaceFeature.FREE_ADMISSION));
+        assertEquals(evidence,updated.details().evidenceFor(PlaceField.NAME));
+    }
     @Test void pendingDoesNotChangeSourceAndApprovalSurvivesNewRepository() throws Exception {
         long id=reports.submit(owner,original,InformationReport.Field.PRICE,"9000","메뉴판 확인","https://example.test/menu");
         assertEquals(original,reports.apply(List.of(original)).getFirst());

@@ -121,11 +121,21 @@ public final class InformationReportRepository {
                 price=new PriceEstimate(amount,amount,PriceEstimate.Unit.PER_PERSON,"관리자 검토 후 정정 · 1인 기본 이용 기준",
                         PriceEstimate.Evidence.ADMIN_REVIEWED,v.source(),v.date());
             }
+            var fieldEvidence=new java.util.EnumMap<PlaceField,SourceEvidence>(PlaceField.class);
+            fieldEvidence.putAll(d.fieldEvidence());
+            for(String field:List.of("NAME","ADDRESS","SUBCATEGORY")) if(fields.containsKey(field)) {
+                var value=fields.get(field);
+                fieldEvidence.put(PlaceField.valueOf(field),new SourceEvidence(
+                    SourceEvidence.Origin.ADMIN_REVIEW,"정보 정정 제보 검토 후 수정",value.source(),"",value.date().substring(0,10)));
+            }
             return new Place(p.recordId(),p.placeId(),fields.containsKey("NAME")?fields.get("NAME").value():p.name(),p.category(),p.lat(),p.lng(),price,p.rating(),
                 new PlaceDetails(fields.containsKey("ADDRESS")?fields.get("ADDRESS").value():d.address(),
                     fields.containsKey("SUBCATEGORY")?fields.get("SUBCATEGORY").value():d.subcategory(),d.phone(),d.website(),
                     d.sourceUrl(),d.sourceDate(),d.identityCheckedAt(),d.verificationUrl(),d.externalIds(),
-                    price.minimum()!=null&&price.minimum()>0?d.tags().stream().filter(t->t.tag()!=PlaceTag.FREE_ADMISSION).toList():d.tags()));
+                    price.minimum()!=null&&price.minimum()>0?d.tags().stream().filter(t->t.tag()!=PlaceTag.FREE_ADMISSION).toList():d.tags(),
+                    price.minimum()!=null&&price.minimum()>0?d.attributeFacts().stream().filter(f->f.feature()!=PlaceFeature.FREE_ADMISSION).toList():d.attributeFacts(),
+                    fields.containsKey("NAME")||fields.containsKey("ADDRESS")
+                        ?d.externalLinks().stream().map(ExternalPlaceLink::identityChanged).toList():d.externalLinks(),fieldEvidence));
         }).toList();
     }
     private static String key(Place p) {

@@ -50,6 +50,10 @@ processResources {
         include 'seomyeon-jeonpo-demo.json', 'seomyeon-public-estimates.json'
         into 'datasets'
     }
+    from('data/places/appeal/busan-2026-11-14') {
+        include 'demo_appeal_facts.json'
+        into 'datasets/appeal'
+    }
 }
 tasks.named('jar') { exclude 'map/kakao-config.js', 'db.properties' }
 
