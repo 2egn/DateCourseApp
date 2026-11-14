@@ -43,7 +43,7 @@
  <HBox alignment="CENTER_LEFT" spacing="12"><Label fx:id="hintLabel" text="부산의 출발 장소를 검색하거나 지도를 클릭해 주세요." styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Button fx:id="reloadMapButton" text="지도 다시 불러오기" onAction="#onReloadMap" styleClass="drawer-toggle" minWidth="-Infinity"/></HBox>
  <WebView fx:id="mapView" VBox.vgrow="ALWAYS"/>
  <HBox fx:id="resultSummary" alignment="CENTER_LEFT" spacing="12" styleClass="result-summary">
- <Label fx:id="resultLabel" text="아직 확정된 코스가 없어요." wrapText="true" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+ <VBox spacing="4" HBox.hgrow="ALWAYS" minWidth="0"><Label fx:id="resultLabel" text="아직 확정된 코스가 없어요." wrapText="true" maxWidth="Infinity"/><Label fx:id="walkingSummaryLabel" text="" styleClass="planner-caption" wrapText="true"/></VBox>
  <Button fx:id="newCourseButton" text="코스 초기화" onAction="#onNewCourse" styleClass="header-secondary" minWidth="-Infinity"/>
  <Button fx:id="saveCourseButton" text="코스 저장" onAction="#onSaveCourse" styleClass="header-save" minWidth="-Infinity"/>
  </HBox><Label fx:id="saveStatusLabel" wrapText="true" minHeight="36" prefHeight="36" maxHeight="36" styleClass="planner-caption"/></VBox></center>

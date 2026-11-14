@@ -13,6 +13,12 @@ public final class MapBridge {
     private final Consumer<String> externalLink;
     private final Consumer<Long> placeSelected;
     private final Runnable originChangeBlocked;
+    private Consumer<Long> reportPlace = ignored -> {};
+    public void setOnReportPlace(Consumer<Long> listener) { reportPlace=listener; }
+    public void reportPlace(String recordId) {
+        try { long id=Long.parseLong(recordId);if(id>0)reportPlace.accept(id); }
+        catch(NumberFormatException ignored) { }
+    }
     public MapBridge(
             Runnable ready,
             BiConsumer<Double, Double> selected,

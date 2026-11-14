@@ -6,6 +6,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapBridgeTest {
+    @Test void reportsOnlyValidPositivePlaceIdentifiers() {
+        var reported=new java.util.ArrayList<Long>();
+        MapBridge bridge=new MapBridge(()->{},(lat,lng)->{},error->{});bridge.setOnReportPlace(reported::add);
+        for(String id:new String[]{null,"no-id","0","-1","9223372036854775808"})bridge.reportPlace(id);
+        assertTrue(reported.isEmpty());bridge.reportPlace("12");assertEquals(java.util.List.of(12L),reported);
+    }
     @Test
     void coordinatesKeepLatitudeLongitudeOrder() {
         AtomicReference<double[]> position = new AtomicReference<>();

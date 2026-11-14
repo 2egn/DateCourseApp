@@ -35,9 +35,19 @@ public record PriceEstimate(Integer minimum, Integer maximum, Unit unit, String 
     public boolean exact() { return finite() && minimum.equals(maximum); }
     public boolean estimated() { return evidence == Evidence.SIMILAR_ESTIMATE || evidence == Evidence.DEMO_ASSUMPTION; }
     public String evidenceText() { return evidence.label(); }
-    public String explanation() { return evidenceText() + "\n" + basis
-            + (checkedAt.isBlank() ? "" : "\n자료/검토일 · " + checkedAt)
-            + (sourceUrl.isBlank() ? "" : "\n" + sourceUrl); }
+    public String briefBasis() {
+        if (basis.contains("착한가격업소")) return "부산 착한가격업소";
+        return switch(evidence) {
+            case GOOGLE_PROVIDED -> "Google Places";
+            case REFERENCE -> "공공자료";
+            case SIMILAR_ESTIMATE -> "유사 장소";
+            case DEMO_ASSUMPTION -> "시연용 가정";
+            case ADMIN_REVIEWED -> "관리자 검토";
+            case LEGACY_REFERENCE -> "기존 참고 정보";
+            case UNKNOWN -> "가격 미확인";
+        };
+    }
+    public String explanation() { return briefBasis() + (estimated() ? " 기준 추정 가격" : " · " + evidenceText()); }
     public boolean withinCap(int cap) { return finite() && maximum <= cap; }
     public long sortUpperBound() { return finite() ? maximum : Long.MAX_VALUE; }
 

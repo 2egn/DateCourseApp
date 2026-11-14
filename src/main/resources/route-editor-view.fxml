@@ -17,13 +17,12 @@
  <WebView fx:id="editMapView" VBox.vgrow="ALWAYS" minHeight="0"/>
  </VBox>
  <BorderPane GridPane.columnIndex="1" minWidth="0" minHeight="0" styleClass="route-edit-form">
- <top><VBox spacing="6" styleClass="route-sidebar-summary"><Label fx:id="summaryLabel" wrapText="true" styleClass="section"/></VBox></top>
+ <top><VBox spacing="6" styleClass="route-sidebar-summary"><Label fx:id="summaryLabel" wrapText="true" styleClass="section"/><Label fx:id="walkingTimeLabel" text="장소를 추가하면 도보 시간을 계산해요." wrapText="true" styleClass="planner-caption"/></VBox></top>
  <center><ScrollPane fitToWidth="true" fitToHeight="true" minHeight="0" hbarPolicy="NEVER" styleClass="route-form-scroll"><VBox spacing="10" styleClass="route-state-panels">
  <TitledPane fx:id="coursePane" text="내 코스 보기 · 0곳" expanded="false" animated="false" styleClass="compact-pane"><content><VBox spacing="8">
  <Label text="코스 이름은 저장할 때 정해요." styleClass="planner-caption"/>
- <ListView fx:id="placeList" prefHeight="112" minHeight="80"/>
+ <ListView fx:id="placeList" prefHeight="180" minHeight="144" maxHeight="240"/>
  <FlowPane hgap="6" vgap="6"><Button fx:id="upButton" text="↑ 위로" onAction="#onMoveUp" styleClass="drawer-toggle"/><Button fx:id="downButton" text="↓ 아래로" onAction="#onMoveDown" styleClass="drawer-toggle"/><Button fx:id="removeButton" text="삭제" onAction="#onRemove" styleClass="drawer-toggle"/><Button fx:id="placeInfoButton" text="상세" onAction="#onPlaceDetail" disable="true" styleClass="drawer-toggle"/></FlowPane>
- <Button text="선택 장소 정보 제보" onAction="#onReportPlace" styleClass="drawer-toggle"/>
  <Label fx:id="selectedRadiusLabel" text="장소를 선택하면 이동 반경을 수정할 수 있어요." wrapText="true" styleClass="planner-caption"/>
  <Slider fx:id="selectedRadiusSlider" min="200" max="2000" value="500" blockIncrement="100" majorTickUnit="100" minorTickCount="0" snapToTicks="true" disable="true" accessibleText="선택한 장소의 허용 이동 반경"/>
  <Button fx:id="recordRadiusButton" text="500m로 기록" onAction="#onUpdateSelectedRadius" visible="false" managed="false" styleClass="drawer-toggle"/>

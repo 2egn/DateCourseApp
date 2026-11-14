@@ -133,24 +133,29 @@
             const facts = document.getElementById('detail-facts');
             facts.textContent = '';
             fact('예상 가격', priceText(place));
-            const evidenceLabels = { LEGACY_REFERENCE:'기존 참고 가격', REFERENCE:'공개 자료 참고', GOOGLE_PROVIDED:'Google 제공', SIMILAR_ESTIMATE:'유사 장소 기준 추정', DEMO_ASSUMPTION:'시연용 추정', ADMIN_REVIEWED:'관리자 검토', UNKNOWN:'가격 미확인' };
-            if (place.priceEstimate && place.priceEstimate.evidence) fact('가격 출처', evidenceLabels[place.priceEstimate.evidence] || place.priceEstimate.evidence);
             if (Number.isFinite(place.rating) && place.rating > 0) fact('평점', place.rating.toFixed(1));
             const extra = document.getElementById('detail-extra');
             extra.textContent = '';
             const info = place.details || {};
-            fact('장소 확인', info.identityCheckedAt ? '대조 기록 · '+info.identityCheckedAt.slice(0,10)
-                : info.sourceUrl ? '공공자료 등록 · 지도 대조 전' : '장소 확인 기록 없음');
             const tagLabels = {GOOD_PRICE:'착한가격',MODEL_RESTAURANT:'모범음식점',FREE_ADMISSION:'무료입장',NEAR_SUBWAY:'역 가까움',NEAR_BUS:'정류장 가까움'};
-            (info.tags || []).forEach(function (tag) { const p=document.createElement('p');p.textContent=(tagLabels[tag.tag] || tag.tag)+' · '+tag.basis;extra.appendChild(p); });
-            [['주소', place.address || info.address], ['세부 분류', info.subcategory], ['연락처', info.phone],
-             ['자료 기준일', info.sourceDate], ['장소 확인일', info.identityCheckedAt],
-             ['자료 출처', info.sourceUrl], ['확인 출처', info.verificationUrl],
-             ['가격 근거', place.priceEstimate && place.priceEstimate.basis],
+            const tags=(info.tags || []).map(function(tag){return tagLabels[tag.tag] || tag.tag;});
+            if(tags.length){const p=document.createElement('p');p.textContent=tags.join(' · ');extra.appendChild(p);}
+            [['주소', place.address || info.address], ['세부 분류', (info.subcategory || '').replace('전국박물관미술관정보표준데이터','박물관·미술관')], ['연락처', info.phone],
              ['설명', place.description], ['영업시간', place.openingHours], ['예상 방문 시간', place.visitDuration]].forEach(function (pair) {
                 if (!pair[1]) return;
                 const p = document.createElement('p'); p.textContent = pair[0] + ' · ' + pair[1]; extra.appendChild(p);
             });
+            const priceInfo=place.priceEstimate || {};
+            const sources={LEGACY_REFERENCE:'기존 참고 정보',REFERENCE:'공공자료',GOOGLE_PROVIDED:'Google Places',SIMILAR_ESTIMATE:'유사 장소',DEMO_ASSUMPTION:'시연용 가정',ADMIN_REVIEWED:'관리자 검토',UNKNOWN:'가격 미확인'};
+            const basis=priceInfo.briefBasis || ((priceInfo.basis || '').indexOf('착한가격업소')>=0?'부산 착한가격업소':sources[priceInfo.evidence]);
+            const estimated=priceInfo.evidence==='SIMILAR_ESTIMATE' || priceInfo.evidence==='DEMO_ASSUMPTION';
+            const summary=document.createElement('p');summary.className='detail-summary';
+            summary.textContent=(basis ? basis+(estimated?' 기준 추정 가격이에요.':' 참고 정보예요.')+' ' : '')
+                +(info.identityCheckedAt?'장소 대조 기록이 있어요.':'장소 정보는 추가 확인 전이에요.');
+            extra.appendChild(summary);
+            const report=document.getElementById('detail-report');
+            report.hidden=typeof options.onReport!=='function';
+            report.onclick=function(){if(expandedPlaceId===id && options.onReport)options.onReport(place.recordId);};
             const link = document.getElementById('detail-map-link');
             const version = ++linkVersion;
             link.href = 'https://map.kakao.com/link/search/' + encodeURIComponent('부산 ' + place.name);

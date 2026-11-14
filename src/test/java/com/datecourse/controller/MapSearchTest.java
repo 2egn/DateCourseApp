@@ -597,6 +597,74 @@ class MapSearchTest {
         });
     }
 
+    @Test void addingPlacesAutomaticallyShowsPerLegAndCumulativeWalkingTime() throws Exception {
+        var calls=new java.util.concurrent.atomic.AtomicInteger();
+        RouteEditorController editor=fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();
+            RouteEditorController e=loader.getController();stubPlannerMap(e,"editMapView");
+            ((PlannerMap)field(e,"map")).setWalkingRouter(stops->{
+                calls.incrementAndGet();var legs=new java.util.ArrayList<com.datecourse.model.WalkingRoute.Leg>();
+                for(int i=1;i<stops.size();i++){
+                    assertFalse(stops.get(i).name().contains("후보"));
+                    legs.add(new com.datecourse.model.WalkingRoute.Leg(stops.get(i-1),stops.get(i),100,61,java.util.List.of(),java.util.List.of()));
+                }
+                return new com.datecourse.model.WalkingRoute(legs,legs.size()*100L,legs.size()*61L);
+            });
+            var a=new com.datecourse.model.Place(1,"a","식당 A","MEAL",35.1579,129.06,7000,0);
+            var b=new com.datecourse.model.Place(2,"b","식당 B","MEAL",35.158,129.06,7000,0);
+            e.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),java.util.List.of(a,b),p->{},()->{});
+            invoke(e,"onRecommendNext");assertEquals(0,calls.get());invoke(e,"onAddCandidate");return e;
+        });
+        awaitEditorTime(editor,"누적 도보 약 2분");assertEquals(1,calls.get());
+        fx(()->{invoke(editor,"onRecommendNext");assertEquals(1,calls.get());invoke(editor,"onAddCandidate");return null;});
+        awaitEditorTime(editor,"누적 도보 약 3분");assertEquals(2,calls.get());
+        fx(()->{
+            var description=RouteEditorController.class.getDeclaredMethod("walkingDescription",int.class);description.setAccessible(true);
+            assertTrue(description.invoke(editor,0).toString().contains("도보 약 2분 · 누적 약 2분"));
+            assertTrue(description.invoke(editor,1).toString().contains("도보 약 2분 · 누적 약 3분"));
+            ((PlannerMap)field(editor,"map")).setWalkingRouter(stops->{throw new java.io.IOException("시험 조회 실패");});
+            var list=(javafx.scene.control.ListView<?>)field(editor,"placeList");list.getSelectionModel().selectLast();invoke(editor,"onRemove");return null;
+        });
+        awaitEditorTime(editor,"미확인");
+        fx(()->{assertNull(field(editor,"walkingRoute"));editor.resetDraft();
+            assertTrue(((javafx.scene.control.Label)field(editor,"walkingTimeLabel")).getText().contains("장소를 추가"));return null;});
+    }
+    private static void awaitEditorTime(RouteEditorController editor,String text) throws Exception {
+        long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(5);
+        while(System.nanoTime()<end) {
+            if(fx(()->((javafx.scene.control.Label)field(editor,"walkingTimeLabel")).getText().contains(text)))return;
+            Thread.sleep(20);
+        }
+        fail("Missing editor walking status: "+text);
+    }
+
+    @Test void conciseDetailCardOwnsTheReportActionAndOmitsSourceFields() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.reports=[];javaMapBridge.reportPlace=function(id){reports.push(id);};
+            window.shortPlace={recordId:77,placeId:'short',name:'간략 카드',category:'MEAL',lat:35.158,lng:129.06,
+                priceText:'약 7,000원/인',priceEstimate:{evidence:'SIMILAR_ESTIMATE',briefBasis:'부산 착한가격업소',
+                basis:'부산 착한가격업소 한식 고유장소 115곳 자세한 계산',sourceUrl:'https://example.test/source'},
+                details:{address:'부산 주소',identityCheckedAt:'2026-11-14',sourceUrl:'https://example.test/public'}};
+            window.presentRoute({startLat:35.157,startLng:129.06,radius:1000,places:[]},shortPlace,500,true,true,[shortPlace]);
+            window.openRoutePlace(77);document.getElementById('detail-report').click();
+            """);
+        assertEquals("[\"77\"]",script(engine,"JSON.stringify(reports)"));
+        assertEquals(false,script(engine,"document.getElementById('detail-report').hidden"));
+        String text=(String)script(engine,"document.getElementById('place-detail').textContent");
+        assertTrue(text.contains("부산 착한가격업소 기준 추정 가격"));
+        assertFalse(text.contains("115"));assertFalse(text.contains("자료 출처"));assertFalse(text.contains("https://example.test"));
+        assertEquals(false,script(engine,"document.getElementById('detail-facts').textContent.includes('출처') || document.getElementById('detail-facts').textContent.includes('장소 확인')"));
+        javafx.stage.Stage preview=fx(()->{var stage=new javafx.stage.Stage();stage.setScene(previewView.getScene());stage.show();return stage;});
+        try {
+            Thread.sleep(250);
+            fx(()->{
+                Path file=Path.of("build/ui-preview/detail-card-concise.png");Files.createDirectories(file.getParent());
+                ImageIO.write(SwingFXUtils.fromFXImage(previewView.snapshot(null,null),null),"png",file.toFile());return null;
+            });
+        } finally {fx(()->{preview.close();return null;});}
+    }
+
     private static <T> T fx(java.util.concurrent.Callable<T> work) throws Exception {
         FutureTask<T> task = new FutureTask<>(work);
         Platform.runLater(task);
@@ -1145,7 +1213,7 @@ class MapSearchTest {
         assertEquals(true,script(engine,"pins.some(function(p){return p.attached && p.options.title==='추천 후보. 후보 30' && decodeURIComponent(p.normalImage.src).indexOf('>30</text>')>=0;})"));
         script(engine,"pins.find(function(p){return p.attached && p.options.title==='추천 후보. 후보 30';}).onclick()");
         assertEquals("후보 30",script(engine,"document.getElementById('detail-title').textContent"));
-        assertTrue(((String)script(engine,"document.getElementById('detail-facts').textContent")).contains("유사 장소 기준 추정"));
+        assertTrue(((String)script(engine,"document.getElementById('detail-extra').textContent")).contains("유사 장소 기준 추정"));
         assertTrue(((String)script(engine,"document.getElementById('detail-extra').textContent")).contains("착한가격"));
         assertEquals("[\"30\"]",script(engine,"JSON.stringify(selectedRecords)"));
         assertEquals(0,((Number)script(engine,"emptyPlan.places.length")).intValue());
@@ -1758,8 +1826,8 @@ class MapSearchTest {
             return detail.left>=map.left && detail.right<=map.right && detail.bottom<=map.bottom && detail.top>=rail.bottom;})()
             """));
         assertEquals(false, script(engine, "document.getElementById('detail-facts').textContent.includes('평점')"));
-        assertEquals(4, ((Number) script(engine, "document.getElementById('detail-facts').children.length")).intValue());
-        assertTrue(((String)script(engine,"document.getElementById('detail-facts').textContent")).contains("장소 확인 기록 없음"));
+        assertEquals(2, ((Number) script(engine, "document.getElementById('detail-facts').children.length")).intValue());
+        assertTrue(((String)script(engine,"document.getElementById('detail-extra').textContent")).contains("확인 전"));
         script(engine, "document.getElementById('detail-close').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}))");
         Thread.sleep(250);
         assertEquals(true, script(engine, "document.getElementById('place-detail').hidden && document.activeElement===document.querySelectorAll('.mini-place-card')[2]"));

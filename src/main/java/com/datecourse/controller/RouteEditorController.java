@@ -54,6 +54,9 @@ public final class RouteEditorController extends BasePageController {
     @FXML private ListView<PlaceSearchService.NearbyPlace> candidateList;
     @FXML private Slider radiusSlider;
     @FXML private Label radiusLabel, summaryLabel, editorError, commonLabel;
+    @FXML private Label walkingTimeLabel;
+    private com.datecourse.model.WalkingRoute walkingRoute;
+    private String walkingMessage="";
     @FXML private Label rangeWarning;
     @FXML private Slider selectedRadiusSlider;
     @FXML private Label selectedRadiusLabel;
@@ -82,6 +85,11 @@ public final class RouteEditorController extends BasePageController {
     private void initialize() {
         watchNotice(editorError, PageFeedback.Kind.ERROR);
         map = new PlannerMap(editMapView, (lat, lng) -> {}, editorError::setText);
+        map.setAutomaticWalking(true);
+        map.setOnReport(place->onReport.accept(place));
+        map.setWalkingResultListener((route,message)->{
+            walkingRoute=route;walkingMessage=message;refreshWalkingSummary();placeList.refresh();
+        });
         map.setLoadingUi(this::beginLoading);
         map.setOnPlaceSelected(id -> {
             for (int index = 0; index < candidates.size(); index++) {
@@ -121,7 +129,6 @@ public final class RouteEditorController extends BasePageController {
             private final Label badges = new Label();
             private final Button detail = new Button("상세");
             private final Button add = new Button("추가");
-            private final Button report = new Button("정정 제보");
             private final HBox row;
             {
                 rank.getStyleClass().add("candidate-rank");
@@ -137,9 +144,7 @@ public final class RouteEditorController extends BasePageController {
                 add.getStyleClass().add("candidate-row-add");
                 detail.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
                 add.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
-                VBox actions = new VBox(3,new HBox(4,detail,add),report);
-                report.getStyleClass().add("candidate-report");
-                report.setOnAction(e->{if(getItem()!=null)onReport.accept(getItem().place());});
+                HBox actions = new HBox(4,detail,add);
                 row = new HBox(8, rank, copy, actions);
                 row.setAlignment(Pos.CENTER_LEFT);
                 detail.setOnAction(event -> {
@@ -161,8 +166,7 @@ public final class RouteEditorController extends BasePageController {
                 meta.setText(String.format("%.0fm · %s", nearby.distanceMeters(), nearby.place().priceText()));
                 badges.setText(nearby.place().priceEstimate().evidenceText()
                     + nearby.place().details().tags().stream().limit(2).map(t->" · "+t.tag().label()).collect(java.util.stream.Collectors.joining()));
-                badges.setTooltip(new Tooltip(nearby.place().priceEstimate().explanation()
-                    + nearby.place().details().tags().stream().map(t->"\n"+t.tag().label()+" · "+t.basis()).collect(java.util.stream.Collectors.joining())));
+                badges.setTooltip(new Tooltip(nearby.place().priceEstimate().explanation()));
                 add.setDisable(candidatesDirty);
                 detail.setAccessibleText(nearby.place().name() + " 상세 보기");
                 add.setAccessibleText(nearby.place().name() + " 코스에 추가");
@@ -197,14 +201,16 @@ public final class RouteEditorController extends BasePageController {
             @Override protected void updateItem(Place place, boolean empty) {
                 super.updateItem(place, empty);
                 RouteRangeValidator.Leg leg = getIndex() >= 0 && getIndex() < legs.size() ? legs.get(getIndex()) : null;
-                String distance = leg == null ? "" : String.format("\n%s → 여기: %.0fm · 허용 %s",
-                        leg.from(), leg.distanceMeters(), leg.radius() == null ? "미기록" : leg.radius() + "m");
+                String distance = leg == null ? "" : String.format("\n직선 %.0fm",leg.distanceMeters());
+                String walking=walkingDescription(getIndex());
+                if(leg!=null&&!walking.isEmpty())walking=" · "+walking.substring(1);
                 setText(empty || place == null ? null : (outsideRange.contains(place) ? "[범위 밖] " : "")
                         + (leg != null && leg.exceeded() ? "[이동 거리 초과] " : "")
                         + (getIndex() + 1) + ". " + place.name()
                         + " · " + PlaceSearchService.categoryName(place.category())
                         + "\n" + place.priceText() + " · " + (original == null ? 1 : original.people()) + "명 "
-                        + CostEstimate.of(List.of(place), original == null ? 1 : original.people()).display() + distance);
+                        + CostEstimate.of(List.of(place), original == null ? 1 : original.people()).display() + distance
+                        + walking);
             }
         });
         placeList.getSelectionModel().selectedIndexProperty().addListener((obs, old, value) -> updateButtons());
@@ -359,7 +365,25 @@ public final class RouteEditorController extends BasePageController {
         coursePane.setText("내 코스 보기 · " + draftPlaces.size() + "곳");
         updateButtons();
         placeList.refresh();
+        refreshWalkingSummary();
         if (!outsideRange.isEmpty() || !exceededLegs.isEmpty()) coursePane.setExpanded(true);
+    }
+    private static String minutes(long seconds) {
+        return com.datecourse.model.WalkingRoute.durationText(seconds);
+    }
+    private String walkingDescription(int index) {
+        if(index<0||index>=draftPlaces.size())return "";
+        if(walkingRoute==null||walkingRoute.legs().size()!=draftPlaces.size())return "\n도보 시간 미확인";
+        long total=0;for(int i=0;i<=index;i++)total=Math.addExact(total,walkingRoute.legs().get(i).time());
+        return "\n도보 "+minutes(walkingRoute.legs().get(index).time())+" · 누적 "+minutes(total);
+    }
+    private void refreshWalkingSummary() {
+        if(draftPlaces.isEmpty()){walkingTimeLabel.setText("장소를 추가하면 도보 시간을 계산해요.");return;}
+        if(walkingRoute!=null&&walkingRoute.legs().size()==draftPlaces.size()) {
+            long last=walkingRoute.legs().getLast().time();
+            walkingTimeLabel.setText("최근 이동 "+minutes(last)+" · 누적 도보 "+minutes(walkingRoute.totalTime())+" · 체류시간 제외");
+        } else walkingTimeLabel.setText(walkingMessage.contains("중")||walkingMessage.contains("준비")
+            ? "도보 이동시간 조회 중…" : "도보 시간 미확인 · 도보 경로 버튼으로 다시 조회할 수 있어요.");
     }
 
     private void updateButtons() {
@@ -499,10 +523,6 @@ public final class RouteEditorController extends BasePageController {
     @FXML private void onPlaceDetail() {
         Place selected = placeList.getSelectionModel().getSelectedItem();
         if (selected != null) map.showDetail(selected);
-    }
-    @FXML private void onReportPlace() {
-        Place selected=placeList.getSelectionModel().getSelectedItem();
-        if(selected!=null)onReport.accept(selected);
     }
     @FXML private void onFitRange() { map.fit(false); }
     @FXML private void onFitRoute() { map.fit(true); }

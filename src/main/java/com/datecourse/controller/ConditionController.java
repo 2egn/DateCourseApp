@@ -29,6 +29,7 @@ public class ConditionController extends BasePageController {
     @FXML private TextField peopleField;
     @FXML private Button peopleUp, peopleDown, recommendButton;
     @FXML private Label errorLabel, resultLabel, hintLabel, radiusLabel;
+    @FXML private Label walkingSummaryLabel;
     @FXML private Slider radiusSlider;
     @FXML private ComboBox<String> sourceBox;
     @FXML private Label sourceStatusLabel;
@@ -82,6 +83,12 @@ public class ConditionController extends BasePageController {
         errorLabel.managedProperty().bind(errorLabel.textProperty().isNotEmpty());
         errorLabel.visibleProperty().bind(errorLabel.managedProperty());
         map = new PlannerMap(mapView, this::onLocationSelected, errorLabel::setText);
+        map.setOnReport(this::reportInformation);
+        map.setWalkingResultListener((route,message)->{
+            boolean hasPlaces=appliedPlan!=null&&!appliedPlan.places().isEmpty();
+            walkingSummaryLabel.setText(!hasPlaces?"":route==null?"도보 이동시간 미확인"
+                :"누적 도보 "+com.datecourse.model.WalkingRoute.durationText(route.totalTime())+" · 체류시간 제외");
+        });
         map.setLoadingUi(this::beginLoading);
         map.setOnOriginChangeBlocked(this::noticeOriginLocked);
         Rectangle clip = new Rectangle();

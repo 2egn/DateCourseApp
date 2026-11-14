@@ -34,6 +34,73 @@ class WalkingRouteLiveTest {
 
     private record Context(Stage stage, Parent root, WebView view, PlannerMap map) {}
 
+    @Test void editorAutomaticallyShowsActualTmapTimesAfterAddingConfirmedStops() throws Exception {
+        com.datecourse.service.LiveMapTestServer isolated=new com.datecourse.service.LiveMapTestServer();
+        java.net.URI livePage=isolated.page();
+        var editor=new java.util.concurrent.atomic.AtomicReference<RouteEditorController>();
+        var places=new com.datecourse.service.PublicDemoPlaceRepository().findAll();
+        var first=places.stream().filter(p->p.name().equals("대모골")).findFirst().orElseThrow();
+        var second=places.stream().filter(p->p.name().equals("카페이떼")).findFirst().orElseThrow();
+        Context context=fx(()->{
+            try {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));Parent root=loader.load();
+                editor.set(loader.getController());
+                var field=RouteEditorController.class.getDeclaredField("map");field.setAccessible(true);
+                PlannerMap map=(PlannerMap)field.get(editor.get());
+                var pageSource=PlannerMap.class.getDeclaredField("pageSource");pageSource.setAccessible(true);
+                pageSource.set(map,(PlannerMap.PageSource)()->livePage);
+                Stage stage=new Stage();stage.setTitle("장소 추가별 도보 시간 확인");stage.setScene(new Scene(root,1440,960));stage.show();
+                editor.get().begin(new RoutePlan(35.1578,129.06,2,2000,"시간 확인",List.of(first)),places,p->{},()->{});
+                return new Context(stage,root,(WebView)loader.getNamespace().get("editMapView"),map);
+            } catch(Exception e){throw new RuntimeException(e);}
+        });
+        try {
+            awaitEditorRoute(editor.get(),1);
+            fx(()->{editor.get().begin(new RoutePlan(35.1578,129.06,2,2000,"시간 확인",List.of(first,second)),places,p->{},()->{});return null;});
+            awaitEditorRoute(editor.get(),2);
+            fx(()->{
+                try {
+                    var field=RouteEditorController.class.getDeclaredField("walkingRoute");field.setAccessible(true);
+                    var route=(com.datecourse.model.WalkingRoute)field.get(editor.get());
+                    assertTrue(route.totalTime()>0);assertEquals(route.legs().stream().mapToLong(l->l.time()).sum(),route.totalTime());
+                    assertTrue(((javafx.scene.control.Label)context.root().lookup("#walkingTimeLabel")).getText().contains(com.datecourse.model.WalkingRoute.durationText(route.totalTime())));
+                    ((javafx.scene.control.TitledPane)context.root().lookup("#coursePane")).setExpanded(true);
+                    return null;
+                }catch(Exception e){throw new RuntimeException(e);}
+            });
+            fx(()->{
+                try {
+                    context.root().applyCss();context.root().layout();Path directory=Path.of("build/ui-preview");Files.createDirectories(directory);
+                    ImageIO.write(SwingFXUtils.fromFXImage(context.root().snapshot(null,null),null),"png",directory.resolve("walking-editor-times-live.png").toFile());return null;
+                }catch(Exception e){throw new RuntimeException(e);}
+            });
+        } finally {fx(()->{editor.get().dispose();context.stage().close();return null;});isolated.close();}
+    }
+
+    private void awaitEditorRoute(RouteEditorController editor,int legs) throws Exception {
+        long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(35);
+        while(System.nanoTime()<end) {
+            if(fx(()->{
+                try{var field=RouteEditorController.class.getDeclaredField("walkingRoute");field.setAccessible(true);
+                    var route=(com.datecourse.model.WalkingRoute)field.get(editor);return route!=null&&route.legs().size()==legs;}
+                catch(Exception e){throw new RuntimeException(e);}
+            }))return;
+            Thread.sleep(100);
+        }
+        String status=fx(()->{
+            try {
+                var field=RouteEditorController.class.getDeclaredField("editMapView");field.setAccessible(true);WebView view=(WebView)field.get(editor);
+                var error=RouteEditorController.class.getDeclaredField("editorError");error.setAccessible(true);
+                var message=RouteEditorController.class.getDeclaredField("walkingMessage");message.setAccessible(true);
+                var mapField=RouteEditorController.class.getDeclaredField("map");mapField.setAccessible(true);PlannerMap map=(PlannerMap)mapField.get(editor);
+                var ready=PlannerMap.class.getDeclaredField("ready");ready.setAccessible(true);
+                return "SDK ready="+ready.get(map)+", load="+view.getEngine().getLoadWorker().getState()+", walking="+message.get(editor)
+                    +", notice="+((javafx.scene.control.Label)error.get(editor)).getText();
+            }catch(Exception e){return "diagnostic unavailable";}
+        });
+        fail("Automatic editor walking route did not complete for "+legs+" legs / "+status);
+    }
+
     @Test void displaysAnActualTmapWalkingRouteOnTheActualKakaoMap() throws Exception {
         assertEquals("localhost", com.datecourse.service.MapPageServer.sharedPage().getHost());
         Context context=fx(() -> {

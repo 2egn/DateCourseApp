@@ -20,6 +20,47 @@ import java.util.function.Supplier;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WalkingRouteUiTest {
+    @Test void automaticTimeCalculationDoesNotDependOnMapSdkReadiness() throws Exception {
+        var complete=new CountDownLatch(1);var route=new AtomicReference<WalkingRoute>();
+        PlannerMap map=fx(()->{
+            PlannerMap m=new PlannerMap(new WebView(),(lat,lng)->{},e->fail(e));
+            m.setAutomaticWalking(true);m.setWalkingRouter(stops->new WalkingRoute(List.of(),300,122));
+            m.setWalkingResultListener((r,message)->{if(r!=null){route.set(r);complete.countDown();}});
+            m.present(plan("saved",35.18),null,500,true,false);return m;
+        });
+        try{assertTrue(complete.await(5,TimeUnit.SECONDS));assertEquals(122,route.get().totalTime());}
+        finally{fx(()->{map.dispose();return null;});}
+    }
+    @Test void automaticConfirmedRoutesIgnoreCandidateBrowsingAndRejectLateResults() throws Exception {
+        var started=new CountDownLatch(1);var release=new CountDownLatch(1);var returned=new CountDownLatch(1);
+        var calls=new java.util.concurrent.atomic.AtomicInteger();var view=new AtomicReference<WebView>();
+        PlannerMap map=fx(()->{
+            view.set(new WebView());PlannerMap m=new PlannerMap(view.get(),(lat,lng)->{},e->fail(e),()->URI.create("http://localhost/unused"));
+            m.setAutomaticWalking(true);
+            m.setWalkingRouter(stops->{calls.incrementAndGet();boolean old=stops.getLast().name().equals("old");
+                if(old){started.countDown();while(release.getCount()>0){try{release.await(50,TimeUnit.MILLISECONDS);}catch(InterruptedException ignored){}}returned.countDown();}
+                return new WalkingRoute(List.of(),old?100:200,60);
+            });
+            view.get().getEngine().loadContent("<html><script>window.presentRoute=function(){};window.showWalkingRoute=function(r,m,f){window.walking=r;};</script></html>");return m;
+        });
+        try {
+            await(view.get(),"typeof window.presentRoute==='function'");
+            fx(()->{
+                try{var field=PlannerMap.class.getDeclaredField("bridge");field.setAccessible(true);((MapBridge)field.get(map)).onMapReady();}
+                catch(Exception e){throw new RuntimeException(e);}
+                map.present(plan("old",35.18),null,500,true,false);return null;
+            });
+            assertTrue(started.await(5,TimeUnit.SECONDS));
+            fx(()->{map.present(plan("new",35.181),null,500,true,false);return null;});
+            await(view.get(),"!!window.walking && window.walking.totalDistance===200");
+            fx(()->{var candidate=new Place(99,"c","미선택 후보","CAFE",35.182,129.0797,5000,0);
+                map.presentCandidates(plan("new",35.181),List.of(candidate),candidate,500,true,false);return null;});
+            assertEquals(2,calls.get());release.countDown();assertTrue(returned.await(5,TimeUnit.SECONDS));
+            fx(()->{assertEquals(200,((Number)view.get().getEngine().executeScript("window.walking.totalDistance")).intValue());
+                map.present(new RoutePlan(35.1796,129.0756,2,1000,"",List.of()),null,500,true,false);
+                assertEquals(true,view.get().getEngine().executeScript("window.walking===null"));return null;});
+        } finally {release.countDown();fx(()->{map.dispose();return null;});}
+    }
     @Test void automaticWalkingWaitsForMapAndResetCancelsQueuedWorkWithoutZooming() throws Exception {
         for (boolean resetBeforeReady : new boolean[]{false,true}) {
             AtomicReference<WebView> view = new AtomicReference<>();

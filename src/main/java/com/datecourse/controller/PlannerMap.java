@@ -37,6 +37,13 @@ final class PlannerMap {
     void setLoadingUi(java.util.function.Function<String, Runnable> ui) { loadingUi = ui; }
     private long walkingVersion;
     private boolean walkingRequested;
+    private boolean automaticWalking;
+    private BiConsumer<WalkingRoute,String> walkingResult = (route,message) -> {};
+    private Consumer<Place> reportPlace = place -> {};
+    void setOnReport(Consumer<Place> listener) { reportPlace=listener; }
+    void setAutomaticWalking(boolean enabled) { automaticWalking=enabled; }
+    void setWalkingResultListener(BiConsumer<WalkingRoute,String> listener) { walkingResult=listener; }
+    private void publishWalking() { walkingResult.accept(walkingRoute,walkingMessage); }
     private String walkingMessage = "";
     @FunctionalInterface
     interface PageSource { URI page() throws IOException; }
@@ -81,6 +88,10 @@ final class PlannerMap {
             worker.setDaemon(true);
             worker.start();
         }, id -> placeSelected.accept(id), () -> originChangeBlocked.run());
+        bridge.setOnReportPlace(id -> Platform.runLater(() -> {
+            java.util.stream.Stream.concat(plan==null?java.util.stream.Stream.empty():plan.places().stream(),candidates.stream())
+                .filter(p->p.recordId()==id).findFirst().ifPresent(reportPlace);
+        }));
         view.getEngine().getLoadWorker().stateProperty().addListener((obs, old, state) -> {
             if (state == Worker.State.SCHEDULED) ready = false;
             else if (state == Worker.State.SUCCEEDED) {
@@ -134,8 +145,9 @@ final class PlannerMap {
         this.candidate = candidate;
         this.radius = radius;
         this.locked = locked;
-        synchronizeWalkingRoute();
+        boolean changed=synchronizeWalkingRoute();
         render(fit);
+        if(automaticWalking&&changed)requestWalkingRouteWhenReady();
     }
 
     private void render(boolean fit) {
@@ -186,20 +198,22 @@ final class PlannerMap {
         stops.add(new Stop(plan.startLat(), plan.startLng(), "출발 위치"));
         for (Place place : plan.places())
             stops.add(new Stop(place.lat(), place.lng(), place.name()));
-        if (candidate != null && plan.places().stream().noneMatch(place -> place.recordId() == candidate.recordId()))
+        if (!automaticWalking && candidate != null && plan.places().stream().noneMatch(place -> place.recordId() == candidate.recordId()))
             stops.add(new Stop(candidate.lat(), candidate.lng(), candidate.name() + " (후보)"));
         return List.copyOf(stops);
     }
 
-    private void synchronizeWalkingRoute() {
+    private boolean synchronizeWalkingRoute() {
         List<Stop> current = currentWalkingStops();
-        if (current.equals(walkingStops)) return;
+        if (current.equals(walkingStops)) return false;
         walkingStops = current;
         walkingVersion++;
         walkingPending = false;
         if (walkingTask != null) walkingTask.cancel();
         walkingRoute = null;
         walkingMessage = walkingRequested ? "코스가 바뀌었어요. 도보 경로 조회를 눌러 다시 확인하세요." : "";
+        publishWalking();
+        return true;
     }
 
     void requestWalkingRoute() {
@@ -208,20 +222,21 @@ final class PlannerMap {
 
     void requestWalkingRouteWhenReady() {
         if (currentWalkingStops().size() < 2) return;
-        if (!ready) { walkingPending = true; return; }
+        if (!ready && !automaticWalking) { walkingPending = true;walkingMessage="지도 준비 후 도보 시간을 조회해요.";publishWalking();return; }
         requestWalkingRoute(false);
     }
 
     private void requestWalkingRoute(boolean fitResult) {
         synchronizeWalkingRoute();
         walkingRequested = true;
-        if (!ready) {
+        if (!ready && !automaticWalking) {
             error.accept("지도를 불러온 뒤 도보 경로를 조회해 주세요.");
             return;
         }
         walkingPending = false;
         if (walkingStops.size() < 2) {
             walkingMessage = "출발 위치를 선택하고 코스에 장소를 담거나 추천 후보를 선택해 주세요.";
+            publishWalking();
             renderWalkingRoute(false);
             return;
         }
@@ -230,6 +245,7 @@ final class PlannerMap {
         List<Stop> stops = walkingStops;
         walkingRoute = null;
         walkingMessage = "TMAP 도보 경로를 조회하는 중… (" + (stops.size() - 1) + "구간)";
+        publishWalking();
         renderWalkingRoute(false);
         Task<WalkingRoute> task = new Task<>() {
             @Override protected WalkingRoute call() throws Exception { return walkingRouter.route(stops); }
@@ -242,6 +258,7 @@ final class PlannerMap {
             if (walkingVersion != version || walkingTask != task) return;
             walkingRoute = task.getValue();
             walkingMessage = "";
+            publishWalking();
             renderWalkingRoute(fitResult);
         });
         task.setOnFailed(event -> {
@@ -251,6 +268,7 @@ final class PlannerMap {
             walkingMessage = task.getException() instanceof java.io.IOException
                     || task.getException() instanceof IllegalArgumentException ? task.getException().getMessage()
                     : "도보 경로를 불러오지 못했어요. 다시 조회해 주세요.";
+            publishWalking();
             renderWalkingRoute(false);
             error.accept(walkingMessage);
         });

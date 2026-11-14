@@ -431,6 +431,9 @@
             if (user) window.setPlanningMode(false);
         },
         resolvePlaceUrl: resolvePlaceUrl,
+        onReport: function(id) {
+            if(window.javaMapBridge && typeof window.javaMapBridge.reportPlace==='function')window.javaMapBridge.reportPlace(String(id));
+        },
         onActive: highlightVisit,
         onOpen: function (place, detailBounds, railBounds) {
             if (!ready) return;

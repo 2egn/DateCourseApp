@@ -5,6 +5,10 @@ import java.util.List;
 /** TMAP walking geometry uses WGS84 degrees; distance is meters and time is seconds. */
 public record WalkingRoute(List<Leg> legs, long totalDistance, long totalTime) {
     public WalkingRoute { legs = List.copyOf(legs); }
+    public static String durationText(long seconds) {
+        if(seconds<0)throw new IllegalArgumentException("이동 시간은 0 이상이어야 합니다.");
+        return (seconds==0?"0":"약 "+(seconds/60+(seconds%60==0?0:1)))+"분";
+    }
 
     public record Coordinate(double lat, double lng) {
         public Coordinate {

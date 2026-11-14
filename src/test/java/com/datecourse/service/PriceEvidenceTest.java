@@ -6,6 +6,12 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PriceEvidenceTest {
+    @Test void displayExplanationKeepsOnlyShortBasisAndRetainsFullEvidenceInternally() {
+        var p=new PriceEstimate(7000,7000,PriceEstimate.Unit.PER_PERSON,"부산 착한가격업소 한식 고유장소 115곳 · 평균 · 자세한 산식",
+            PriceEstimate.Evidence.SIMILAR_ESTIMATE,"https://example.test/source","2026-11-14");
+        assertEquals("부산 착한가격업소",p.briefBasis());assertEquals("부산 착한가격업소 기준 추정 가격",p.explanation());
+        assertTrue(p.basis().contains("115"));assertFalse(p.explanation().contains("https"));
+    }
     @Test void oldJsonDefaultsWithoutInventingGoogleVerification() throws Exception {
         var p=new ObjectMapper().readValue("{\"minimum\":5000,\"maximum\":5000,\"unit\":\"PER_PERSON\",\"basis\":\"기존\"}",PriceEstimate.class);
         assertEquals(PriceEstimate.Evidence.LEGACY_REFERENCE,p.evidence());assertFalse(p.estimated());
