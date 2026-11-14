@@ -81,7 +81,7 @@ public final class RouteEditorController extends BasePageController {
     private PlannerMap map;
     private Consumer<RoutePlan> onComplete = ignored -> {};
     private Runnable onCancel = () -> {};
-    private enum EditorState { CONDITION, CHOICE }
+    private enum EditorState { COURSE, CONDITION, CHOICE }
     private EditorState state = EditorState.CONDITION;
     private boolean changingState;
 
@@ -132,8 +132,6 @@ public final class RouteEditorController extends BasePageController {
             private final Label name = new Label();
             private final Label meta = new Label();
             private final Label badges = new Label();
-            private final Button detail = new Button("상세");
-            private final Button add = new Button("추가");
             private final HBox row;
             {
                 rank.getStyleClass().add("candidate-rank");
@@ -145,20 +143,13 @@ public final class RouteEditorController extends BasePageController {
                 HBox.setHgrow(copy, Priority.ALWAYS);
                 name.setMaxWidth(Double.MAX_VALUE);
                 name.setMinWidth(0);badges.setMinWidth(0);meta.setMinWidth(0);
-                detail.getStyleClass().add("candidate-row-detail");
-                add.getStyleClass().add("candidate-row-add");
-                detail.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
-                add.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
-                HBox actions = new HBox(4,detail,add);
-                row = new HBox(8, rank, copy, actions);
+                row = new HBox(8, rank, copy);
                 row.setAlignment(Pos.CENTER_LEFT);
-                detail.setOnAction(event -> {
-                    candidateList.getSelectionModel().select(getIndex());
-                    onCandidateDetail();
-                });
-                add.setOnAction(event -> {
-                    candidateList.getSelectionModel().select(getIndex());
-                    onAddCandidate();
+                setOnMouseClicked(event -> {
+                    if (!isEmpty() && event.getButton() == javafx.scene.input.MouseButton.PRIMARY) {
+                        candidateList.getSelectionModel().select(getIndex());
+                        onCandidateDetail();
+                    }
                 });
             }
             @Override protected void updateItem(PlaceSearchService.NearbyPlace nearby, boolean empty) {
@@ -172,9 +163,7 @@ public final class RouteEditorController extends BasePageController {
                 badges.setText(nearby.place().priceEstimate().evidenceText()
                     + nearby.place().details().tags().stream().limit(2).map(t->" · "+t.tag().label()).collect(java.util.stream.Collectors.joining()));
                 badges.setTooltip(new Tooltip(nearby.place().priceEstimate().explanation()));
-                add.setDisable(candidatesDirty);
-                detail.setAccessibleText(nearby.place().name() + " 상세 보기");
-                add.setAccessibleText(nearby.place().name() + " 코스에 추가");
+                setAccessibleText(nearby.place().name() + " · 선택하면 상세 카드 열기");
                 setGraphic(row);
             }
         });
@@ -191,7 +180,7 @@ public final class RouteEditorController extends BasePageController {
         placePriceField.textProperty().addListener((obs, old, value) -> markCandidatesDirty());
         includeUncertainPrice.selectedProperty().addListener((obs, old, value) -> markCandidatesDirty());
         radiusSlider.valueProperty().addListener((obs, old, value) -> {
-            radiusLabel.setText("직선 반경 · " + radius() + "m");
+            updateRadiusLabel();
             markCandidatesDirty();
             refreshMap(false);
             map.ensureRangesVisible();
@@ -223,10 +212,12 @@ public final class RouteEditorController extends BasePageController {
         selectedRadiusSlider.valueProperty().addListener((obs, old, value) -> {
             if (!syncingSelectedRadius) onUpdateSelectedRadius();
         });
-        candidateList.setOnMouseClicked(event -> { if (event.getClickCount() == 2) onCandidateDetail(); });
         candidateList.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) { onCandidateDetail(); event.consume(); }
         });
+        wirePane(coursePane, EditorState.COURSE);
+        wirePane(conditionPane, EditorState.CONDITION);
+        wirePane(choicePane, EditorState.CHOICE);
         updateButtons();
         setState(EditorState.CONDITION);
     }
@@ -273,7 +264,6 @@ public final class RouteEditorController extends BasePageController {
         arrivalRadii.clear();
         arrivalRadii.putAll(snapshot.arrivalRadii());
         draftPlaces.setAll(snapshot.places());
-        coursePane.setExpanded(false);
         commonLabel.setText(String.format("%d명 · 출발지 중심 %dm 범위", snapshot.people(), snapshot.radius()));
         clearCandidate();
         refreshSummary();
@@ -362,6 +352,7 @@ public final class RouteEditorController extends BasePageController {
 
     private void refreshSummary() {
         if (original == null) return;
+        updateRadiusLimit();
         RoutePlan plan = draft();
         summaryLabel.setText(String.format("%d곳 · %d명 · %s",
                 draftPlaces.size(), plan.people(), plan.costEstimate().display()));
@@ -369,7 +360,19 @@ public final class RouteEditorController extends BasePageController {
         updateButtons();
         placeList.refresh();
         refreshWalkingSummary();
-        if (!outsideRange.isEmpty() || !exceededLegs.isEmpty()) coursePane.setExpanded(true);
+        if (!outsideRange.isEmpty() || !exceededLegs.isEmpty()) setState(EditorState.COURSE);
+    }
+
+    private void updateRadiusLimit() {
+        int maximum = com.datecourse.service.NextPlaceRadius.maximum(draft());
+        radiusSlider.setMax(maximum);
+        radiusSlider.setValue(Math.min(radiusSlider.getValue(), maximum));
+        radiusSlider.setDisable(maximum == (int) radiusSlider.getMin());
+        updateRadiusLabel();
+        radiusSlider.setTooltip(new Tooltip("직전 장소(첫 장소는 출발지) 기준 직선 반경이에요.\n전체 범위를 덮는 반경까지, 최대 2,000m로 조절해요."));
+    }
+    private void updateRadiusLabel() {
+        radiusLabel.setText("직선 반경 · " + radius() + "m (최대 " + (int) radiusSlider.getMax() + "m)");
     }
     private static String minutes(long seconds) {
         return com.datecourse.model.WalkingRoute.durationText(seconds);
@@ -425,8 +428,8 @@ public final class RouteEditorController extends BasePageController {
             boolean missing = leg != null && leg.radius() == null;
             recordRadiusButton.setVisible(missing);
             recordRadiusButton.setManaged(missing);
-            selectedRadiusLabel.setText(leg == null ? "장소를 선택하면 이동 반경을 수정할 수 있어요."
-                    : String.format("%s → %s · 실제 %.0fm · 허용 %s",
+            selectedRadiusLabel.setText(leg == null ? "장소를 선택하면 추가 당시의 ‘다음 장소의 조건’ 반경을 수정할 수 있어요."
+                    : String.format("%s → %s · 직선 %.0fm · 설정 반경 %s\n이 장소를 추가할 때 ‘다음 장소의 조건’에서 정한 반경이에요. 아래에서 이 구간의 반경만 수정해요.",
                     leg.from(), leg.to().name(), leg.distanceMeters(),
                     leg.radius() == null ? "미기록 (조절하거나 500m로 기록)" : leg.radius() + "m"));
         } finally { syncingSelectedRadius = false; }
@@ -461,7 +464,7 @@ public final class RouteEditorController extends BasePageController {
     @FXML private void onFinish() {
         if (original == null) return;
         updateButtons(); // Guard the completion callback as well as the UI button.
-        if (!outsideRange.isEmpty() || !exceededLegs.isEmpty()) { coursePane.setExpanded(true); return; }
+        if (!outsideRange.isEmpty() || !exceededLegs.isEmpty()) { setState(EditorState.COURSE); return; }
         onComplete.accept(draft());
     }
     @FXML private void onCancel() { onCancel.run(); }
@@ -469,16 +472,28 @@ public final class RouteEditorController extends BasePageController {
 
     private void setState(EditorState requested) {
         resetDraftButton.setVisible(!draftPlaces.isEmpty()||!candidates.isEmpty());
-        state = requested == EditorState.CHOICE && candidates.isEmpty() ? EditorState.CONDITION : requested;
+        state = requested == EditorState.CHOICE && candidates.isEmpty()
+                || requested == EditorState.COURSE && draftPlaces.isEmpty() ? EditorState.CONDITION : requested;
         changingState = true;
         try {
-            conditionPane.setExpanded(true);
-            choicePane.setExpanded(true);
-            choicePane.setDisable(false);
+            coursePane.setExpanded(state == EditorState.COURSE);
+            conditionPane.setExpanded(state == EditorState.CONDITION);
+            choicePane.setExpanded(state == EditorState.CHOICE);
+            choicePane.setDisable(candidates.isEmpty());
             choicePane.setText(candidates.isEmpty() ? "추천 후보" : "추천 후보 · " + candidates.size() + "곳");
             conditionPane.setText("다음 장소의 조건");
         } finally { changingState = false; }
         refreshMap(false);
+    }
+    private void wirePane(TitledPane pane, EditorState target) {
+        pane.expandedProperty().addListener((observable, old, expanded) -> {
+            if (changingState) return;
+            if (expanded) setState(target);
+            else if (state == target) {
+                changingState = true;
+                try { pane.setExpanded(true); } finally { changingState = false; }
+            }
+        });
     }
     private void markCandidatesDirty() {
         searchVersion++; candidatesDirty=true;
@@ -557,7 +572,7 @@ public final class RouteEditorController extends BasePageController {
     }
     private boolean focusCandidate(long id) {
         for(int i=0;i<candidates.size();i++)if(candidates.get(i).place().recordId()==id) {
-            state=EditorState.CHOICE;
+            setState(EditorState.CHOICE);
             candidateList.getSelectionModel().select(i);
             candidateList.getFocusModel().focus(i);candidateList.scrollTo(i);candidateList.requestFocus();
             double overflow=candidateScroll.getContent().getBoundsInLocal().getHeight()-candidateScroll.getViewportBounds().getHeight();

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
+<?import com.datecourse.ui.ModernScrollPane?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.datecourse.controller.InformationReviewController" stylesheets="@style.css" prefWidth="1020" prefHeight="690">
  <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
  <top><HBox spacing="10" alignment="CENTER_LEFT"><Label text="장소 정보 정정 제보" styleClass="title"/><Region HBox.hgrow="ALWAYS"/><Button text="새로고침" onAction="#reload"/></HBox></top>
  <center><SplitPane dividerPositions="0.36"><ListView fx:id="reports"/><VBox spacing="8"><padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
- <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"><Label fx:id="details" text="제보를 선택해 주세요." wrapText="true"/></ScrollPane>
+ <ModernScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"><Label fx:id="details" text="제보를 선택해 주세요." wrapText="true"/></ModernScrollPane>
  <Label text="승인할 값 · 가격은 1인 기준 원 단위 정수"/><TextField fx:id="correctedValue"/>
  <Label text="검토 메모 · 승인 근거 또는 반려 이유"/><TextArea fx:id="reviewNote" prefRowCount="3" wrapText="true"/>
  <HBox spacing="8"><Button fx:id="approveButton" text="검토 후 승인·수정" onAction="#approve"/><Button fx:id="rejectButton" text="반려" onAction="#reject"/></HBox>

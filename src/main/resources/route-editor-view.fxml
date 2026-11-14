@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import com.datecourse.ui.FormScrollPane?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
 <?import javafx.scene.shape.SVGPath?>
@@ -18,16 +19,16 @@
  </VBox>
  <BorderPane GridPane.columnIndex="1" minWidth="0" minHeight="0" styleClass="route-edit-form">
  <top><VBox spacing="6" styleClass="route-sidebar-summary"><Label fx:id="summaryLabel" wrapText="true" styleClass="section"/><Label fx:id="walkingTimeLabel" text="장소를 추가하면 도보 시간을 계산해요." wrapText="true" styleClass="planner-caption"/></VBox></top>
- <center><ScrollPane fx:id="candidateScroll" fitToWidth="true" fitToHeight="true" minHeight="0" hbarPolicy="NEVER" styleClass="route-form-scroll"><VBox spacing="10" styleClass="route-state-panels">
+ <center><FormScrollPane fx:id="candidateScroll" fitToWidth="true" fitToHeight="true" minHeight="0" hbarPolicy="NEVER" styleClass="route-form-scroll"><VBox spacing="10" styleClass="route-state-panels">
  <TitledPane fx:id="coursePane" text="내 코스 보기 · 0곳" expanded="false" animated="false" styleClass="compact-pane"><content><VBox spacing="8">
  <Label text="코스 이름은 저장할 때 정해요." styleClass="planner-caption"/>
  <ListView fx:id="placeList" prefHeight="180" minHeight="144" maxHeight="240"/>
  <FlowPane hgap="6" vgap="6"><Button fx:id="upButton" text="↑ 위로" onAction="#onMoveUp" styleClass="drawer-toggle"/><Button fx:id="downButton" text="↓ 아래로" onAction="#onMoveDown" styleClass="drawer-toggle"/><Button fx:id="removeButton" text="삭제" onAction="#onRemove" styleClass="drawer-toggle"/><Button fx:id="placeInfoButton" text="상세" onAction="#onPlaceDetail" disable="true" styleClass="drawer-toggle"/></FlowPane>
  <Label fx:id="selectedRadiusLabel" text="장소를 선택하면 이동 반경을 수정할 수 있어요." wrapText="true" styleClass="planner-caption"/>
- <Slider fx:id="selectedRadiusSlider" min="200" max="2000" value="500" blockIncrement="100" majorTickUnit="100" minorTickCount="0" snapToTicks="true" disable="true" accessibleText="선택한 장소의 허용 이동 반경"/>
+ <Slider fx:id="selectedRadiusSlider" min="200" max="2000" value="500" blockIncrement="100" majorTickUnit="100" minorTickCount="0" snapToTicks="true" disable="true" accessibleText="선택한 장소를 추가할 때 정한 직선 반경 수정"/>
  <Button fx:id="recordRadiusButton" text="500m로 기록" onAction="#onUpdateSelectedRadius" visible="false" managed="false" styleClass="drawer-toggle"/>
  </VBox></content></TitledPane>
- <TitledPane fx:id="conditionPane" text="다음 장소의 조건" expanded="true" collapsible="false" animated="false" styleClass="compact-pane"><content><VBox spacing="7">
+ <TitledPane fx:id="conditionPane" text="다음 장소의 조건" expanded="true" collapsible="true" animated="false" styleClass="compact-pane"><content><VBox spacing="7">
  <HBox spacing="10" alignment="TOP_LEFT">
  <VBox spacing="6" HBox.hgrow="ALWAYS" minWidth="0" prefWidth="150"><Label text="활동" styleClass="planner-caption"/><ComboBox fx:id="activityBox" maxWidth="Infinity"/></VBox>
  <VBox spacing="6" HBox.hgrow="ALWAYS" minWidth="0" prefWidth="150"><Label text="1인 가격 상한 (만원)" styleClass="planner-caption" wrapText="true"/><StackPane styleClass="place-count-stepper" minWidth="0">
@@ -43,12 +44,12 @@
  </HBox></content></TitledPane>
  <HBox spacing="8" alignment="CENTER_LEFT"><CheckBox fx:id="includeUncertainPrice" text="가격 미확인도 포함" selected="false" HBox.hgrow="ALWAYS"/><Region HBox.hgrow="ALWAYS"/><Button fx:id="recommendNextButton" text="후보 업데이트" onAction="#onRecommendNext" styleClass="planner-primary" minWidth="-Infinity"/></HBox>
  </VBox></content></TitledPane>
- <TitledPane fx:id="choicePane" text="추천 후보" expanded="true" collapsible="false" animated="false" styleClass="compact-pane"><content><VBox spacing="5">
+ <TitledPane fx:id="choicePane" text="추천 후보" expanded="false" collapsible="true" animated="false" styleClass="compact-pane"><content><VBox spacing="5">
  <HBox alignment="CENTER_LEFT" spacing="6"><Label fx:id="candidateCount" text="추천 전" styleClass="planner-caption"/><Region HBox.hgrow="ALWAYS"/><Label text="최대" styleClass="planner-caption"/><ComboBox fx:id="candidateLimitBox" prefWidth="76"/><Label text="곳" styleClass="planner-caption"/></HBox>
  <Label fx:id="candidateStatus" text="조건을 정하고 후보를 찾아 주세요." wrapText="true" styleClass="planner-caption"/>
  <ListView fx:id="candidateList" fixedCellSize="76" prefHeight="304" minHeight="152" maxHeight="380"/>
  </VBox></content></TitledPane>
- </VBox></ScrollPane></center>
+ </VBox></FormScrollPane></center>
  <bottom><VBox spacing="5" styleClass="route-sidebar-note"><Label fx:id="rangeWarning" text="" styleClass="error" wrapText="true"/><Label fx:id="editorError" text="" styleClass="error" wrapText="true"/><Label text="거리: 직선 기준 · 가격·평점: 참고 정보" styleClass="planner-caption" wrapText="true"/></VBox></bottom>
  </BorderPane>
  </GridPane></center>

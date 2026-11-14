@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import com.datecourse.ui.FormScrollPane?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
 <?import javafx.scene.shape.SVGPath?>
@@ -19,7 +20,7 @@
  </HBox></top>
  <center><StackPane>
  <BorderPane fx:id="mainPage">
- <left><ScrollPane prefWidth="300" minWidth="300" maxWidth="300" fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" styleClass="condition-form-scroll"><content><VBox minWidth="0" spacing="18" styleClass="condition-form">
+ <left><FormScrollPane prefWidth="300" minWidth="300" maxWidth="300" fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" styleClass="condition-form-scroll"><content><VBox minWidth="0" spacing="18" styleClass="condition-form">
  <padding><Insets top="28" right="24" bottom="24" left="24"/></padding>
  <VBox spacing="7"><Label text="루트 공통 조건" styleClass="condition-title"/><Label text="장소별 조건은 다음 화면에서 정해요." wrapText="true" styleClass="planner-caption"/></VBox>
  <VBox spacing="6"><Label text="장소 목록" styleClass="field-label"/><ComboBox fx:id="sourceBox" maxWidth="Infinity"/><Label fx:id="sourceStatusLabel" text="장소 목록을 선택해 주세요." minHeight="-Infinity" wrapText="true" styleClass="planner-caption"/></VBox>
@@ -37,7 +38,7 @@
  <Button fx:id="recommendButton" text="코스 만들기 →" onAction="#onRecommendClick" maxWidth="Infinity" styleClass="planner-primary"/>
  <Region VBox.vgrow="ALWAYS"/>
  <Label text="가격·평점은 저장된 참고 정보입니다." wrapText="true" styleClass="planner-caption"/>
- </VBox></content></ScrollPane></left>
+ </VBox></content></FormScrollPane></left>
  <center><VBox spacing="12"><padding><Insets top="18" right="20" bottom="20" left="20"/></padding>
  <HBox fx:id="walkingToolbar" spacing="8" alignment="CENTER_RIGHT"><Button text="도보 설정" onAction="#onTmapSettings" styleClass="drawer-toggle"/></HBox>
  <HBox alignment="CENTER_LEFT" spacing="12"><Label fx:id="hintLabel" text="부산의 출발 장소를 검색하거나 지도를 클릭해 주세요." styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS" maxWidth="Infinity"/><Button fx:id="reloadMapButton" text="지도 다시 불러오기" onAction="#onReloadMap" styleClass="drawer-toggle" minWidth="-Infinity"/></HBox>

@@ -1,3 +1,4 @@
+@import url("modern-scroll.css");
 /* ===== 색상 (여기만 바꾸면 전체 색이 바뀜) ===== */
 .candidate-evidence { -fx-font-size: 11px; -fx-text-fill: #626773; }
 .root {
@@ -323,9 +324,6 @@
 .compact-pane > .content { -fx-background-color: white; -fx-border-color: #e5e8eb; -fx-border-radius: 0 0 8 8; -fx-padding: 8; }
 .condition-screen .route-edit-form .planner-primary { -fx-font-size: 13px; -fx-padding: 8 14; }
 .candidate-rank { -fx-min-width: 18; -fx-font-weight: bold; -fx-text-fill: #64748b; }
-.condition-screen .candidate-row-detail { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-padding: 6 9; -fx-font-size: 12px; }
-.condition-screen .candidate-row-detail:hover { -fx-background-color: #e5e8eb; }
-.condition-screen .candidate-row-add { -fx-padding: 6 9; -fx-font-size: 12px; }
 
 .route-options-dialog { -fx-background-color: white; }
 .route-options-dialog .route-option-card { -fx-padding: 14; -fx-background-color: #f7f8fa; -fx-background-radius: 12; -fx-border-color: transparent; -fx-border-radius: 12; -fx-graphic-text-gap: 12; }
@@ -374,8 +372,6 @@
 .condition-screen .button.header-save,
 .condition-screen .button.header-secondary,
 .condition-screen .button.drawer-toggle,
-.condition-screen .button.candidate-row-detail,
-.condition-screen .button.candidate-row-add,
 .condition-screen .button.header-tab {
     -fx-font-size: 13px;
     -fx-padding: 6 12;
@@ -386,25 +382,21 @@
     -fx-font-weight: normal;
 }
 .condition-screen .button.drawer-toggle,
-.condition-screen .button.header-secondary,
-.condition-screen .button.candidate-row-detail {
+.condition-screen .button.header-secondary {
     -fx-background-color: #f2f4f6;
     -fx-border-color: #dce1e8;
     -fx-text-fill: #334155;
 }
 .condition-screen .button.drawer-toggle:hover,
-.condition-screen .button.header-secondary:hover,
-.condition-screen .button.candidate-row-detail:hover { -fx-background-color: #e9edf1; }
+.condition-screen .button.header-secondary:hover { -fx-background-color: #e9edf1; }
 .condition-screen .button.planner-primary,
-.condition-screen .button.header-save,
-.condition-screen .button.candidate-row-add {
+.condition-screen .button.header-save {
     -fx-background-color: #ff6b81;
     -fx-text-fill: #191f28;
     -fx-font-weight: bold;
 }
 .condition-screen .button.planner-primary:hover,
-.condition-screen .button.header-save:hover,
-.condition-screen .button.candidate-row-add:hover { -fx-background-color: #ff8294; }
+.condition-screen .button.header-save:hover { -fx-background-color: #ff8294; }
 .condition-screen .button:focused { -fx-border-color: #64748b; }
 .condition-screen .account-menu { -fx-min-height: 36; -fx-pref-height: 36; -fx-max-height: 40; -fx-padding: 4 12; -fx-label-padding: 0; }
 .condition-screen .account-menu > .label { -fx-padding: 0; -fx-label-padding: 0; }

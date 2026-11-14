@@ -1214,30 +1214,57 @@ class MapSearchTest {
             TextField price=(TextField)field(editor,"placePriceField");
             var radius=(javafx.scene.control.Slider)field(editor,"radiusSlider");
             assertEquals("CONDITION",field(editor,"state").toString());
-            assertTrue(condition.isExpanded());assertTrue(choice.isExpanded());
+            assertTrue(condition.isExpanded());assertFalse(choice.isExpanded());
             activity.getSelectionModel().select(1);price.setText("1");radius.setValue(700);
             new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
             Path dir=Path.of("build","ui-preview");Files.createDirectories(dir);
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",dir.resolve("editor-condition.png").toFile());
             invoke(editor,"onRecommendNext");
             assertEquals("CHOICE",field(editor,"state").toString());
-            assertTrue(condition.isExpanded());assertTrue(choice.isExpanded());
+            assertFalse(condition.isExpanded());assertTrue(choice.isExpanded());
             invoke(editor,"onCandidateDetail");assertEquals("CHOICE",field(editor,"state").toString());
             invoke(editor,"onModifyConditions");
             assertEquals("CONDITION",field(editor,"state").toString());
             assertEquals("카페",activity.getValue());assertEquals("1",price.getText());assertEquals(700,radius.getValue());
             invoke(editor,"onRecommendNext");assertEquals("CHOICE",field(editor,"state").toString());
             root.applyCss();root.layout();
-            var add=(javafx.scene.control.Button)root.lookup(".candidate-row-add");assertNotNull(add);add.fire();
+            assertNull(root.lookup(".candidate-row-add"));assertNull(root.lookup(".candidate-row-detail"));
+            invoke(editor,"onAddCandidate");
             assertEquals("CONDITION",field(editor,"state").toString());
             assertEquals(java.util.List.of(place),((javafx.scene.control.ListView<?>)field(editor,"placeList")).getItems());
-            assertTrue(choice.isExpanded());assertEquals("1",price.getText());
+            assertFalse(choice.isExpanded());assertEquals("1",price.getText());
+            var course=(javafx.scene.control.TitledPane)field(editor,"coursePane");
+            course.setExpanded(true);assertTrue(course.isExpanded());assertFalse(condition.isExpanded());assertFalse(choice.isExpanded());
+            course.setExpanded(false);assertTrue(course.isExpanded());
+            condition.setExpanded(true);assertFalse(course.isExpanded());assertTrue(condition.isExpanded());
+            condition.setExpanded(false);assertTrue(condition.isExpanded());
             invoke(editor,"onRecommendNext");
             assertEquals("CONDITION",field(editor,"state").toString());
             assertTrue(((javafx.scene.control.Label)field(editor,"editorError")).getText().contains("없어요"));
-            assertFalse(choice.isDisabled());
+            assertTrue(choice.isDisabled());
             return null;
         });Platform.runLater(task);task.get(10,TimeUnit.SECONDS);
+    }
+
+
+    @Test void nextRadiusClampsOnContextChangeWithoutRewritingSavedLegLimits() throws Exception {
+        fx(() -> {
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));
+            Parent root=loader.load();RouteEditorController editor=loader.getController();
+            stubPlannerMap(editor,"editMapView");
+            var place=new com.datecourse.model.Place(1,"p1","카페","CAFE",35,129,5000,4);
+            var plan=new com.datecourse.model.RoutePlan(35,129,2,1000,"",java.util.List.of(place),java.util.Map.of(1L,1500));
+            editor.begin(plan,java.util.List.of(place),p->{},()->{});
+            var radius=(javafx.scene.control.Slider)field(editor,"radiusSlider");
+            radius.setValue(900);
+            editor.resume(new com.datecourse.model.RoutePlan(35,129,2,300,"",plan.places(),plan.arrivalRadii()),java.util.List.of(place));
+            assertEquals(300,radius.getMax());assertEquals(300,radius.getValue());
+            assertEquals(1500,editor.draftSnapshot().arrivalRadii().get(1L));
+            var list=(javafx.scene.control.ListView<?>)field(editor,"placeList");list.getSelectionModel().selectFirst();
+            assertTrue(((javafx.scene.control.Label)field(editor,"selectedRadiusLabel")).getText().contains("다음 장소의 조건"));
+            assertInstanceOf(com.datecourse.ui.ModernScrollPane.class,field(editor,"candidateScroll"));
+            return null;
+        });
     }
 
     @Test
@@ -1253,12 +1280,19 @@ class MapSearchTest {
             var candidates=(javafx.scene.control.ListView<?>)field(editor,"candidateList");
             var confirmed=(javafx.scene.control.ListView<?>)field(editor,"placeList");
             assertEquals(5,candidates.getItems().size()); assertTrue(confirmed.getItems().isEmpty());
-            candidates.getSelectionModel().select(3);
-            invoke(editor,"onCandidateDetail");
+            new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
+            var fourthCell = root.lookupAll(".list-cell").stream()
+                .filter(node -> node instanceof javafx.scene.control.ListCell<?> cell
+                    && cell.getListView() == candidates && cell.getIndex() == 3)
+                .findFirst().orElseThrow();
+            fourthCell.fireEvent(new javafx.scene.input.MouseEvent(javafx.scene.input.MouseEvent.MOUSE_CLICKED,
+                4,4,4,4,javafx.scene.input.MouseButton.PRIMARY,1,false,false,false,false,
+                false,false,false,false,false,true,null));
+            assertEquals(3,candidates.getSelectionModel().getSelectedIndex());
             WebEngine engine=((WebView)field(editor,"editMapView")).getEngine();
             assertEquals("[4]",engine.executeScript("JSON.stringify(detailCalls)"));
             assertTrue(confirmed.getItems().isEmpty());
-            new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
+            root.applyCss();root.layout();
             ((javafx.scene.control.ScrollPane)root.lookup(".route-form-scroll")).setVvalue(1);
             root.layout();
             Path candidatePreview=Path.of("build","ui-preview","top-five-candidates.png");
