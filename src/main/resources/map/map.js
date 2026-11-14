@@ -919,8 +919,19 @@
                 badge.className = 'walking-leg-badge';
                 badge.textContent = String(index + 1);
                 badge.style.backgroundColor = color;
-                badge.title = caption + ' · ' + facts;
-                badge.setAttribute('aria-label', badge.title);
+                badge.setAttribute('aria-label', caption + ' · ' + facts);
+                function previewBadge() {
+                    emphasize(index);
+                    if (walkingPinnedSelection < 0) showPopup(index, badgePosition);
+                }
+                function leaveBadge() {
+                    restorePopup();
+                    emphasize(selected);
+                }
+                badge.addEventListener('mouseenter', previewBadge);
+                badge.addEventListener('mouseleave', leaveBadge);
+                badge.addEventListener('focus', previewBadge);
+                badge.addEventListener('blur', leaveBadge);
                 badge.addEventListener('click', function () { choose(index, badgePosition); });
                 const marker = new kakao.maps.CustomOverlay({position:badgePosition, content:badge,
                     clickable:true, xAnchor:0.5, yAnchor:0.5, zIndex:15});

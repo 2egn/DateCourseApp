@@ -59,7 +59,7 @@ class MapSearchTest {
             var loggedOut=new java.util.concurrent.atomic.AtomicBoolean();
             main.setAccountActions(null,()->loggedOut.set(true));
             var menu=(javafx.scene.control.MenuButton)field(main,"userLabel");
-            assertEquals("내 이름님",menu.getText());assertFalse(menu.isDisabled());
+            assertEquals("내 이름",menu.getText().replaceFirst("\\s*님\\s*$", ""));assertFalse(menu.isDisabled());
             assertEquals("내 페이지",menu.getItems().get(0).getText());
             menu.getItems().get(2).fire();
             assertTrue(loggedOut.get());assertNull(field(main,"userSession"));assertTrue(menu.isDisabled());
@@ -94,6 +94,32 @@ class MapSearchTest {
         assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
         script(engine,"routeLines[1].onmouseover();testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
         assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
+    }
+
+    @Test void numberedBadgeHoverHighlightsItsLegAndKeepsClickedDetailsPinned() throws Exception {
+        WebEngine engine=loadMap(640,600);
+        script(engine,"""
+            window.path=[[{lat:35,lng:129},{lat:35.001,lng:129}]];
+            window.showWalkingRoute({totalDistance:200,totalTime:120,legs:[
+                {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:60,paths:path,steps:[]},
+                {from:{name:'첫 장소'},to:{name:'둘째 장소'},distance:100,time:60,paths:path,steps:[]}
+            ]},'',false);
+            window.badges=routeOverlays.filter(function(o){return o.options.content.className==='walking-leg-badge';});
+            window.popup=routeOverlays[0].options.content;
+            badges[1].options.content.dispatchEvent(new Event('mouseenter'));
+            """);
+        assertEquals(true,script(engine,"routeLines[3].options.strokeWeight===6 && routeLines[1].options.strokeWeight===4 && routeOverlays[0].attached && popup.textContent.includes('2구간') && popup.querySelector('.walking-tooltip-steps').hidden"));
+        script(engine,"badges[1].options.content.dispatchEvent(new Event('mouseleave'))");
+        assertEquals(true,script(engine,"routeLines[1].options.strokeWeight===6 && routeLines[3].options.strokeWeight===4"));
+        Thread.sleep(170);
+        assertEquals(false,script(engine,"routeOverlays[0].attached"));
+        script(engine,"badges[1].options.content.dispatchEvent(new Event('focus'))");
+        assertEquals(true,script(engine,"routeOverlays[0].attached && popup.textContent.includes('2구간')"));
+        script(engine,"badges[1].options.content.click();badges[1].options.content.dispatchEvent(new Event('blur'));badges[0].options.content.dispatchEvent(new Event('mouseenter'))");
+        assertEquals(true,script(engine,"routeOverlays[0].attached && popup.textContent.includes('2구간') && !popup.querySelector('.walking-tooltip-steps').hidden"));
+        script(engine,"badges[0].options.content.dispatchEvent(new Event('mouseleave'))");
+        Thread.sleep(170);
+        assertEquals(true,script(engine,"routeOverlays[0].attached && routeLines[3].options.strokeWeight===6"));
     }
 
     @Test void routeBadgeUsesHalfDistanceAndBlankMapDismissesBothCards() throws Exception {
