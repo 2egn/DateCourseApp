@@ -28,6 +28,41 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
+    @Test void placePinHitAreaAndAnchorStayFixedAcrossSelection() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[
+                {recordId:1,placeId:'a',name:'첫 장소',lat:35.1578,lng:129.06},
+                {recordId:2,placeId:'b',name:'두 번째 장소',lat:35.1579,lng:129.06}]},null,500,true,false,[]);
+            window.paddedPins=pins.filter(p=>p.coursePin && p.attached);
+            """);
+        assertEquals(true,script(engine,"paddedPins.every(p=>p.normalImage.size.width===56 && p.normalImage.size.height===68 && p.activeImage.size.width===56 && p.activeImage.size.height===68)"));
+        assertEquals(true,script(engine,"paddedPins.every(p=>p.normalImage.options.shape==='rect' && p.normalImage.options.coords==='0,0,56,68' && JSON.stringify(p.normalImage.options)===JSON.stringify(p.activeImage.options))"));
+        assertEquals(true,script(engine,"paddedPins.every(p=>p.normalImage.options.offset.x===28 && p.normalImage.options.offset.y===60)"));
+        script(engine,"paddedPins[1].onclick();paddedPins[1].onmouseover()");
+        assertEquals(true,script(engine,"paddedPins[1].image===paddedPins[1].activeImage && paddedPins[1].image.size.width===56"));
+    }
+    @Test void briefPinExitDoesNotFlickerAndOldLeaveCannotCloseAnotherPreview() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[
+                {recordId:1,placeId:'a',name:'첫 장소',lat:35.1578,lng:129.06},
+                {recordId:2,placeId:'b',name:'두 번째 장소',lat:35.1579,lng:129.06}]},null,500,true,false,[]);
+            window.hoverPins=pins.filter(p=>p.coursePin && p.attached);hoverPins[0].onmouseover();
+            window.stablePreview=routeOverlays.find(p=>p.options.content.classList.contains('place-pin-preview'));
+            hoverPins[0].onmouseout();
+            """);
+        assertEquals(true,script(engine,"stablePreview.attached"));
+        Thread.sleep(50);script(engine,"hoverPins[0].onmouseover()");Thread.sleep(220);
+        assertEquals(true,script(engine,"stablePreview.attached"));
+        script(engine,"hoverPins[0].onmouseout();hoverPins[1].onmouseover();hoverPins[0].onmouseout()");Thread.sleep(220);
+        assertEquals(true,script(engine,"stablePreview.attached && stablePreview.options.content.textContent.includes('두 번째 장소')"));
+        script(engine,"hoverPins[1].onmouseout()");Thread.sleep(250);
+        assertEquals(false,script(engine,"stablePreview.attached"));
+        script(engine,"hoverPins[1].onmouseover();hoverPins[1].onmouseout();window.resetPlannerMap()");Thread.sleep(220);
+        assertEquals(false,script(engine,"stablePreview.attached"));
+    }
+
     @Test void clickedPlaceDetailsSurviveHoverAndHiddenRailScrollUntilExplicitDismissal() throws Exception {
         WebEngine engine=loadMap(850,720);
         script(engine,"""
@@ -91,7 +126,8 @@ class MapSearchTest {
             fx(()->{Path image=Path.of("build/ui-preview/place-pin-hover.png");Files.createDirectories(image.getParent());
                 ImageIO.write(SwingFXUtils.fromFXImage(previewView.snapshot(null,null),null),"png",image.toFile());return null;});
         } finally {fx(()->{previewWindow.close();return null;});}
-        script(engine,"pinPreview.options.content.remove();redPin.onmouseout()");assertEquals(false,script(engine,"pinPreview.attached"));
+        script(engine,"pinPreview.options.content.remove();redPin.onmouseout()");
+        Thread.sleep(250);assertEquals(false,script(engine,"pinPreview.attached"));
         script(engine,"redPin.onmouseover();redPin.onclick()");
         assertEquals(false,script(engine,"pinPreview.attached"));
         assertEquals("대모골",script(engine,"document.getElementById('detail-title').textContent"));

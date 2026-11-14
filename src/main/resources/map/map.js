@@ -421,7 +421,8 @@
         }
         resultMarkers.forEach(function (pin) {
             const active = pin.visitId === id;
-            pin.setImage(active ? pin.activeImage : pin.normalImage);
+            const image = active ? pin.activeImage : pin.normalImage;
+            if (pin.displayedImage !== image) { pin.setImage(image); pin.displayedImage = image; }
             pin.setZIndex(active ? 6 : 3);
         });
     }
@@ -476,25 +477,40 @@
         const svg = origin
             ? '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" viewBox="0 0 48 46"><rect x="2" y="1" width="44" height="22" rx="11" fill="#2563eb" stroke="white" stroke-width="2"/><text x="24" y="16" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="white">출발</text><circle cx="24" cy="35" r="9" fill="white" stroke="white" stroke-width="3"/><circle cx="24" cy="35" r="6" fill="#2563eb"/></svg>'
             : '<svg xmlns="http://www.w3.org/2000/svg" width="38" height="48" viewBox="0 0 38 48"><g opacity="' + opacity + '"><path d="M19 46C15 39 2 28 2 19a17 17 0 1 1 34 0c0 9-13 20-17 27z" fill="#e54870" stroke="white" stroke-width="2"/><text x="19" y="25" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="white">' + label + '</text></g></svg>';
+        // Keep one padded canvas and anchor even when the artwork grows on selection.
+        // The explicit rectangle also accepts pointer input just outside the visible pin.
+        const artworkWidth = active ? 44 : 38, artworkHeight = active ? 56 : 48;
+        const padded = origin ? svg : '<svg xmlns="http://www.w3.org/2000/svg" width="56" height="68" viewBox="0 0 56 68">'
+            + svg.replace('<svg ', '<svg x="' + ((56 - artworkWidth) / 2) + '" y="' + (60 - (active ? 54 : 46)) + '" ')
+                .replace('width="38" height="48"', 'width="' + artworkWidth + '" height="' + artworkHeight + '"') + '</svg>';
         const info = {
-            src: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.replace('#e54870', nearby ? (active || routePresentation ? '#2563eb' : '#64748b') : active ? '#9d174d' : '#e54870')),
-            width: origin ? 48 : active ? 44 : 38, height: origin ? 46 : active ? 56 : 48,
-            x: origin ? 24 : active ? 22 : 19, y: origin ? 35 : active ? 54 : 46
+            src: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(padded.replace('#e54870', nearby ? (active || routePresentation ? '#2563eb' : '#64748b') : active ? '#9d174d' : '#e54870')),
+            width: origin ? 48 : 56, height: origin ? 46 : 68,
+            x: origin ? 24 : 28, y: origin ? 35 : 60
         };
-        const image = new kakao.maps.MarkerImage(info.src, new kakao.maps.Size(info.width, info.height),
-            { offset: new kakao.maps.Point(info.x, info.y) });
+        const hitOptions = { offset: new kakao.maps.Point(info.x, info.y) };
+        if (!origin) { hitOptions.shape = 'rect'; hitOptions.coords = '0,0,56,68'; }
+        const image = new kakao.maps.MarkerImage(info.src, new kakao.maps.Size(info.width, info.height), hitOptions);
         return image;
     }
     // One preview owns its overlay and lifecycle; hovering never selects a place or route.
     const placePinPreview = (function () {
-        let overlay = null, body = null, activePin = null;
+        let overlay = null, body = null, activePin = null, leaveTimer = null;
         function hide(pin) {
             if (pin && pin !== activePin) return;
+            clearTimeout(leaveTimer); leaveTimer = null;
             activePin = null;
             if (overlay) overlay.setMap(null);
         }
+        function leave(pin) {
+            if (pin !== activePin) return;
+            clearTimeout(leaveTimer);
+            leaveTimer = setTimeout(function () { hide(pin); }, 150);
+        }
         function show(pin, place, label) {
             if (!ready || resultMarkers.indexOf(pin) < 0) return;
+            clearTimeout(leaveTimer); leaveTimer = null;
+            if (activePin === pin) return;
             if (!body) {
                 body = document.createElement('div'); body.className = 'place-pin-preview';
                 body.setAttribute('role', 'tooltip');
@@ -523,7 +539,7 @@
             const shiftY = Math.max(12 + height - point.y, Math.min(viewport.clientHeight - 12 - point.y, preferredY));
             body.style.transform = 'translate(' + shiftX + 'px,' + shiftY + 'px)';
         }
-        return {show: show, hide: hide};
+        return {show: show, hide: hide, leave: leave};
     }());
     function removeResultPin(pin) {
         placePinPreview.hide(pin);
@@ -558,7 +574,7 @@
             pin.coursePin = courseIndex >= 0;
             if (pin.coursePin) {
                 pin.visitEnter = function () { placePinPreview.show(pin, item, courseIndex + 1); };
-                pin.visitLeave = function () { placePinPreview.hide(pin); };
+                pin.visitLeave = function () { placePinPreview.leave(pin); };
                 kakao.maps.event.addListener(pin, 'mouseover', pin.visitEnter);
                 kakao.maps.event.addListener(pin, 'mouseout', pin.visitLeave);
             }
