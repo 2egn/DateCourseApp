@@ -165,3 +165,11 @@ tasks.register('coursePreviewLiveTest', Test) {
     useJUnitPlatform()
     environment 'RUN_COURSE_PREVIEW_LIVE_TEST', 'true'
 }
+
+// Explicit maintenance: password entry is local and masked, never a command-line argument.
+tasks.register('resetAdminPassword', JavaExec) {
+    group = 'application'
+    description = 'Reset the existing administrator password through a local masked-input dialog'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'kr.ac.university.localdb.db.AdminPasswordReset'
+}
