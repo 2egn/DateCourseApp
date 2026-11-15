@@ -128,8 +128,8 @@ public final class RouteEditorController extends BasePageController {
         map.setOnAddCandidate(id->{if(!candidatesDirty&&focusCandidate(id))onAddCandidate();});
         activityBox.getItems().setAll("식사", "카페", "문화");
         activityBox.getSelectionModel().selectFirst();
-        candidateLimitBox.getItems().setAll(5,10,20,30);
-        candidateLimitBox.setValue(5);
+        candidateLimitBox.getItems().setAll(NextPlaceCondition.DISPLAY_LIMITS);
+        candidateLimitBox.setValue(NextPlaceCondition.DEFAULT_DISPLAY_LIMIT);
         conditionCandidateLimitBox.setItems(candidateLimitBox.getItems());
         conditionCandidateLimitBox.valueProperty().bindBidirectional(candidateLimitBox.valueProperty());
         installFacetLabels(subtypeBox,"전체 종류");

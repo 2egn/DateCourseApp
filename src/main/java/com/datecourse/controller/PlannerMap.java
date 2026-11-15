@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 /** 두 WebView는 같은 지도 페이지를 사용하지만 브리지와 상태를 각각 소유한다. */
 final class PlannerMap {
+    private static final java.time.Duration CAPTURE_TIMEOUT = java.time.Duration.ofSeconds(20);
     private final com.datecourse.service.PlaceMapPayload placePayload = new com.datecourse.service.PlaceMapPayload(
             new ObjectMapper(), new com.datecourse.service.PlacePresenter());
 
@@ -194,7 +195,7 @@ final class PlannerMap {
         result.whenComplete((image,failure)->{
             if(result.isCancelled())Platform.runLater(()->{if(pendingCapture==result)cancelCapture.run();});
         });
-        long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(20);
+        long deadline=System.nanoTime()+CAPTURE_TIMEOUT.toNanos();
         boolean[] started={false};
         timer.getKeyFrames().add(new javafx.animation.KeyFrame(javafx.util.Duration.millis(100),event->{
             try {
@@ -209,7 +210,7 @@ final class PlannerMap {
                             "window.inspectMapCamera && !window.inspectMapCamera().moving")))return;
                     progress.accept(CaptureStage.CAPTURING);
                     originalSize[0]=view.getWidth();originalSize[1]=view.getHeight();
-                    view.setManaged(false);view.resize(1000,520);
+                    view.setManaged(false);view.resize(com.datecourse.service.CoursePreviewImage.MAP_WIDTH,com.datecourse.service.CoursePreviewImage.MAP_HEIGHT);
                     Object began=view.getEngine().executeScript("window.beginCourseCapture("+placePayload.plan(snapshot)+")");
                     if(!Boolean.TRUE.equals(began))throw new IllegalStateException("지도 캡처를 시작하지 못했습니다.");
                     started[0]=true;return;

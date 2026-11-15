@@ -6,7 +6,7 @@ import java.util.List;
 
 /** 다음 장소 후보를 거리순으로 찾고, 전체 원형 범위 밖의 장소와 이미 확정한 장소를 제외한다. */
 public final class NextPlaceService {
-    public static final int MAX_CANDIDATES = 5;
+    public static final int DEFAULT_CANDIDATES = NextPlaceCondition.DEFAULT_DISPLAY_LIMIT;
     private final PlaceSearchService search = new PlaceSearchService();
 
     public List<PlaceSearchService.NearbyPlace> candidates(List<Place> places, List<Place> confirmed,
@@ -21,7 +21,7 @@ public final class NextPlaceService {
             int maxPricePerPerson, int people, int routeRadius, boolean includeUncertainPrice) {
         return candidates(places, confirmed, startLat, startLng, people, routeRadius,
                 new NextPlaceCondition(category, maxPricePerPerson, radius, includeUncertainPrice,
-                        java.util.Set.of(), java.util.Set.of(), MAX_CANDIDATES));
+                        java.util.Set.of(), java.util.Set.of(), DEFAULT_CANDIDATES));
     }
 
     public List<PlaceSearchService.NearbyPlace> candidates(List<Place> places, List<Place> confirmed,

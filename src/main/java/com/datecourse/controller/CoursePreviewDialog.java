@@ -24,13 +24,13 @@ final class CoursePreviewDialog {
         card.setMaxSize(320,150);card.getStyleClass().add("loading-card");
         var root=new StackPane(view,card);
         root.getStylesheets().add(CoursePreviewDialog.class.getResource("/style.css").toExternalForm());
-        stage.setScene(new Scene(root,1000,520));
+        stage.setScene(new Scene(root,CoursePreviewImage.MAP_WIDTH,CoursePreviewImage.MAP_HEIGHT));
         stage.getScene().setOnKeyPressed(event->{if(event.getCode()==javafx.scene.input.KeyCode.ESCAPE)stage.close();});
         var map=new PlannerMap(view,(lat,lng)->{},message->{});
         stage.setOnHidden(event->{if(!result.isDone())result.cancel(false);map.dispose();});
         result.whenComplete((image,failure)->Platform.runLater(()->{if(stage.isShowing())stage.close();}));
         stage.show();
-        map.present(plan,null,500,false,false);map.load();
+        map.present(plan,null,plan.radius(),false,false);map.load();
         map.capturePreview(plan,phase->{
             if(phase==PlannerMap.CaptureStage.CAPTURING)status.setText("미리보기를 만들고 있어요…");
         }).whenComplete((image,failure)->{

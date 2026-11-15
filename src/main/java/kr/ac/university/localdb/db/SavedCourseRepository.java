@@ -165,7 +165,7 @@ public final class SavedCourseRepository {
             initializePreviews(); // DDL must run before opening the course transaction.
             previewStorage = true;
             preview = renderer.render(plan);
-            if (preview == null || preview.length == 0 || preview.length > 2_000_000)
+            if (preview == null || preview.length == 0 || preview.length > com.datecourse.service.CoursePreviewImage.MAX_PNG_BYTES)
                 throw new IOException("미리보기 이미지 크기를 확인해 주세요.");
         } catch (IOException | SQLException | RuntimeException failure) {
             preview = null;
@@ -246,7 +246,7 @@ public final class SavedCourseRepository {
     /** Updates only the derived PNG. Course title, timestamps and place snapshots are unchanged. */
     public void refreshPreview(UserSession session,SavedCourse expected,byte[] png) throws SQLException,IOException {
         requireSession(session);
-        if(png==null || png.length==0 || png.length>2_000_000)throw new IllegalArgumentException("미리보기 이미지를 확인해 주세요.");
+        if(png==null || png.length==0 || png.length>com.datecourse.service.CoursePreviewImage.MAX_PNG_BYTES)throw new IllegalArgumentException("미리보기 이미지를 확인해 주세요.");
         initializePreviews();
         try(var connection=dataSource.getConnection()) {
             connection.setAutoCommit(false);
