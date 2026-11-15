@@ -154,3 +154,14 @@ tasks.register('setupCoursePreviews', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'com.datecourse.demo.CoursePreviewSetup'
 }
+
+// Uses the configured Kakao key, with no walking-route API or member DB calls.
+tasks.named('test') { exclude '**/CourseMapCaptureLiveTest.class' }
+tasks.register('coursePreviewLiveTest', Test) {
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    include '**/CourseMapCaptureLiveTest.class'
+    useJUnitPlatform()
+    environment 'RUN_COURSE_PREVIEW_LIVE_TEST', 'true'
+}

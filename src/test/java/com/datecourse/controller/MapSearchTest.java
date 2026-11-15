@@ -1552,7 +1552,7 @@ class MapSearchTest {
             setField(main, "titlePrompt", (java.util.function.Function<com.datecourse.model.RoutePlan, java.util.Optional<String>>)
                     plan -> java.util.Optional.of(plan.title()));
             ((javafx.scene.control.Label) field(main, "saveStatusLabel")).textProperty()
-                    .addListener((o, old, text) -> { if (text.equals("코스를 저장했어요.")) saved.countDown(); });
+                    .addListener((o, old, text) -> { if (text.equals("코스를 저장했어요.") || text.startsWith("코스는 저장했어요.")) saved.countDown(); });
             invoke(main, "onSaveCourse");
             return null;
         });

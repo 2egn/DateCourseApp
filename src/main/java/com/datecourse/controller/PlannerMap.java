@@ -65,6 +65,7 @@ final class PlannerMap {
     private final Consumer<String> error;
     private final MapBridge bridge;
     private boolean ready;
+    private boolean capturing;
     private boolean loaded;
     private RoutePlan plan;
     private Place candidate;
@@ -155,6 +156,58 @@ final class PlannerMap {
         load();
     }
 
+    boolean canCapturePreview() {
+        return ready && !capturing && view.isVisible() && view.getWidth()>0 && view.getHeight()>0;
+    }
+
+    /** FX-thread only. Preserve the complete SDK attribution and restore the original viewport. */
+    java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(RoutePlan snapshot) {
+        var result = new java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage>();
+        if (!canCapturePreview()) {
+            result.completeExceptionally(new IllegalStateException("지도가 준비되지 않았습니다."));
+            return result;
+        }
+        double width=view.getWidth(),height=view.getHeight();
+        boolean managed=view.isManaged();
+        capturing=true;
+        var timer=new javafx.animation.Timeline();
+        Runnable restore=()->{
+            timer.stop();
+            view.resize(width,height);view.setManaged(managed);
+            try {view.getEngine().executeScript("if(window.endCourseCapture)window.endCourseCapture()");}
+            catch(Exception ignored) { /* Navigation may have disposed the page. */ }
+            finally {capturing=false;render(false);}
+        };
+        long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(10);
+        boolean[] started={false};
+        timer.getKeyFrames().add(new javafx.animation.KeyFrame(javafx.util.Duration.millis(100),event->{
+            try {
+                if(System.nanoTime()>deadline)throw new java.io.IOException("지도 타일 준비 시간 초과");
+                if(!started[0]) {
+                    // Let the native SDK animation finish before changing the viewport.
+                    if(!Boolean.TRUE.equals(view.getEngine().executeScript(
+                            "window.inspectMapCamera && !window.inspectMapCamera().moving")))return;
+                    view.setManaged(false);view.resize(1000,520);
+                    Object began=view.getEngine().executeScript("window.beginCourseCapture("+placePayload.plan(snapshot)+")");
+                    if(!Boolean.TRUE.equals(began))throw new IllegalStateException("지도 캡처를 시작하지 못했습니다.");
+                    started[0]=true;return;
+                }
+                if(Boolean.TRUE.equals(view.getEngine().executeScript("window.courseCaptureReady()"))) {
+                    timer.stop();
+                    view.snapshot(frame->{
+                        try {
+                            var image=javafx.embed.swing.SwingFXUtils.fromFXImage(frame.getImage(),null);
+                            restore.run();result.complete(image);
+                        } catch(Exception failure) {restore.run();result.completeExceptionally(failure);}
+                        return null;
+                    },null,null);
+                }
+            } catch(Exception failure) {restore.run();result.completeExceptionally(failure);}
+        }));
+        timer.setCycleCount(javafx.animation.Animation.INDEFINITE);timer.play();
+        return result;
+    }
+
     void dispose() {
         pageLoadPending = false;
         viewport.close();
@@ -182,7 +235,7 @@ final class PlannerMap {
     }
 
     private void render(boolean fit) {
-        if (!ready) return;
+        if (capturing || !ready) return;
         try {
             if (resetPending) {
                 view.getEngine().executeScript("if(window.resetPlannerMap)window.resetPlannerMap()");
@@ -343,7 +396,7 @@ final class PlannerMap {
     }
 
     private void renderWalkingRoute(boolean fit) {
-        if (!ready) return;
+        if (capturing || !ready) return;
         try {
             ObjectMapper mapper = new ObjectMapper();
             view.getEngine().executeScript("if (typeof window.showWalkingRoute === 'function') window.showWalkingRoute("

@@ -140,13 +140,25 @@ public final class SavedCourseRepository {
     }
 
     private SavedCourse persist(UserSession session, Long existingCourseId, RoutePlan plan) throws SQLException {
+        return persist(session, existingCourseId, plan, previewRenderer);
+    }
+
+    /** UI supplies the complete SDK screenshot; a missing image never prevents saving the course. */
+    public SavedCourse saveWithPreview(UserSession session, Long courseId, RoutePlan plan, byte[] png) throws SQLException {
+        if(courseId!=null && courseId<=0)throw new IllegalArgumentException("저장 코스 번호를 확인해 주세요.");
+        byte[] copy=png==null?null:png.clone();
+        return persist(session,courseId,plan,ignored->copy);
+    }
+
+    private SavedCourse persist(UserSession session, Long existingCourseId, RoutePlan plan,
+                                com.datecourse.service.CoursePreviewRenderer renderer) throws SQLException {
         validate(session, plan);
         byte[] preview = null;
         boolean previewStorage = false;
         try {
             initializePreviews(); // DDL must run before opening the course transaction.
             previewStorage = true;
-            preview = previewRenderer.render(plan);
+            preview = renderer.render(plan);
             if (preview == null || preview.length == 0 || preview.length > 2_000_000)
                 throw new IOException("미리보기 이미지 크기를 확인해 주세요.");
         } catch (IOException | SQLException | RuntimeException failure) {

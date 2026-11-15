@@ -708,6 +708,65 @@
     };
 
     // 메인 지도와 편집 지도는 각 WebView 안에 이 상태를 별도로 보관한다.
+    // A temporary presentation of this same SDK map; never downloads or stitches tiles.
+    let courseCapture = null;
+    window.beginCourseCapture = function(plan) {
+        if (!ready || courseCapture) return false;
+        camera.cancel();
+        if (window.disposeMapZoom && window.disposeMapZoom.cancel) window.disposeMapZoom.cancel();
+        const state = {center:map.getCenter(), level:map.getLevel(), hidden:[], overlays:[], started:performance.now()};
+        courseCapture = state;
+        [marker,circle,circleOutline,nextCircle,nextCircleOutline].concat(resultMarkers,walkingShapes).forEach(function(shape){
+            if (!shape) return;
+            state.hidden.push([shape,shape.getMap()]); shape.setMap(null);
+        });
+        placePinPreview.hide();
+        document.body.classList.add('course-capture');
+        map.relayout();
+        const stops = [{lat:plan.startLat,lng:plan.startLng,name:'출발지'}].concat(plan.places);
+        const path = stops.map(function(p){return new kakao.maps.LatLng(p.lat,p.lng);});
+        const bounds = new kakao.maps.LatLngBounds(); path.forEach(function(p){bounds.extend(p);});
+        [ {strokeWeight:7,strokeColor:'#ffffff'}, {strokeWeight:4,strokeColor:'#f05475'} ].forEach(function(style){
+            const line = new kakao.maps.Polyline(Object.assign({map:map,path:path,strokeOpacity:1,zIndex:10},style));
+            state.overlays.push(line);
+        });
+        stops.forEach(function(stop,i){
+            const label = document.createElement('div'); label.className='course-capture-pin';
+            const number = document.createElement('b'); number.textContent=i===0?'S':String(i);
+            if(i===0)label.classList.add('is-origin');
+            const name=document.createElement('span');name.textContent=stop.name;
+            label.appendChild(number);label.appendChild(name);
+            const overlay=new kakao.maps.CustomOverlay({position:path[i],content:label,yAnchor:i===0?-.25:1.25,zIndex:20+i});
+            overlay.setMap(map);state.overlays.push(overlay);
+        });
+        state.tileTime=0;
+        state.tilesLoaded=function(){state.tileTime=performance.now();};
+        kakao.maps.event.addListener(map,'tilesloaded',state.tilesLoaded);
+        requestAnimationFrame(function(){requestAnimationFrame(function(){
+            if(courseCapture!==state)return;
+            if(typeof map.jump==='function')map.jump(map.getCenter(),map.getLevel(),{animate:false});
+            map.relayout();map.setBounds(bounds,85,155,85,155);
+            if(map.getLevel()<2)map.setLevel(2,{animate:false});
+            state.fitted=performance.now();
+        });});
+        return true;
+    };
+    window.courseCaptureReady = function() {
+        if (!courseCapture || !courseCapture.fitted || !courseCapture.tileTime
+                || performance.now()-Math.max(courseCapture.fitted,courseCapture.tileTime)<400) return false;
+        const images=Array.from(document.querySelectorAll('#map img[src]'));
+        return images.length>0 && images.every(function(img){return img.complete && img.naturalWidth>0;});
+    };
+    window.endCourseCapture = function() {
+        if(!courseCapture)return;
+        const state=courseCapture;courseCapture=null;
+        kakao.maps.event.removeListener(map,'tilesloaded',state.tilesLoaded);
+        state.overlays.forEach(function(shape){shape.setMap(null);});
+        state.hidden.forEach(function(item){item[0].setMap(item[1]);});
+        document.body.classList.remove('course-capture');
+        map.relayout();map.setLevel(state.level);map.setCenter(state.center);
+    };
+
     window.presentRoute = function (plan, candidate, radius, locked, fit, candidates) {
         if (!ready) return;
         const originChanged = routePresentation && (routePresentation.startLat !== plan.startLat || routePresentation.startLng !== plan.startLng);

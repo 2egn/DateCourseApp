@@ -100,6 +100,17 @@ class SavedCourseRepositoryTest {
         assertEquals(example(),repository.findAll(owner).getFirst().plan());
     }
 
+    @Test
+    void suppliedMapPngIsStoredVerbatimAndMissingCaptureDoesNotCreateASchematic() throws Exception {
+        var map = new java.awt.image.BufferedImage(1000,520,java.awt.image.BufferedImage.TYPE_INT_RGB);
+        byte[] png = new com.datecourse.service.CoursePreviewImage().renderWithMap(example(),map);
+        var first = repository.saveWithPreview(owner,null,example(),png);
+        assertArrayEquals(png,repository.findPreview(owner,first).orElseThrow());
+        var updated = repository.saveWithPreview(owner,first.courseId(),example(),null);
+        assertEquals(example(),storedPlan(updated.courseId()));
+        assertTrue(repository.findPreview(owner,updated).isEmpty());
+    }
+
     @AfterEach
     void closePool() {
         if (pool != null) pool.close();

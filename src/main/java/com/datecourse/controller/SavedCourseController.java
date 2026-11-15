@@ -34,6 +34,13 @@ public class SavedCourseController extends BasePageController {
     @FXML public void initialize() {
         coursePreview.fitWidthProperty().bind(previewPane.widthProperty());
         coursePreview.fitHeightProperty().bind(previewPane.heightProperty());
+        coursePreview.setCursor(javafx.scene.Cursor.HAND);
+        coursePreview.setFocusTraversable(true);
+        javafx.scene.control.Tooltip.install(coursePreview,new Tooltip("클릭해서 크게 보기"));
+        coursePreview.setOnMouseClicked(event -> {if(event.getButton()==javafx.scene.input.MouseButton.PRIMARY)openPreview();});
+        coursePreview.setOnKeyPressed(event -> {
+            if(event.getCode()==javafx.scene.input.KeyCode.ENTER){openPreview();event.consume();}
+        });
         watchNotice(messageLabel, PageFeedback.Kind.ERROR);
         courseList.setCellFactory(list -> new ListCell<>() {
             @Override protected void updateItem(SavedCourse course, boolean empty) {
@@ -128,6 +135,19 @@ public class SavedCourseController extends BasePageController {
         coursePreview.setImage(image.orElse(null));
         previewStatus.setVisible(image.isEmpty());
         previewStatus.setText("저장된 미리보기가 없어요. 코스를 다시 저장하면 생성돼요.");
+    }
+
+    private void openPreview() {
+        if(coursePreview.getImage()==null)return;
+        var dialog=new javafx.stage.Stage();dialog.initOwner(courseList.getScene().getWindow());
+        dialog.setTitle(detailTitle.getText()+" · 코스 미리보기");
+        var image=new javafx.scene.image.ImageView(coursePreview.getImage());image.setPreserveRatio(true);
+        var pane=new javafx.scene.layout.StackPane(image);
+        image.fitWidthProperty().bind(pane.widthProperty());image.fitHeightProperty().bind(pane.heightProperty());
+        var bounds=javafx.stage.Screen.getPrimary().getVisualBounds();
+        dialog.setScene(new javafx.scene.Scene(pane,Math.min(1100,bounds.getWidth()-80),Math.min(720,bounds.getHeight()-100)));
+        dialog.getScene().setOnKeyPressed(event->{if(event.getCode()==javafx.scene.input.KeyCode.ESCAPE)dialog.close();});
+        dialog.show();
     }
 
     private void updateButtons() {

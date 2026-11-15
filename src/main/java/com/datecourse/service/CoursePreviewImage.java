@@ -16,7 +16,7 @@ public final class CoursePreviewImage implements CoursePreviewRenderer {
 
     /** Only content rendered in the image contributes to its revision. */
     public static String fingerprint(RoutePlan plan) {
-        StringBuilder value = new StringBuilder("summary-v2\n");
+        StringBuilder value = new StringBuilder("summary-map-v3\n");
         value.append(plan.startLat()).append(',').append(plan.startLng()).append('\n')
                 .append(plan.people()).append('\n').append(plan.costEstimate().display());
         for (var place : plan.places()) value.append('\n').append(place.name().length()).append(':')
@@ -24,6 +24,24 @@ public final class CoursePreviewImage implements CoursePreviewRenderer {
         try { return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256")
                 .digest(value.toString().getBytes(StandardCharsets.UTF_8))); }
         catch (NoSuchAlgorithmException impossible) { throw new IllegalStateException(impossible); }
+    }
+
+    /** Compose the current SDK map without cropping its logo or copyright footer. */
+    public byte[] renderWithMap(RoutePlan plan, BufferedImage map) throws IOException {
+        var image=new BufferedImage(1000,650,BufferedImage.TYPE_INT_RGB);
+        var g=image.createGraphics();
+        try {
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setColor(new Color(247,249,252));g.fillRect(0,0,1000,650);
+            text(g,"코스 미리보기",24,37,25,true,new Color(28,43,65),950);
+            text(g,plan.places().size()+"곳 · "+plan.people()+"명 · "+plan.costEstimate().display(),24,74,23,false,new Color(85,101,124),950);
+            g.drawImage(map,0,100,1000,520,null);
+            text(g,"지도: Kakao · 직선 연결 · 실제 도보 경로와 다를 수 있어요",24,643,17,false,new Color(85,101,124),950);
+        } finally {g.dispose();}
+        try(var bytes=new ByteArrayOutputStream()) {
+            if(!ImageIO.write(image,"png",bytes))throw new IOException("PNG 인코더가 없습니다.");
+            return bytes.toByteArray();
+        }
     }
 
     @Override public byte[] render(RoutePlan plan) throws IOException {
