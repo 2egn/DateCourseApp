@@ -46,7 +46,7 @@ test {
 processResources {
     doFirst { delete layout.buildDirectory.file('resources/main/db.properties').get().asFile }
     exclude 'map/kakao-config.js', 'db.properties'
-    from('data/sql') { include '10_place_catalog.sql'; into 'db' }
+    from('data/sql') { include '10_place_catalog.sql', '11_saved_course_previews.sql'; into 'db' }
     from('data/places/demo') {
         include 'seomyeon-jeonpo-demo.json', 'seomyeon-public-estimates.json'
         into 'datasets'
@@ -146,4 +146,11 @@ tasks.register('cameraMotionLiveTest', Test) {
     include '**/CameraMotionLiveTest.class'
     useJUnitPlatform()
     environment 'RUN_CAMERA_LIVE_TEST', 'true'
+}
+
+tasks.register('setupCoursePreviews', JavaExec) {
+    group = 'verification'
+    description = 'Add the optional saved-course PNG table without modifying existing courses'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.CoursePreviewSetup'
 }

@@ -14,6 +14,17 @@ public class SavedCourseController extends BasePageController {
     @FXML private ListView<String> placeList;
     @FXML private Label emptyLabel, detailTitle, detailSummary, messageLabel;
     @FXML private Button deleteButton, renameButton, openButton, refreshButton;
+    @FXML private javafx.scene.image.ImageView coursePreview;
+    @FXML private javafx.scene.layout.StackPane previewPane;
+    @FXML private Label previewStatus;
+    private long previewVersion;
+    private java.util.List<SavedCourse> previewCourses;
+    private final java.util.Map<String, java.util.Optional<javafx.scene.image.Image>> previews =
+            new java.util.LinkedHashMap<>(24, .75f, true) {
+                @Override protected boolean removeEldestEntry(java.util.Map.Entry<String, java.util.Optional<javafx.scene.image.Image>> entry) {
+                    return size() > 24;
+                }
+            };
     private SavedCourseRepository repository;
     private UserContext userContext;
     private long viewVersion;
@@ -21,6 +32,8 @@ public class SavedCourseController extends BasePageController {
     private boolean busy;
 
     @FXML public void initialize() {
+        coursePreview.fitWidthProperty().bind(previewPane.widthProperty());
+        coursePreview.fitHeightProperty().bind(previewPane.heightProperty());
         watchNotice(messageLabel, PageFeedback.Kind.ERROR);
         courseList.setCellFactory(list -> new ListCell<>() {
             @Override protected void updateItem(SavedCourse course, boolean empty) {
@@ -35,6 +48,7 @@ public class SavedCourseController extends BasePageController {
     }
 
     public void configure(SavedCourseRepository repository, UserContext context, Consumer<SavedCourse> onOpen) {
+        if (this.userContext != context) previews.clear();
         this.repository = repository;
         this.userContext = context;
         this.onOpen = onOpen;
@@ -43,6 +57,9 @@ public class SavedCourseController extends BasePageController {
 
     public void clear() {
         viewVersion++;
+        previewVersion++;
+        previews.clear();
+        previewCourses = null;
         userContext = null;
         repository = null;
         onOpen = null;
@@ -67,7 +84,50 @@ public class SavedCourseController extends BasePageController {
             for (Place place : course.plan().places()) placeList.getItems().add(order++ + ". " + place.name()
                     + " · " + place.priceText() + "\n" + place.details().address());
         }
+        showPreview(course);
         updateButtons();
+    }
+
+    private void showPreview(SavedCourse course) {
+        long version = ++previewVersion;
+        coursePreview.setImage(null);
+        previewPane.setVisible(course != null);
+        previewPane.setManaged(course != null);
+        previewStatus.setVisible(true);
+        if (course == null) return;
+        if (repository == null || userContext == null) {
+            previewStatus.setText("저장된 미리보기가 없어요. 코스를 다시 저장하면 생성돼요.");
+            return;
+        }
+        String key = course.courseId() + ":" + com.datecourse.service.CoursePreviewImage.fingerprint(course.plan());
+        if (previews.containsKey(key)) { displayPreview(previews.get(key)); return; }
+        previewStatus.setText("미리보기를 불러오고 있어요…");
+        var context = userContext;
+        var storage = repository;
+        var snapshot = previewCourses;
+        // No full-page loading overlay; selection and course opening remain responsive.
+        java.util.concurrent.CompletableFuture.supplyAsync(() -> {
+            try {
+                return storage.findPreview(context.session(), course).map(png -> {
+                    var image = new javafx.scene.image.Image(new java.io.ByteArrayInputStream(png));
+                    if (image.isError()) throw new IllegalArgumentException("이미지를 읽지 못했습니다.");
+                    return image;
+                });
+            } catch (Exception failure) { throw new java.util.concurrent.CompletionException(failure); }
+        }).whenComplete((image, failure) -> javafx.application.Platform.runLater(() -> {
+            if (context != userContext || context.isClosed()) return;
+            if (snapshot != previewCourses) return;
+            if (failure == null) previews.put(key, image);
+            if (version != previewVersion) return;
+            if (failure == null) displayPreview(image);
+            else previewStatus.setText("미리보기를 불러오지 못했어요. 코스는 바로 열 수 있어요.");
+        }));
+    }
+
+    private void displayPreview(java.util.Optional<javafx.scene.image.Image> image) {
+        coursePreview.setImage(image.orElse(null));
+        previewStatus.setVisible(image.isEmpty());
+        previewStatus.setText("저장된 미리보기가 없어요. 코스를 다시 저장하면 생성돼요.");
     }
 
     private void updateButtons() {
@@ -81,6 +141,7 @@ public class SavedCourseController extends BasePageController {
 
     @FXML private void onRefreshClick() {
         if (repository == null || busy) return;
+        previews.clear();
         userContext.invalidateCourses();
         loadCourses();
     }
@@ -97,6 +158,10 @@ public class SavedCourseController extends BasePageController {
         showFuture("저장한 코스를 확인하고 있어요", context.courses(), courses -> {
             if (context != userContext || context.isClosed() || version != viewVersion) return;
             busy = false;
+            if (previewCourses != courses) {
+                previews.clear();
+                previewCourses = courses;
+            }
             courseList.getItems().setAll(courses);
             emptyLabel.setVisible(courses.isEmpty());
             emptyLabel.setManaged(courses.isEmpty());

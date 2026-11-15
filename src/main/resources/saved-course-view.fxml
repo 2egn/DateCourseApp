@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -39,6 +41,11 @@
             </padding>
             <Label fx:id="detailTitle" text="코스를 선택해주세요" styleClass="subtitle"/>
             <Label fx:id="detailSummary"/>
+            <StackPane fx:id="previewPane" minHeight="240" prefHeight="260" maxHeight="260">
+                <ImageView fx:id="coursePreview" preserveRatio="true" fitHeight="220"
+                           accessibleText="저장한 코스의 장소 순서와 위치 연결도"/>
+                <Label fx:id="previewStatus" text="미리보기를 불러오고 있어요…" wrapText="true" styleClass="muted"/>
+            </StackPane>
             <ListView fx:id="placeList" VBox.vgrow="ALWAYS"/>
             <Label fx:id="messageLabel" styleClass="muted"/>
             <HBox spacing="10">

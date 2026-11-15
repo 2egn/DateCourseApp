@@ -45,6 +45,61 @@ class SavedCourseRepositoryTest {
         repository = new SavedCourseRepository(pool);
     }
 
+    @Test
+    void previewPngRoundTripsAndOwnershipIsChecked() throws Exception {
+        var saved = repository.save(owner, example());
+        byte[] png = repository.findPreview(owner, saved).orElseThrow();
+        var image = javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(png));
+        assertEquals(1000,image.getWidth()); assertEquals(420,image.getHeight());
+        assertTrue(repository.findPreview(new UserSession(8,"Other"), saved).isEmpty());
+        // Caller-supplied memberId cannot bypass the actual database owner check.
+        assertTrue(repository.findPreview(new UserSession(8,"Other"),
+                new SavedCourse(saved.courseId(),8,saved.plan())).isEmpty());
+        repository.delete(owner,saved.courseId());
+        assertEquals(0,count("saved_course_previews"));
+    }
+
+    @Test
+    void updatesReplacePreviewAndNeverReturnImageForAnOlderSnapshot() throws Exception {
+        var first = repository.save(owner,example());
+        var plan = example();
+        var changed = new RoutePlan(plan.startLat(),plan.startLng(),4,plan.radius(),plan.title(),plan.places());
+        var updated = repository.save(owner,first.courseId(),changed);
+        assertTrue(repository.findPreview(owner,first).isEmpty());
+        assertTrue(repository.findPreview(owner,updated).isPresent());
+        assertEquals(1,count("saved_course_previews"));
+        repository.rename(owner,updated.courseId(),"새 이름");
+        assertTrue(repository.findPreview(owner,repository.findAll(owner).getFirst()).isPresent());
+    }
+
+    @Test
+    void rendererFailureDoesNotLoseCourseAndRemovesTheOldPreview() throws Exception {
+        var first = repository.save(owner,example());
+        var failing = new SavedCourseRepository(pool, plan -> {throw new java.io.IOException("test");});
+        var updated = failing.save(owner,first.courseId(),example());
+        assertEquals(example(),storedPlan(updated.courseId()));
+        assertTrue(repository.findPreview(owner,updated).isEmpty());
+    }
+
+    @Test
+    void previewWriteFailureRollsBackOnlyTheImageAndHidesStaleContent() throws Exception {
+        var first = repository.save(owner,example());
+        execute("ALTER TABLE saved_course_previews ADD CONSTRAINT reject_preview CHECK (OCTET_LENGTH(image_png)<1) NOCHECK");
+        var plan = example();
+        var changed = new RoutePlan(plan.startLat(),plan.startLng(),4,plan.radius(),plan.title(),plan.places());
+        var updated = repository.save(owner,first.courseId(),changed);
+        assertEquals(changed,storedPlan(updated.courseId()));
+        assertTrue(repository.findPreview(owner,updated).isEmpty());
+    }
+
+    @Test
+    void legacyCourseWithoutPreviewTableStillOpens() throws Exception {
+        var saved = repository.save(owner,example());
+        execute("DROP TABLE saved_course_previews");
+        assertTrue(repository.findPreview(owner,saved).isEmpty());
+        assertEquals(example(),repository.findAll(owner).getFirst().plan());
+    }
+
     @AfterEach
     void closePool() {
         if (pool != null) pool.close();

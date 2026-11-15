@@ -28,11 +28,19 @@ import java.util.Map;
 /** Saves the course and its place snapshots in one transaction. Does not own the pool. */
 public final class SavedCourseRepository {
     private final DataSource dataSource;
+    private final com.datecourse.service.CoursePreviewRenderer previewRenderer;
+    private volatile boolean previewSchemaReady;
+    private static final System.Logger LOG = System.getLogger(SavedCourseRepository.class.getName());
     private final RouteRangeValidator rangeValidator = new RouteRangeValidator();
     private static final ObjectMapper JSON = new ObjectMapper();
 
     public SavedCourseRepository(DataSource dataSource) {
+        this(dataSource, new com.datecourse.service.CoursePreviewImage());
+    }
+
+    public SavedCourseRepository(DataSource dataSource, com.datecourse.service.CoursePreviewRenderer renderer) {
         this.dataSource = Objects.requireNonNull(dataSource);
+        this.previewRenderer = Objects.requireNonNull(renderer);
     }
 
     /** One ordered query reads each course and its saved places, without the current place dataset. */
@@ -133,6 +141,18 @@ public final class SavedCourseRepository {
 
     private SavedCourse persist(UserSession session, Long existingCourseId, RoutePlan plan) throws SQLException {
         validate(session, plan);
+        byte[] preview = null;
+        boolean previewStorage = false;
+        try {
+            initializePreviews(); // DDL must run before opening the course transaction.
+            previewStorage = true;
+            preview = previewRenderer.render(plan);
+            if (preview == null || preview.length == 0 || preview.length > 2_000_000)
+                throw new IOException("미리보기 이미지 크기를 확인해 주세요.");
+        } catch (IOException | SQLException | RuntimeException failure) {
+            preview = null;
+            LOG.log(System.Logger.Level.WARNING, "미리보기 생성/준비 실패. 코스 원본 저장을 계속합니다.");
+        }
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             try {
@@ -140,6 +160,14 @@ public final class SavedCourseRepository {
                         ? insertCourse(connection, session.memberId(), plan)
                         : updateCourse(connection, existingCourseId, session.memberId(), plan);
                 replacePlaces(connection, courseId, plan);
+                if (previewStorage) {
+                    var point = connection.setSavepoint();
+                    try { replacePreview(connection, courseId, plan, preview); }
+                    catch (SQLException failure) {
+                        connection.rollback(point);
+                        LOG.log(System.Logger.Level.WARNING, "미리보기 저장 실패. 코스 원본 저장을 계속합니다.");
+                    } finally { connection.releaseSavepoint(point); }
+                }
                 java.time.Instant updatedAt;
                 try (PreparedStatement query = connection.prepareStatement("SELECT updated_at FROM saved_courses WHERE course_id=?")) {
                     query.setLong(1, courseId);
@@ -153,6 +181,50 @@ public final class SavedCourseRepository {
                 catch (SQLException rollbackFailure) { failure.addSuppressed(rollbackFailure); }
                 throw failure;
             }
+        }
+    }
+
+    /** Additive setup, invoked on save or by the explicit setup command, never on list reads. */
+    public synchronized void initializePreviews() throws SQLException, IOException {
+        if (previewSchemaReady) return;
+        try (var input = getClass().getResourceAsStream("/db/11_saved_course_previews.sql")) {
+            if (input == null) throw new IOException("미리보기 스키마가 없습니다.");
+            String sql = new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8)
+                    .replaceAll("(?m)^--.*$", "");
+            try (var connection = dataSource.getConnection(); var statement = connection.createStatement()) {
+                statement.executeUpdate(sql);
+            }
+        }
+        previewSchemaReady = true;
+    }
+
+    private void replacePreview(Connection connection, long id, RoutePlan plan, byte[] png) throws SQLException {
+        try (var remove = connection.prepareStatement("DELETE FROM saved_course_previews WHERE course_id=?")) {
+            remove.setLong(1,id); remove.executeUpdate();
+        }
+        if (png == null) return;
+        try (var insert = connection.prepareStatement(
+                "INSERT INTO saved_course_previews(course_id,content_hash,image_png) VALUES(?,?,?)")) {
+            insert.setLong(1,id); insert.setString(2,com.datecourse.service.CoursePreviewImage.fingerprint(plan));
+            insert.setBytes(3,png); insert.executeUpdate();
+        }
+    }
+
+    /** Fetches one optional BLOB, checking both ownership and the selected snapshot revision. */
+    public java.util.Optional<byte[]> findPreview(UserSession session, SavedCourse course) throws SQLException {
+        requireSession(session);
+        try (var connection = dataSource.getConnection(); var query = connection.prepareStatement("""
+                SELECT p.image_png FROM saved_course_previews p JOIN saved_courses c ON c.course_id=p.course_id
+                WHERE c.member_id=? AND p.course_id=? AND p.content_hash=?
+                """)) {
+            query.setLong(1,session.memberId()); query.setLong(2,course.courseId());
+            query.setString(3,com.datecourse.service.CoursePreviewImage.fingerprint(course.plan()));
+            try (var row=query.executeQuery()) { return row.next() ? java.util.Optional.of(row.getBytes(1)) : java.util.Optional.empty(); }
+        } catch (SQLException failure) {
+            // Installations predating the optional migration can still open their courses.
+            if ("42S02".equals(failure.getSQLState()) || failure.getErrorCode()==42102)
+                return java.util.Optional.empty();
+            throw failure;
         }
     }
 
