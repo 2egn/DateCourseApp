@@ -41,3 +41,135 @@ application {
 test {
     useJUnitPlatform()
 }
+
+// Read the personal map key at runtime instead of packaging it in application archives.
+processResources {
+    doFirst { delete layout.buildDirectory.file('resources/main/db.properties').get().asFile }
+    exclude 'map/kakao-config.js', 'db.properties'
+    from('data/sql') { include '10_place_catalog.sql', '11_saved_course_previews.sql'; into 'db' }
+    from('data/places/demo') {
+        include 'seomyeon-jeonpo-demo.json', 'seomyeon-public-estimates.json'
+        into 'datasets'
+    }
+    from('data/places/appeal/busan-2026-11-14') {
+        include 'demo_appeal_facts.json'
+        into 'datasets/appeal'
+    }
+}
+tasks.named('jar') { exclude 'map/kakao-config.js', 'db.properties' }
+
+tasks.register('runMapDemo', JavaExec) {
+    group = 'application'
+    description = 'Open the planner map without requiring a DB login'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.ConditionLauncher'
+    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
+}
+
+tasks.register('runPlaceBindingDemo', JavaExec) {
+    group = 'verification'
+    description = 'Check confirmed pilot place IDs without an API call or DB connection'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.PlaceBindingDemo'
+}
+
+tasks.register('runPilotDemo', JavaExec) {
+    group = 'application'
+    description = 'Open the nine-place pilot planner without a member DB connection'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.PilotPlannerLauncher'
+    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
+}
+
+tasks.register('setupInformationReports', JavaExec) {
+    group = 'verification'
+    description = 'Prepare additive information-report tables without changing existing records'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.InformationReportSetup'
+}
+
+// Provider keys are fetched at runtime, never copied into application resources.
+// Overwrite old generated configuration too, so a rebuild removes previously embedded TMAP keys.
+def tmapServiceResources = layout.buildDirectory.dir('generated/tmap-service-resources')
+tasks.register('prepareTmapServiceConfig') {
+    outputs.dir(tmapServiceResources)
+    outputs.upToDateWhen { false }
+    doLast {
+        def destination = tmapServiceResources.get().file('tmap-service.properties').asFile
+        destination.parentFile.mkdirs()
+        destination.setText('tmap.app.key=\n', 'UTF-8')
+    }
+}
+sourceSets.main.resources.srcDir(tmapServiceResources)
+tasks.named('processResources') { dependsOn 'prepareTmapServiceConfig' }
+
+// Real map integration runs in a separate worker from the WebView fixtures.
+tasks.named('test') { exclude '**/WalkingRouteLiveTest.class' }
+tasks.register('tmapLiveTest', Test) {
+    group = 'verification'
+    description = 'Verify the packaged TMAP service on the real Kakao map'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    include '**/WalkingRouteLiveTest.class'
+    useJUnitPlatform()
+    environment 'RUN_TMAP_LIVE_TEST', 'true'
+}
+
+// Explicit operational import; the preview task does not connect to any database.
+tasks.register('previewPlaceImport', JavaExec) {
+    group = 'verification'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.PublicPlaceImport'
+}
+tasks.register('importPublicPlaces', JavaExec) {
+    group = 'application'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.PublicPlaceImport'
+    args '--apply'
+}
+
+// Isolated camera motion comparison: no member DB or production planner changes.
+tasks.register('runCameraMotionDemo', JavaExec) {
+    group = 'application'
+    description = 'Compare existing and proposed camera motion on two real Kakao maps'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.CameraMotionDemoLauncher'
+    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
+}
+
+// Opt-in network check, kept out of the ordinary offline test suite.
+tasks.named('test') { exclude '**/CameraMotionLiveTest.class' }
+tasks.register('cameraMotionLiveTest', Test) {
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    include '**/CameraMotionLiveTest.class'
+    useJUnitPlatform()
+    environment 'RUN_CAMERA_LIVE_TEST', 'true'
+}
+
+tasks.register('setupCoursePreviews', JavaExec) {
+    group = 'verification'
+    description = 'Add the optional saved-course PNG table without modifying existing courses'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.CoursePreviewSetup'
+}
+
+// Uses the configured Kakao key, with no walking-route API or member DB calls.
+tasks.named('test') { exclude '**/CourseMapCaptureLiveTest.class' }
+tasks.register('coursePreviewLiveTest', Test) {
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    include '**/CourseMapCaptureLiveTest.class'
+    useJUnitPlatform()
+    environment 'RUN_COURSE_PREVIEW_LIVE_TEST', 'true'
+}
+
+// Explicit maintenance: password entry is local and masked, never a command-line argument.
+tasks.register('resetAdminPassword', JavaExec) {
+    group = 'application'
+    description = 'Reset the existing administrator password through a local masked-input dialog'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'kr.ac.university.localdb.db.AdminPasswordReset'
+}

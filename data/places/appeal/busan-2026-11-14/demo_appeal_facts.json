@@ -1,0 +1,2748 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-14T14:04:51.417491+00:00",
+  "datasetSha256": "2db8f275ea00f143925d5237371a634e2383b9823fce1ac9ca4231e2b3a7d51e",
+  "places": [
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202607A0151351",
+      "publicPlaceId": "SBIZ:MA0101202607A0151351",
+      "name": "대모골",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 163m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장입구 정류장 기준 직선 57m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220813751543",
+      "publicPlaceId": "SBIZ:MA010120220813751543",
+      "name": "부잣집밀면",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 213m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장.부전몰 정류장 기준 직선 80m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0012647",
+      "publicPlaceId": "SBIZ:MA0101202406A0012647",
+      "name": "파노라믹커피부산",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 106m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 67m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220802888675",
+      "publicPlaceId": "SBIZ:MA010120220802888675",
+      "name": "바램",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 367m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805402285",
+      "publicPlaceId": "SBIZ:MA010120220805402285",
+      "name": "전포히카루",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "전포역 역사 좌표 기준 직선 439m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "전포카페거리 정류장 기준 직선 97m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220807078377",
+      "publicPlaceId": "SBIZ:MA010120220807078377",
+      "name": "통영아구찜",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 202m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장.부전몰 정류장 기준 직선 89m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A2364057",
+      "publicPlaceId": "SBIZ:MA0106202201A2364057",
+      "name": "스타벅스 서면문화로",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 151m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "영광도서 정류장 기준 직선 39m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-LIB:73",
+      "publicPlaceId": "LIB:73",
+      "name": "연지동작은도서관",
+      "tags": [
+        {
+          "tag": "NEAR_BUS",
+          "basis": "래미안어반파크 정류장 기준 직선 185m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-LIB:69",
+      "publicPlaceId": "LIB:69",
+      "name": "범천작은도서관",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "범내골역 역사 좌표 기준 직선 275m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "범천2동주민센터.견우공원 정류장 기준 직선 65m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202603A0020773",
+      "publicPlaceId": "SBIZ:MA0101202603A0020773",
+      "name": "마로니에",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 117m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역 정류장 기준 직선 73m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202508A0001605",
+      "publicPlaceId": "SBIZ:MA0101202508A0001605",
+      "name": "희자도금",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 119m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역 정류장 기준 직선 70m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202509A0021406",
+      "publicPlaceId": "SBIZ:MA0101202509A0021406",
+      "name": "갑진집 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 127m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 76m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0004305",
+      "publicPlaceId": "SBIZ:MA0101202406A0004305",
+      "name": "구미호식당",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 93m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역 정류장 기준 직선 36m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202411A0024935",
+      "publicPlaceId": "SBIZ:MA0101202411A0024935",
+      "name": "샤브드림 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 152m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 57m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202601A0007018",
+      "publicPlaceId": "SBIZ:MA0101202601A0007018",
+      "name": "가련한부엌",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 119m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역 정류장 기준 직선 65m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202506A0030818",
+      "publicPlaceId": "SBIZ:MA0101202506A0030818",
+      "name": "미즈장승진",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 157m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 39m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202512A0040366",
+      "publicPlaceId": "SBIZ:MA0101202512A0040366",
+      "name": "청년어부",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 139m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 87m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202310A0000256",
+      "publicPlaceId": "SBIZ:MA0101202310A0000256",
+      "name": "참잘돼지국밥",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 175m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 39m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0057429",
+      "publicPlaceId": "SBIZ:MA0101202406A0057429",
+      "name": "송암",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 176m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 82m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202305A0036969",
+      "publicPlaceId": "SBIZ:MA0101202305A0036969",
+      "name": "한점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 184m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 58m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220813532656",
+      "publicPlaceId": "SBIZ:MA010120220813532656",
+      "name": "5일장터",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 185m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 26m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202603A0001260",
+      "publicPlaceId": "SBIZ:MA0101202603A0001260",
+      "name": "경아포차",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 185m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 26m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220807013467",
+      "publicPlaceId": "SBIZ:MA010120220807013467",
+      "name": "스구식탁서면",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 189m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 38m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202409A0173000",
+      "publicPlaceId": "SBIZ:MA0101202409A0173000",
+      "name": "5일장터",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 188m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 20m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810626208",
+      "publicPlaceId": "SBIZ:MA010120220810626208",
+      "name": "대가호",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 189m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 38m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220811574232",
+      "publicPlaceId": "SBIZ:MA010120220811574232",
+      "name": "사성각",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 201m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 62m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805051675",
+      "publicPlaceId": "SBIZ:MA010120220805051675",
+      "name": "청킹익스프레스",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 234m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 103m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202604A0025925",
+      "publicPlaceId": "SBIZ:MA0101202604A0025925",
+      "name": "룡룡마라도원 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 176m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 73m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202412A0038394",
+      "publicPlaceId": "SBIZ:MA0101202412A0038394",
+      "name": "중경식객부산 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 199m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 98m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808429119",
+      "publicPlaceId": "SBIZ:MA010120220808429119",
+      "name": "꼬막짬뽕",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 271m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "전포초등학교 정류장 기준 직선 57m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202308A0050564",
+      "publicPlaceId": "SBIZ:MA0101202308A0050564",
+      "name": "짜장나라돌판공주",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 155m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "롯데호텔백화점.서면역 정류장 기준 직선 31m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202502A0092748",
+      "publicPlaceId": "SBIZ:MA0101202502A0092748",
+      "name": "대명반점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 261m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장.부전몰 정류장 기준 직선 48m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220807155887",
+      "publicPlaceId": "SBIZ:MA010120220807155887",
+      "name": "쏘핫마라탕마라샹궈",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 138m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "롯데호텔백화점.서면역 정류장 기준 직선 50m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810647501",
+      "publicPlaceId": "SBIZ:MA010120220810647501",
+      "name": "달인손짜장",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 258m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장입구 정류장 기준 직선 128m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220814110962",
+      "publicPlaceId": "SBIZ:MA010120220814110962",
+      "name": "태백관",
+      "tags": [
+        {
+          "tag": "MODEL_RESTAURANT",
+          "basis": "부산진구 모범음식점 지정 목록 · 상호와 도로명 건물번호가 유일하게 일치",
+          "sourceUrl": "https://www.data.go.kr/data/15055847/fileData.do",
+          "checkedAt": "2025-11-17",
+          "matchCheckedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "부전역 역사 좌표 기준 직선 310m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "전포초등학교 정류장 기준 직선 53m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202502A0081487",
+      "publicPlaceId": "SBIZ:MA0101202502A0081487",
+      "name": "린선식객",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 227m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면시장 정류장 기준 직선 66m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0034170",
+      "publicPlaceId": "SBIZ:MA0101202608A0034170",
+      "name": "홍콩반점0410서면 롯데점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 191m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면시장 정류장 기준 직선 31m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805308445",
+      "publicPlaceId": "SBIZ:MA010120220805308445",
+      "name": "급행장차이나",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 179m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "영광도서 정류장 기준 직선 54m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202305A0154621",
+      "publicPlaceId": "SBIZ:MA0101202305A0154621",
+      "name": "벧엘",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 324m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장.부전몰 정류장 기준 직선 115m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808837597",
+      "publicPlaceId": "SBIZ:MA010120220808837597",
+      "name": "원카츠 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 152m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 57m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0071318",
+      "publicPlaceId": "SBIZ:MA0101202608A0071318",
+      "name": "자유인",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 138m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 64m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220809693555",
+      "publicPlaceId": "SBIZ:MA010120220809693555",
+      "name": "기리",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 159m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 34m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202506A0019696",
+      "publicPlaceId": "SBIZ:MA0101202506A0019696",
+      "name": "야키니쿠객",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 157m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 39m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220800085324",
+      "publicPlaceId": "SBIZ:MA010120220800085324",
+      "name": "만쿠",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 139m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 87m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202503A0059212",
+      "publicPlaceId": "SBIZ:MA0101202503A0059212",
+      "name": "호르몬치치부산 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 146m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역 정류장 기준 직선 86m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202504A0033854",
+      "publicPlaceId": "SBIZ:MA0101202504A0033854",
+      "name": "림잇티드",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 178m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역 정류장 기준 직선 119m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810439799",
+      "publicPlaceId": "SBIZ:MA010120220810439799",
+      "name": "라멘야",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 208m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 88m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0550263",
+      "publicPlaceId": "SBIZ:MA0101202406A0550263",
+      "name": "본야끼카야 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 210m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 97m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0281278",
+      "publicPlaceId": "SBIZ:MA0101202406A0281278",
+      "name": "힝",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 218m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 85m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220812355949",
+      "publicPlaceId": "SBIZ:MA010120220812355949",
+      "name": "사카바차니야",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 226m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 77m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202603A0046536",
+      "publicPlaceId": "SBIZ:MA0101202603A0046536",
+      "name": "차니야",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 226m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 77m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220812913053",
+      "publicPlaceId": "SBIZ:MA010120220812913053",
+      "name": "각방",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 230m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 63m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202308A0045433",
+      "publicPlaceId": "SBIZ:MA0101202308A0045433",
+      "name": "야키야전포 직영점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 222m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 96m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0030160",
+      "publicPlaceId": "SBIZ:MA0101202608A0030160",
+      "name": "도쿄스탠드 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 184m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 116m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220812634678",
+      "publicPlaceId": "SBIZ:MA010120220812634678",
+      "name": "부전수구레국밥",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 186m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장입구 정류장 기준 직선 86m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202506A0026100",
+      "publicPlaceId": "SBIZ:MA0101202506A0026100",
+      "name": "부전식당",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 177m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장입구 정류장 기준 직선 32m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810658172",
+      "publicPlaceId": "SBIZ:MA010120220810658172",
+      "name": "회국수할매집",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 104m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "영광도서 정류장 기준 직선 33m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220809558286",
+      "publicPlaceId": "SBIZ:MA010120220809558286",
+      "name": "이가야",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 245m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장.부전몰 정류장 기준 직선 93m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220803082077",
+      "publicPlaceId": "SBIZ:MA010120220803082077",
+      "name": "화전국수",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 258m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 105m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0400566",
+      "publicPlaceId": "SBIZ:MA0101202406A0400566",
+      "name": "도연정",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 197m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "국민은행 정류장 기준 직선 36m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810610482",
+      "publicPlaceId": "SBIZ:MA010120220810610482",
+      "name": "우정분식",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "MODEL_RESTAURANT",
+          "basis": "부산진구 모범음식점 지정 목록 · 상호와 도로명 건물번호가 유일하게 일치",
+          "sourceUrl": "https://www.data.go.kr/data/15055847/fileData.do",
+          "checkedAt": "2025-11-17",
+          "matchCheckedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 310m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전도서관 정류장 기준 직선 53m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220803104864",
+      "publicPlaceId": "SBIZ:MA010120220803104864",
+      "name": "초원곰탕 서면점",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 231m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장입구 정류장 기준 직선 86m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810618098",
+      "publicPlaceId": "SBIZ:MA010120220810618098",
+      "name": "한라정",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 241m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장입구 정류장 기준 직선 94m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202601A0009147",
+      "publicPlaceId": "SBIZ:MA0101202601A0009147",
+      "name": "부전시장왕뽈떼기",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 258m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장입구 정류장 기준 직선 103m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220809404827",
+      "publicPlaceId": "SBIZ:MA010120220809404827",
+      "name": "야우보쌈",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 274m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장입구 정류장 기준 직선 90m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810639589",
+      "publicPlaceId": "SBIZ:MA010120220810639589",
+      "name": "옛날짜장",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 320m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장.부전몰 정류장 기준 직선 141m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220814084596",
+      "publicPlaceId": "SBIZ:MA010120220814084596",
+      "name": "돈까스예찬",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 300m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 94m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202305A0067802",
+      "publicPlaceId": "SBIZ:MA0101202305A0067802",
+      "name": "지성감족",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "부전역 역사 좌표 기준 직선 317m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장.부전몰 정류장 기준 직선 142m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202412A0025762",
+      "publicPlaceId": "SBIZ:MA0101202412A0025762",
+      "name": "1974골목",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 276m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면시장 정류장 기준 직선 87m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202509A0012223",
+      "publicPlaceId": "SBIZ:MA0101202509A0012223",
+      "name": "삼남매국밥&구이",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 344m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장 정류장 기준 직선 98m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810623947",
+      "publicPlaceId": "SBIZ:MA010120220810623947",
+      "name": "함흥면옥",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 344m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장 정류장 기준 직선 57m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0079424",
+      "publicPlaceId": "SBIZ:MA0101202608A0079424",
+      "name": "특별한식당",
+      "tags": [
+        {
+          "tag": "GOOD_PRICE",
+          "basis": "공공 지정자료와 장소 ID 연결 · 지정 현황은 자료 기준일 참고",
+          "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+          "checkedAt": "2026-09-30"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "부전역 역사 좌표 기준 직선 211m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장 정류장 기준 직선 65m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A2364418",
+      "publicPlaceId": "SBIZ:MA0106202201A2364418",
+      "name": "스타벅스 서면역",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 71m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역12번출구 정류장 기준 직선 84m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220814333070",
+      "publicPlaceId": "SBIZ:MA010120220814333070",
+      "name": "바스타커피 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 147m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 32m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0290309",
+      "publicPlaceId": "SBIZ:MA0101202406A0290309",
+      "name": "그릭하다 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 147m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 32m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0203462",
+      "publicPlaceId": "SBIZ:MA0101202406A0203462",
+      "name": "하이오커피서면 중앙점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 147m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 17m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810655848",
+      "publicPlaceId": "SBIZ:MA010120220810655848",
+      "name": "커피식스부산 서면점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 127m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 76m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220814101669",
+      "publicPlaceId": "SBIZ:MA010120220814101669",
+      "name": "텐퍼센트커피서면서전로점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 152m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 57m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A0153564",
+      "publicPlaceId": "SBIZ:MA0106202201A0153564",
+      "name": "커피빈부산서면서전로 코리아",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 157m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 15m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808645779",
+      "publicPlaceId": "SBIZ:MA010120220808645779",
+      "name": "앤더스커피",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 12m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역 정류장 기준 직선 66m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220813840830",
+      "publicPlaceId": "SBIZ:MA010120220813840830",
+      "name": "블루샥",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 157m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 39m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0030660",
+      "publicPlaceId": "SBIZ:MA0101202608A0030660",
+      "name": "히스피커피서면동천로점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 157m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역12번출구 정류장 기준 직선 69m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202604A0017051",
+      "publicPlaceId": "SBIZ:MA0101202604A0017051",
+      "name": "카페051서면DB사옥점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 160m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역12번출구 정류장 기준 직선 65m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0099301",
+      "publicPlaceId": "SBIZ:MA0101202608A0099301",
+      "name": "세인컴퍼니",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 175m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 39m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202411A0142755",
+      "publicPlaceId": "SBIZ:MA0101202411A0142755",
+      "name": "수달다방",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 158m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 66m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220806501165",
+      "publicPlaceId": "SBIZ:MA010120220806501165",
+      "name": "선녀와나무꾼",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 138m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역 정류장 기준 직선 84m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202512A0030306",
+      "publicPlaceId": "SBIZ:MA0101202512A0030306",
+      "name": "영커피DB부산사옥점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 167m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역12번출구 정류장 기준 직선 66m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220806723293",
+      "publicPlaceId": "SBIZ:MA010120220806723293",
+      "name": "브룩스",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 132m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역 정류장 기준 직선 71m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202409A0245475",
+      "publicPlaceId": "SBIZ:MA0101202409A0245475",
+      "name": "그레이핍플서면역점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 213m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 16m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805069482",
+      "publicPlaceId": "SBIZ:MA010120220805069482",
+      "name": "컴포즈파크에비뉴",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 205m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역12번출구 정류장 기준 직선 87m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220811690273",
+      "publicPlaceId": "SBIZ:MA010120220811690273",
+      "name": "로즈",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 210m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역12번출구 정류장 기준 직선 84m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810600686",
+      "publicPlaceId": "SBIZ:MA010120220810600686",
+      "name": "금호다방",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 172m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역12번출구 정류장 기준 직선 55m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202306A0077099",
+      "publicPlaceId": "SBIZ:MA0101202306A0077099",
+      "name": "스위디",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 229m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면부속상가 정류장 기준 직선 34m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220812190712",
+      "publicPlaceId": "SBIZ:MA010120220812190712",
+      "name": "컴포즈커피서면역점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 169m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 100m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808155033",
+      "publicPlaceId": "SBIZ:MA010120220808155033",
+      "name": "어벤더치",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 165m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 80m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810643713",
+      "publicPlaceId": "SBIZ:MA010120220810643713",
+      "name": "이디야서면 제일점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 165m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 80m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805383045",
+      "publicPlaceId": "SBIZ:MA010120220805383045",
+      "name": "댄싱컵부산서면역점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 175m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 94m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808336456",
+      "publicPlaceId": "SBIZ:MA010120220808336456",
+      "name": "카페이떼",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 166m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역12번출구 정류장 기준 직선 83m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202602A0027648",
+      "publicPlaceId": "SBIZ:MA0101202602A0027648",
+      "name": "메가엠지씨커피서면 3호점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 89m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전시장입구 정류장 기준 직선 63m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202604A0043444",
+      "publicPlaceId": "SBIZ:MA0101202604A0043444",
+      "name": "언노운라운지",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 176m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 73m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A2364130",
+      "publicPlaceId": "SBIZ:MA0106202201A2364130",
+      "name": "스타벅스 서면서전로",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 250m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면교차로 정류장 기준 직선 16m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0102970",
+      "publicPlaceId": "SBIZ:MA0101202608A0102970",
+      "name": "우지커피서면역점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 134m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역.서면지하상가 정류장 기준 직선 64m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810611667",
+      "publicPlaceId": "SBIZ:MA010120220810611667",
+      "name": "명신커피숍",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 182m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면역12번출구 정류장 기준 직선 84m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202409A0226368",
+      "publicPlaceId": "SBIZ:MA0101202409A0226368",
+      "name": "파스쿠찌부산서면아이온시티점",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 64m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "롯데호텔백화점.서면역 정류장 기준 직선 25m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A0046143",
+      "publicPlaceId": "SBIZ:MA0106202201A0046143",
+      "name": "엔제리너스부산아이온시티",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 64m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "롯데호텔백화점.서면역 정류장 기준 직선 25m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-LIB:21",
+      "publicPlaceId": "LIB:21",
+      "name": "부전도서관",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 337m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부전도서관 정류장 기준 직선 20m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b6b6e11b0673809a1375a7f7",
+      "publicPlaceId": "STD:15017323:b6b6e11b0673809a1375a7f7",
+      "name": "KT&G상상마당부산미술관",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "서면역 역사 좌표 기준 직선 394m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "서면복개로 정류장 기준 직선 55m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-LIB:212",
+      "publicPlaceId": "LIB:212",
+      "name": "전포마루작은도서관",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "부전역 역사 좌표 기준 직선 324m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "한신아파트 정류장 기준 직선 106m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-LIB:23",
+      "publicPlaceId": "LIB:23",
+      "name": "중앙도서관분관부산영어도서관",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "부암역 역사 좌표 기준 직선 179m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부산글로벌빌리지 정류장 기준 직선 53m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:3323a88dfb94372735e06dca",
+      "publicPlaceId": "STD:15012890:3323a88dfb94372735e06dca",
+      "name": "전포2-1재개발공원",
+      "tags": [
+        {
+          "tag": "NEAR_BUS",
+          "basis": "협성아파트 정류장 기준 직선 92m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-LIB:213",
+      "publicPlaceId": "LIB:213",
+      "name": "전포어울더울작은도서관",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "전포역 역사 좌표 기준 직선 224m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "성북초등학교 정류장 기준 직선 151m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8260f79acf2558731dc13ddc",
+      "publicPlaceId": "STD:15012890:8260f79acf2558731dc13ddc",
+      "name": "시민공원",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "부전역역 역사 좌표 기준 직선 397m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2025-04-08",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "부산진중학교 정류장 기준 직선 66m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:27435b682df42e3910b6cca1",
+      "publicPlaceId": "STD:15012890:27435b682df42e3910b6cca1",
+      "name": "전포2-1재개발",
+      "tags": [
+        {
+          "tag": "NEAR_BUS",
+          "basis": "전포삼거리 정류장 기준 직선 97m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:c235d63e829cc2713276086e",
+      "publicPlaceId": "STD:15012890:c235d63e829cc2713276086e",
+      "name": "동천문화공원",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "국제금융센터·부산은행역 역사 좌표 기준 직선 380m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "지오플레이스 정류장 기준 직선 69m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:dd37d113291f15027d6931df",
+      "publicPlaceId": "STD:15017323:dd37d113291f15027d6931df",
+      "name": "증권박물관(부산관)",
+      "tags": [
+        {
+          "tag": "FREE_ADMISSION",
+          "basis": "성인 기본 관람료 0원 · 별도 프로그램 제외",
+          "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
+          "checkedAt": "2025-11-24"
+        },
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "국제금융센터·부산은행역 역사 좌표 기준 직선 295m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "문전교차로 정류장 기준 직선 45m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-LIB:74",
+      "publicPlaceId": "LIB:74",
+      "name": "책마루작은도서관",
+      "tags": [
+        {
+          "tag": "NEAR_BUS",
+          "basis": "진양교차로 정류장 기준 직선 96m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:5fcc2f618cddea3c2a172681",
+      "publicPlaceId": "STD:15012890:5fcc2f618cddea3c2a172681",
+      "name": "금융지구공원",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "국제금융센터·부산은행역 역사 좌표 기준 직선 222m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "이마트문현점 정류장 기준 직선 160m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:86baa4cfbae327d03604313a",
+      "publicPlaceId": "STD:15012890:86baa4cfbae327d03604313a",
+      "name": "양정공원",
+      "tags": [
+        {
+          "tag": "NEAR_BUS",
+          "basis": "동의과학대사거리 정류장 기준 직선 185m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:37ac03de03f1fe426869c6db",
+      "publicPlaceId": "STD:15012890:37ac03de03f1fe426869c6db",
+      "name": "돌산공원",
+      "tags": [
+        {
+          "tag": "NEAR_BUS",
+          "basis": "전포보람어린이집 정류장 기준 직선 179m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:88c3e619f01b0ffe2051c3dd",
+      "publicPlaceId": "STD:15012890:88c3e619f01b0ffe2051c3dd",
+      "name": "문현IFC소공원1",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "국제금융센터·부산은행역 역사 좌표 기준 직선 381m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "범2호교 정류장 기준 직선 35m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:fd530d67ffef75d0f6e0b3e2",
+      "publicPlaceId": "STD:15012890:fd530d67ffef75d0f6e0b3e2",
+      "name": "문현3 어린이공원2",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "국제금융센터·부산은행역 역사 좌표 기준 직선 403m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "문현초등학교 정류장 기준 직선 113m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:3a81bf5e7b66ace7492692f1",
+      "publicPlaceId": "STD:15012890:3a81bf5e7b66ace7492692f1",
+      "name": "문현3 어린이공원1",
+      "tags": [
+        {
+          "tag": "NEAR_BUS",
+          "basis": "문현현대2차아파트 정류장 기준 직선 99m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:59518bfe5ce37a36c827c1c3",
+      "publicPlaceId": "STD:15012890:59518bfe5ce37a36c827c1c3",
+      "name": "연지어린이공원",
+      "tags": [
+        {
+          "tag": "NEAR_BUS",
+          "basis": "래미안어반파크 정류장 기준 직선 90m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8faf72c85cd04fec60ae42ba",
+      "publicPlaceId": "STD:15012890:8faf72c85cd04fec60ae42ba",
+      "name": "문현IFC소공원2",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "문현역 역사 좌표 기준 직선 426m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "무지개다리 정류장 기준 직선 49m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-LIB:71",
+      "publicPlaceId": "LIB:71",
+      "name": "양정1동 행복마루 작은도서관",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "양정역 역사 좌표 기준 직선 244m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "양정역 정류장 기준 직선 131m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:0a3b0593669d8d994af15a16",
+      "publicPlaceId": "STD:15012890:0a3b0593669d8d994af15a16",
+      "name": "소공원",
+      "tags": [
+        {
+          "tag": "NEAR_SUBWAY",
+          "basis": "국제금융센터·부산은행역 역사 좌표 기준 직선 463m · 출입구·도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15013205/standard.do",
+          "checkedAt": "2022-11-30",
+          "calculatedAt": "2026-11-14"
+        },
+        {
+          "tag": "NEAR_BUS",
+          "basis": "문현초등학교 정류장 기준 직선 123m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:448526d11fc945f06d87e37a",
+      "publicPlaceId": "STD:15012890:448526d11fc945f06d87e37a",
+      "name": "화지공원",
+      "tags": [
+        {
+          "tag": "NEAR_BUS",
+          "basis": "정묘사 정류장 기준 직선 87m · 도보 경로 아님",
+          "sourceUrl": "https://www.data.go.kr/data/15067528/fileData.do",
+          "checkedAt": "2026-11-09",
+          "calculatedAt": "2026-11-14"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "NEAR_SUBWAY": "역사 중심 직선거리 500m 이하",
+    "NEAR_BUS": "정류장 좌표 직선거리 200m 이하"
+  }
+}

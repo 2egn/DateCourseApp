@@ -1,0 +1,76 @@
+{
+  "note": "현행 PlaceTag에 자동 적용하지 않는 별도 확인 자료",
+  "facts": [
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b6b6e11b0673809a1375a7f7",
+      "name": "KT&G상상마당부산미술관",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
+      "sourceDate": "2025-11-27",
+      "checkedAt": "2026-11-14"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b6b6e11b0673809a1375a7f7",
+      "name": "KT&G상상마당부산미술관",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
+      "sourceDate": "2025-11-27",
+      "checkedAt": "2026-11-14"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8260f79acf2558731dc13ddc",
+      "name": "시민공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-14"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:86baa4cfbae327d03604313a",
+      "name": "양정공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-14"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:37ac03de03f1fe426869c6db",
+      "name": "돌산공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-14"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:dd37d113291f15027d6931df",
+      "name": "증권박물관(부산관)",
+      "kind": "FREE_ADMISSION",
+      "label": "무료 관람",
+      "basis": "운영기관 관람 안내에서 관람료 무료 확인",
+      "sourceUrl": "https://bsmuseum.ksd.or.kr/contents.do?menuno=262",
+      "sourceExcerpt": "관람료 무료",
+      "checkedAt": "2026-11-14"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:dd37d113291f15027d6931df",
+      "name": "증권박물관(부산관)",
+      "kind": "FREE_AUDIO_GUIDE",
+      "label": "오디오가이드 무료 대여",
+      "basis": "운영기관 관람 안내에 무료 대여 명시",
+      "conditions": "관람 당일 신분증 보관 및 신청서 작성; 만 14세 이하는 보호자 동반",
+      "sourceUrl": "https://bsmuseum.ksd.or.kr/contents.do?menuno=262",
+      "sourceExcerpt": "대여료 무료",
+      "checkedAt": "2026-11-14"
+    }
+  ]
+}

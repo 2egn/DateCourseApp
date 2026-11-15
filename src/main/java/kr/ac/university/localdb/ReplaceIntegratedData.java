@@ -16,7 +16,7 @@ public class ReplaceIntegratedData {
             "INSERT INTO data_records(category_id,source_file,source_row_number,data_payload) VALUES ";
     public static void main(String[] args) throws Exception {
         DbSettings settings = DbSettings.load();
-        var lines = Files.readAllLines(Path.of("database/05_replace_integrated_data.sql"));
+        var lines = Files.readAllLines(Path.of("data/sql/05_replace_integrated_data.sql"));
         try (Connection c = DriverManager.getConnection(settings.url(), settings.user(), settings.password());
              Statement s = c.createStatement()) {
             if (c.getCatalog() == null || c.getCatalog().isBlank()) {

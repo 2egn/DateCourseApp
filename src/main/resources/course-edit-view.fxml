@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
@@ -16,7 +17,7 @@
             prefWidth="1000" prefHeight="700">
 
     <top>
-        <Label text="코스 수정 · 공유" styleClass="title">
+        <Label fx:id="editorHeading" text="코스 수정 · 공유" styleClass="title">
             <padding>
                 <Insets top="20" right="20" bottom="10" left="20"/>
             </padding>
@@ -24,13 +25,13 @@
     </top>
 
     <center>
-        <HBox spacing="20">
+        <HBox fx:id="editorContent" spacing="20">
             <padding>
                 <Insets top="5" right="20" bottom="10" left="20"/>
             </padding>
 
             <!-- 왼쪽: 추천 코스 3개 -->
-            <VBox spacing="8" prefWidth="430" minWidth="430">
+            <VBox fx:id="candidatePane" spacing="8" prefWidth="430" minWidth="430">
                 <Label text="추천 코스" styleClass="section"/>
                 <ListView fx:id="candidateList" prefHeight="190"/>
                 <Button fx:id="importButton" text="이 코스 통째로 가져오기" onAction="#onImportClick" maxWidth="Infinity"/>
@@ -50,12 +51,12 @@
 
                 <ListView fx:id="placeList" VBox.vgrow="ALWAYS"/>
 
-                <HBox spacing="10">
+                <FlowPane hgap="6" vgap="6">
                     <Button fx:id="upButton" text="▲ 위로" onAction="#onMoveUpClick" styleClass="secondary"/>
                     <Button fx:id="downButton" text="▼ 아래로" onAction="#onMoveDownClick" styleClass="secondary"/>
                     <Button fx:id="removeButton" text="가게 삭제" onAction="#onRemoveClick" styleClass="danger"/>
                     <Button fx:id="clearButton" text="모두 비우기" onAction="#onClearClick" styleClass="danger"/>
-                </HBox>
+                </FlowPane>
             </VBox>
         </HBox>
     </center>

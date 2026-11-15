@@ -1,0 +1,14 @@
+.modern-scroll .scroll-bar, .list-view .scroll-bar, .table-view .scroll-bar, .text-area .scroll-bar {
+    -fx-background-color: transparent; -fx-padding: 1;
+}
+.scroll-bar:vertical { -fx-min-width: 8; -fx-pref-width: 8; -fx-max-width: 8; }
+.scroll-bar:horizontal { -fx-min-height: 8; -fx-pref-height: 8; -fx-max-height: 8; }
+.scroll-bar .track, .scroll-bar .track-background { -fx-background-color: transparent; }
+.scroll-bar .thumb { -fx-background-color: #bbc4cf; -fx-background-radius: 8; -fx-background-insets: 0; }
+.scroll-bar .thumb:hover, .scroll-bar .thumb:pressed { -fx-background-color: #8795a7; }
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-padding: 0; -fx-min-width: 0; -fx-pref-width: 0; -fx-max-width: 0;
+    -fx-min-height: 0; -fx-pref-height: 0; -fx-max-height: 0;
+}
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow { -fx-padding: 0; -fx-shape: ""; }
+.scroll-pane > .corner { -fx-background-color: transparent; }

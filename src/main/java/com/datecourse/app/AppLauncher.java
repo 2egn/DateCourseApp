@@ -2,7 +2,7 @@ package com.datecourse.app;
 
 import kr.ac.university.localdb.ui.MembershipApp;
 
-/** Application entry point. Screen setup and database initialization remain in MembershipApp. */
+/** shift + f10으로 시작 */
 public final class AppLauncher {
     private AppLauncher() {}
 

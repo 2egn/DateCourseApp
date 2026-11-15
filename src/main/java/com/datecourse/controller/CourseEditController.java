@@ -22,6 +22,18 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 public class CourseEditController implements Initializable {
+    @FXML private javafx.scene.layout.VBox candidatePane;
+    @FXML private javafx.scene.layout.HBox editorContent;
+    @FXML private Label editorHeading;
+
+    /** 기존 편집 화면을 추천 화면 안의 단일 목록 패널로 사용한다. */
+    public void useAsPanel() {
+        candidatePane.setVisible(false);
+        candidatePane.setManaged(false);
+        editorHeading.setVisible(false);
+        editorHeading.setManaged(false);
+        editorContent.setSpacing(0);
+    }
 
     // 왼쪽: 추천 코스
     @FXML private ListView<Course> candidateList;
@@ -49,7 +61,6 @@ public class CourseEditController implements Initializable {
     private final ObservableList<CoursePlace> myPlaces = FXCollections.observableArrayList();
     private int budget;          // 2번에서 입력한 예산 (0이면 예산 정보 없음)
     private Course lastSaved;    // 마지막 저장 결과 (나중에 백엔드 응답으로 교체)
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // 추천 코스 목록 한 칸 표시
@@ -100,7 +111,7 @@ public class CourseEditController implements Initializable {
         setCourses(null, 0);   // 코스를 넘겨받기 전의 빈 상태
     }
 
-    // ★ 3번 화면이 추천 코스 3개와 예산을 넘겨줄 때 부르는 입구
+    // 추천 코스 목록과 예산을 넘겨받는 입구
     public void setCourses(List<Course> courses, int budget) {
         this.budget = budget;
         myPlaces.clear();
@@ -115,6 +126,13 @@ public class CourseEditController implements Initializable {
             candidateList.getSelectionModel().selectFirst();
         }
         refreshAll();
+    }
+
+    /** 추천 화면에서 진입하면 추천 순서 그대로 내 코스에 채운다. */
+    public void setRecommendedCourse(Course course, int budget) {
+        setCourses(List.of(course), budget);
+        onImportClick();
+        messageLabel.setText("추천 순서대로 코스를 가져왔어요. 금액은 추천 시 선택한 인원 기준입니다.");
     }
 
     private void showCandidatePlaces(Course course) {

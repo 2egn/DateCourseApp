@@ -1,0 +1,79 @@
+[
+  {
+    "source_row": 9,
+    "name": "백향만두",
+    "address": " 당감로 118 (부암동)",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 12,
+    "name": "외식일번가 부산진구점",
+    "address": " 신천대로 222, 2-3층 (부암동)",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 14,
+    "name": "초원가든",
+    "address": " 부전로 57, 지상1층 (부전동)",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 22,
+    "name": "태화육개장",
+    "address": " 서면문화로 18-1 (부전동)",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 23,
+    "name": "(주)사미헌",
+    "address": " 서면문화로 19 (부전동)",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 24,
+    "name": "다원정",
+    "address": " 서면문화로 23-1 (부전동)",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 28,
+    "name": "도마위에 암소",
+    "address": " 서면문화로 48 (부전동)",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 33,
+    "name": "더스타",
+    "address": " 중앙대로666번길 50 (부전동,센트럴스타 상가동204,205,206호(지하2층))",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 38,
+    "name": "갤러리움웨딩홀부페",
+    "address": "중앙대로969번길 11, c201호 (양정동,양정롯데갤러리움아파트(2층))",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 39,
+    "name": "건양정홍삼삼계탕서면점 ",
+    "address": "동성로 147 (전포동,외1필지(1.2층))",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  },
+  {
+    "source_row": 41,
+    "name": "조방낙지초읍점",
+    "address": "성지곡로 17 (초읍동, 지상1층전체)",
+    "candidate_ids": [],
+    "reason": "no_unique_exact_name_and_road_building_match"
+  }
+]

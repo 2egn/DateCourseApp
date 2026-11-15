@@ -21,9 +21,12 @@ public class Main {
 
         try {
 
-            Parent root = FXMLLoader.load(
-                    getClass().getResource("/fxml/" + fxmlFile)
-            );
+            var page = getClass().getResource("/fxml/" + fxmlFile);
+            if (page == null) {
+                showNotice(node,"아직 연결되지 않은 예제 화면이에요. 실제 코스 기능은 기본 앱에서 이용해 주세요.");
+                return;
+            }
+            Parent root = FXMLLoader.load(page);
 
             Stage stage =
                     (Stage) node.getScene().getWindow();
@@ -38,10 +41,19 @@ public class Main {
             stage.show();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.SCREEN_LOAD,
+                    com.datecourse.service.AppDiagnostics.Stage.START,e);
+            showNotice(node,"화면을 열지 못했어요. 잠시 후 다시 시도해 주세요.");
         }
     }
 
+
+    static void showNotice(Node source,String message) {
+        var alert=new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION,message);
+        alert.setTitle("예제 화면 안내");alert.setHeaderText(null);
+        if(source.getScene()!=null && source.getScene().getWindow()!=null)alert.initOwner(source.getScene().getWindow());
+        com.datecourse.ui.DialogTheme.apply(alert);alert.showAndWait();
+    }
 
     // 왼쪽 메뉴
 

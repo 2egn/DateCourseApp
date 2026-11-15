@@ -1,12 +1,14 @@
+@import url("modern-scroll.css");
 /* ===== 색상 (여기만 바꾸면 전체 색이 바뀜) ===== */
+.candidate-evidence { -fx-font-size: 11px; -fx-text-fill: #626773; }
 .root {
     -app-primary: #ff6b81;
     -app-primary-dark: #e8506a;
     -app-primary-light: #ffe3e8;
     -app-bg: #fafafa;
-    -app-text: #333333;
-    -app-muted: #888888;
-    -app-border: #e3e3e3;
+    -app-text: #191f28;
+    -app-muted: #6b7684;
+    -app-border: #e5e8eb;
     -app-danger: #e03131;
 
     -fx-font-family: "Malgun Gothic";
@@ -16,7 +18,7 @@
 
 /* ===== 글자 ===== */
 .label { -fx-text-fill: -app-text; }
-.title { -fx-font-size: 24px; -fx-font-weight: bold; }
+.label.title { -fx-font-size: 20px; -fx-font-weight: bold; }
 .subtitle { -fx-font-size: 16px; -fx-font-weight: bold; }
 .section { -fx-font-weight: bold; }
 .muted { -fx-text-fill: -app-muted; -fx-font-size: 11px; }
@@ -39,26 +41,28 @@
 
 /* ===== 버튼 ===== */
 .button {
-    -fx-background-color: -app-primary;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 8;
-    -fx-padding: 8 18;
-    -fx-cursor: hand;
+    -fx-min-height: 36; -fx-pref-height: 36; -fx-max-height: 36;
+    -fx-font-size: 13px; -fx-font-weight: normal;
+    -fx-background-color: #f2f4f6; -fx-text-fill: #334155;
+    -fx-border-color: #dce1e8; -fx-border-width: 1;
+    -fx-background-radius: 8; -fx-border-radius: 8;
+    -fx-padding: 6 12; -fx-cursor: hand;
 }
-.button:hover { -fx-background-color: -app-primary-dark; }
-.button:disabled { -fx-opacity: 0.4; }
-
-.button.secondary {
-    -fx-background-color: white;
-    -fx-text-fill: -app-primary;
-    -fx-border-color: -app-primary;
-    -fx-border-radius: 8;
+.button:hover { -fx-background-color: #e9edf1; }
+.button:focused { -fx-border-color: #64748b; }
+.button:disabled { -fx-opacity: 0.4; -fx-cursor: default; }
+.button.primary, .button:default {
+    -fx-background-color: -app-primary; -fx-text-fill: -app-text;
+    -fx-border-color: transparent; -fx-font-weight: bold;
 }
-.button.secondary:hover { -fx-background-color: -app-primary-light; }
-
-.button.danger { -fx-background-color: -app-danger; }
-.button.danger:hover { -fx-background-color: #c92a2a; }
+.button.primary:hover, .button:default:hover { -fx-background-color: #ff8294; }
+.button.secondary { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-border-color: #dce1e8; }
+.button.secondary:hover { -fx-background-color: #e9edf1; }
+.button.danger { -fx-background-color: #fff1f2; -fx-text-fill: #b4233f; -fx-border-color: #edb8c1; }
+.button.danger:hover { -fx-background-color: #ffe3e8; }
+.hyperlink { -fx-font-size: 12px; -fx-text-fill: #526174; -fx-padding: 2 0; -fx-underline: false; }
+.hyperlink:hover { -fx-underline: true; }
+.hyperlink:focused { -fx-border-color: #9ca3af; -fx-border-radius: 3; }
 
 /* ===== 입력칸 ===== */
 .text-field, .text-area, .combo-box, .spinner {
@@ -67,7 +71,11 @@
     -fx-border-color: -app-border;
     -fx-border-radius: 8;
 }
-.text-field, .combo-box .text-field { -fx-padding: 7 10; }
+.text-field, .combo-box .text-field { -fx-padding: 8 12; -fx-font-size: 13px; }
+.text-field, .combo-box, .spinner { -fx-min-height: 40; -fx-pref-height: 40; }
+.text-field { -fx-background-color: #f2f4f6; -fx-text-fill: -app-text; -fx-prompt-text-fill: #929ba6; }
+.text-area { -fx-font-size: 13px; }
+.text-area .content { -fx-padding: 10 12; }
 .text-field:focused, .text-area:focused, .combo-box:focused {
     -fx-border-color: -app-primary;
 }
@@ -87,13 +95,24 @@
     -fx-border-radius: 10;
 }
 .list-cell { -fx-padding: 8 10; -fx-background-color: transparent; }
-.list-cell:filled:hover { -fx-background-color: #fff3f5; }
+.list-cell:filled:hover { -fx-background-color: #f2f4f6; }
 .list-cell:filled:selected,
 .list-cell:filled:selected:focused {
-    -fx-background-color: -app-primary-light;
+    -fx-background-color: #e9edf1;
     -fx-text-fill: -app-text;
 }
 .list-cell:filled:selected .label { -fx-text-fill: -app-text; }
+
+/* 드롭다운은 선택·포커스·펼친 목록 모두 중립 회색으로 표시한다. */
+.combo-box { -fx-background-color: #f2f4f6; }
+.combo-box:focused, .combo-box:showing { -fx-border-color: #9ca3af; }
+.combo-box .list-cell,
+.combo-box .list-cell:filled:selected,
+.combo-box .list-cell:filled:selected:focused { -fx-background-color: transparent; -fx-text-fill: -app-text; }
+.combo-box .arrow-button { -fx-background-color: transparent; }
+.combo-box-popup .list-view .list-cell:filled:hover,
+.combo-box-popup .list-view .list-cell:filled:selected,
+.combo-box-popup .list-view .list-cell:filled:selected:focused { -fx-background-color: #e9edf1; -fx-text-fill: -app-text; }
 
 /* ===== 표 (관리자) ===== */
 .table-view {
@@ -114,3 +133,310 @@
 .tab-pane .tab-header-area .tab-header-background { -fx-background-color: transparent; }
 .tab-pane .tab:selected { -fx-background-color: -app-primary-light; }
 .tab-pane .tab:selected .tab-label { -fx-text-fill: -app-primary-dark; -fx-font-weight: bold; }
+
+/* Sliding condition form and category chips; scoped to this screen. */
+.condition-screen .condition-scroll,
+.condition-screen .condition-scroll > .viewport {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.condition-screen .condition-form { -fx-background-color: white; }
+.condition-screen .condition-title { -fx-font-size: 20px; -fx-font-weight: bold; }
+.condition-screen .drawer-toggle {
+    -fx-background-color: white;
+    -fx-text-fill: -app-text;
+    -fx-border-color: -app-border;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 7 10;
+}
+.condition-screen .drawer-toggle:hover { -fx-background-color: -app-primary-light; }
+.condition-screen .drawer-toggle:focused { -fx-border-color: -app-primary; }
+.condition-screen .category-chip {
+    -fx-background-color: #f5f6f8;
+    -fx-background-radius: 12;
+    -fx-border-color: transparent;
+    -fx-border-radius: 12;
+    -fx-padding: 8 10;
+    -fx-label-padding: 0 0 0 7;
+    -fx-text-fill: -app-text;
+    -fx-cursor: hand;
+}
+.condition-screen .category-chip:hover { -fx-background-color: #fff0f3; }
+.condition-screen .category-chip:selected {
+    -fx-background-color: -app-primary-light;
+    -fx-border-color: -app-primary;
+    -fx-font-weight: bold;
+}
+.condition-screen .category-chip:focused { -fx-border-color: transparent; }
+.condition-screen .category-chip .box {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+    -fx-border-color: #b0b8c1;
+    -fx-border-radius: 5;
+    -fx-padding: 3;
+}
+.condition-screen .category-chip:selected .box {
+    -fx-background-color: -app-primary;
+    -fx-border-color: -app-primary;
+}
+.condition-screen .category-chip:selected .mark { -fx-background-color: #191f28; }
+
+/* Planner uses the same palette and soft fields as UiTheme's authentication screens. */
+.condition-screen {
+    -fx-background-color: #f7f8fa;
+    -fx-font-family: "Malgun Gothic";
+    -fx-font-size: 14px;
+}
+.condition-screen .label { -fx-text-fill: #191f28; }
+.condition-screen .planner-header {
+    -fx-padding: 20 24 18 24;
+    -fx-background-color: white;
+    -fx-border-color: #eef0f3;
+    -fx-border-width: 0 0 1 0;
+}
+.condition-screen .planner-brand {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6b7684;
+}
+.condition-screen .planner-heading { -fx-font-size: 24px; -fx-font-weight: bold; }
+.condition-screen .region-badge {
+    -fx-background-color: #fff0f3;
+    -fx-background-radius: 20;
+    -fx-padding: 7 16;
+    -fx-font-size: 13px;
+    -fx-text-fill: #b63c57;
+}
+.condition-screen .condition-drawer {
+    -fx-background-color: white;
+    -fx-border-color: #eef0f3;
+    -fx-border-width: 0 1 0 0;
+}
+.condition-screen .condition-title { -fx-font-size: 20px; -fx-font-weight: bold; }
+.condition-screen .planner-caption { -fx-font-size: 12px; -fx-text-fill: #6b7684; }
+.condition-screen .field-label { -fx-font-size: 13px; -fx-text-fill: #6b7684; }
+.condition-screen .text-field {
+    -fx-background-color: #f2f4f6;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-padding: 8 12;
+    -fx-font-size: 13px;
+    -fx-text-fill: #191f28;
+    -fx-prompt-text-fill: #929ba6;
+}
+.condition-screen .text-field:focused { -fx-border-color: #ff6b81; }
+.condition-screen .place-count-editor { -fx-padding: 8 34 8 12; }
+.condition-screen .place-count-buttons { -fx-padding: 2 4 2 0; }
+.condition-screen .place-count-arrow {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 3 6;
+    -fx-min-height: 18;
+    -fx-pref-height: 18;
+    -fx-cursor: hand;
+}
+.condition-screen .place-count-arrow:hover { -fx-background-color: #ffe3e8; }
+.condition-screen .place-count-arrow:pressed { -fx-background-color: #ffd3dc; }
+.condition-screen .place-count-arrow:focused { -fx-border-color: #ff6b81; }
+.condition-screen .place-count-arrow:disabled { -fx-opacity: 0.28; }
+.condition-screen .place-count-chevron {
+    -fx-fill: transparent;
+    -fx-stroke: #6b7684;
+    -fx-stroke-width: 1.5;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-line-join: round;
+}
+.condition-screen .place-count-arrow:hover .place-count-chevron { -fx-stroke: #b63c57; }
+.condition-screen .planner-primary {
+    -fx-background-color: #ff6b81;
+    -fx-background-radius: 10;
+    -fx-text-fill: #191f28;
+    -fx-font-size: 15px;
+    -fx-padding: 14 20;
+}
+.condition-screen .planner-primary:hover { -fx-background-color: #ff8294; }
+.condition-screen .course-edit-panel {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent transparent #e5e8eb;
+    -fx-border-width: 0 0 0 1;
+}
+.condition-screen .drawer-toggle {
+    -fx-background-color: transparent;
+    -fx-border-color: #dce1e8;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-padding: 6 10;
+}
+.condition-screen .category-chip {
+    -fx-background-color: #f2f4f6;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 10 12;
+    -fx-label-padding: 0;
+    -fx-font-size: 13px;
+}
+.condition-screen .category-chip .box { -fx-padding: 0; -fx-min-width: 0; -fx-max-width: 0; -fx-pref-width: 0; -fx-opacity: 0; }
+.condition-screen .category-chip:hover { -fx-background-color: #e9edf1; }
+.condition-screen .category-chip:selected { -fx-background-color: #ffe3e8; -fx-border-color: #ff6b81; }
+.condition-screen .category-chip:selected:hover { -fx-background-color: #ffd3dc; }
+.condition-screen .category-chip:selected:focused { -fx-border-color: #ff6b81; }
+.condition-screen .separator .line { -fx-border-color: #eef0f3; -fx-border-width: 1 0 0 0; }
+.condition-screen .slider .track { -fx-background-color: #e5e8eb; -fx-pref-height: 4; }
+.condition-screen .slider .thumb { -fx-background-color: #ff6b81; -fx-padding: 7; -fx-effect: none; }
+.condition-screen .error { -fx-text-fill: #c83b52; -fx-font-size: 12px; }
+.condition-screen .planner-map { -fx-background-color: white; -fx-background-radius: 12; }
+.condition-screen .result-summary {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: transparent transparent transparent #cbd5e1;
+    -fx-border-width: 0 0 0 4;
+    -fx-border-radius: 12;
+    -fx-padding: 9 13;
+    -fx-effect: dropshadow(gaussian, rgba(25,31,40,0.05), 10, 0, 0, 2);
+}
+.condition-screen .result-summary:success { -fx-background-color: #fff5f7; -fx-border-color: transparent transparent transparent #ff6b81; }
+.condition-screen .result-summary:warning { -fx-background-color: #fff9ed; -fx-border-color: transparent transparent transparent #e5a43a; }
+.condition-screen .result-summary-title { -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #191f28; }
+.condition-screen .result-summary-detail { -fx-font-size: 12px; -fx-text-fill: #6b7684; }
+.condition-screen .result-summary-badge { -fx-background-color: #eef1f5; -fx-background-radius: 7; -fx-padding: 5 8; -fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #526174; }
+.condition-screen .result-summary:success .result-summary-badge { -fx-background-color: #ffe0e8; -fx-text-fill: #a82e50; }
+.condition-screen .result-summary:warning .result-summary-badge { -fx-background-color: #ffedca; -fx-text-fill: #956015; }
+.route-editor-screen { -fx-background-color: white; }
+.route-edit-form { -fx-background-color: white; -fx-border-color: transparent transparent transparent #e5e8eb; }
+.map-toolbar { -fx-padding: 12 16; -fx-background-color: #f7f8fa; }
+.route-editor-footer { -fx-padding: 14 24; -fx-background-color: white; -fx-border-color: #e5e8eb transparent transparent transparent; }
+.candidate-card { -fx-padding: 14; -fx-background-color: #fff3f6; -fx-background-radius: 12; }
+.route-sidebar-summary { -fx-padding: 18 16 12; -fx-background-color: white; }
+.route-state-panels { -fx-padding: 0 14 12; }
+.route-sidebar-note { -fx-padding: 8 16 12; -fx-background-color: white; }
+.route-form-scroll { -fx-background-color: white; -fx-border-color: transparent; }
+.route-form-scroll > .viewport { -fx-background-color: white; }
+.compact-pane > .title { -fx-background-color: #f2f4f6; -fx-background-radius: 8; -fx-padding: 6 10; -fx-font-size: 13px; }
+.compact-pane > .content { -fx-background-color: white; -fx-border-color: #e5e8eb; -fx-border-radius: 0 0 8 8; -fx-padding: 8; }
+.condition-screen .route-edit-form .planner-primary { -fx-font-size: 13px; -fx-padding: 8 14; }
+.candidate-rank { -fx-min-width: 18; -fx-font-weight: bold; -fx-text-fill: #64748b; }
+
+.route-options-dialog { -fx-background-color: white; }
+.route-options-dialog .route-option-card { -fx-padding: 14; -fx-background-color: #f7f8fa; -fx-background-radius: 12; -fx-border-color: transparent; -fx-border-radius: 12; -fx-graphic-text-gap: 12; }
+.route-options-dialog .route-option-card:selected { -fx-background-color: #fff0f3; -fx-border-color: #ff6b81; }
+.route-options-dialog .radio-button:selected .radio .dot { -fx-background-color: #ff6b81; }
+.condition-form-scroll, .condition-form-scroll > .viewport {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+/* Shared shell and feedback: overlays never participate in map layout. */
+.app-header { -fx-padding: 15 24; -fx-background-color: white; -fx-border-color: transparent transparent #e5e8eb transparent; }
+.app-brand { -fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 0 12 0 0; }
+.condition-screen .account-menu { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-padding: 8 12; -fx-background-radius: 8; }
+.condition-screen .account-menu > .label { -fx-text-fill: #334155; -fx-font-size: 13px; }
+.condition-screen .account-menu .menu-item:focused { -fx-background-color: #e9edf2; }
+.my-page { -fx-padding: 28 32; -fx-background-color: #f7f8fa; }
+.profile-card { -fx-padding: 24; -fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #e5e8eb; -fx-border-radius: 12; }
+.condition-screen .editor-heading-bar { -fx-padding: 8 24; }
+.condition-screen .editor-heading-bar .planner-heading { -fx-font-size: 18px; }
+.route-editor-screen .map-toolbar { -fx-padding: 8 16; }
+.condition-screen .header-tab { -fx-background-color: transparent; -fx-text-fill: #526174; -fx-font-size: 13px; -fx-font-weight: normal; -fx-padding: 10 12; -fx-background-radius: 8; }
+.condition-screen .header-tab:hover, .condition-screen .header-tab:active { -fx-background-color: #edf0f3; -fx-text-fill: #191f28; }
+.condition-screen .header-tab:active { -fx-font-weight: bold; }
+.condition-screen .header-secondary { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-font-size: 13px; -fx-padding: 10 14; }
+.condition-screen .header-save { -fx-font-size: 13px; -fx-padding: 10 16; }
+.feedback-toast { -fx-padding: 11 12 7 12; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 1 1 1 4; -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.15), 14, 0, 0, 4); }
+.feedback-toast .label { -fx-font-size: 13px; -fx-text-fill: #172033; -fx-font-weight: bold; -fx-padding: 3 0; }
+.feedback-info { -fx-background-color: #edf5ff; -fx-border-color: #4b83c4; }
+.feedback-success { -fx-background-color: #edf9f2; -fx-border-color: #379260; }
+.feedback-error { -fx-background-color: #fff1f0; -fx-border-color: #c8534e; }
+.feedback-toast .feedback-close { -fx-background-color: transparent; -fx-text-fill: #64748b; -fx-font-size: 17px; -fx-padding: 0; }
+.feedback-toast .feedback-close:hover { -fx-background-color: rgba(100,116,139,0.12); }
+.feedback-countdown { -fx-pref-height: 3; -fx-min-height: 3; -fx-max-height: 3; -fx-padding: 0; -fx-background-insets: 0; }
+.feedback-countdown .track { -fx-background-color: rgba(100,116,139,0.12); -fx-background-insets: 0; -fx-background-radius: 2; }
+.feedback-countdown .bar { -fx-background-color: #6486ac; -fx-background-insets: 0; -fx-background-radius: 2; -fx-padding: 1.5; }
+.feedback-success .bar { -fx-background-color: #379260; }
+.feedback-error .bar { -fx-background-color: #c8534e; }
+.loading-shade { -fx-background-color: rgba(245,247,250,0.72); }
+.loading-card { -fx-background-color: white; -fx-background-radius: 12; -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 16, 0, 0, 4); }
+.loading-card .label { -fx-font-size: 15px; -fx-text-fill: #334155; }
+
+/* Common action geometry; text length controls width, role controls color. */
+.condition-screen .button.planner-primary,
+.condition-screen .button.header-save,
+.condition-screen .button.header-secondary,
+.condition-screen .button.drawer-toggle,
+.condition-screen .button.header-tab {
+    -fx-font-size: 13px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-border-color: transparent;
+    -fx-font-weight: normal;
+}
+.condition-screen .button.drawer-toggle,
+.condition-screen .button.header-secondary {
+    -fx-background-color: #f2f4f6;
+    -fx-border-color: #dce1e8;
+    -fx-text-fill: #334155;
+}
+.condition-screen .button.drawer-toggle:hover,
+.condition-screen .button.header-secondary:hover { -fx-background-color: #e9edf1; }
+.condition-screen .button.planner-primary,
+.condition-screen .button.header-save {
+    -fx-background-color: #ff6b81;
+    -fx-text-fill: #191f28;
+    -fx-font-weight: bold;
+}
+.condition-screen .button.planner-primary:hover,
+.condition-screen .button.header-save:hover { -fx-background-color: #ff8294; }
+.condition-screen .button:focused { -fx-border-color: #64748b; }
+.condition-screen .account-menu { -fx-min-height: 36; -fx-pref-height: 36; -fx-max-height: 40; -fx-padding: 4 12; -fx-label-padding: 0; }
+.condition-screen .account-menu > .label { -fx-padding: 0; -fx-label-padding: 0; }
+.condition-screen .button.place-count-arrow { -fx-min-height: 0; -fx-pref-height: 18; -fx-max-height: 18; -fx-padding: 0; -fx-border-width: 0; }
+.condition-screen .button.feedback-close { -fx-min-height: 24; -fx-pref-height: 24; -fx-max-height: 24; -fx-padding: 0; }
+
+/* Course review and persistent search recovery reuse native JavaFX controls. */
+.course-overview-stops { -fx-font-size: 13px; -fx-text-fill: #334155; -fx-line-spacing: 6px; }
+.search-empty-state { -fx-padding: 14px; -fx-background-color: #f5f7fa; -fx-background-radius: 10px; }
+
+/* Filter controls use a stable entry and bounded category editor. */
+.condition-screen .filter-entry { -fx-background-color: #fff1f4; -fx-border-color: #f08ca0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8 12; -fx-font-weight: bold; -fx-text-fill: #9d2446; -fx-cursor: hand; }
+.condition-screen .filter-entry:hover { -fx-background-color: #ffe2e9; }
+.filter-entry-icon { -fx-fill: transparent; -fx-stroke: #9d2446; -fx-stroke-width: 1.7; }
+.condition-screen .filter-editor { -fx-padding: 12; -fx-border-color: #e2e7ee; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #fafbfd; }
+.condition-screen .filter-category { -fx-padding: 6 10; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: #dce1e8; -fx-background-color: white; -fx-text-fill: #334155; -fx-cursor: hand; }
+.condition-screen .filter-category:selected { -fx-background-color: #ffe2e9; -fx-border-color: #f08ca0; -fx-text-fill: #9d2446; }
+.condition-screen .filter-chip { -fx-padding: 4 9; -fx-background-color: #edf2f7; -fx-background-radius: 14; -fx-text-fill: #334155; -fx-font-size: 12px; -fx-cursor: hand; }
+.condition-screen .filter-chip:hover { -fx-background-color: #dfe7ef; }
+
+.filter-scroll, .filter-scroll > .viewport { -fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0; }
+
+/* Category tones are shared by tabs, editor outline and selected chips. */
+.condition-screen .filter-category.filter-tone-blue, .condition-screen .filter-chip.filter-tone-blue { -fx-background-color: #eef4ff; -fx-border-color: #cbdcf8; -fx-text-fill: #2b5590; }
+.condition-screen .filter-category.filter-tone-amber, .condition-screen .filter-chip.filter-tone-amber { -fx-background-color: #fff7e6; -fx-border-color: #efdab2; -fx-text-fill: #805c19; }
+.condition-screen .filter-category.filter-tone-green, .condition-screen .filter-chip.filter-tone-green { -fx-background-color: #edf8f0; -fx-border-color: #c9e5d2; -fx-text-fill: #2b6d48; }
+.condition-screen .filter-category.filter-tone-blue:selected { -fx-background-color: #dce9ff; -fx-border-color: #739bd2; }
+.condition-screen .filter-category.filter-tone-amber:selected { -fx-background-color: #ffedc5; -fx-border-color: #bd933d; }
+.condition-screen .filter-category.filter-tone-green:selected { -fx-background-color: #d9efdf; -fx-border-color: #72aa84; }
+.condition-screen .filter-category.filter-tone-neutral:selected { -fx-background-color: #e8edf3; -fx-border-color: #94a3b8; -fx-text-fill: #334155; }
+.condition-screen .filter-editor.filter-tone-blue { -fx-background-color: #f7faff; -fx-border-color: #cbdcf8; }
+.condition-screen .filter-editor.filter-tone-amber { -fx-background-color: #fffcf4; -fx-border-color: #efdab2; }
+.condition-screen .filter-editor.filter-tone-green { -fx-background-color: #f6fbf7; -fx-border-color: #c9e5d2; }
+.condition-screen .filter-chip { -fx-border-radius: 14; -fx-border-width: 1; -fx-border-color: transparent; }
+.condition-screen .filter-chip:hover { -fx-opacity: .8; }
+
+/* Native confirmation/text-input dialogs use the same palette and control roles. */
+.dialog-pane { -fx-background-color: white; -fx-padding: 20; }
+.dialog-pane .header-panel { -fx-background-color: white; -fx-padding: 0 0 12 0; }
+.dialog-pane .header-panel .label { -fx-font-size: 16px; -fx-font-weight: bold; }
+.dialog-pane .content.label { -fx-font-size: 13px; -fx-wrap-text: true; }

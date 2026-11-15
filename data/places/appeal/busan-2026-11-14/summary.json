@@ -1,0 +1,23 @@
+{
+  "demo_places": 127,
+  "busan_bus_stops": 10046,
+  "national_bus_rows": 227102,
+  "busan_railway_rows": 135,
+  "busanjin_model_rows": 43,
+  "model_unique_place_matches": 32,
+  "model_review_needed": 11,
+  "tag_counts": {
+    "GOOD_PRICE": 20,
+    "NEAR_SUBWAY": 118,
+    "NEAR_BUS": 126,
+    "MODEL_RESTAURANT": 2,
+    "FREE_ADMISSION": 1
+  },
+  "source_date_counts_rail": {
+    "2022-11-30": 109,
+    "2022-04-27": 9,
+    "2025-04-08": 17
+  },
+  "additional_facility_fact_count": 7,
+  "ui_or_database_changed": false
+}

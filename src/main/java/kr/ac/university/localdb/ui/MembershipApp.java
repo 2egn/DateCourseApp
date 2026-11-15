@@ -6,6 +6,11 @@ import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Interpolator;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -14,7 +19,6 @@ import kr.ac.university.localdb.db.MemberRepository;
 import kr.ac.university.localdb.UserSession;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -29,8 +33,14 @@ import java.util.function.Consumer;
  */
 public class MembershipApp {
     private volatile MemberRepository repository;
+    private volatile ConditionController plannerController;
+    private boolean closePending;
+    private java.util.function.BooleanSupplier adminCloseCheck;
     private UserSession userSession;
+    private Timer screenTransition;
+    private JPanel authenticationContent;
     private final JFrame home = new JFrame("로그인 / 회원가입");
+    private Runnable exitApplication=()->{home.dispose();System.exit(0);};
     private final JTextField email = new UiTheme.TextField(24), name = new UiTheme.TextField(24), phone = new UiTheme.TextField(24);
     private final JPasswordField password = new UiTheme.PasswordField(24), confirm = new UiTheme.PasswordField(24);
     private final JButton signup = new JButton("회원가입"), login = new JButton("로그인");
@@ -63,9 +73,34 @@ public class MembershipApp {
         });
     }
 
+    void installCloseHandling() {
+        home.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        home.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override public void windowClosing(java.awt.event.WindowEvent event) { requestWindowClose(); }
+        });
+    }
+
+    private void requestWindowClose() {
+        if(closePending)return;
+        if(adminCloseCheck!=null && !adminCloseCheck.getAsBoolean())return;
+        ConditionController controller=plannerController;
+        if(controller==null){exitApplication.run();return;}
+        closePending=true;
+        Platform.runLater(()->{
+            boolean decision;
+            try {decision=controller.confirmWindowClose();}
+            catch(RuntimeException failure){decision=false;}
+            final boolean allowed=decision;
+            SwingUtilities.invokeLater(()->{
+                closePending=false;
+                if(allowed && plannerController==controller)exitApplication.run();
+            });
+        });
+    }
+
     /** 입력 단계 구성 → 화면 전환/버튼 이벤트 연결 → 창 표시 → DB 초기화 순서로 준비합니다. */
     private void show() {
-        home.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        installCloseHandling();
         JPanel content = new JPanel(new BorderLayout(15,15));
         content.setBorder(BorderFactory.createEmptyBorder(36,36,28,36));
         JPanel form = new SignupForm();
@@ -110,6 +145,7 @@ public class MembershipApp {
         content.add(pagePanel,BorderLayout.CENTER);
         JPanel bottom = new JPanel(new BorderLayout(8,12));
         content.add(bottom,BorderLayout.SOUTH); home.setContentPane(content);
+        authenticationContent = content;
         pages.show(pagePanel,"startup");
         next.addActionListener(e -> advance()); login.addActionListener(e -> login());
         signup.addActionListener(e -> { resetSignup(); pages.show(pagePanel,"signup"); advance(); });
@@ -157,7 +193,7 @@ public class MembershipApp {
         });
     }
 
-    /** 다음 단계로 넘어가기 전에 현재까지 입력한 값을 검사합니다. 오류는 advance에서 안내합니다. */
+    /** 다음 단계로 넘어가   기 전에 현재까지 입력한 값을 검사합니다. 오류는 advance에서 안내합니다. */
     private void validateStep(int index) {
         // 이메일 단계에서는 아직 이름을 받지 않았으므로 공통 검증에 임시 이름을 전달합니다.
         if(index==0) { MemberRepository.validate(email.getText().trim(),"이름",""); }
@@ -217,140 +253,167 @@ public class MembershipApp {
     }
 
     private void showConditionScreen(){
-        JFXPanel panel = new JFXPanel();
+        PlannerLoadingDialog loading = new PlannerLoadingDialog(home);
+        loading.open();
+        SwingUtilities.invokeLater(() -> loadConditionScreen(loading));
+    }
+
+    private void loadConditionScreen(PlannerLoadingDialog loading) {
+        final JFXPanel panel;
+        try { panel = new JFXPanel(); }
+        catch (RuntimeException failure) { showConditionFailure(loading, failure); return; }
 
         Platform.runLater(() ->{
             try{
+                Platform.setImplicitExit(false);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
 
                 Parent root = loader.load();
 
                 ConditionController controller = loader.getController();
+                plannerController = controller;
                 controller.setUserSession(userSession);
+                controller.setSavedCourseRepository(repository.savedCourses());
+                controller.setAccountActions(repository, () -> SwingUtilities.invokeLater(() -> logout(panel)));
+                controller.setPlaceRepository(repository.places());
 
+                root.setOpacity(0);
+                root.setTranslateY(10);
                 panel.setScene(new Scene(root));
 
-                SwingUtilities.invokeLater(()->{
+                controller.prepareStartup(() -> SwingUtilities.invokeLater(()->{
                     home.setContentPane(panel);
-                    home.setTitle("데이트 코스 · 조건 입력");
+                    home.setTitle("DateCourse · 코스 만들기");
+                    loading.close();
 
                     Rectangle usable = GraphicsEnvironment
                             .getLocalGraphicsEnvironment()
                             .getMaximumWindowBounds();
 
-                    home.setSize(
-                            Math.min(960, usable.width),
-                            Math.min(720, usable.height)
-                    );
-
-                    home.setLocationRelativeTo(null);
                     home.revalidate();
                     home.repaint();
-                });
+                    bringPlannerToFront(panel);
+                    int width = Math.min(1440, usable.width);
+                    int height = Math.min(960, usable.height);
+                    animatePlannerWindow(new Rectangle(usable.x + (usable.width - width) / 2,
+                            usable.y + (usable.height - height) / 2, width, height));
+                    Platform.runLater(() -> {
+                        FadeTransition fade = new FadeTransition(Duration.millis(260), root);
+                        fade.setFromValue(0); fade.setToValue(1);
+                        TranslateTransition slide = new TranslateTransition(Duration.millis(260), root);
+                        slide.setFromY(10); slide.setToY(0);
+                        ParallelTransition entrance = new ParallelTransition(fade, slide);
+                        entrance.setInterpolator(Interpolator.EASE_OUT);
+                        entrance.play();
+                        root.requestFocus();
+                    });
+                }));
 
 
             }catch(IOException | RuntimeException failure){
-                SwingUtilities.invokeLater(()->{
-                    AppDialogs.showMessageDialog(
-                            home,
-                            "조건 입력 화면을 열지 못했습니다.\n"
-                            + failure.getMessage(),
-                            "화면 전환 실패",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                });
+                SwingUtilities.invokeLater(() -> showConditionFailure(loading, failure));
             }
         });
 
+    }
+
+    private void bringPlannerToFront(JFXPanel panel) {
+        home.setExtendedState(home.getExtendedState() & ~Frame.ICONIFIED);
+        home.toFront();
+        home.requestFocus();
+        panel.requestFocusInWindow();
+    }
+
+    private void logout(JFXPanel panel) {
+        plannerController = null;
+        userSession = null;
+        if (screenTransition != null) screenTransition.stop();
+        Platform.runLater(() -> panel.setScene(null));
+        loginPassword.setText("");
+        if (!rememberId.isSelected()) loginId.setText("");
+        resetSignup();
+        pages.show(pagePanel, "login");
+        home.setContentPane(authenticationContent);
+        home.setTitle("로그인 / 회원가입");
+        home.setMinimumSize(new Dimension(0,0));
+        Rectangle usable = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        home.setSize(Math.min(580, usable.width), Math.min(900, usable.height));
+        home.setLocationRelativeTo(null);
+        home.revalidate(); home.repaint(); home.toFront();
+        SwingUtilities.invokeLater(() -> {
+            if (loginId.getText().isBlank()) loginId.requestFocusInWindow();
+            else loginPassword.requestFocusInWindow();
+        });
+    }
+
+    private void showConditionFailure(PlannerLoadingDialog loading, Exception failure) {
+        loading.close();
+        com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.SCREEN_LOAD,
+                com.datecourse.service.AppDiagnostics.Stage.START,failure);
+        AppDialogs.showMessageDialog(home, "화면을 열지 못했어요. 잠시 후 다시 로그인해 주세요.",
+                "화면 전환 실패", JOptionPane.ERROR_MESSAGE);
+    }
+    /** Keep the authenticated planner in the same window while its bounds settle into place. */
+    private void animatePlannerWindow(Rectangle target) {
+        if (screenTransition != null) screenTransition.stop();
+        Rectangle start = home.getBounds();
+        long started = System.nanoTime();
+        screenTransition = new Timer(16, event -> {
+            if (!home.isDisplayable()) { ((Timer) event.getSource()).stop(); return; }
+            double progress = Math.min(1, (System.nanoTime() - started) / 240_000_000.0);
+            double eased = 1 - Math.pow(1 - progress, 3);
+            home.setBounds(
+                    (int) Math.round(start.x + (target.x - start.x) * eased),
+                    (int) Math.round(start.y + (target.y - start.y) * eased),
+                    (int) Math.round(start.width + (target.width - start.width) * eased),
+                    (int) Math.round(start.height + (target.height - start.height) * eased));
+            if (progress >= 1) {
+                ((Timer) event.getSource()).stop();
+                if (home.getContentPane() instanceof JFXPanel panel) bringPlannerToFront(panel);
+            }
+        });
+        screenTransition.start();
     }
     /** 인증된 관리자 세션으로 회원 검색·수정·비활성화·영구 삭제 기능을 연결합니다. */
     private void showAdmin(MemberRepository.AdminSession session) {
-        JFrame window = new JFrame("관리자 · 회원 관리");
-        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        DefaultTableModel model = new DefaultTableModel(new String[]{"번호","이메일","이름","전화번호","상태","가입일","삭제"},0) {
-            @Override public boolean isCellEditable(int r,int c) { return false; }
+        var members=new MemberAdminPanel(session);
+        var reviewBusy=new java.util.concurrent.atomic.AtomicBoolean();
+        var reviewController=new java.util.concurrent.atomic.AtomicReference<com.datecourse.controller.InformationReviewController>();
+        var tabs=new JTabbedPane();tabs.addTab("회원 관리",members);
+        var reportPanel=new JFXPanel();tabs.addTab("장소 정보 제보",reportPanel);
+        var logoutButton=new JButton("로그아웃");UiTheme.button(logoutButton,false);
+        logoutButton.setPreferredSize(new Dimension(120,40));
+        var top=new JPanel(new BorderLayout());top.setBorder(BorderFactory.createEmptyBorder(12,24,12,24));
+        var title=new JLabel("DateCourse · 관리자");title.setFont(UiTheme.BODY.deriveFont(Font.BOLD,18f));top.add(title,BorderLayout.WEST);top.add(logoutButton,BorderLayout.EAST);
+        adminCloseCheck=()->{
+            if(reviewBusy.get()){AppDialogs.showMessageDialog(home,"제보 처리 작업이 끝난 뒤 다시 시도해 주세요.");return false;}
+            return members.confirmLeave();
         };
-        JTable table = new JTable(model); table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setAutoCreateRowSorter(true); table.setRowHeight(44);
-        table.setShowGrid(false);table.setIntercellSpacing(new Dimension(0,0));table.setSelectionBackground(UiTheme.SOFT);table.setSelectionForeground(UiTheme.TEXT);
-        table.getTableHeader().setBackground(UiTheme.INPUT);table.getTableHeader().setForeground(UiTheme.MUTED);
-        table.getTableHeader().setPreferredSize(new Dimension(0,44));
-        JTextField search = new UiTheme.TextField(20); JButton refresh = new JButton("검색 / 새로고침");
-        JTextField person = new UiTheme.TextField(15), telephone = new UiTheme.TextField(15);
-        JComboBox<String> status = new JComboBox<>(new String[]{"ACTIVE","INACTIVE"});
-        JButton save = new JButton("선택 회원 수정"), deactivate = new JButton("선택 회원 탈퇴 처리");
-        UiTheme.button(refresh,false);UiTheme.button(save,true);UiTheme.button(deactivate,false);
-        JLabel count = new JLabel("회원 목록");
-        // 최초 표시, 검색, 변경 성공 후에 같은 조회 흐름으로 목록과 회원 수를 갱신합니다.
-        Runnable reload = () -> {
-            String keyword = search.getText();
-            run(window,refresh,() -> session.list(keyword),members -> {
-                model.setRowCount(0);
-                for (var member : members) model.addRow(new Object[]{member.id(),member.email(),member.name(),member.phone(),member.status(),member.created(),"INACTIVE".equals(member.status()) ? "×" : ""});
-                person.setText(""); telephone.setText(""); count.setText("조회된 회원 " + members.size() + "명 · INACTIVE는 탈퇴/비활성 상태");
-            });
-        };
-        // 마지막 열의 ×는 비활성 회원에만 표시하며, 실제 삭제는 아래 클릭 이벤트에서 처리합니다.
-        table.getColumnModel().getColumn(6).setMaxWidth(48);
-        table.getColumnModel().getColumn(6).setCellRenderer((grid,value,selected,focused,row,column) -> {
-            JLabel cross=new JLabel(String.valueOf(value),SwingConstants.CENTER);
-            cross.setFont(UiTheme.BODY.deriveFont(Font.BOLD,22f)); cross.setForeground(new Color(0xB4233F));
-            cross.setOpaque(true);cross.setBackground(selected ? UiTheme.SOFT : Color.WHITE);
-            cross.setToolTipText("×".equals(value) ? "비활성 회원 영구 삭제" : "활성 회원은 삭제할 수 없습니다.");
-            return cross;
+        logoutButton.addActionListener(event->{
+            if(adminCloseCheck!=null&&!adminCloseCheck.getAsBoolean())return;
+            adminCloseCheck=null;
+            Platform.runLater(()->{if(reviewController.get()!=null)reviewController.get().clear();});
+            logout(reportPanel);
         });
-        table.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent event) {
-                int viewRow=table.rowAtPoint(event.getPoint()), viewCol=table.columnAtPoint(event.getPoint());
-                if(viewRow<0 || viewCol<0 || table.convertColumnIndexToModel(viewCol)!=6) return;
-                // 정렬된 화면의 행 번호를 원본 모델의 행 번호로 변환해야 정확한 회원을 찾습니다.
-                int row=table.convertRowIndexToModel(viewRow);
-                if(!"INACTIVE".equals(model.getValueAt(row,4))) return;
-                long id=((Number)model.getValueAt(row,0)).longValue();
-                if(AppDialogs.showConfirmDialog(window,model.getValueAt(row,1)+" 회원을 영구 삭제할까요?\n삭제한 회원 정보는 복구할 수 없습니다.",
-                        "회원 삭제",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE)!=JOptionPane.YES_OPTION) return;
-                run(window,refresh,() -> { session.deleteInactive(id); return true; },ok -> reload.run());
+        Platform.runLater(()->{
+            try {
+                var loader=new FXMLLoader(getClass().getResource("/information-review-view.fxml"));Parent page=loader.load();
+                var controller=loader.<com.datecourse.controller.InformationReviewController>getController();reviewController.set(controller);
+                controller.loadingProperty().addListener((o,a,value)->reviewBusy.set(value));
+                controller.configure(session);reportPanel.setScene(new Scene(page));
+            } catch(IOException failure) {
+                com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.SCREEN_LOAD,
+                        com.datecourse.service.AppDiagnostics.Stage.START,failure);
+                reportPanel.setScene(new Scene(new javafx.scene.control.Label("제보 화면을 열지 못했어요. 다시 로그인해 주세요.")));
             }
         });
-        // 선택한 회원 정보를 하단 편집란에 채우고, 저장 시 해당 회원 ID로 수정합니다.
-        table.getSelectionModel().addListSelectionListener(e -> {
-            if (table.getSelectedRow()<0) return;
-            int row=table.convertRowIndexToModel(table.getSelectedRow());
-            person.setText(String.valueOf(model.getValueAt(row,2)));
-            Object value=model.getValueAt(row,3); telephone.setText(value==null ? "" : value.toString());
-            status.setSelectedItem(model.getValueAt(row,4));
-        });
-        refresh.addActionListener(e -> reload.run()); search.addActionListener(e -> reload.run());
-        save.addActionListener(e -> {
-            if (table.getSelectedRow()<0) { AppDialogs.showMessageDialog(window,"수정할 회원을 선택하세요."); return; }
-            int row=table.convertRowIndexToModel(table.getSelectedRow());
-            long id=((Number)model.getValueAt(row,0)).longValue();
-            String n=person.getText(), p=telephone.getText(), state=(String)status.getSelectedItem();
-            run(window,save,() -> { session.update(id,n,p,state); return true; },ok -> reload.run());
-        });
-        // 탈퇴 처리는 정보를 남긴 채 상태만 INACTIVE로 바꾸며, 영구 삭제와 구분됩니다.
-        deactivate.addActionListener(e -> {
-            if (table.getSelectedRow()<0) { AppDialogs.showMessageDialog(window,"탈퇴 처리할 회원을 선택하세요."); return; }
-            int row=table.convertRowIndexToModel(table.getSelectedRow());
-            if (AppDialogs.showConfirmDialog(window,model.getValueAt(row,1)+" 회원을 비활성화할까요?",
-                    "탈퇴 처리",JOptionPane.YES_NO_OPTION)!=JOptionPane.YES_OPTION) return;
-            long id=((Number)model.getValueAt(row,0)).longValue();
-            String n=String.valueOf(model.getValueAt(row,2)); Object v=model.getValueAt(row,3);
-            run(window,deactivate,() -> { session.update(id,n,v==null?"":v.toString(),"INACTIVE"); return true; },ok -> reload.run());
-        });
-        JPanel top = new JPanel(); top.add(new JLabel("이메일 / 이름")); top.add(search); top.add(refresh);
-        JPanel editor = new JPanel(new GridLayout(0,2,8,8));
-        field(editor,"이름",person); field(editor,"전화번호",telephone); field(editor,"상태",status);
-        editor.add(save); editor.add(deactivate);
-        JPanel bottom = new JPanel(new BorderLayout(8,8)); bottom.add(editor,BorderLayout.CENTER); bottom.add(count,BorderLayout.SOUTH);
-        JPanel content = new JPanel(new BorderLayout(20,20)); content.setBorder(BorderFactory.createEmptyBorder(28,28,28,28));
-        JPanel header=new JPanel(new BorderLayout(0,24));header.add(UiTheme.heading("회원 관리","가입한 회원의 정보를 한눈에 확인하세요"),BorderLayout.NORTH);header.add(top,BorderLayout.SOUTH);
-        JScrollPane list=new JScrollPane(table);list.setBorder(BorderFactory.createEmptyBorder());
-        content.add(header,BorderLayout.NORTH); content.add(list,BorderLayout.CENTER); content.add(bottom,BorderLayout.SOUTH);
-        window.setContentPane(content); window.setSize(1080,780); window.setLocationRelativeTo(home); window.setVisible(true); reload.run();
+        var content=new JPanel(new BorderLayout());content.add(top,BorderLayout.NORTH);content.add(tabs,BorderLayout.CENTER);
+        home.setContentPane(content);home.setTitle("DateCourse · 관리자");
+        Rectangle usable=GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        home.setMinimumSize(new Dimension(Math.min(900,usable.width),Math.min(680,usable.height)));
+        home.setSize(Math.min(1200,usable.width),Math.min(840,usable.height));home.setLocationRelativeTo(null);home.revalidate();home.repaint();
     }
 
-    /** 별도 마무리 처리가 없는 작업은 빈 완료 콜백을 사용합니다. */
     private static <T> void run(Component parent,JButton button,Callable<T> action,Consumer<T> success) {
         run(parent,button,action,success,() -> {});
     }
@@ -371,9 +434,13 @@ public class MembershipApp {
                 try { success.accept(get()); }
                 catch (Exception failure) {
                     // 작업 예외의 원인을 찾아 MySQL 중복 키 오류(1062)는 이해하기 쉬운 안내로 바꿉니다.
-                    Throwable cause=failure; while (cause.getCause()!=null) cause=cause.getCause();
+                    com.datecourse.service.AppDiagnostics.begin(com.datecourse.service.AppDiagnostics.Operation.ACCOUNT_TASK,MembershipApp.class)
+                            .report(com.datecourse.service.AppDiagnostics.Stage.RUN,com.datecourse.service.AppDiagnostics.Outcome.FAILED,failure);
+                    Throwable cause=com.datecourse.service.AppDiagnostics.root(failure);
                     String text=cause instanceof SQLException sql && sql.getErrorCode()==1062
-                            ? "이미 사용 중인 이메일 또는 관리자 계정입니다." : cause.getMessage();
+                            ? "이미 사용 중인 이메일 또는 관리자 계정입니다."
+                            : cause instanceof IllegalArgumentException ? cause.getMessage()
+                            : "요청을 처리하지 못했어요. 잠시 후 다시 시도해 주세요.";
                     AppDialogs.showMessageDialog(parent,text,"처리 실패",JOptionPane.ERROR_MESSAGE);
                 }
                 finally { complete.run(); }

@@ -119,6 +119,12 @@ public class MyPage {
     @FXML
     private void logout(ActionEvent event) {
 
+        Node source=(Node)event.getSource();
+        var loginPage=getClass().getResource("/fxml/login.fxml");
+        if(loginPage==null) {
+            Main.showNotice(source,"이 예제 화면에는 로그인 연결이 없어요. 실제 로그아웃은 기본 앱의 사용자 메뉴에서 이용해 주세요.");
+            return;
+        }
         try {
 
             Alert alert =
@@ -126,13 +132,11 @@ public class MyPage {
 
             alert.setTitle("로그아웃");
             alert.setHeaderText(null);
-            alert.setContentText("로그아웃 되었습니다.");
+            alert.setContentText("예제 로그인 화면으로 이동합니다.");
 
             alert.showAndWait();
 
-            Parent root = FXMLLoader.load(
-                    getClass().getResource("/fxml/login.fxml")
-            );
+            Parent root = FXMLLoader.load(loginPage);
 
             Stage stage =
                     (Stage) ((Node) event.getSource())

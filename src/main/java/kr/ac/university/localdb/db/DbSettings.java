@@ -1,15 +1,27 @@
 package kr.ac.university.localdb.db;
 
+import com.datecourse.service.TeamApiKeys;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 
-/** Loads connection settings from db.properties, with optional environment overrides. */
+/** Team credentials take priority; installations without a shared key keep local settings. */
 public record DbSettings(String url, String user, String password) {
     public static DbSettings load() {
+        try {
+            Map<String, String> remote = TeamApiKeys.database();
+            if (!remote.isEmpty()) return fromRemote(remote);
+        } catch (IOException failure) {
+            // Do not include server responses or credentials in startup error logs.
+            throw new IllegalStateException("팀 DB 설정을 불러오지 못했어요. 공통 접속 키와 네트워크를 확인해 주세요.");
+        }
         Properties properties = new Properties();
-        try (InputStream input = DbSettings.class.getClassLoader().getResourceAsStream("db.properties")) {
+        Path local = Path.of("src/main/resources/db.properties");
+        try (InputStream input = Files.exists(local) ? Files.newInputStream(local)
+                : DbSettings.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (input != null) properties.load(input);
         } catch (IOException exception) {
             throw new IllegalStateException("db.properties could not be read.", exception);
@@ -30,6 +42,19 @@ public record DbSettings(String url, String user, String password) {
         }
         return new DbSettings(url, user, password);
     }
+
+    static DbSettings fromRemote(Map<String, String> remote) {
+        Properties values = new Properties();
+        for (String field : new String[]{"url", "user", "password"}) {
+            String value = remote.get(field);
+            if (value == null || value.isBlank()) throw new IllegalStateException("팀 DB 설정이 올바르지 않습니다.");
+            values.setProperty("db." + field, value);
+        }
+        // Keep the server password exactly as returned, including intentional spaces.
+        return from(values, Map.of());
+    }
+
+    @Override public String toString() { return "DbSettings[credentials=hidden]"; }
 
     private static String value(Map<String, String> environment, String environmentName,
                                 Properties properties, String propertyName) {

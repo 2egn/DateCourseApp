@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-11-14T06:19:48.431680+00:00",
+  "requests": 3,
+  "rule": "normalized_name_road_building_district_within_200m_operational_type",
+  "note": "Identity only. Does not validate prices, future operation, walking routes or other places.",
+  "places": [
+    {
+      "publicId": "STD:15017323:dd37d113291f15027d6931df",
+      "name": "증권박물관(부산관)",
+      "googlePlaceId": "ChIJkVoIm4LraDURPWURF6CHYB0",
+      "decision": "REVIEW_NEEDED",
+      "reasons": [
+        "ADDRESS_DIFFERS"
+      ]
+    },
+    {
+      "publicId": "STD:15017323:caf50db5392e3768b953a3d8",
+      "name": "한국거래소자본시장역사박물관",
+      "googlePlaceId": "ChIJ2zjRyffraDURMtacdRDHUzQ",
+      "decision": "REVIEW_NEEDED",
+      "reasons": [
+        "ADDRESS_DIFFERS"
+      ]
+    },
+    {
+      "publicId": "STD:15017323:b89cdda823e5b9669483edf9",
+      "name": "부산여대차박물관",
+      "googlePlaceId": "ChIJu7_Vc6jsaDURaTWGdXOVy6E",
+      "decision": "REVIEW_NEEDED",
+      "reasons": [
+        "NAME_DIFFERS",
+        "TYPE_NOT_CONFIRMED"
+      ]
+    }
+  ]
+}

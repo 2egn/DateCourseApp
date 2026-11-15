@@ -13,7 +13,33 @@ public class MemberRepository implements AutoCloseable {
     private static final String INITIAL_ADMIN_HASH = "pbkdf2-sha256$600000$VWNKiLVOeQPuuXhHV0lPKQ==$jo1T+y7gfBK3eGRNLyp9EBmnbbLaEe6czQss6sZVkpI=";
     public record Login(long memberId, String name, AdminSession adminSession) {}
     public record Member(long id, String email, String name, String phone, String status, String created) {}
+    public record Profile(String email, String name, String phone) {}
+
+    /** Reads only the authenticated member's public account fields, never a password hash. */
+    public Profile profile(kr.ac.university.localdb.UserSession session) throws SQLException {
+        if (session == null || session.memberId() <= 0) throw new IllegalArgumentException("로그인이 필요합니다.");
+        try (Connection connection = connect(); PreparedStatement query = connection.prepareStatement(
+                "SELECT email,name,phone FROM members WHERE member_id=? AND status='ACTIVE'")) {
+            query.setLong(1, session.memberId());
+            try (ResultSet row = query.executeQuery()) {
+                if (!row.next()) throw new SQLException("회원 정보를 찾지 못했습니다.");
+                return new Profile(row.getString("email"), row.getString("name"), row.getString("phone"));
+            }
+        }
+    }
     private final HikariDataSource pool;
+
+    /** Place reads share the login pool and its application shutdown lifecycle. */
+    public PlaceRepository places() {
+        return new PlaceRepository(pool);
+    }
+
+    /** Course saves share the same pool; closing this member repository closes it. */
+    public SavedCourseRepository savedCourses() {
+        return new SavedCourseRepository(pool);
+    }
+    public PlaceCatalogRepository placeCatalog() { return new PlaceCatalogRepository(pool); }
+    public InformationReportRepository informationReports() { return new InformationReportRepository(pool); }
 
     public MemberRepository() {
         this(DatabasePool.create(DbSettings.load()));
@@ -77,10 +103,22 @@ public class MemberRepository implements AutoCloseable {
 
     public Login login(String username, char[] password) throws Exception {
         username = username.trim();
-        long started = System.nanoTime();
+
 
         try (Connection c = connect()) {
-            long connected = System.nanoTime();
+
+
+            // The admin window requires a capability issued only after checking the stored admin hash.
+            if (ADMIN_USERNAME.equals(username)) {
+                try (PreparedStatement s=c.prepareStatement("SELECT password_hash FROM app_admins WHERE username=?")) {
+                    s.setString(1,username);
+                    try (ResultSet row=s.executeQuery()) {
+                        if(row.next()&&PasswordHash.verify(password,row.getString("password_hash")))
+                            return new Login(0,"관리자",new AdminSession());
+                    }
+                }
+                throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
+            }
 
             try (PreparedStatement s = c.prepareStatement(
                     "SELECT member_id,name,password_hash,status FROM members WHERE email=?")) {
@@ -88,18 +126,11 @@ public class MemberRepository implements AutoCloseable {
 
                 try (ResultSet r = s.executeQuery()) {
                     boolean found = r.next();
-                    long queried = System.nanoTime();
+
 
                     boolean valid = found
                             && PasswordHash.verify(password, r.getString("password_hash"));
-                    long verified = System.nanoTime();
 
-                    System.out.printf(
-                            "DB 연결: %.1f ms%n회원 조회: %.1f ms%n비밀번호 검증: %.1f ms%n",
-                            (connected - started) / 1_000_000.0,
-                            (queried - connected) / 1_000_000.0,
-                            (verified - queried) / 1_000_000.0
-                    );
 
                     if (!valid)
                         throw new IllegalArgumentException(
@@ -118,13 +149,64 @@ public class MemberRepository implements AutoCloseable {
     /** 관리자 인증에 성공했을 때만 관리 메서드에 접근할 수 있습니다. */
     public final class AdminSession {
         private AdminSession() {}
-        public void deleteInactive(long id) throws SQLException {
-            try (Connection c = connect(); PreparedStatement s = c.prepareStatement(
-                    "DELETE FROM members WHERE member_id=? AND status='INACTIVE'")) {
-                s.setLong(1,id);
-                if(s.executeUpdate()!=1) throw new IllegalArgumentException("비활성 회원만 삭제할 수 있습니다. 목록을 새로고침하세요.");
+        public java.util.List<com.datecourse.model.InformationReport> informationReports() throws SQLException {
+            return MemberRepository.this.informationReports().reports();
+        }
+        public InformationReportRepository.ReportPage informationReports(InformationReportRepository.ReportFilter filter,Long beforeId) throws SQLException {
+            return MemberRepository.this.informationReports().reports(filter,beforeId,50);
+        }
+        public InformationReportRepository.ReviewContext informationReportContext(long id) throws SQLException {
+            return MemberRepository.this.informationReports().reviewContext(id);
+        }
+        public void reviewInformation(InformationReportRepository.ReviewContext expected,boolean approve,String corrected,String note) throws SQLException {
+            MemberRepository.this.informationReports().review(expected,approve,corrected,note);
+        }
+        public void reviewInformation(long id, boolean approve, String corrected, String note) throws SQLException {
+            MemberRepository.this.informationReports().review(id,approve,corrected,note);
+        }
+        public void deleteInactive(long id) throws SQLException { deleteInactive(readMember(id)); }
+
+        public String deletionRestriction(Member expected) throws SQLException {
+            try(Connection connection=connect()) {
+                Member current=readMember(connection,expected.id(),false);requireUnchanged(current,expected);
+                return deletionRestriction(connection,current);
             }
         }
+
+        public void deleteInactive(Member expected) throws SQLException {
+            try(Connection connection=connect()) {
+                connection.setAutoCommit(false);
+                try {
+                    Member current=readMember(connection,expected.id(),true);requireUnchanged(current,expected);
+                    String reason=deletionRestriction(connection,current);
+                    if(!reason.isEmpty())throw new IllegalArgumentException(reason);
+                    try(PreparedStatement query=connection.prepareStatement("DELETE FROM members WHERE member_id=? AND status='INACTIVE'")) {
+                        query.setLong(1,current.id());
+                        if(query.executeUpdate()!=1)throw new IllegalArgumentException("회원 상태가 바뀌었어요. 목록을 새로고침해 주세요.");
+                    }
+                    connection.commit();
+                } catch(SQLException|RuntimeException failure) {
+                    connection.rollback();
+                    if(failure instanceof SQLException sql && "23000".equals(sql.getSQLState()))
+                        throw new IllegalArgumentException("연결된 데이터가 있는 회원은 영구 삭제할 수 없어요. 탈퇴 상태로 유지해 주세요.");
+                    throw failure;
+                }
+            }
+        }
+
+        private String deletionRestriction(Connection connection,Member member) throws SQLException {
+            if(!"INACTIVE".equals(member.status()))return "탈퇴 상태의 회원만 영구 삭제할 수 있어요.";
+            try(PreparedStatement query=connection.prepareStatement("SELECT course_id FROM saved_courses WHERE member_id=? LIMIT 1")) {
+                query.setLong(1,member.id());
+                try(ResultSet row=query.executeQuery()) {
+                    if(row.next())return "저장한 코스가 있는 회원은 영구 삭제할 수 없어요. 탈퇴 상태로 유지해 주세요.";
+                }
+            } catch(SQLException failure) {
+                if(!"42S02".equals(failure.getSQLState()) && failure.getErrorCode()!=42102)throw failure;
+            }
+            return "";
+        }
+
         public List<Member> list(String keyword) throws SQLException {
             List<Member> members = new ArrayList<>();
             try (Connection c = connect(); PreparedStatement s = c.prepareStatement(
@@ -139,15 +221,51 @@ public class MemberRepository implements AutoCloseable {
             return members;
         }
 
-        public void update(long id, String name, String phone, String status) throws SQLException {
-            if (name.trim().isEmpty() || name.trim().length()>100 || phone.trim().length()>30)
-                throw new IllegalArgumentException("이름(1~100자)과 전화번호(최대 30자)를 확인하세요.");
-            if (!Set.of("ACTIVE","INACTIVE").contains(status)) throw new IllegalArgumentException("잘못된 회원 상태입니다.");
-            try (Connection c = connect(); PreparedStatement s = c.prepareStatement(
-                    "UPDATE members SET name=?,phone=?,status=? WHERE member_id=?")) {
-                s.setString(1,name.trim()); s.setString(2,phone.trim()); s.setString(3,status); s.setLong(4,id);
-                if (s.executeUpdate()!=1) throw new SQLException("회원이 없거나 이미 변경되었습니다.");
+        public void update(long id,String name,String phone,String status) throws SQLException {
+            update(readMember(id),name,phone,status);
+        }
+
+        public void update(Member expected,String name,String phone,String status) throws SQLException {
+            if(name==null || name.trim().isEmpty() || name.trim().length()>100 || phone==null || phone.trim().length()>30)
+                throw new IllegalArgumentException("이름(1~100자)과 전화번호(최대 30자)를 확인해 주세요.");
+            change(expected,name.trim(),phone.trim(),status,false);
+        }
+
+        public void changeStatus(Member expected,String status) throws SQLException {
+            change(expected,null,null,status,true);
+        }
+
+        private void change(Member expected,String name,String phone,String status,boolean statusOnly) throws SQLException {
+            if(!Set.of("ACTIVE","INACTIVE").contains(status))throw new IllegalArgumentException("회원 상태를 확인해 주세요.");
+            try(Connection connection=connect()) {
+                connection.setAutoCommit(false);
+                try {
+                    Member current=readMember(connection,expected.id(),true);requireUnchanged(current,expected);
+                    String sql=statusOnly?"UPDATE members SET status=? WHERE member_id=?":"UPDATE members SET name=?,phone=?,status=? WHERE member_id=?";
+                    try(PreparedStatement query=connection.prepareStatement(sql)) {
+                        int parameter=1;
+                        if(!statusOnly){query.setString(parameter++,name);query.setString(parameter++,phone);}
+                        query.setString(parameter++,status);query.setLong(parameter,current.id());query.executeUpdate();
+                    }
+                    connection.commit();
+                } catch(SQLException|RuntimeException failure){connection.rollback();throw failure;}
             }
+        }
+
+        private Member readMember(long id) throws SQLException {
+            try(Connection connection=connect()){return readMember(connection,id,false);}
+        }
+        private Member readMember(Connection connection,long id,boolean lock) throws SQLException {
+            try(PreparedStatement query=connection.prepareStatement("SELECT member_id,email,name,phone,status,created_at FROM members WHERE member_id=?"+(lock?" FOR UPDATE":""))) {
+                query.setLong(1,id);
+                try(ResultSet row=query.executeQuery()) {
+                    if(!row.next())throw new IllegalArgumentException("회원을 찾지 못했어요. 목록을 새로고침해 주세요.");
+                    return new Member(row.getLong(1),row.getString(2),row.getString(3),row.getString(4),row.getString(5),row.getString(6));
+                }
+            }
+        }
+        private void requireUnchanged(Member current,Member expected) {
+            if(!current.equals(expected))throw new IllegalArgumentException("다른 작업에서 회원 정보가 변경됐어요. 목록을 새로고침한 뒤 다시 시도해 주세요.");
         }
     }
 }

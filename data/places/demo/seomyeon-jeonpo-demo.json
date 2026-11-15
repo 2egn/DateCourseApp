@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "title": "서면·전포 시연 목록",
+  "checkedAt": "2026-11-13T13:03:26.357578+00:00",
+  "startLat": 35.1578,
+  "startLng": 129.06,
+  "note": "Public-source snapshot. Identity checked; prices unknown. No Google review/price payload.",
+  "places": [
+    {
+      "recordId": 1000001,
+      "placeId": "DCA-DEMO-001",
+      "name": "대모골",
+      "category": "MEAL",
+      "lat": 35.1592246804744,
+      "lng": 129.058843891919,
+      "priceEstimate": {
+        "minimum": null,
+        "maximum": null,
+        "unit": "UNKNOWN",
+        "basis": "1인 가격·메뉴 분량 미확인"
+      },
+      "rating": 0,
+      "details": {
+        "address": "부산광역시 부산진구 부전로152번길 71",
+        "subcategory": "백반/한정식",
+        "phone": "",
+        "website": "",
+        "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
+        "sourceDate": "2026-09-30",
+        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "verificationUrl": "",
+        "externalIds": {
+          "public": "SBIZ:MA0101202607A0151351",
+          "google": "ChIJy9t_MG_raDURycqFmFmXVA8"
+        }
+      }
+    },
+    {
+      "recordId": 1000002,
+      "placeId": "DCA-DEMO-002",
+      "name": "부잣집밀면",
+      "category": "MEAL",
+      "lat": 35.1596034888509,
+      "lng": 129.059884928131,
+      "priceEstimate": {
+        "minimum": null,
+        "maximum": null,
+        "unit": "UNKNOWN",
+        "basis": "1인 가격·메뉴 분량 미확인"
+      },
+      "rating": 0,
+      "details": {
+        "address": "부산광역시 부산진구 새싹로8번길 32",
+        "subcategory": "냉면/밀면",
+        "phone": "",
+        "website": "",
+        "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
+        "sourceDate": "2026-09-30",
+        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "verificationUrl": "",
+        "externalIds": {
+          "public": "SBIZ:MA010120220813751543",
+          "google": "ChIJiYlDsmjraDURn7UoK53tA6I"
+        }
+      }
+    },
+    {
+      "recordId": 1000003,
+      "placeId": "DCA-DEMO-003",
+      "name": "파노라믹커피부산",
+      "category": "CAFE",
+      "lat": 35.1579922719269,
+      "lng": 129.060305161942,
+      "priceEstimate": {
+        "minimum": null,
+        "maximum": null,
+        "unit": "UNKNOWN",
+        "basis": "1인 가격·메뉴 분량 미확인"
+      },
+      "rating": 0,
+      "details": {
+        "address": "부산광역시 부산진구 서전로 5",
+        "subcategory": "카페",
+        "phone": "",
+        "website": "",
+        "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
+        "sourceDate": "2026-09-30",
+        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "verificationUrl": "",
+        "externalIds": {
+          "public": "SBIZ:MA0101202406A0012647",
+          "google": "ChIJXUD6AD7raDURKSQ_LWmWM8M"
+        }
+      }
+    },
+    {
+      "recordId": 1000004,
+      "placeId": "DCA-DEMO-004",
+      "name": "바램",
+      "category": "MEAL",
+      "lat": 35.1553314455622,
+      "lng": 129.055673406637,
+      "priceEstimate": {
+        "minimum": null,
+        "maximum": null,
+        "unit": "UNKNOWN",
+        "basis": "1인 가격·메뉴 분량 미확인"
+      },
+      "rating": 0,
+      "details": {
+        "address": "부산광역시 부산진구 중앙대로691번가길 22",
+        "subcategory": "돼지고기 구이/찜",
+        "phone": "",
+        "website": "",
+        "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
+        "sourceDate": "2026-09-30",
+        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "verificationUrl": "",
+        "externalIds": {
+          "public": "SBIZ:MA010120220802888675",
+          "google": "ChIJ4VBf9HHraDURNv4M5cfFckI"
+        }
+      }
+    },
+    {
+      "recordId": 1000005,
+      "placeId": "DCA-DEMO-005",
+      "name": "전포히카루",
+      "category": "MEAL",
+      "lat": 35.1568243585089,
+      "lng": 129.066969163048,
+      "priceEstimate": {
+        "minimum": null,
+        "maximum": null,
+        "unit": "UNKNOWN",
+        "basis": "1인 가격·메뉴 분량 미확인"
+      },
+      "rating": 0,
+      "details": {
+        "address": "부산광역시 부산진구 동성로71번길 23",
+        "subcategory": "일식 회/초밥",
+        "phone": "",
+        "website": "",
+        "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
+        "sourceDate": "2026-09-30",
+        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "verificationUrl": "",
+        "externalIds": {
+          "public": "SBIZ:MA010120220805402285",
+          "google": "ChIJPcA0FJTraDURopacwsf1AXQ"
+        }
+      }
+    },
+    {
+      "recordId": 1000006,
+      "placeId": "DCA-DEMO-006",
+      "name": "통영아구찜",
+      "category": "MEAL",
+      "lat": 35.1595239115724,
+      "lng": 129.059795135086,
+      "priceEstimate": {
+        "minimum": null,
+        "maximum": null,
+        "unit": "UNKNOWN",
+        "basis": "1인 가격·메뉴 분량 미확인"
+      },
+      "rating": 0,
+      "details": {
+        "address": "부산광역시 부산진구 새싹로8번길 30",
+        "subcategory": "해산물 구이/찜",
+        "phone": "",
+        "website": "",
+        "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
+        "sourceDate": "2026-09-30",
+        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "verificationUrl": "",
+        "externalIds": {
+          "public": "SBIZ:MA010120220807078377",
+          "google": "ChIJx60Ys2jraDUR-sX9kil5wDU"
+        }
+      }
+    },
+    {
+      "recordId": 1000007,
+      "placeId": "DCA-DEMO-007",
+      "name": "스타벅스 서면문화로",
+      "category": "CAFE",
+      "lat": 35.1588220077514,
+      "lng": 129.057615720134,
+      "priceEstimate": {
+        "minimum": null,
+        "maximum": null,
+        "unit": "UNKNOWN",
+        "basis": "1인 가격·메뉴 분량 미확인"
+      },
+      "rating": 0,
+      "details": {
+        "address": "부산광역시 부산진구 서면문화로 10",
+        "subcategory": "카페",
+        "phone": "",
+        "website": "",
+        "sourceUrl": "https://www.data.go.kr/data/15083033/fileData.do",
+        "sourceDate": "2026-09-30",
+        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "verificationUrl": "",
+        "externalIds": {
+          "public": "SBIZ:MA0106202201A2364057",
+          "google": "ChIJv-9YDdnraDURsuuMSYKMvuI"
+        }
+      }
+    },
+    {
+      "recordId": 1000008,
+      "placeId": "DCA-DEMO-008",
+      "name": "연지동작은도서관",
+      "category": "CULTURE",
+      "lat": 35.17280533,
+      "lng": 129.0527841,
+      "priceEstimate": {
+        "minimum": null,
+        "maximum": null,
+        "unit": "UNKNOWN",
+        "basis": "1인 가격·메뉴 분량 미확인"
+      },
+      "rating": 0,
+      "details": {
+        "address": "부산광역시 부산진구 국악로 30, 연지동주민센터 2층",
+        "subcategory": "도서관",
+        "phone": "051-605-6579",
+        "website": "https://www.mcst.go.kr/slibrary/library/detail/1047549",
+        "sourceUrl": "https://www.data.go.kr/data/15167428/fileData.do",
+        "sourceDate": "2026-09-11",
+        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "verificationUrl": "https://www.mcst.go.kr/slibrary/library/detail/1047549",
+        "externalIds": {
+          "public": "LIB:73",
+          "google": "ChIJ4ThxWQDraDUR4RANsayka8w"
+        }
+      }
+    },
+    {
+      "recordId": 1000009,
+      "placeId": "DCA-DEMO-009",
+      "name": "범천작은도서관",
+      "category": "CULTURE",
+      "lat": 35.14648374,
+      "lng": 129.0562849,
+      "priceEstimate": {
+        "minimum": null,
+        "maximum": null,
+        "unit": "UNKNOWN",
+        "basis": "1인 가격·메뉴 분량 미확인"
+      },
+      "rating": 0,
+      "details": {
+        "address": "부산광역시 부산진구 신암로 48",
+        "subcategory": "도서관",
+        "phone": "051-605-6971",
+        "website": "https://www.mcst.go.kr/slibrary/library/detail/1047532",
+        "sourceUrl": "https://www.data.go.kr/data/15167428/fileData.do",
+        "sourceDate": "2026-09-11",
+        "identityCheckedAt": "2026-11-13T13:03:26.357578+00:00",
+        "verificationUrl": "https://www.mcst.go.kr/slibrary/library/detail/1047532",
+        "externalIds": {
+          "public": "LIB:69",
+          "google": "ChIJNxss8Z3raDUR4bI1iQKrzgY"
+        }
+      }
+    }
+  ]
+}

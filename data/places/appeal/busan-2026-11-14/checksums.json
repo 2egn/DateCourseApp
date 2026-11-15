@@ -1,0 +1,23 @@
+{
+  "inputs": {
+    "data/places/demo/seomyeon-public-estimates.json": "2db8f275ea00f143925d5237371a634e2383b9823fce1ac9ca4231e2b3a7d51e",
+    "data/places/public/busan/busan_good_price_shops.csv": "e9144bff3b59ce2ac5a41aec2c36789561d274c510d30b9bdf381985a62ce74f",
+    "data/places/public/busan/busan_places.csv": "90d7333db15e72e3b024978be7382974de27bc0ab1c228942959668084b33480",
+    "data/places/public/busan/raw/busan_standard_sources.json": "824f3f23e5e57421080322ef8fbe25d08c89fee7ba92cdbc72cc9f688a745375"
+  },
+  "outputs": {
+    "additional_facility_facts.json": "b58b3e9c874bcb15b84756585c2e99016fc080dabba571f1087b3be508eb035f",
+    "busanjin_model_restaurants.csv": "1837a8ad89cc810e802b7d4ec91d9751f7ded64f7f0ade79015c91c5904bc1be",
+    "demo_appeal_facts.json": "6948abafe565f657d49af89dc0e59aabe06c9938856b75f1ca908b7250b62e99",
+    "demo_nearest_transit.csv": "b0e782c174aef35b2bfbea8aaa1fc58f201297765083540edcd22c724d0524d4",
+    "designation_links.csv": "8e009efc012dc7c7bfe9dd828f3ef2dc932603991536febdb1047d05e4cf9eb1",
+    "designation_review_needed.json": "f521ea4d542865d58b4b2875a744f9820087e371dc5dd6d1cbad6536c2cca7f4",
+    "raw/busan_bus_stops.csv": "74060217eaa9b05ea07f692646813a1690495afb7d9287632c756e2819fdfff4",
+    "raw/busan_railway_stations.csv": "be858b691edbf741c00601ef0d682734b0dcdae74ad327efe6eb7d4a039191da",
+    "raw/busanjin_model_restaurants_cp949.csv": "08bd230f7eb751fa8bb3c75db2eb3bb4c93dfc7237883df7f7dc68c99db0b678",
+    "raw/national_railway_original.xlsx": "cdf1d84a7e5c898b2aacd622783ba8ba9af35c40bee0561dc97d55ce8e063f94",
+    "sources.json": "61b20fe41647a21dd2849cff494c9aecb9e316bf8757146f7b5dab6c04b390e6",
+    "summary.json": "a7d8e7d617979ef61ff88d1037bcbaef56118e39c2097976e3b7c02ec47cb33f",
+    "threshold_comparison.json": "1cdd196f5bebed2968a62a59a6c588650af4f831ecaccf6ebd32cc527e3f03bf"
+  }
+}

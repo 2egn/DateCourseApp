@@ -1,0 +1,158 @@
+package kr.ac.university.localdb.db;
+
+import com.datecourse.model.*;
+import com.datecourse.demo.PublicPlaceImport;
+import com.datecourse.service.PublicDemoPlaceRepository;
+import com.zaxxer.hikari.HikariDataSource;
+import kr.ac.university.localdb.UserSession;
+import org.h2.tools.RunScript;
+import org.junit.jupiter.api.*;
+import java.nio.file.*;
+import java.sql.*;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+class PlaceCatalogRepositoryTest {
+    HikariDataSource pool;
+    PlaceCatalogRepository catalog;
+    final Instant first=Instant.parse("2026-11-14T00:00:00Z");
+    @BeforeEach void setup() throws Exception {
+        pool=DatabasePool.create(new DbSettings("jdbc:h2:mem:"+UUID.randomUUID()+";MODE=MySQL;DB_CLOSE_DELAY=-1","sa",""));
+        try(var c=pool.getConnection()) {
+            for(String file:List.of("02_create_tables.sql","07_saved_courses.sql","08_saved_course_price_estimates.sql"))
+                try(var reader=Files.newBufferedReader(Path.of("data/sql",file))){RunScript.execute(c,reader);}
+            try(var s=c.createStatement()) {s.executeUpdate("INSERT INTO members(member_id,email,password_hash,name) VALUES(7,'demo@example.test','test','사용자')");}
+        }
+        catalog=new PlaceCatalogRepository(pool);
+    }
+    @AfterEach void close(){pool.close();}
+    Place place(String key,String name,int price) {
+        var details=new PlaceDetails("부산광역시 부산진구 서면로 1","한식","","","https://example.test","2026-11-14","","",Map.of("public",key));
+        return new Place(2000001,"DCA-DEMO-"+key,name,"MEAL",35.1578,129.06,
+                new PriceEstimate(price,price,PriceEstimate.Unit.PER_PERSON,"공공 메뉴",PriceEstimate.Evidence.REFERENCE,"https://example.test","2026-11-14"),0,details);
+    }
+    PlaceCatalogRepository.Batch batch(int generation,Place... places) {
+        return new PlaceCatalogRepository.Batch("public-test",first.plusSeconds(generation),List.of(places));
+    }
+    int count(String table) throws Exception {
+        try(var c=pool.getConnection();var s=c.createStatement();var r=s.executeQuery("SELECT COUNT(*) FROM "+table)){r.next();return r.getInt(1);}
+    }
+    @Test void repeatedImportKeepsStableGlobalIdsAndNoDuplicateRevisions() throws Exception {
+        var batch=batch(0,place("PUBLIC:A","가게",5000),place("PUBLIC:B","다른 가게",6000));
+        assertEquals(2,catalog.synchronize(batch).inserted());
+        var first=catalog.findAll();
+        assertEquals(2,catalog.synchronize(batch).unchanged());
+        assertEquals(first,new PlaceRepository(pool).findAll());
+        assertEquals("PUBLIC:A",first.getFirst().placeId());
+        assertTrue(first.getFirst().recordId()>0);
+        assertEquals(2,count("place_catalog_entries"));assertEquals(2,count("data_records"));
+        assertEquals(2,count("place_catalog_revisions"));assertEquals(2,count("place_catalog_imports"));
+    }
+    @Test void publicUpdatePreservesApprovedCorrectionAndSavedSnapshot() throws Exception {
+        catalog.synchronize(batch(0,place("PUBLIC:A","원래 가게",5000)));
+        var before=catalog.findAll().getFirst();
+        var saved=new SavedCourseRepository(pool);var session=new UserSession(7,"사용자");
+        var snapshot=new RoutePlan(35.1578,129.06,2,1000,"기존 코스",List.of(before));
+        saved.save(session,snapshot);
+        var reports=new InformationReportRepository(pool);
+        long report=reports.submit(session,before,InformationReport.Field.PRICE,"7000","메뉴 확인","https://example.test/menu");
+        reports.review(report,true,"7000","관리자 메뉴 확인");
+        assertEquals(7000,reports.apply(catalog.findAll()).getFirst().price());
+        assertEquals(1,catalog.synchronize(batch(1,place("PUBLIC:A","원본 갱신 가게",9000))).updated());
+        var raw=new PlaceRepository(pool).findAll().getFirst();
+        var effective=reports.apply(List.of(raw)).getFirst();
+        assertEquals(9000,raw.price());assertEquals(7000,effective.price());
+        assertEquals("원본 갱신 가게",effective.name());assertEquals(before.recordId(),raw.recordId());
+        assertEquals(PriceEstimate.Evidence.ADMIN_REVIEWED,effective.priceEstimate().evidence());
+        assertEquals(snapshot,saved.findAll(session).getFirst().plan());
+        assertEquals(2,count("place_catalog_revisions"));
+    }
+    @Test void missingPlacesDeactivateAndReappearWithSameRecordNumber() throws Exception {
+        catalog.synchronize(batch(0,place("PUBLIC:A","가게",5000),place("PUBLIC:B","다른 가게",6000)));
+        long id=catalog.findAll().get(1).recordId();
+        assertEquals(1,catalog.synchronize(batch(1,place("PUBLIC:A","가게",5000))).deactivated());
+        assertEquals(1,catalog.findAll().size());assertEquals(2,count("data_records"));
+        assertEquals(1,catalog.synchronize(batch(2,place("PUBLIC:A","가게",5000),place("PUBLIC:B","돌아온 가게",7000))).reactivated());
+        assertEquals(id,catalog.findAll().get(1).recordId());
+    }
+    @Test void staleOrConflictingGenerationNeverChangesCommittedData() throws Exception {
+        catalog.synchronize(batch(2,place("PUBLIC:A","가게",5000)));
+        assertThrows(IllegalArgumentException.class,()->catalog.synchronize(batch(1,place("PUBLIC:A","이전",1000))));
+        assertThrows(IllegalArgumentException.class,()->catalog.synchronize(batch(2,place("PUBLIC:A","다른 내용",1000))));
+        assertEquals("가게",catalog.findAll().getFirst().name());assertEquals(1,count("place_catalog_imports"));
+    }
+    @Test void lateOwnershipConflictRollsBackNewRowsAndHistory() throws Exception {
+        catalog.synchronize(new PlaceCatalogRepository.Batch("other-source",first,List.of(place("PUBLIC:Z","다른 원본",5000))));
+        var input=batch(1,place("PUBLIC:A","먼저 추가",6000),place("PUBLIC:Z","충돌",9000));
+        assertThrows(IllegalArgumentException.class,()->catalog.synchronize(input));
+        assertEquals(1,count("place_catalog_entries"));assertEquals(1,count("data_records"));
+        assertEquals(1,count("place_catalog_imports"));assertEquals(1,count("place_catalog_revisions"));
+        assertEquals("다른 원본",catalog.findAll().getFirst().name());
+    }
+    @Test void malformedDuplicateOrEmptySnapshotsFailBeforeWrites() throws Exception {
+        var place=place("PUBLIC:A","가게",5000);
+        assertThrows(IllegalArgumentException.class,()->new PlaceCatalogRepository.Batch("public-test",first,List.of()));
+        assertThrows(IllegalArgumentException.class,()->catalog.synchronize(batch(0,place,place)));
+        assertTrue(catalog.findImported().isEmpty());
+        var d=place.details();var broken=new Place(1,place.placeId(),place.name(),place.category(),Double.NaN,129,place.priceEstimate(),0,d);
+        assertThrows(IllegalArgumentException.class,()->catalog.synchronize(batch(0,broken)));
+    }
+    @Test void concurrentSameSnapshotDoesNotCreateDuplicates() throws Exception {
+        catalog.initialize();
+        var input=batch(0,place("PUBLIC:A","가게",5000));
+        var start=new CountDownLatch(1);
+        try(var workers=Executors.newFixedThreadPool(2)) {
+            Callable<PlaceCatalogRepository.ImportResult> work=()->{start.await();return new PlaceCatalogRepository(pool).synchronize(input);};
+            var a=workers.submit(work);var b=workers.submit(work);start.countDown();
+            var one=a.get(20,TimeUnit.SECONDS);var two=b.get(20,TimeUnit.SECONDS);
+            assertEquals(1,one.inserted()+two.inserted());assertEquals(1,one.unchanged()+two.unchanged());
+        }
+        assertEquals(1,count("place_catalog_entries"));assertEquals(1,count("data_records"));
+    }
+    @Test void sqlFailureAfterFirstRowRollsBackWholeBatch() throws Exception {
+        catalog.initialize();
+        try(var c=pool.getConnection();var statement=c.createStatement()) {
+            statement.executeUpdate("ALTER TABLE place_catalog_entries ADD CONSTRAINT reject_z CHECK(place_key <> 'PUBLIC:Z')");
+        }
+        assertThrows(SQLException.class,()->catalog.synchronize(batch(0,place("PUBLIC:A","가게",5000),place("PUBLIC:Z","실패",6000))));
+        assertEquals(0,count("data_records"));assertEquals(0,count("place_catalog_entries"));
+        assertEquals(0,count("place_catalog_revisions"));assertEquals(0,count("place_catalog_imports"));
+        assertTrue(catalog.findImported().isEmpty());
+    }
+    @Test void corruptionIsReportedInsteadOfFallingBackToLegacyData() throws Exception {
+        catalog.synchronize(batch(0,place("PUBLIC:A","가게",5000)));
+        try(var c=pool.getConnection();var statement=c.createStatement()) {
+            statement.executeUpdate("UPDATE place_catalog_entries SET payload='{}'");
+        }
+        assertThrows(java.io.IOException.class,()->new PlaceRepository(pool).findAll());
+    }
+    @Test void importingReviewedOverlayAsPublicSourceIsRejected() throws Exception {
+        catalog.synchronize(batch(0,place("PUBLIC:A","가게",5000)));
+        var original=catalog.findAll().getFirst();
+        var reports=new InformationReportRepository(pool);
+        long id=reports.submit(new UserSession(7,"사용자"),original,InformationReport.Field.NAME,"수정된 이름","제보","");
+        reports.review(id,true,"수정된 이름","검토");
+        var overlay=reports.apply(List.of(original)).getFirst();
+        assertThrows(IllegalArgumentException.class,()->catalog.synchronize(batch(1,overlay)));
+        assertEquals("가게",catalog.findAll().getFirst().name());
+    }
+    @Test void bundled127PlacesRoundTripWithFactsAndUnreviewedLinks() throws Exception {
+        var input=PublicPlaceImport.batch();
+        assertEquals(127,catalog.synchronize(input).inserted());
+        assertEquals(127,catalog.synchronize(input).unchanged());
+        var places=new PlaceRepository(pool).findAll();
+        assertEquals(127,places.size());
+        assertEquals(118,places.stream().filter(p->p.details().hasTag(PlaceTag.NEAR_SUBWAY)).count());
+        assertTrue(places.stream().flatMap(p->p.details().externalLinks().stream()).noneMatch(ExternalPlaceLink::usable));
+        assertTrue(places.stream().allMatch(p->p.placeId().equals(p.details().externalIds().get("public"))));
+        var original=new PublicDemoPlaceRepository().findAll();
+        assertEquals(original.getFirst().priceEstimate(),places.stream().filter(p->p.placeId().equals(original.getFirst().details().externalIds().get("public"))).findFirst().orElseThrow().priceEstimate());
+    }
+    @Test void sourceFingerprintIgnoresInputOrderAndDemoRecordNumber() throws Exception {
+        var a=place("PUBLIC:A","가게",5000);var b=place("PUBLIC:B","다른 가게",6000);
+        var alternate=new Place(777,"another-display-id",a.name(),a.category(),a.lat(),a.lng(),a.priceEstimate(),a.rating(),a.details());
+        assertEquals(PlaceCatalogRepository.prepare(batch(0,a,b)).fingerprint(),PlaceCatalogRepository.prepare(batch(0,b,alternate)).fingerprint());
+    }
+}
