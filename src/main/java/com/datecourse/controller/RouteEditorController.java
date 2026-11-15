@@ -415,6 +415,7 @@ public final class RouteEditorController extends BasePageController {
         draftPlaces.add(place);
         placeList.getSelectionModel().selectLast();
         changed(false);
+        map.fitLeg(draftPlaces.size()-1);
     }
 
     private void changed(boolean editingCourse) {

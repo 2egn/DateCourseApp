@@ -303,6 +303,10 @@ final class PlannerMap {
         if (ready) view.getEngine().executeScript("window.fitRouteView(" + wholeRoute + ")");
     }
 
+    void fitLeg(int index) {
+        if (ready) view.getEngine().executeScript("window.fitRouteLeg("+index+")");
+    }
+
     void setRangeAdjusting(boolean adjusting) {
         rangeAdjusting = adjusting;
         if (ready) view.getEngine().executeScript("if(window.setCameraRangeAdjusting)window.setCameraRangeAdjusting("+adjusting+")");

@@ -32,6 +32,7 @@
     let nextCircleOutline;
     let nextRadiusMeter = 500;
     let displayedNextRange = null;
+    let displayedWalkingRoute = null;
     let selectedPosition;
     let selectedPlaceName = "";
     let originLocked = false;
@@ -904,7 +905,19 @@
     }
     window.ensureRouteRangesVisible = function (adjusting) {
         if (!ready || !routePresentation) return;
-        camera.request({intent:adjusting ? 'RANGE_DRAG' : 'RANGE_COMMIT', points:rangePoints(), keepCenter:true});
+        const range = routeLocked && displayedNextRange ? displayedNextRange
+            : {lat:routePresentation.startLat, lng:routePresentation.startLng, radius:radiusMeter};
+        camera.request({intent:adjusting ? 'RANGE_DRAG' : 'RANGE_COMMIT', points:circlePoints(range.lat, range.lng, range.radius)});
+    };
+    window.fitRouteLeg = function (index) {
+        const plan = routePresentation;
+        if (!ready || !plan || !Number.isInteger(index) || index < 0 || index >= plan.places.length) return;
+        const from = index ? plan.places[index-1] : {lat:plan.startLat, lng:plan.startLng};
+        const to = plan.places[index];
+        const points = [new kakao.maps.LatLng(from.lat, from.lng), new kakao.maps.LatLng(to.lat, to.lng)];
+        const leg = displayedWalkingRoute && displayedWalkingRoute.legs[index];
+        if (leg) leg.paths.forEach(function(path) {path.forEach(function(p) {points.push(new kakao.maps.LatLng(p.lat, p.lng));});});
+        camera.request({intent:'FIT', points:points});
     };
     window.fitRouteView = function (wholeRoute, intent) {
         if (!ready || !routePresentation) return;
@@ -959,6 +972,7 @@
         document.getElementById('walking-panel').hidden = !walkingExplanationOpen;
     };
     window.showWalkingRoute = function (route, message, fit) {
+        displayedWalkingRoute = route;
         clearTimeout(walkingPopupHide);
         window.selectWalkingLeg = function () { return false; };
         walkingListeners.forEach(function (entry) { kakao.maps.event.removeListener(entry[0], entry[1], entry[2]); });

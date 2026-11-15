@@ -167,6 +167,20 @@ class WalkingRouteLiveTest {
                 await(context,"!inspectMapCamera().moving && !inspectMapCamera().pending && inspectMapCamera().last.intent==='FIT'",10);
                 int after=((Number)fx(()->context.view().getEngine().executeScript("inspectMapCamera().level"))).intValue();
                 assertTrue(after<=before,"Releasing the smaller radius should fit or keep zoom");
+                fx(()->{
+                    var previous=new com.datecourse.model.Place(101,"previous","이전 장소","MEAL",35.1816,129.0756,3000,4);
+                    var added=new com.datecourse.model.Place(102,"added","추가 장소","MEAL",35.1826,129.0756,3000,4);
+                    context.map().present(new RoutePlan(35.1796,129.0756,2,2000,"camera",List.of(previous,added)),null,200,true,true);
+                    return null;
+                });
+                await(context,"!inspectMapCamera().moving && !inspectMapCamera().pending",10);
+                int overview=((Number)fx(()->context.view().getEngine().executeScript("inspectMapCamera().level"))).intValue();
+                fx(()->{context.map().fitLeg(1);return null;});
+                await(context,"Math.abs(inspectMapCamera().lat-35.1821)<.00005 && !inspectMapCamera().moving && !inspectMapCamera().pending",10);
+                assertTrue(((Number)fx(()->context.view().getEngine().executeScript("inspectMapCamera().level"))).intValue()<overview);
+                fx(()->{context.map().ensureRangesVisible();return null;});
+                await(context,"Math.abs(inspectMapCamera().lat-35.1826)<.00005 && !inspectMapCamera().moving && !inspectMapCamera().pending",10);
+                assertTrue(((Number)fx(()->context.view().getEngine().executeScript("inspectMapCamera().level"))).intValue()<overview);
                 fx(()->{context.map().reset();return null;});
                 await(context,"Math.abs(inspectMapCamera().lat-35.1796)<.00005 && inspectMapCamera().level===5 && !inspectMapCamera().pending",10);
             } finally {fx(()->{context.map().dispose();context.stage().close();return null;});}

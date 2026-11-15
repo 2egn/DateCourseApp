@@ -222,6 +222,37 @@ class MapSearchTest {
         assertEquals("FIT",script(engine,"inspectMapCamera().last.intent"));
     }
 
+    @Test void addedLegFocusExcludesRangesAndOlderStopsButIncludesItsWalkingGeometry() throws Exception {
+        WebEngine engine=loadMap(1100,720);
+        script(engine,"""
+            testMap.getProjection=function(){
+                var unit=100000*Math.pow(2,5-testMap.getLevel()),element=document.getElementById('map');
+                return {containerPointFromCoords:function(p){var c=testMap.getCenter();return {
+                    x:(p.getLng()-c.getLng())*unit+element.clientWidth/2,
+                    y:(c.getLat()-p.getLat())*unit+element.clientHeight/2};}};
+            };
+            window.plan={startLat:35,startLng:129,radius:2000,places:[
+                {recordId:1,name:'이전 장소',lat:35.01,lng:129},
+                {recordId:2,name:'추가 장소',lat:35.011,lng:129}]};
+            presentRoute(plan,null,2000,true,true,[{recordId:3,name:'다른 후보',lat:35.03,lng:129}]);
+            window.overviewLevel=testMap.getLevel();fitRouteLeg(1);
+            """);
+        assertEquals(true,script(engine,"Math.abs(testMap.getCenter().getLat()-35.0105)<0.0000001 && testMap.getLevel()<overviewLevel"));
+        script(engine,"""
+            showWalkingRoute({legs:[
+                {from:{name:'출발지'},to:{name:'이전 장소'},distance:100,time:60,paths:[],steps:[]},
+                {from:{name:'이전 장소'},to:{name:'추가 장소'},distance:200,time:120,
+                 paths:[[{lat:35.01,lng:129},{lat:35.0105,lng:129.008},{lat:35.011,lng:129}]],steps:[]}
+            ],totalDistance:300,totalTime:180},'',false);
+            fitRouteLeg(1);
+            """);
+        assertEquals(true,script(engine,"Math.abs(testMap.getCenter().getLng()-129.004)<0.0000001"));
+        script(engine,"fitRouteLeg(0)");
+        assertEquals(true,script(engine,"Math.abs(testMap.getCenter().getLat()-35.005)<0.0000001"));
+        script(engine,"window.beforeInvalid=JSON.stringify(inspectMapCamera());fitRouteLeg(-1);fitRouteLeg(20)");
+        assertEquals(true,script(engine,"beforeInvalid===JSON.stringify(inspectMapCamera())"));
+    }
+
     @Test void resetDiscardsWaitingGoalAndReducedMotionDoesNotAnimate() throws Exception {
         WebEngine engine=loadMap(1100,720,false);
         script(engine,"""
@@ -1673,7 +1704,7 @@ class MapSearchTest {
     private static void stubPlannerMap(Object controller, String viewName) throws Exception {
         WebView view = (WebView) field(controller, viewName);
         view.getEngine().getLoadWorker().cancel();
-        view.getEngine().executeScript("window.presentCalls=[];window.fitCalls=[];window.detailCalls=[];window.ensureCalls=0;window.ensureRouteRangesVisible=function(){ensureCalls++;};window.openRoutePlace=function(id){detailCalls.push(id);};window.presentRoute=function(plan,candidate,radius,locked,fit){presentCalls.push([plan,candidate,radius,locked,fit]);};window.fitRouteView=function(whole){fitCalls.push(whole);};");
+        view.getEngine().executeScript("window.presentCalls=[];window.fitCalls=[];window.fitLegCalls=[];window.fitRouteLeg=function(index){fitLegCalls.push(index);};window.detailCalls=[];window.ensureCalls=0;window.ensureRouteRangesVisible=function(){ensureCalls++;};window.openRoutePlace=function(id){detailCalls.push(id);};window.presentRoute=function(plan,candidate,radius,locked,fit){presentCalls.push([plan,candidate,radius,locked,fit]);};window.fitRouteView=function(whole){fitCalls.push(whole);};");
         Object map = field(controller, "map");
         ((PlannerMap) map).setWalkingRouter(stops -> new com.datecourse.model.WalkingRoute(java.util.List.of(), 0, 0));
         setField(map, "ready", true);
@@ -2010,6 +2041,7 @@ class MapSearchTest {
             root.applyCss();root.layout();
             assertNull(root.lookup(".candidate-row-add"));assertNull(root.lookup(".candidate-row-detail"));
             invoke(editor,"onAddCandidate");
+            assertEquals(0,((Number)((javafx.scene.web.WebView)field(editor,"editMapView")).getEngine().executeScript("fitLegCalls[fitLegCalls.length-1]")).intValue());
             assertEquals("CONDITION",field(editor,"state").toString());
             assertEquals(java.util.List.of(place),((javafx.scene.control.ListView<?>)field(editor,"placeList")).getItems());
             assertFalse(choice.isExpanded());assertEquals("1",price.getText());
@@ -2549,7 +2581,7 @@ class MapSearchTest {
     }
 
     @Test
-    void radiusEditsZoomBothWaysWhileKeepingBothCirclesAndCenterVisible() throws Exception {
+    void radiusEditsFitActiveCircleAndOverviewStillShowsBothRanges() throws Exception {
         WebEngine engine=loadMap(1100,720);
         script(engine,"""
             window.mapElement=document.getElementById('map');
@@ -2577,14 +2609,13 @@ class MapSearchTest {
         calls=((Number)script(engine,"zoomCalls.length")).intValue();
         script(engine,"ensureRouteRangesVisible()");
         assertEquals(calls,((Number)script(engine,"zoomCalls.length")).intValue());
-        // The larger global circle must prevent zooming in even when the local circle is tiny.
-        script(engine,"plan.radius=2000;presentRoute(plan,null,200,true,false,[]);ensureRouteRangesVisible();window.globalLevel=testMap.getLevel();zoomCalls=[];ensureRouteRangesVisible()");
+        // Adjusting the local circle fits it even if the global circle is larger; overview remains separate.
+        script(engine,"plan.radius=2000;presentRoute(plan,null,200,true,false,[]);fitRouteView(false);window.globalLevel=testMap.getLevel();zoomCalls=[];fitRouteView(false)");
         assertEquals(0,((Number)script(engine,"zoomCalls.length")).intValue());
         assertEquals(true,script(engine,"testMap.getLevel()===globalLevel && globalLevel>5"));
         script(engine,"plan.radius=200");
         script(engine,"testMap.setLevel(5,{});plan.places=[{recordId:1,name:'멀리 있는 장소',lat:35.164,lng:129.06}];presentRoute(plan,null,200,true,false,[]);zoomCalls=[];ensureRouteRangesVisible()");
-        assertTrue(((Number)script(engine,"zoomCalls.length")).intValue()>0);
-        assertEquals(true,script(engine,"testMap.getCenter().getLat()===plan.startLat"));
+        assertEquals(true,script(engine,"testMap.getCenter().getLat()===plan.places[0].lat && testMap.getLevel()===5"));
     }
 
     @Test
