@@ -23,18 +23,18 @@ class PublicPlaceFactsTest {
             assertNotNull(input);packaged=input.readAllBytes();
         }
         assertArrayEquals(source,packaged);
-        assertEquals(127,PublicPlaceFacts.read(packaged,stream(facts())).size());
+        assertEquals(386,PublicPlaceFacts.read(packaged,stream(facts())).size());
         var changed=mapper.readTree(source);((ObjectNode)changed.path("places").get(0)).put("name","changed");
         assertThrows(IOException.class,()->PublicPlaceFacts.read(mapper.writeValueAsBytes(changed),stream(facts())));
     }
     @Test void bundledPublicDataLoadsTypedFactsWithoutApprovingLegacyIds() throws Exception {
         var places = new PublicDemoPlaceRepository().findAll();
-        assertEquals(127, places.size());
-        assertEquals(2, places.stream().filter(p -> p.details().hasTag(PlaceTag.MODEL_RESTAURANT)).count());
-        assertEquals(118, places.stream().filter(p -> p.details().hasTag(PlaceTag.NEAR_SUBWAY)).count());
+        assertEquals(386, places.size());
+        assertEquals(3, places.stream().filter(p -> p.details().hasTag(PlaceTag.MODEL_RESTAURANT)).count());
+        assertEquals(368, places.stream().filter(p -> p.details().hasTag(PlaceTag.NEAR_SUBWAY)).count());
         var nearest = places.getFirst().details().attributeFacts().stream().filter(f -> f.feature() == PlaceFeature.NEAR_SUBWAY).findFirst().orElseThrow();
         assertEquals("2022-11-30", nearest.evidence().referenceDate());
-        assertEquals("2026-11-14", nearest.evidence().checkedAt());
+        assertEquals("2026-11-16", nearest.evidence().checkedAt());
         assertEquals(SourceEvidence.Origin.CALCULATED, nearest.evidence().origin());
         assertTrue(places.stream().flatMap(p -> p.details().externalLinks().stream()).noneMatch(ExternalPlaceLink::usable));
         assertEquals(FactState.UNKNOWN, places.getFirst().details().featureState(PlaceFeature.ALLOWS_DOGS));

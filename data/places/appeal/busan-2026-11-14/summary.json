@@ -1,5 +1,5 @@
 {
-  "demo_places": 127,
+  "demo_places": 386,
   "busan_bus_stops": 10046,
   "national_bus_rows": 227102,
   "busan_railway_rows": 135,
@@ -7,10 +7,10 @@
   "model_unique_place_matches": 32,
   "model_review_needed": 11,
   "tag_counts": {
-    "GOOD_PRICE": 20,
-    "NEAR_SUBWAY": 118,
-    "NEAR_BUS": 126,
-    "MODEL_RESTAURANT": 2,
+    "GOOD_PRICE": 40,
+    "NEAR_SUBWAY": 368,
+    "NEAR_BUS": 385,
+    "MODEL_RESTAURANT": 3,
     "FREE_ADMISSION": 1
   },
   "source_date_counts_rail": {
@@ -19,5 +19,7 @@
     "2025-04-08": 17
   },
   "additional_facility_fact_count": 7,
-  "ui_or_database_changed": false
+  "ui_or_database_changed": false,
+  "input_mode": "offline_reuse",
+  "calculated_at": "2026-11-16"
 }

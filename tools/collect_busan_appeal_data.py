@@ -4,6 +4,7 @@ Only public downloads are used. No map review scraping, paid APIs, or credential
 Downloads are cached under build/appeal-data-fetch; published outputs retain source
 dates and checksums. Run from any working directory with Python 3.10+.
 """
+import argparse
 import csv
 import hashlib
 import io
@@ -21,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / 'build/appeal-data-fetch'
 OUT = ROOT / 'data/places/appeal/busan-2026-11-14'
 PUBLIC = ROOT / 'data/places/public/busan'
-DATE = '2026-11-14'
+DATE = datetime.now(timezone(timedelta(hours=9))).date().isoformat()
 
 
 def read_json(path):
@@ -161,26 +162,40 @@ def read_lf_bytes(path):
     return data
 
 
-def collect():
+def load_inputs(offline):
+    if offline:
+        sources=[s for s in read_json(OUT/'sources.json') if s.get('identifier')!='3045247']
+        rail_source=next(s for s in sources if '전국도시철도' in s.get('name',''))
+        manifest=read_json(OUT/'checksums.json')
+        for name,digest in manifest['outputs'].items():
+            if name.startswith('raw/') and hashlib.sha256((OUT/name).read_bytes()).hexdigest()!=digest:
+                raise ValueError('Cached public input has changed: '+name)
+        buses=csv_rows(OUT/'raw/busan_bus_stops.csv')
+        stations=csv_rows(OUT/'raw/busan_railway_stations.csv')
+        models=csv_rows(OUT/'raw/busanjin_model_restaurants_cp949.csv')
+        return sources,rail_source,buses,stations,models,read_json(OUT/'summary.json')['national_bus_rows']
+    sources=[download_file('model','15055847'),download_file('bus','15067528')]
+    stations,rail_source=railway_rows();sources.append(rail_source)
+    bus_all=csv_rows(CACHE/'bus.csv')
+    buses=[row for row in bus_all if row['도시명']=='부산광역시' and valid_point(row['위도'],row['경도'])]
+    return sources,rail_source,buses,stations,csv_rows(CACHE/'model.csv'),len(bus_all)
+
+
+def collect(offline=False):
     demo_path = ROOT / 'data/places/demo/seomyeon-public-estimates.json'
     demo_bytes = read_lf_bytes(demo_path)
     (OUT / 'raw').mkdir(parents=True, exist_ok=True)
-    sources = [download_file('model', '15055847'), download_file('bus', '15067528')]
-    stations, rail_source = railway_rows()
-    sources.append(rail_source)
-    bus_all = csv_rows(CACHE / 'bus.csv')
-    buses = [row for row in bus_all if row['도시명'] == '부산광역시' and valid_point(row['위도'], row['경도'])]
-    models = csv_rows(CACHE / 'model.csv')
+    sources,rail_source,buses,stations,models,national_bus_rows=load_inputs(offline)
     write_csv(OUT / 'busanjin_model_restaurants.csv', [
         {'source_row': index, 'name': row['업소명'].strip(), 'road_address': row['소재지(도로명)'].strip(),
          'food_type': row['음식의유형'], 'main_menu': row['주된음식'], 'phone': row['전화번호'],
          'source_date': '2025-11-17', 'source_url': sources[0]['url']}
         for index, row in enumerate(models, 1)])
-    write_csv(OUT / 'raw/busan_bus_stops.csv', buses)
-    write_csv(OUT / 'raw/busan_railway_stations.csv', stations)
-    shutil.copyfile(CACHE / 'model.csv', OUT / 'raw/busanjin_model_restaurants_cp949.csv')
-    shutil.copyfile(CACHE / 'rail.xlsx', OUT / 'raw/national_railway_original.xlsx')
-    write_json(OUT / 'sources.json', sources)
+    if not offline:
+        write_csv(OUT / 'raw/busan_bus_stops.csv', buses)
+        write_csv(OUT / 'raw/busan_railway_stations.csv', stations)
+        shutil.copyfile(CACHE / 'model.csv', OUT / 'raw/busanjin_model_restaurants_cp949.csv')
+        shutil.copyfile(CACHE / 'rail.xlsx', OUT / 'raw/national_railway_original.xlsx')
 
     places = csv_rows(PUBLIC / 'busan_places.csv')
     by_id = {row['place_id']: row for row in places}
@@ -212,6 +227,7 @@ def collect():
                           'source_name': shop.get('name', ''), 'source_address': shop.get('address', ''), 'source_row': '',
                           'basis': '기존 상호·도로명 건물번호 유일 일치 연결 재사용',
                           'sourceUrl': good_source['url'], 'sourceDate': '2026-09-30', 'checkedAt': DATE})
+    write_json(OUT / 'sources.json', sources)
     write_csv(OUT / 'designation_links.csv', links)
     write_json(OUT / 'designation_review_needed.json', review)
 
@@ -281,13 +297,13 @@ def collect():
          'sourceUrl':'https://bsmuseum.ksd.or.kr/contents.do?menuno=262','sourceExcerpt':'대여료 무료','checkedAt':DATE}])
     write_json(OUT / 'additional_facility_facts.json', {'note':'현행 PlaceTag에 자동 적용하지 않는 별도 확인 자료', 'facts':facilities})
     write_json(OUT / 'sources.json', sources)
-    summary = {'demo_places': len(facts), 'busan_bus_stops': len(buses), 'national_bus_rows': len(bus_all),
+    summary = {'demo_places': len(facts), 'busan_bus_stops': len(buses), 'national_bus_rows': national_bus_rows,
                'busan_railway_rows': len(stations), 'busanjin_model_rows': len(models),
                'model_unique_place_matches': len({r['public_place_id'] for r in links if r['tag']=='MODEL_RESTAURANT'}),
                'model_review_needed': len(review), 'tag_counts': dict(Counter(t['tag'] for p in facts for t in p['tags'])),
                'source_date_counts_rail': dict(Counter(r['데이터기준일자'] for r in stations)),
                'additional_facility_fact_count': len(facilities),
-               'ui_or_database_changed': False}
+               'ui_or_database_changed': False, 'input_mode': 'offline_reuse' if offline else 'public_download', 'calculated_at': DATE}
     write_json(OUT / 'summary.json', summary)
     tracked_inputs = [demo_path, PUBLIC/'busan_good_price_shops.csv', PUBLIC/'busan_places.csv',
                       PUBLIC/'raw/busan_standard_sources.json']
@@ -299,4 +315,6 @@ def collect():
 
 
 if __name__ == '__main__':
-    collect()
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--offline',action='store_true',help='Reuse checksum-verified published public inputs; no downloads')
+    args=parser.parse_args();collect(args.offline)

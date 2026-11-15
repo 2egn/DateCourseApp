@@ -138,13 +138,13 @@ class PlaceCatalogRepositoryTest {
         assertThrows(IllegalArgumentException.class,()->catalog.synchronize(batch(1,overlay)));
         assertEquals("가게",catalog.findAll().getFirst().name());
     }
-    @Test void bundled127PlacesRoundTripWithFactsAndUnreviewedLinks() throws Exception {
+    @Test void expandedPublicPlacesRoundTripWithFactsAndUnreviewedLinks() throws Exception {
         var input=PublicPlaceImport.batch();
-        assertEquals(127,catalog.synchronize(input).inserted());
-        assertEquals(127,catalog.synchronize(input).unchanged());
+        assertEquals(386,catalog.synchronize(input).inserted());
+        assertEquals(386,catalog.synchronize(input).unchanged());
         var places=new PlaceRepository(pool).findAll();
-        assertEquals(127,places.size());
-        assertEquals(118,places.stream().filter(p->p.details().hasTag(PlaceTag.NEAR_SUBWAY)).count());
+        assertEquals(386,places.size());
+        assertEquals(368,places.stream().filter(p->p.details().hasTag(PlaceTag.NEAR_SUBWAY)).count());
         assertTrue(places.stream().flatMap(p->p.details().externalLinks().stream()).noneMatch(ExternalPlaceLink::usable));
         assertTrue(places.stream().allMatch(p->p.placeId().equals(p.details().externalIds().get("public"))));
         var original=new PublicDemoPlaceRepository().findAll();

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-16",
+  "previous": 127,
+  "current": 386,
+  "added": 259,
+  "categories": {
+    "MEAL": 240,
+    "CAFE": 120,
+    "CULTURE": 26
+  },
+  "priceEvidence": {
+    "SIMILAR_ESTIMATE": 265,
+    "REFERENCE": 2,
+    "UNKNOWN": 119
+  },
+  "scope": {
+    "centerLat": 35.1578,
+    "centerLng": 129.06,
+    "radiusMeters": 2000
+  },
+  "retention": {
+    "checkedAgainst": "expansion-baseline-2026-11-16.json",
+    "idsCoordinatesAndPricesPreserved": true
+  },
+  "acquisition": "Existing public snapshots reused; no new provider verification or paid API calls",
+  "candidateCountsAt20000Won": {
+    "식사_priced": 145,
+    "식사_inclusive": 240,
+    "카페_priced": 120,
+    "카페_inclusive": 120,
+    "문화_priced": 2,
+    "문화_inclusive": 26
+  },
+  "database": {
+    "inserted": 259,
+    "updated": 127,
+    "reactivated": 0,
+    "deactivated": 0,
+    "active": 386,
+    "effective": 386,
+    "existingRecordIdsPreserved": true,
+    "savedDataAndReviewTablesUnchanged": true,
+    "repeatUnchanged": 386
+  }
+}

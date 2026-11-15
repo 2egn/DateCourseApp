@@ -42,4 +42,22 @@ class NextPlaceConditionsTest {
         assertTrue(rows.stream().noneMatch(p->p.name().equals("부산포민속박물관")||p.name().equals("한국거래소자본시장역사박물관")||p.name().equals("부산여대차박물관")));
         assertTrue(rows.stream().anyMatch(p->p.name().equals("증권박물관(부산관)")&&!p.details().identityCheckedAt().isBlank()));
     }
+    @Test void expandedPublicCandidatesStayUsefulWithoutTreatingUnknownPricesAsFree() throws Exception {
+        var places=new PublicDemoPlaceRepository().findAll();
+        var counts=new java.util.LinkedHashMap<String,Integer>();
+        for(String activity:List.of("식사","카페","문화")) {
+            var known=new NextPlaceCondition(activity,20000,2000,false,Set.of(),Set.of(),30);
+            var inclusive=new NextPlaceCondition(activity,20000,2000,true,Set.of(),Set.of(),30);
+            var priced=search.matching(places,List.of(),35.1578,129.06,2,2000,known);
+            var all=search.matching(places,List.of(),35.1578,129.06,2,2000,inclusive);
+            assertTrue(all.size()>=priced.size());assertTrue(priced.stream().allMatch(p->p.place().priceEstimate().finite()));
+            assertTrue(search.candidates(places,List.of(),35.1578,129.06,2,2000,inclusive).size()<=30);
+            counts.put(activity+"_priced",priced.size());counts.put(activity+"_inclusive",all.size());
+        }
+        assertTrue(counts.get("식사_priced")>=140);assertEquals(120,counts.get("카페_priced"));
+        assertTrue(counts.get("문화_inclusive")>counts.get("문화_priced"));
+        var output=java.nio.file.Path.of("build/rehearsal/expanded-candidate-counts.json");java.nio.file.Files.createDirectories(output.getParent());
+        java.nio.file.Files.writeString(output,new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(counts));
+    }
+
 }

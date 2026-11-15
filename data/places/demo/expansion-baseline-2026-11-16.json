@@ -1,0 +1,1023 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "334705d",
+  "datasetSha256": "2db8f275ea00f143925d5237371a634e2383b9823fce1ac9ca4231e2b3a7d51e",
+  "places": [
+    {
+      "publicId": "SBIZ:MA0101202607A0151351",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202607A0151351",
+      "recordId": 2000001,
+      "lat": 35.1592246804744,
+      "lng": 129.058843891919,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220813751543",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220813751543",
+      "recordId": 2000002,
+      "lat": 35.1596034888509,
+      "lng": 129.059884928131,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202406A0012647",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0012647",
+      "recordId": 2000003,
+      "lat": 35.1579922719269,
+      "lng": 129.060305161942,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220802888675",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220802888675",
+      "recordId": 2000004,
+      "lat": 35.1553314455622,
+      "lng": 129.055673406637,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "SBIZ:MA010120220805402285",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805402285",
+      "recordId": 2000005,
+      "lat": 35.1568243585089,
+      "lng": 129.066969163048,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA010120220807078377",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220807078377",
+      "recordId": 2000006,
+      "lat": 35.1595239115724,
+      "lng": 129.059795135086,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "SBIZ:MA0106202201A2364057",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A2364057",
+      "recordId": 2000007,
+      "lat": 35.1588220077514,
+      "lng": 129.057615720134,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "LIB:73",
+      "placeId": "DCA-DEMO-PUBLIC-LIB:73",
+      "recordId": 2000008,
+      "lat": 35.17280533,
+      "lng": 129.0527841,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "LIB:69",
+      "placeId": "DCA-DEMO-PUBLIC-LIB:69",
+      "recordId": 2000009,
+      "lat": 35.14648374,
+      "lng": 129.0562849,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "SBIZ:MA0101202603A0020773",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202603A0020773",
+      "recordId": 2000010,
+      "lat": 35.1572179781341,
+      "lng": 129.060263685414,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202508A0001605",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202508A0001605",
+      "recordId": 2000011,
+      "lat": 35.1571198257599,
+      "lng": 129.060206345052,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202509A0021406",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202509A0021406",
+      "recordId": 2000012,
+      "lat": 35.1571536176713,
+      "lng": 129.06033887261,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202406A0004305",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0004305",
+      "recordId": 2000013,
+      "lat": 35.1571088998228,
+      "lng": 129.059789098057,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202411A0024935",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202411A0024935",
+      "recordId": 2000014,
+      "lat": 35.158155394512,
+      "lng": 129.060781118687,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202601A0007018",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202601A0007018",
+      "recordId": 2000015,
+      "lat": 35.1570314274264,
+      "lng": 129.06010535916,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202506A0030818",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202506A0030818",
+      "recordId": 2000016,
+      "lat": 35.1573169269531,
+      "lng": 129.060803856192,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202512A0040366",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202512A0040366",
+      "recordId": 2000017,
+      "lat": 35.1570089337751,
+      "lng": 129.060368141882,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202310A0000256",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202310A0000256",
+      "recordId": 2000018,
+      "lat": 35.1580062307669,
+      "lng": 129.061073627625,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202406A0057429",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0057429",
+      "recordId": 2000019,
+      "lat": 35.1583866096092,
+      "lng": 129.06096252197,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202305A0036969",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202305A0036969",
+      "recordId": 2000020,
+      "lat": 35.1581944601597,
+      "lng": 129.061133242752,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220813532656",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220813532656",
+      "recordId": 2000021,
+      "lat": 35.1574460701738,
+      "lng": 129.061158249659,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202603A0001260",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202603A0001260",
+      "recordId": 2000022,
+      "lat": 35.1574460701738,
+      "lng": 129.061158249659,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220807013467",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220807013467",
+      "recordId": 2000023,
+      "lat": 35.1579493841167,
+      "lng": 129.061236788811,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202409A0173000",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202409A0173000",
+      "recordId": 2000024,
+      "lat": 35.1575980818664,
+      "lng": 129.061227923542,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810626208",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810626208",
+      "recordId": 2000025,
+      "lat": 35.1579493841167,
+      "lng": 129.061236788811,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA010120220811574232",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220811574232",
+      "recordId": 2000026,
+      "lat": 35.1583453517151,
+      "lng": 129.061268727605,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA010120220805051675",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805051675",
+      "recordId": 2000027,
+      "lat": 35.1568012926712,
+      "lng": 129.06144922031,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA0101202604A0025925",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202604A0025925",
+      "recordId": 2000028,
+      "lat": 35.1562629165589,
+      "lng": 129.059723873952,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA0101202412A0038394",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202412A0038394",
+      "recordId": 2000029,
+      "lat": 35.1561488536906,
+      "lng": 129.060072127504,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA010120220808429119",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808429119",
+      "recordId": 2000030,
+      "lat": 35.1585038017448,
+      "lng": 129.062018898211,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA0101202308A0050564",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202308A0050564",
+      "recordId": 2000031,
+      "lat": 35.1563062922494,
+      "lng": 129.058232663292,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA0101202502A0092748",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202502A0092748",
+      "recordId": 2000032,
+      "lat": 35.1599199311485,
+      "lng": 129.060353788091,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA010120220807155887",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220807155887",
+      "recordId": 2000033,
+      "lat": 35.1567417717633,
+      "lng": 129.057530398629,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810647501",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810647501",
+      "recordId": 2000034,
+      "lat": 35.1600811636487,
+      "lng": 129.05882158887,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA010120220814110962",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220814110962",
+      "recordId": 2000035,
+      "lat": 35.1598132861678,
+      "lng": 129.061854438978,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA0101202502A0081487",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202502A0081487",
+      "recordId": 2000036,
+      "lat": 35.1556590376036,
+      "lng": 129.058139545286,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA0101202608A0034170",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0034170",
+      "recordId": 2000037,
+      "lat": 35.1562399451316,
+      "lng": 129.05736413872,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA010120220805308445",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805308445",
+      "recordId": 2000038,
+      "lat": 35.1585376077094,
+      "lng": 129.056851409527,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA0101202305A0154621",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202305A0154621",
+      "recordId": 2000039,
+      "lat": 35.1606403134392,
+      "lng": 129.059856211155,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA010120220808837597",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808837597",
+      "recordId": 2000040,
+      "lat": 35.158155394512,
+      "lng": 129.060781118687,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA0101202608A0071318",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0071318",
+      "recordId": 2000041,
+      "lat": 35.1571868495959,
+      "lng": 129.060504304974,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA010120220809693555",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220809693555",
+      "recordId": 2000042,
+      "lat": 35.1579549841865,
+      "lng": 129.060907738831,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA0101202506A0019696",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202506A0019696",
+      "recordId": 2000043,
+      "lat": 35.1573169269531,
+      "lng": 129.060803856192,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA010120220800085324",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220800085324",
+      "recordId": 2000044,
+      "lat": 35.1570089337751,
+      "lng": 129.060368141882,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA0101202503A0059212",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202503A0059212",
+      "recordId": 2000045,
+      "lat": 35.1565254473788,
+      "lng": 129.059653683872,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA0101202504A0033854",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202504A0033854",
+      "recordId": 2000046,
+      "lat": 35.1565307762852,
+      "lng": 129.060399972328,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810439799",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810439799",
+      "recordId": 2000047,
+      "lat": 35.156869200742,
+      "lng": 129.061165638806,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA0101202406A0550263",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0550263",
+      "recordId": 2000048,
+      "lat": 35.156788690987,
+      "lng": 129.061130688585,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA0101202406A0281278",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0281278",
+      "recordId": 2000049,
+      "lat": 35.1569384625493,
+      "lng": 129.061331980139,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA010120220812355949",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220812355949",
+      "recordId": 2000050,
+      "lat": 35.1585583638111,
+      "lng": 129.061460646403,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA0101202603A0046536",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202603A0046536",
+      "recordId": 2000051,
+      "lat": 35.1585583638111,
+      "lng": 129.061460646403,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA010120220812913053",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220812913053",
+      "recordId": 2000052,
+      "lat": 35.1584484037279,
+      "lng": 129.061567602217,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA0101202308A0045433",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202308A0045433",
+      "recordId": 2000053,
+      "lat": 35.1568217351612,
+      "lng": 129.061307088648,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA0101202608A0030160",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0030160",
+      "recordId": 2000054,
+      "lat": 35.1563539797964,
+      "lng": 129.060198001882,
+      "priceSha256": "304080b2e74262200e32180076ae11b44f5cdaee76b3b28358b15a09afb2cc6a"
+    },
+    {
+      "publicId": "SBIZ:MA010120220812634678",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220812634678",
+      "recordId": 2000055,
+      "lat": 35.1594463313073,
+      "lng": 129.059057970951,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202506A0026100",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202506A0026100",
+      "recordId": 2000056,
+      "lat": 35.1592670510401,
+      "lng": 129.05847187031,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810658172",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810658172",
+      "recordId": 2000057,
+      "lat": 35.1582188599082,
+      "lng": 129.057578579619,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220809558286",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220809558286",
+      "recordId": 2000058,
+      "lat": 35.1599204393655,
+      "lng": 129.059794162096,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220803082077",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220803082077",
+      "recordId": 2000059,
+      "lat": 35.1556410608016,
+      "lng": 129.060256830495,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202406A0400566",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0400566",
+      "recordId": 2000060,
+      "lat": 35.1594092515143,
+      "lng": 129.058058470873,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810610482",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810610482",
+      "recordId": 2000061,
+      "lat": 35.1562331027004,
+      "lng": 129.062005467125,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "SBIZ:MA010120220803104864",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220803104864",
+      "recordId": 2000062,
+      "lat": 35.1597804935325,
+      "lng": 129.058484810775,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810618098",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810618098",
+      "recordId": 2000063,
+      "lat": 35.1598709440433,
+      "lng": 129.05846514385,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "SBIZ:MA0101202601A0009147",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202601A0009147",
+      "recordId": 2000064,
+      "lat": 35.1600242624474,
+      "lng": 129.058458034697,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220809404827",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220809404827",
+      "recordId": 2000065,
+      "lat": 35.1601204921313,
+      "lng": 129.058098339774,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810639589",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810639589",
+      "recordId": 2000066,
+      "lat": 35.160636342746,
+      "lng": 129.059559829012,
+      "priceSha256": "6eb7949a02597264fc1e783ae2fa079c1662ced98a934b6e0a76458b6ed90cae"
+    },
+    {
+      "publicId": "SBIZ:MA010120220814084596",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220814084596",
+      "recordId": 2000067,
+      "lat": 35.1549904121994,
+      "lng": 129.058243398334,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "SBIZ:MA0101202305A0067802",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202305A0067802",
+      "recordId": 2000068,
+      "lat": 35.1610745512852,
+      "lng": 129.059757428642,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202412A0025762",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202412A0025762",
+      "recordId": 2000069,
+      "lat": 35.1554783830733,
+      "lng": 129.057103558092,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202509A0012223",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202509A0012223",
+      "recordId": 2000070,
+      "lat": 35.1607038856423,
+      "lng": 129.057707024499,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810623947",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810623947",
+      "recordId": 2000071,
+      "lat": 35.1606030603715,
+      "lng": 129.057276521302,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0101202608A0079424",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0079424",
+      "recordId": 2000072,
+      "lat": 35.1605987239337,
+      "lng": 129.06282895318,
+      "priceSha256": "e6679404318d2a1b76f5442682338c4b020383b4101dfa9d47660f197fcd1430"
+    },
+    {
+      "publicId": "SBIZ:MA0106202201A2364418",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A2364418",
+      "recordId": 2000073,
+      "lat": 35.1579991754379,
+      "lng": 129.05989933317,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220814333070",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220814333070",
+      "recordId": 2000074,
+      "lat": 35.157921192955,
+      "lng": 129.060775209752,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202406A0290309",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0290309",
+      "recordId": 2000075,
+      "lat": 35.157921192955,
+      "lng": 129.060775209752,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202406A0203462",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202406A0203462",
+      "recordId": 2000076,
+      "lat": 35.1575608828479,
+      "lng": 129.060766119215,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810655848",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810655848",
+      "recordId": 2000077,
+      "lat": 35.1571536176713,
+      "lng": 129.06033887261,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220814101669",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220814101669",
+      "recordId": 2000078,
+      "lat": 35.158155394512,
+      "lng": 129.060781118687,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0106202201A0153564",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A0153564",
+      "recordId": 2000079,
+      "lat": 35.1575231720426,
+      "lng": 129.060863924663,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220808645779",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808645779",
+      "recordId": 2000080,
+      "lat": 35.1577615069921,
+      "lng": 129.059037443722,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220813840830",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220813840830",
+      "recordId": 2000081,
+      "lat": 35.1573169269531,
+      "lng": 129.060803856192,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202608A0030660",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0030660",
+      "recordId": 2000082,
+      "lat": 35.1583451172309,
+      "lng": 129.060752986176,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202604A0017051",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202604A0017051",
+      "recordId": 2000083,
+      "lat": 35.1583991637419,
+      "lng": 129.060754349777,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202608A0099301",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0099301",
+      "recordId": 2000084,
+      "lat": 35.1580062307669,
+      "lng": 129.061073627625,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202411A0142755",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202411A0142755",
+      "recordId": 2000085,
+      "lat": 35.1570935994731,
+      "lng": 129.06068849244,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220806501165",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220806501165",
+      "recordId": 2000086,
+      "lat": 35.1569205355763,
+      "lng": 129.060267155965,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202512A0030306",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202512A0030306",
+      "recordId": 2000087,
+      "lat": 35.1584612847782,
+      "lng": 129.060810782664,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220806723293",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220806723293",
+      "recordId": 2000088,
+      "lat": 35.1567467239292,
+      "lng": 129.059889693937,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202409A0245475",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202409A0245475",
+      "recordId": 2000089,
+      "lat": 35.1579539111662,
+      "lng": 129.061500256075,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220805069482",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805069482",
+      "recordId": 2000090,
+      "lat": 35.1587084619157,
+      "lng": 129.061113294125,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220811690273",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220811690273",
+      "recordId": 2000091,
+      "lat": 35.1588807291959,
+      "lng": 129.061051802277,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810600686",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810600686",
+      "recordId": 2000092,
+      "lat": 35.1591878261206,
+      "lng": 129.059951257438,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202306A0077099",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202306A0077099",
+      "recordId": 2000093,
+      "lat": 35.157581419345,
+      "lng": 129.061677395741,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220812190712",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220812190712",
+      "recordId": 2000094,
+      "lat": 35.1564029366066,
+      "lng": 129.05996880707,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220808155033",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808155033",
+      "recordId": 2000095,
+      "lat": 35.1563710096876,
+      "lng": 129.059726599586,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810643713",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810643713",
+      "recordId": 2000096,
+      "lat": 35.1563710096876,
+      "lng": 129.059726599586,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220805383045",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220805383045",
+      "recordId": 2000097,
+      "lat": 35.1563404419718,
+      "lng": 129.059934312554,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220808336456",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220808336456",
+      "recordId": 2000098,
+      "lat": 35.1592495213332,
+      "lng": 129.059502911413,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202602A0027648",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202602A0027648",
+      "recordId": 2000099,
+      "lat": 35.1584591486699,
+      "lng": 129.058286912376,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202604A0043444",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202604A0043444",
+      "recordId": 2000100,
+      "lat": 35.1562629165589,
+      "lng": 129.059723873952,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0106202201A2364130",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A2364130",
+      "recordId": 2000101,
+      "lat": 35.1579650177923,
+      "lng": 129.061906538994,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202608A0102970",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202608A0102970",
+      "recordId": 2000102,
+      "lat": 35.1565112925691,
+      "lng": 129.058896200077,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA010120220810611667",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA010120220810611667",
+      "recordId": 2000103,
+      "lat": 35.1593640106123,
+      "lng": 129.059659423651,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0101202409A0226368",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0101202409A0226368",
+      "recordId": 2000104,
+      "lat": 35.1572001117842,
+      "lng": 129.058134483206,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "SBIZ:MA0106202201A0046143",
+      "placeId": "DCA-DEMO-PUBLIC-SBIZ:MA0106202201A0046143",
+      "recordId": 2000105,
+      "lat": 35.1572001117842,
+      "lng": 129.058134483206,
+      "priceSha256": "4e5bce5a8676cdb82cae1de6893aaffbc8480fe54af7a0addb4a521e93e61040"
+    },
+    {
+      "publicId": "LIB:21",
+      "placeId": "DCA-DEMO-PUBLIC-LIB:21",
+      "recordId": 2000106,
+      "lat": 35.15586725,
+      "lng": 129.0620429,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15017323:b6b6e11b0673809a1375a7f7",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b6b6e11b0673809a1375a7f7",
+      "recordId": 2000107,
+      "lat": 35.154278,
+      "lng": 129.0573028,
+      "priceSha256": "6833be3f1b02cb8dc8f07debd77fa4c0df96620895c419d26ab62edb0b2d576d"
+    },
+    {
+      "publicId": "LIB:212",
+      "placeId": "DCA-DEMO-PUBLIC-LIB:212",
+      "recordId": 2000108,
+      "lat": 35.1616829,
+      "lng": 129.0662022,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "LIB:23",
+      "placeId": "DCA-DEMO-PUBLIC-LIB:23",
+      "recordId": 2000109,
+      "lat": 35.15689022,
+      "lng": 129.052045,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:3323a88dfb94372735e06dca",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:3323a88dfb94372735e06dca",
+      "recordId": 2000110,
+      "lat": 35.15749578,
+      "lng": 129.06978,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "LIB:213",
+      "placeId": "DCA-DEMO-PUBLIC-LIB:213",
+      "recordId": 2000111,
+      "lat": 35.15133064,
+      "lng": 129.0664813,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:8260f79acf2558731dc13ddc",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8260f79acf2558731dc13ddc",
+      "recordId": 2000112,
+      "lat": 35.16545561,
+      "lng": 129.0558558,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:27435b682df42e3910b6cca1",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:27435b682df42e3910b6cca1",
+      "recordId": 2000113,
+      "lat": 35.1541799,
+      "lng": 129.0711269,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:c235d63e829cc2713276086e",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:c235d63e829cc2713276086e",
+      "recordId": 2000114,
+      "lat": 35.14865604,
+      "lng": 129.0643778,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15017323:dd37d113291f15027d6931df",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:dd37d113291f15027d6931df",
+      "recordId": 2000115,
+      "lat": 35.14828237,
+      "lng": 129.0654725,
+      "priceSha256": "3ffdd23d16b0c70d1287c9851d884dd8cfbd97bf73dd7572e823987c673876d8"
+    },
+    {
+      "publicId": "LIB:74",
+      "placeId": "DCA-DEMO-PUBLIC-LIB:74",
+      "recordId": 2000116,
+      "lat": 35.16333019,
+      "lng": 129.04861,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:5fcc2f618cddea3c2a172681",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:5fcc2f618cddea3c2a172681",
+      "recordId": 2000117,
+      "lat": 35.14654068,
+      "lng": 129.0644345,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:86baa4cfbae327d03604313a",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:86baa4cfbae327d03604313a",
+      "recordId": 2000118,
+      "lat": 35.16796029,
+      "lng": 129.068137,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:37ac03de03f1fe426869c6db",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:37ac03de03f1fe426869c6db",
+      "recordId": 2000119,
+      "lat": 35.14937672,
+      "lng": 129.072058,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:88c3e619f01b0ffe2051c3dd",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:88c3e619f01b0ffe2051c3dd",
+      "recordId": 2000120,
+      "lat": 35.143206,
+      "lng": 129.0640192,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:fd530d67ffef75d0f6e0b3e2",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:fd530d67ffef75d0f6e0b3e2",
+      "recordId": 2000121,
+      "lat": 35.145593,
+      "lng": 129.071143,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:3a81bf5e7b66ace7492692f1",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:3a81bf5e7b66ace7492692f1",
+      "recordId": 2000122,
+      "lat": 35.147056,
+      "lng": 129.073571,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:59518bfe5ce37a36c827c1c3",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:59518bfe5ce37a36c827c1c3",
+      "recordId": 2000123,
+      "lat": 35.17304567,
+      "lng": 129.0557013,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:8faf72c85cd04fec60ae42ba",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8faf72c85cd04fec60ae42ba",
+      "recordId": 2000124,
+      "lat": 35.14225619,
+      "lng": 129.0646803,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "LIB:71",
+      "placeId": "DCA-DEMO-PUBLIC-LIB:71",
+      "recordId": 2000125,
+      "lat": 35.17216038,
+      "lng": 129.0687317,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:0a3b0593669d8d994af15a16",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:0a3b0593669d8d994af15a16",
+      "recordId": 2000126,
+      "lat": 35.1445922,
+      "lng": 129.0715832,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    },
+    {
+      "publicId": "STD:15012890:448526d11fc945f06d87e37a",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:448526d11fc945f06d87e37a",
+      "recordId": 2000127,
+      "lat": 35.17523615,
+      "lng": 129.0619366,
+      "priceSha256": "565cc5f9fedfe61e2814a5a773e4c2e442d896e92cb22bc0da4b9f7120051f46"
+    }
+  ]
+}

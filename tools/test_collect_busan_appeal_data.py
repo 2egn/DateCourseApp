@@ -4,11 +4,21 @@ import hashlib
 import json
 import unittest
 import tempfile
+from unittest.mock import patch
 from pathlib import Path
-from collect_busan_appeal_data import ROOT, OUT, distance, name_key, road_key, source_date, valid_point, read_lf_bytes
+from collect_busan_appeal_data import ROOT, OUT, distance, name_key, road_key, source_date, valid_point, read_lf_bytes, load_inputs
 
 
 class AppealDataTest(unittest.TestCase):
+    def test_offline_inputs_reuse_verified_public_sources_without_network(self):
+        with patch('urllib.request.urlopen',side_effect=AssertionError('Network is not allowed')):
+            sources,rail,buses,stations,models,national=load_inputs(True)
+        self.assertEqual(10046,len(buses));self.assertEqual(135,len(stations))
+        self.assertEqual(43,len(models));self.assertEqual(227102,national)
+        self.assertEqual('15055847',sources[0]['identifier'])
+        self.assertTrue(rail['retrieved_date']<'2026-11-16')
+
+
     def test_demo_fingerprint_requires_lf_without_modifying_input(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'demo.json'
@@ -58,7 +68,7 @@ class AppealDataTest(unittest.TestCase):
         buses={r['정류장번호'] for r in rows(OUT/'raw/busan_bus_stops.csv')}
         stations={r['역사명'] for r in rows(OUT/'raw/busan_railway_stations.csv')}
         places=rows(OUT/'demo_nearest_transit.csv')
-        self.assertEqual(127,len(places))
+        self.assertEqual(386,len(places))
         for row in places:
             self.assertIn(row['bus_stop_id'],buses)
             self.assertIn(row['nearest_station'],stations)

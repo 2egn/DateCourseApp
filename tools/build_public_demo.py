@@ -3,23 +3,93 @@
 Prices derived from public menu amounts assume a single-person serving. This is
 explicitly an estimate, not confirmation of a venue's menu or current business.
 """
+import argparse
+import unicodedata
+import re
 import csv
 import json
 import math
 import statistics
-from collections import defaultdict, Counter
+from collections import defaultdict, Counter, deque
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/'data/places/public/busan'
+DEMO=ROOT/'data/places/demo'
+POLICY=DEMO/'selection-policy.json'
 def read(name):
     with (DATA/name).open(encoding='utf-8-sig',newline='') as f:return list(csv.DictReader(f))
-def dist(p):
-    a,b,c,d=map(math.radians,(35.1578,129.06,float(p['lat']),float(p['lon'])))
+def dist(p,center=(35.1578,129.06)):
+    a,b,c,d=map(math.radians,(*center,float(p['lat']),float(p['lon'])))
     h=math.sin((c-a)/2)**2+math.cos(a)*math.cos(c)*math.sin((d-b)/2)**2
     return 12742000*math.asin(min(1,math.sqrt(h)))
 
-def build():
+def valid_point(p):
+    try:
+        lat,lng=float(p['lat']),float(p['lon'])
+        return math.isfinite(lat) and math.isfinite(lng) and -90<=lat<=90 and -180<=lng<=180
+    except (ValueError,TypeError,KeyError):
+        return False
+
+
+def identity_key(p):
+    def clean(value):return re.sub(r'\s+','',unicodedata.normalize('NFKC',value).casefold())
+    return clean(p['name']),clean(p['road_address'] or p['lot_address'])
+
+
+def load_policy(path):
+    policy=json.loads(path.read_text(encoding='utf-8'))
+    center=policy.get('center',{})
+    if policy.get('schemaVersion')!=1 or not valid_point({'lat':center.get('lat'),'lon':center.get('lng')}):
+        raise ValueError('Invalid selection center or schema version')
+    radius=policy.get('radiusMeters')
+    if isinstance(radius,bool) or not isinstance(radius,(int,float)) or not math.isfinite(radius) or radius<=0:
+        raise ValueError('Invalid selection radius')
+    limits=policy.get('categoryLimits',{})
+    if set(limits)!={'MEAL','CAFE','CULTURE'} or any(type(n)!=int or n<1 for n in limits.values()):
+        raise ValueError('Positive category limits are required')
+    for name in ['preferredPerCuisine','preferredDesignated']:
+        if type(policy.get(name))!=int or policy[name]<0:raise ValueError('Invalid preference count')
+    return policy
+
+
+def select_places(near,previous_ids,checked_ids,blocked,good,group,policy):
+    limits=policy['categoryLimits'];byid={p['place_id']:p for p in near}
+    chosen={};seen=set();counts=Counter()
+    def add(p,required=False):
+        if p['place_id'] in chosen:return True
+        key=identity_key(p)
+        allowed=p['place_id'] not in blocked and key not in seen and counts[p['category']]<limits[p['category']]
+        if not allowed:
+            if required:raise ValueError('Existing place conflicts with selection policy: '+p['place_id'])
+            return False
+        seen.add(key);chosen[p['place_id']]=p;counts[p['category']]+=1;return True
+    for pid in previous_ids:
+        if pid not in byid:raise ValueError('Existing place is outside the available source: '+pid)
+        add(byid[pid],True)
+    for pid in checked_ids:
+        if pid in byid:add(byid[pid])
+    for kind in ['한식','중식','일식']:
+        for p in [p for p in near if group(p)==kind][:policy['preferredPerCuisine']]:add(p)
+    for p in [p for p in near if p['place_id'] in good][:policy['preferredDesignated']]:add(p)
+    # Round-robin actual source subtypes, rather than filling one popular subtype first.
+    pools=defaultdict(deque)
+    for p in near:pools[(p['category'],p['industry_name'])].append(p)
+    while pools:
+        for key in list(pools):
+            pool=pools[key]
+            if counts[key[0]]>=limits[key[0]]:del pools[key];continue
+            while pool:
+                if add(pool.popleft()):break
+            if not pool:del pools[key]
+    return list(chosen.values())
+
+
+def build(policy_path=POLICY,target=DEMO/'seomyeon-public-estimates.json'):
+    policy=load_policy(policy_path);center=(policy['center']['lat'],policy['center']['lng'])
+    previous=json.loads(target.read_text(encoding='utf-8'))['places'] if target.exists() else []
+    previous_by_id={p['details']['externalIds']['public']:p for p in previous}
+
     places=read('busan_places.csv');shops=read('busan_good_price_shops.csv');menus=read('busan_menu_prices.csv')
     byid={p['place_id']:p for p in places}
     checked_snapshot=json.loads((ROOT/'data/places/demo/seomyeon-jeonpo-demo.json').read_text(encoding='utf-8'))
@@ -56,24 +126,16 @@ def build():
             # Each unique venue contributes once regardless of menu count.
             amount=int(round(statistics.mean(statistics.median(v) for v in rows.values())/100)*100)
             estimates[kind]=(amount,len(rows))
-    near=[p for p in places if p['lat'] and p['lon'] and p['category'] in {'MEAL','CAFE','CULTURE'} and dist(p)<=2000]
-    near.sort(key=lambda p:(dist(p),p['place_id']))
-    chosen={};seen=set();category_counts=Counter()
-    def add(p):
-        if checks.get(p['place_id'],{}).get('decision')=='REVIEW_NEEDED':return
-        key=(p['name'],p['road_address'])
-        if key in seen:return
-        seen.add(key);chosen[p['place_id']]=p;category_counts[p['category']]+=1
-    for pid in checked:
-        if pid in byid and byid[pid]['lat'] and byid[pid]['lon'] and dist(byid[pid])<=2000:add(byid[pid])
-    # Cover multiple cuisine facets and designated shops, then fill nearby pools.
-    for g in ['한식','중식','일식']:
-        for p in [p for p in near if group(p)==g][:15]:add(p)
-    for p in [p for p in near if p['place_id'] in good][:20]:add(p)
-    for p in near:
-        if category_counts[p['category']]<({'MEAL':60,'CAFE':35,'CULTURE':30}[p['category']]):add(p)
+    near=[p for p in places if valid_point(p) and p['category'] in policy['categoryLimits'] and dist(p,center)<=policy['radiusMeters']]
+    near.sort(key=lambda p:(dist(p,center),p['place_id']))
+    selected=select_places(near,list(previous_by_id),list(checked),
+        {pid for pid,row in checks.items() if row['decision']=='REVIEW_NEEDED'},good,group,policy)
+    category_counts=Counter(p['category'] for p in selected)
+    next_record_id=max((p['recordId'] for p in previous),default=2000000)+1
     out=[]
-    for index,p in enumerate(chosen.values(),1):
+    for p in selected:
+        record_id=previous_by_id.get(p['place_id'],{}).get('recordId')
+        if record_id is None:record_id=next_record_id;next_record_id+=1
         price=dict(minimum=None,maximum=None,unit='UNKNOWN',basis='확인 가능한 단위별 표본 부족',evidence='UNKNOWN',sourceUrl='',checkedAt='')
         g=group(p)
         if g in estimates:
@@ -93,11 +155,14 @@ def build():
         if verification.get('decision')=='MATCHED_AT_CHECK':
             external_ids['google']=verification['googlePlaceId']
             identity=dict(identity,identityCheckedAt=verification['checkedAt'])
-        out.append(dict(recordId=2000000+index,placeId='DCA-DEMO-PUBLIC-'+p['place_id'],name=p['name']+(' '+p['branch'] if p['branch'] else ''),category=p['category'],lat=float(p['lat']),lng=float(p['lon']),priceEstimate=price,rating=0,
+        out.append(dict(recordId=record_id,placeId='DCA-DEMO-PUBLIC-'+p['place_id'],name=p['name']+(' '+p['branch'] if p['branch'] else ''),category=p['category'],lat=float(p['lat']),lng=float(p['lon']),priceEstimate=price,rating=0,
             details=dict(address=p['road_address'] or p['lot_address'],subcategory=p['industry_name'],phone=p['phone'],website=p['website'],sourceUrl=p['source_url'],sourceDate=p['source_reference_date'],identityCheckedAt=identity.get('identityCheckedAt',''),verificationUrl=identity.get('verificationUrl',''),externalIds=external_ids,tags=tags)))
-    doc=dict(schemaVersion=1,title='서면 공공자료 · 추정 가격',startLat=35.1578,startLng=129.06,
+    doc=dict(schemaVersion=1,title='서면 공공자료 · 추정 가격',startLat=center[0],startLng=center[1],
         note='Real public-source place records. Only marked places have recorded identity checks; review-needed places are held out. Costs are not Google-verified. Similar-place estimates assume per-person portions; inexpensive-shop sample is biased. Original nine-place dataset is unchanged.',places=out)
-    target=ROOT/'data/places/demo/seomyeon-public-estimates.json'
-    target.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    target.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'places':len(out),'categories':dict(category_counts),'estimate_samples':estimates,'estimated':sum(p['priceEstimate']['evidence']=='SIMILAR_ESTIMATE' for p in out),'unknown':sum(p['priceEstimate']['minimum'] is None for p in out)},ensure_ascii=False))
-if __name__=='__main__':build()
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--policy',type=Path,default=POLICY)
+    parser.add_argument('--output',type=Path,default=DEMO/'seomyeon-public-estimates.json')
+    args=parser.parse_args();build(args.policy,args.output)

@@ -22,7 +22,7 @@ class PlacePresenterTest {
         assertFalse(view.priceSummary().contains("115곳"));assertFalse(view.priceSummary().contains("https:"));
         var station=view.badges().stream().filter(b->b.code().equals("NEAR_SUBWAY")).findFirst().orElseThrow();
         assertTrue(station.description().contains("직선"));assertTrue(station.description().contains("자료 2022-11-30"));
-        assertTrue(station.description().contains("계산 2026-11-14"));
+        assertTrue(station.description().contains("계산 2026-11-16"));
         assertTrue(view.candidateSummary().contains("착한가격"));
     }
     @Test void typedFeaturesUseSameDomainInterpretationForBadgesAndFiltering() {

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "center": {
+    "lat": 35.1578,
+    "lng": 129.06
+  },
+  "radiusMeters": 2000,
+  "categoryLimits": {
+    "MEAL": 240,
+    "CAFE": 120,
+    "CULTURE": 40
+  },
+  "preferredPerCuisine": 35,
+  "preferredDesignated": 40
+}

@@ -562,7 +562,7 @@ class MapSearchTest {
             assertTrue(((String)script(engine,"document.querySelector('#detail-facts dt').textContent")).contains("추정"));
             assertTrue(((String)script(engine,"document.getElementById('detail-extra').textContent")).contains("부산 착한가격업소"));
             assertFalse(((String)script(engine,"document.getElementById('detail-extra').textContent")).contains("https://"));
-            assertEquals(true,script(engine,"Array.from(document.querySelectorAll('.detail-badge')).some(function(n){return n.title.includes('계산 2026-11-14');})"));
+            assertEquals(true,script(engine,"Array.from(document.querySelectorAll('.detail-badge')).some(function(n){return n.title.includes('계산 2026-11-16');})"));
             assertEquals(true,script(engine,"document.getElementById('detail-extra').scrollWidth<=document.getElementById('detail-extra').clientWidth+1"));
             assertEquals(true,script(engine,"document.getElementById('place-detail').getBoundingClientRect().left>=0 && document.getElementById('place-detail').getBoundingClientRect().right<=window.innerWidth+1"));
             assertEquals(true,script(engine,"document.getElementById('detail-add').getBoundingClientRect().bottom<=document.getElementById('place-detail').getBoundingClientRect().bottom"));
