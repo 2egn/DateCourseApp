@@ -30,7 +30,8 @@
  </VBox>
  <TitledPane fx:id="commonConditionsPane" text="01 · 공통 조건" expanded="true" animated="false" styleClass="compact-pane"><content><VBox spacing="16">
  <VBox spacing="7"><Label text="함께 정할 조건" styleClass="condition-title"/><Label text="장소별 조건은 다음 화면에서 정해요." wrapText="true" styleClass="planner-caption"/></VBox>
- <VBox spacing="6"><Label text="장소 목록" styleClass="field-label"/><ComboBox fx:id="sourceBox" maxWidth="Infinity"/><Label fx:id="sourceStatusLabel" text="장소 목록을 선택해 주세요." minHeight="-Infinity" wrapText="true" styleClass="planner-caption"/></VBox>
+ <VBox spacing="6"><Label fx:id="sourceStatusLabel" text="장소를 불러오고 있어요." minHeight="-Infinity" wrapText="true" styleClass="planner-caption"/>
+ <TitledPane fx:id="sourceSettings" styleClass="compact-pane" text="추가 설정 · 장소 목록" expanded="false" animated="false"><VBox spacing="6"><Label text="사용할 장소 목록" styleClass="field-label"/><ComboBox fx:id="sourceBox" maxWidth="Infinity"/></VBox></TitledPane></VBox>
  <VBox spacing="8"><Label text="인원 (명)" styleClass="field-label"/><StackPane styleClass="place-count-stepper" minWidth="0">
  <TextField fx:id="peopleField" text="2" accessibleText="인원" styleClass="place-count-editor" minWidth="0"/>
  <VBox StackPane.alignment="CENTER_RIGHT" prefWidth="30" maxWidth="30" maxHeight="40" styleClass="place-count-buttons">

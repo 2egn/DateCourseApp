@@ -333,14 +333,29 @@ public class ConditionController extends BasePageController {
         saving = true;
         headerBar.setDisable(true);
         mainPage.setDisable(true);
-        saveStatusLabel.setText("저장 중…");
-        var preview = map.capturePreview(snapshot).handle((image, failure) -> image);
-        runWork("코스를 저장하고 있어요", () -> {
+        saveStatusLabel.setText("지도를 준비하고 있어요…");
+        var diagnostic=com.datecourse.service.AppDiagnostics.begin(com.datecourse.service.AppDiagnostics.Operation.COURSE_SAVE);
+        var preview = map.capturePreview(snapshot,stage->{
+            if(stage==PlannerMap.CaptureStage.CAPTURING) {
+                saveStatusLabel.setText("미리보기를 만들고 있어요…");updateLoading(saveStatusLabel.getText());
+            }
+        }).handle((image, failure) -> {
+            if(failure!=null)diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.MAP_CAPTURE,
+                    com.datecourse.service.AppDiagnostics.Outcome.PARTIAL,failure);
+            return image;
+        });
+        runWork("지도를 준비하고 있어요…", () -> {
             byte[] png = null;
             var image = preview.get();
             if (image != null) try {
                 png = new com.datecourse.service.CoursePreviewImage().renderWithMap(snapshot, image);
-            } catch (java.io.IOException failure) { /* Course snapshots remain saveable. */ }
+            } catch (java.io.IOException failure) {
+                diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.IMAGE_ENCODE,
+                        com.datecourse.service.AppDiagnostics.Outcome.PARTIAL,failure);
+            }
+            javafx.application.Platform.runLater(()->{
+                if(context==userContext && saving){saveStatusLabel.setText("코스를 저장하고 있어요…");updateLoading(saveStatusLabel.getText());}
+            });
             return savedCourseRepository.saveWithPreviewResult(context.session(), id, snapshot, png);
         }, result -> {
             var saved = result.course();
@@ -353,14 +368,16 @@ public class ConditionController extends BasePageController {
             context.courses(); // Refresh once after a successful write, without blocking the form.
             presentPlan(saved.plan());
             saveStatusLabel.setText(result.previewStored() ? "코스를 저장했어요."
-                    : "코스는 저장했어요. 지도 미리보기는 다시 저장할 때 재시도해 주세요.");
-            notifyUser(PageFeedback.Kind.SUCCESS, saveStatusLabel.getText());
+                    : "코스는 저장됐어요. 미리보기는 ‘저장한 코스’에서 다시 만들 수 있어요.");
+            diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.COMPLETE,result.previewStored()
+                    ?com.datecourse.service.AppDiagnostics.Outcome.SUCCESS:com.datecourse.service.AppDiagnostics.Outcome.PARTIAL,null);
+            notifyUser(result.previewStored()?PageFeedback.Kind.SUCCESS:PageFeedback.Kind.INFO, saveStatusLabel.getText());
         }, failure -> {
             saving = false;
             headerBar.setDisable(false);
             mainPage.setDisable(false);
             saveStatusLabel.setText(failure instanceof IllegalArgumentException ? failure.getMessage()
-                    : "저장 실패. DB 연결을 확인해 주세요. 코스는 유지돼요.");
+                    : "코스를 저장하지 못했어요. 잠시 후 다시 시도해 주세요. 편집 내용은 유지돼요.");
             notifyUser(PageFeedback.Kind.ERROR, saveStatusLabel.getText());
         });
     }
@@ -524,7 +541,8 @@ public class ConditionController extends BasePageController {
             allPlaces = List.copyOf(task.getValue());
             placesLoaded = true;
             placesLoading = false;
-            sourceStatusLabel.setText(placePresenter.datasetSummary(allPlaces));
+            sourceStatusLabel.setText(allPlaces.size()+"곳의 장소를 불러왔어요.");
+            sourceStatusLabel.setTooltip(new Tooltip(placePresenter.datasetSummary(allPlaces)));
             recommendButton.setDisable(false);
             recommendButton.setText(appliedPlan == null || appliedPlan.places().isEmpty() ? "코스 만들기 →" : "코스 편집 →");
             finishStartup();

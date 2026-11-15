@@ -46,7 +46,7 @@ class SavedCoursePreviewTest {
                 var load=new FutureTask<Parent>(()->{
                     Parent root=loader.load();new Scene(root,1000,680);
                     var status=(javafx.scene.control.Label)root.lookup("#previewStatus");
-                    status.textProperty().addListener((o,old,value)->{if(value.startsWith("저장된 미리보기가 없어요"))ready.countDown();});
+                    status.textProperty().addListener((o,old,value)->{if(value.startsWith("아직 미리보기가 없어요"))ready.countDown();});
                     loader.<SavedCourseController>getController().configure(repository,context,course->{});
                     return root;
                 });Platform.runLater(load);var root=load.get(5,TimeUnit.SECONDS);
@@ -64,6 +64,49 @@ class SavedCoursePreviewTest {
                 Platform.runLater(clear);clear.get(5,TimeUnit.SECONDS);
             }
         }
+    }
+
+    @Test void previewRetryAndCancelKeepCourseContentAndListCacheUnchanged() throws Exception {
+        var config=new com.zaxxer.hikari.HikariConfig();config.setJdbcUrl("jdbc:h2:mem:"+UUID.randomUUID()+";MODE=MySQL");
+        config.setUsername("sa");config.setPassword("");
+        try(var pool=new com.zaxxer.hikari.HikariDataSource(config)) {
+            try(var connection=pool.getConnection()) {
+                for(String name:List.of("02_create_tables.sql","07_saved_courses.sql","08_saved_course_price_estimates.sql"))
+                    try(var reader=Files.newBufferedReader(Path.of("data/sql",name))){org.h2.tools.RunScript.execute(connection,reader);}
+                connection.createStatement().executeUpdate("INSERT INTO members(member_id,email,password_hash,name) VALUES(7,'retry@test.test','test-only','Demo')");
+            }
+            var repository=new kr.ac.university.localdb.db.SavedCourseRepository(pool);var owner=new kr.ac.university.localdb.UserSession(7,"Demo");
+            var plan=new RoutePlan(35.157,129.059,2,1000,"그대로 유지",List.of(new Place(1,"a","첫 장소","MEAL",35.158,129.06,9000,4)));
+            var saved=repository.saveWithPreview(owner,null,plan,null);var loads=new java.util.concurrent.atomic.AtomicInteger();
+            try(var context=new com.datecourse.service.UserContext(owner,null,()->{loads.incrementAndGet();return repository.findAll(owner);})) {
+                context.courses().get(5,TimeUnit.SECONDS);
+                var loader=new FXMLLoader(getClass().getResource("/saved-course-view.fxml"));
+                var root=fx(()->{Parent node=loader.load();new Scene(node,1000,680);loader.<SavedCourseController>getController().configure(repository,context,c->{});return node;});
+                awaitFx(()->root.lookup("#previewRetry").isVisible());
+                var generator=SavedCourseController.class.getDeclaredField("previewGenerator");generator.setAccessible(true);
+                fx(()->{
+                    generator.set(loader.getController(),(java.util.function.Function<SavedCourse,CompletableFuture<byte[]>>)c->CompletableFuture.failedFuture(new CancellationException()));
+                    ((javafx.scene.control.Hyperlink)root.lookup("#previewRetry")).fire();return null;
+                });
+                awaitFx(()->((javafx.scene.control.Label)root.lookup("#previewStatus")).getText().contains("취소"));
+                assertEquals(saved,repository.findAll(owner).getFirst());
+                byte[] png=new CoursePreviewImage().render(plan);
+                fx(()->{
+                    generator.set(loader.getController(),(java.util.function.Function<SavedCourse,CompletableFuture<byte[]>>)c->CompletableFuture.completedFuture(png));
+                    ((javafx.scene.control.Hyperlink)root.lookup("#previewRetry")).fire();return null;
+                });
+                awaitFx(()->((ImageView)root.lookup("#coursePreview")).getImage()!=null);
+                assertArrayEquals(png,repository.findPreview(owner,saved).orElseThrow());
+                assertEquals(saved,repository.findAll(owner).getFirst());assertEquals(1,loads.get());
+            }
+        }
+    }
+    private static <T>T fx(Callable<T> action)throws Exception {
+        var work=new FutureTask<>(action);Platform.runLater(work);return work.get(5,TimeUnit.SECONDS);
+    }
+    private static void awaitFx(Callable<Boolean> condition)throws Exception {
+        long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(6);
+        while(System.nanoTime()<end){if(fx(condition))return;Thread.sleep(20);}fail("화면 처리 시간 초과");
     }
 
     @Test void previewFitsTheSavedCourseScreenAndKeepsPlaceListVisible() throws Exception {

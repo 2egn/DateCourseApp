@@ -18,7 +18,13 @@ public class SavedCourseController extends BasePageController {
     @FXML private javafx.scene.image.ImageView coursePreview;
     @FXML private javafx.scene.layout.StackPane previewPane;
     @FXML private Label previewStatus;
+    @FXML private javafx.scene.layout.VBox previewNotice;
+    @FXML private Hyperlink previewRetry;
+    private boolean retryPreviewRead;
+    private java.util.function.Function<SavedCourse,java.util.concurrent.CompletableFuture<byte[]>> previewGenerator=
+            course->CoursePreviewDialog.generate(courseList.getScene().getWindow(),course.plan());
     private long previewVersion;
+    private long previewRevision;
     private java.util.List<SavedCourse> previewCourses;
     private final java.util.Map<String, java.util.Optional<javafx.scene.image.Image>> previews =
             new java.util.LinkedHashMap<>(24, .75f, true) {
@@ -33,6 +39,8 @@ public class SavedCourseController extends BasePageController {
     private boolean busy;
 
     @FXML public void initialize() {
+        previewNotice.visibleProperty().bind(previewStatus.visibleProperty());
+        previewRetry.managedProperty().bind(previewRetry.visibleProperty());
         detailSummary.setMinHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
         coursePreview.fitWidthProperty().bind(previewPane.widthProperty());
         coursePreview.fitHeightProperty().bind(previewPane.heightProperty());
@@ -112,10 +120,10 @@ public class SavedCourseController extends BasePageController {
         coursePreview.setImage(null);
         previewPane.setVisible(course != null);
         previewPane.setManaged(course != null);
-        previewStatus.setVisible(true);
+        previewStatus.setVisible(true);previewRetry.setVisible(false);retryPreviewRead=false;
         if (course == null) return;
         if (repository == null || userContext == null) {
-            previewStatus.setText("저장된 미리보기가 없어요. 코스를 다시 저장하면 생성돼요.");
+            previewStatus.setText("아직 미리보기가 없어요.");
             return;
         }
         String key = course.courseId() + ":" + com.datecourse.service.CoursePreviewImage.fingerprint(course.plan());
@@ -124,6 +132,7 @@ public class SavedCourseController extends BasePageController {
         var context = userContext;
         var storage = repository;
         var snapshot = previewCourses;
+        long revision=previewRevision;
         // No full-page loading overlay; selection and course opening remain responsive.
         java.util.concurrent.CompletableFuture.supplyAsync(() -> {
             try {
@@ -135,18 +144,60 @@ public class SavedCourseController extends BasePageController {
             } catch (Exception failure) { throw new java.util.concurrent.CompletionException(failure); }
         }).whenComplete((image, failure) -> javafx.application.Platform.runLater(() -> {
             if (context != userContext || context.isClosed()) return;
-            if (snapshot != previewCourses) return;
+            if (snapshot != previewCourses || revision!=previewRevision) return;
             if (failure == null) previews.put(key, image);
             if (version != previewVersion) return;
             if (failure == null) displayPreview(image);
-            else previewStatus.setText("미리보기를 불러오지 못했어요. 코스는 바로 열 수 있어요.");
+            else {
+                com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.PREVIEW_READ,
+                        com.datecourse.service.AppDiagnostics.Stage.DATABASE_READ,failure);
+                previewStatus.setText("미리보기를 불러오지 못했어요. 코스는 바로 열 수 있어요.");
+                retryPreviewRead=true;previewRetry.setText("다시 불러오기");previewRetry.setVisible(true);
+            }
         }));
     }
 
     private void displayPreview(java.util.Optional<javafx.scene.image.Image> image) {
         coursePreview.setImage(image.orElse(null));
         previewStatus.setVisible(image.isEmpty());
-        previewStatus.setText("저장된 미리보기가 없어요. 코스를 다시 저장하면 생성돼요.");
+        previewStatus.setText("아직 미리보기가 없어요.");
+        previewRetry.setText("미리보기 만들기");previewRetry.setVisible(image.isEmpty());retryPreviewRead=false;
+    }
+
+    @FXML private void onPreviewRetry() {
+        var selected=courseList.getSelectionModel().getSelectedItem();
+        if(busy || selected==null || repository==null || userContext==null)return;
+        if(retryPreviewRead){showPreview(selected);return;}
+        var context=userContext;var storage=repository;
+        previewRevision++;
+        var diagnostic=com.datecourse.service.AppDiagnostics.begin(com.datecourse.service.AppDiagnostics.Operation.PREVIEW_REBUILD);
+        java.util.concurrent.CompletableFuture<byte[]> generated;
+        try {generated=previewGenerator.apply(selected);}
+        catch(RuntimeException failure){generated=java.util.concurrent.CompletableFuture.failedFuture(failure);}
+        final var png=generated;
+        busy=true;previewRetry.setDisable(true);updateButtons();
+        runWork("미리보기를 만들고 있어요…",()->{
+            byte[] bytes=png.get();
+            if(context.isClosed())throw new java.util.concurrent.CancellationException();
+            var image=new javafx.scene.image.Image(new java.io.ByteArrayInputStream(bytes));
+            if(image.isError())throw new IllegalArgumentException("미리보기 이미지를 읽지 못했어요.");
+            storage.refreshPreview(context.session(),selected,bytes);
+            return image;
+        },image->{
+            if(context!=userContext || context.isClosed())return;
+            busy=false;previewRetry.setDisable(false);updateButtons();
+            previews.put(selected.courseId()+":"+com.datecourse.service.CoursePreviewImage.fingerprint(selected.plan()),java.util.Optional.of(image));
+            showPreview(courseList.getSelectionModel().getSelectedItem());
+            notifyUser(PageFeedback.Kind.SUCCESS,"미리보기를 만들었어요.");
+            diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.COMPLETE,com.datecourse.service.AppDiagnostics.Outcome.SUCCESS,null);
+        },failure->{
+            if(context!=userContext || context.isClosed())return;
+            busy=false;previewRetry.setDisable(false);updateButtons();
+            boolean cancelled=com.datecourse.service.AppDiagnostics.cancelled(failure);
+            previewStatus.setText(cancelled?"미리보기 만들기를 취소했어요. 코스는 그대로예요.":"미리보기를 만들지 못했어요. 다시 시도해 주세요. 코스는 그대로예요.");
+            previewRetry.setVisible(true);
+            notifyUser(cancelled?PageFeedback.Kind.INFO:PageFeedback.Kind.ERROR,previewStatus.getText());
+        });
     }
 
     private void openPreview() {
@@ -262,7 +313,7 @@ public class SavedCourseController extends BasePageController {
             if (context != userContext || context.isClosed()) return;
             busy = false;
             updateButtons();
-            messageLabel.setText("요청 실패. DB 연결을 확인해 주세요.");
+            messageLabel.setText("요청을 처리하지 못했어요. 잠시 후 다시 시도해 주세요.");
         });
     }
 }

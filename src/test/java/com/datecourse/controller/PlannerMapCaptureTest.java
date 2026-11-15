@@ -34,16 +34,18 @@ class PlannerMapCaptureTest {
                 """);
         var view=fx(()->{var v=new WebView();new Scene(new StackPane(v),800,500);v.resize(800,500);return v;});
         var map=fx(()->new PlannerMap(view,(lat,lng)->{},message->{},page::toUri));
+        var phases=new java.util.concurrent.CopyOnWriteArrayList<PlannerMap.CaptureStage>();
         try {
             var capture=fx(()->{
                 // Equivalent to first navigation: load is pending and the bridge is not ready yet.
                 var loaded=PlannerMap.class.getDeclaredField("loaded");loaded.setAccessible(true);loaded.setBoolean(map,true);
                 var uri=PlannerMap.class.getDeclaredField("page");uri.setAccessible(true);uri.set(map,page.toUri());
                 view.getEngine().load(page.toUri().toString());
-                return map.capturePreview(new RoutePlan(35.15,129.05,2,1000,"처음 저장",List.of()));
+                return map.capturePreview(new RoutePlan(35.15,129.05,2,1000,"처음 저장",List.of()),phases::add);
             });
             var image=capture.get(5,TimeUnit.SECONDS);
             assertEquals(1000,image.getWidth());assertEquals(520,image.getHeight());
+            assertEquals(List.of(PlannerMap.CaptureStage.PREPARING,PlannerMap.CaptureStage.CAPTURING),phases);
             fx(()->{assertTrue(view.isManaged());assertEquals(800,view.getWidth(),1);return null;});
         } finally {fx(()->{map.dispose();return null;});}
     }

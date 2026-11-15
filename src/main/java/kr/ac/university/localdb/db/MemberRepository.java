@@ -103,10 +103,10 @@ public class MemberRepository implements AutoCloseable {
 
     public Login login(String username, char[] password) throws Exception {
         username = username.trim();
-        long started = System.nanoTime();
+
 
         try (Connection c = connect()) {
-            long connected = System.nanoTime();
+
 
             // The admin window requires a capability issued only after checking the stored admin hash.
             if (ADMIN_USERNAME.equals(username)) {
@@ -126,18 +126,11 @@ public class MemberRepository implements AutoCloseable {
 
                 try (ResultSet r = s.executeQuery()) {
                     boolean found = r.next();
-                    long queried = System.nanoTime();
+
 
                     boolean valid = found
                             && PasswordHash.verify(password, r.getString("password_hash"));
-                    long verified = System.nanoTime();
 
-                    System.out.printf(
-                            "DB 연결: %.1f ms%n회원 조회: %.1f ms%n비밀번호 검증: %.1f ms%n",
-                            (connected - started) / 1_000_000.0,
-                            (queried - connected) / 1_000_000.0,
-                            (verified - queried) / 1_000_000.0
-                    );
 
                     if (!valid)
                         throw new IllegalArgumentException(

@@ -972,7 +972,7 @@ class MapSearchTest {
             assertEquals(1, bar.getProgress());
             feedback.show(PageFeedback.Kind.ERROR, "요청 실패. 연결을 확인한 후 다시 시도해 주세요.");
             var copy = (javafx.scene.control.Label) field(feedback, "message");
-            assertEquals("요청 실패.", copy.getText());
+            assertEquals("요청 실패. 연결을 확인한 후 다시 시도해 주세요.", copy.getText());
             assertTrue(copy.getTooltip().getText().contains("연결을 확인"));
             ((javafx.scene.control.Button) toast.lookup(".feedback-close")).fire();
             assertFalse(toast.isVisible());
@@ -1207,7 +1207,7 @@ class MapSearchTest {
             CountDownLatch failed = new CountDownLatch(1);
             fx(() -> {
                 ((javafx.scene.control.Label) field(main, "saveStatusLabel")).textProperty()
-                        .addListener((o, old, text) -> { if (text.startsWith("저장 실패")) failed.countDown(); });
+                        .addListener((o, old, text) -> { if (text.startsWith("코스를 저장하지 못했어요")) failed.countDown(); });
                 pool.close();
                 invoke(main, "onSaveCourse");
                 return null;
@@ -1552,7 +1552,7 @@ class MapSearchTest {
             setField(main, "titlePrompt", (java.util.function.Function<com.datecourse.model.RoutePlan, java.util.Optional<String>>)
                     plan -> java.util.Optional.of(plan.title()));
             ((javafx.scene.control.Label) field(main, "saveStatusLabel")).textProperty()
-                    .addListener((o, old, text) -> { if (text.equals("코스를 저장했어요.") || text.startsWith("코스는 저장했어요.")) saved.countDown(); });
+                    .addListener((o, old, text) -> { if (text.equals("코스를 저장했어요.") || text.startsWith("코스는 저장됐어요.")) saved.countDown(); });
             invoke(main, "onSaveCourse");
             return null;
         });
@@ -2268,6 +2268,25 @@ class MapSearchTest {
                     """);
             assertEquals("true",engine.executeScript("document.querySelector('[data-visit-id=\"source-b:1\"]').getAttribute('aria-expanded')"));
             return null;
+        });
+    }
+
+    @Test void userNoticesKeepRecoveryActionsAndTechnicalSourceSettingsStartCollapsed() throws Exception {
+        fx(()->{
+            var loader=new FXMLLoader(getClass().getResource("/condition-view.fxml"));Parent root=loader.load();new Scene(root,1100,760);
+            ConditionController main=loader.getController();stubPlannerMap(main,"mapView");stubPlannerMap(field(main,"routeEditorController"),"editMapView");
+            assertFalse(((javafx.scene.control.TitledPane)loader.getNamespace().get("sourceSettings")).isExpanded());
+            var feedback=(PageFeedback)field(main,"feedback");
+            String partial="코스는 저장됐어요. 미리보기는 ‘저장한 코스’에서 다시 만들 수 있어요.";
+            feedback.show(PageFeedback.Kind.INFO,partial);
+            assertEquals(partial,((javafx.scene.control.Label)field(feedback,"message")).getText());
+            assertTrue(((javafx.scene.layout.VBox)field(feedback,"toast")).getStyleClass().contains("feedback-info"));
+            var finish=feedback.beginLoading("지도를 준비하고 있어요…");feedback.updateLoading("미리보기를 만들고 있어요…");
+            assertEquals("미리보기를 만들고 있어요…",((javafx.scene.control.Label)field(feedback,"busyMessage")).getText());
+            finish.run();assertFalse(feedback.isBusy());
+            root.resize(1100,760);root.applyCss();root.layout();
+            Path file=Path.of("build/ui-preview/user-first-feedback.png");Files.createDirectories(file.getParent());
+            ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",file.toFile());return null;
         });
     }
 

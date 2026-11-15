@@ -13,14 +13,16 @@ public abstract class BasePageController {
                                       Consumer<T> success, Consumer<Throwable> failure) {
         if (future.isDone()) {
             try { success.accept(future.join()); }
-            catch (java.util.concurrent.CompletionException problem) { failure.accept(problem.getCause()); }
+            catch (java.util.concurrent.CompletionException | java.util.concurrent.CancellationException problem) {
+                diagnose(problem);failure.accept(problem.getCause()==null?problem:problem.getCause());
+            }
             return;
         }
         Runnable finish = beginLoading(label);
         future.whenComplete((value, problem) -> javafx.application.Platform.runLater(() -> {
             finish.run();
             if (problem == null) success.accept(value);
-            else failure.accept(problem);
+            else {diagnose(problem);failure.accept(problem);}
         }));
     }
     private final ReadOnlyBooleanWrapper loading = new ReadOnlyBooleanWrapper();
@@ -30,6 +32,7 @@ public abstract class BasePageController {
     public final ReadOnlyBooleanProperty loadingProperty() { return loading.getReadOnlyProperty(); }
     public final boolean isLoading() { return loading.get(); }
     public final void useFeedback(PageFeedback feedback) { this.feedback = feedback; }
+    protected final void updateLoading(String text) {if(feedback!=null)feedback.updateLoading(text);}
     protected final void notifyUser(PageFeedback.Kind kind, String text) {
         if (feedback != null) feedback.show(kind, text);
     }
@@ -50,11 +53,20 @@ public abstract class BasePageController {
             loading.set(--pending > 0);
         };
     }
+    private void diagnose(Throwable failure) {
+        var diagnostic=com.datecourse.service.AppDiagnostics.begin(com.datecourse.service.AppDiagnostics.Operation.PAGE_TASK,getClass());
+        diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.RUN,
+                com.datecourse.service.AppDiagnostics.cancelled(failure)?com.datecourse.service.AppDiagnostics.Outcome.CANCELLED
+                        :com.datecourse.service.AppDiagnostics.Outcome.FAILED,failure);
+    }
     protected final <T> void runWork(String label, Callable<T> work, Consumer<T> success, Consumer<Throwable> failure) {
         Runnable finish = beginLoading(label);
         Task<T> task = new Task<>() { @Override protected T call() throws Exception { return work.call(); } };
         task.setOnSucceeded(event -> { finish.run(); success.accept(task.getValue()); });
-        task.setOnFailed(event -> { finish.run(); failure.accept(task.getException()); });
+        task.setOnFailed(event -> {
+            diagnose(task.getException());
+            finish.run(); failure.accept(task.getException());
+        });
         task.setOnCancelled(event -> finish.run());
         Thread thread = new Thread(task, "page-background-work");
         thread.setDaemon(true);

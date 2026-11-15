@@ -79,7 +79,8 @@ class WalkingRouteServiceTest {
                 WalkingRouteService service = new WalkingRouteService(HttpClient.newHttpClient(),
                         URI.create("http://localhost:" + server.getAddress().getPort()));
                 var failure = assertThrows(java.io.IOException.class, () -> service.route(List.of(START, END), SETTINGS));
-                assertTrue(failure.getMessage().contains("HTTP " + status));
+                assertFalse(failure.getMessage().contains("HTTP"));
+                assertEquals(status,((AppDiagnostics.HttpFailure)failure).status());
                 assertFalse(failure.getMessage().contains(SETTINGS.appKey()));
             } finally { server.stop(0); }
         }

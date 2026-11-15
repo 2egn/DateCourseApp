@@ -66,6 +66,8 @@ final class PlannerMap {
     private final MapBridge bridge;
     private boolean ready;
     private boolean capturing;
+    private java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> pendingCapture;
+    private Runnable cancelCapture=()->{};
     private boolean loaded;
     private RoutePlan plan;
     private Place candidate;
@@ -104,7 +106,9 @@ final class PlannerMap {
         }, selected, message -> {
             ready = false;
             loaded = false;
-            error.accept(message);
+            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.MAP_LOAD,
+                    com.datecourse.service.AppDiagnostics.Stage.MAP_PREPARE,new IllegalStateException());
+            error.accept("지도를 불러오지 못했어요. 지도 새로고침을 눌러 다시 시도해 주세요.");
         }, address -> {
             Thread worker = new Thread(() -> {
                 try { ExternalBrowser.open(URI.create(address)); }
@@ -143,7 +147,9 @@ final class PlannerMap {
             pageLoadPending = true;
             viewport.refresh();
         } catch (IOException failure) {
-            error.accept("지도 서버를 시작하지 못했어요. 다른 앱이나 수동 지도 서버의 8080 포트 사용을 확인하고 다시 불러와 주세요.");
+            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.MAP_LOAD,
+                    com.datecourse.service.AppDiagnostics.Stage.START,failure);
+            error.accept("지도를 열지 못했어요. 다른 실행 창을 닫은 뒤 지도 새로고침을 눌러 주세요.");
         }
     }
 
@@ -161,7 +167,12 @@ final class PlannerMap {
     }
 
     /** FX-thread only. Preserve the complete SDK attribution and restore the original viewport. */
+    enum CaptureStage { PREPARING, CAPTURING }
     java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(RoutePlan snapshot) {
+        return capturePreview(snapshot,stage->{});
+    }
+    java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(RoutePlan snapshot, Consumer<CaptureStage> progress) {
+        progress.accept(CaptureStage.PREPARING);
         var result = new java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage>();
         if (capturing || !loaded && !ready || ready && !Boolean.TRUE.equals(view.getEngine().executeScript(
                 "typeof window.beginCourseCapture === 'function'"))) {
@@ -170,15 +181,19 @@ final class PlannerMap {
         }
         double[] originalSize={view.getWidth(),view.getHeight()};
         boolean managed=view.isManaged();
-        capturing=true;
+        capturing=true;pendingCapture=result;
         var timer=new javafx.animation.Timeline();
         Runnable restore=()->{
             timer.stop();
             view.resize(originalSize[0],originalSize[1]);view.setManaged(managed);
             try {view.getEngine().executeScript("if(window.endCourseCapture)window.endCourseCapture()");}
             catch(Exception ignored) { /* Navigation may have disposed the page. */ }
-            finally {capturing=false;render(false);}
+            finally {capturing=false;pendingCapture=null;cancelCapture=()->{};render(false);}
         };
+        cancelCapture=()->{restore.run();result.completeExceptionally(new java.util.concurrent.CancellationException());};
+        result.whenComplete((image,failure)->{
+            if(result.isCancelled())Platform.runLater(()->{if(pendingCapture==result)cancelCapture.run();});
+        });
         long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(20);
         boolean[] started={false};
         timer.getKeyFrames().add(new javafx.animation.KeyFrame(javafx.util.Duration.millis(100),event->{
@@ -192,6 +207,7 @@ final class PlannerMap {
                     // Let the native SDK animation finish before changing the viewport.
                     if(!Boolean.TRUE.equals(view.getEngine().executeScript(
                             "window.inspectMapCamera && !window.inspectMapCamera().moving")))return;
+                    progress.accept(CaptureStage.CAPTURING);
                     originalSize[0]=view.getWidth();originalSize[1]=view.getHeight();
                     view.setManaged(false);view.resize(1000,520);
                     Object began=view.getEngine().executeScript("window.beginCourseCapture("+placePayload.plan(snapshot)+")");
@@ -215,6 +231,7 @@ final class PlannerMap {
     }
 
     void dispose() {
+        cancelCapture.run();
         pageLoadPending = false;
         viewport.close();
         walkingPending = false;
@@ -366,7 +383,7 @@ final class PlannerMap {
         long version = ++walkingVersion;
         List<Stop> stops = walkingStops;
         walkingRoute = null;
-        walkingMessage = "TMAP 도보 경로를 조회하는 중… (" + (stops.size() - 1) + "구간)";
+        walkingMessage = "도보 이동시간을 확인하는 중… (" + (stops.size() - 1) + "구간)";
         publishWalking();
         renderWalkingRoute(false);
         Task<WalkingRoute> task = new Task<>() {
@@ -387,6 +404,8 @@ final class PlannerMap {
         task.setOnFailed(event -> {
             finishLoading.run();
             if (walkingVersion != version || walkingTask != task) return;
+            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.WALKING_ROUTE,
+                    com.datecourse.service.AppDiagnostics.Stage.PROVIDER_REQUEST,task.getException());
             walkingRoute = null;
             walkingTask=null;
             walkingMessage = task.getException() instanceof java.io.IOException

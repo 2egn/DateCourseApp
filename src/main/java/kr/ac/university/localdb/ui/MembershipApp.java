@@ -346,7 +346,9 @@ public class MembershipApp {
 
     private void showConditionFailure(PlannerLoadingDialog loading, Exception failure) {
         loading.close();
-        AppDialogs.showMessageDialog(home, "조건 입력 화면을 열지 못했습니다.\n" + failure.getMessage(),
+        com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.SCREEN_LOAD,
+                com.datecourse.service.AppDiagnostics.Stage.START,failure);
+        AppDialogs.showMessageDialog(home, "화면을 열지 못했어요. 잠시 후 다시 로그인해 주세요.",
                 "화면 전환 실패", JOptionPane.ERROR_MESSAGE);
     }
     /** Keep the authenticated planner in the same window while its bounds settle into place. */
@@ -490,9 +492,13 @@ public class MembershipApp {
                 try { success.accept(get()); }
                 catch (Exception failure) {
                     // 작업 예외의 원인을 찾아 MySQL 중복 키 오류(1062)는 이해하기 쉬운 안내로 바꿉니다.
-                    Throwable cause=failure; while (cause.getCause()!=null) cause=cause.getCause();
+                    com.datecourse.service.AppDiagnostics.begin(com.datecourse.service.AppDiagnostics.Operation.ACCOUNT_TASK,MembershipApp.class)
+                            .report(com.datecourse.service.AppDiagnostics.Stage.RUN,com.datecourse.service.AppDiagnostics.Outcome.FAILED,failure);
+                    Throwable cause=com.datecourse.service.AppDiagnostics.root(failure);
                     String text=cause instanceof SQLException sql && sql.getErrorCode()==1062
-                            ? "이미 사용 중인 이메일 또는 관리자 계정입니다." : cause.getMessage();
+                            ? "이미 사용 중인 이메일 또는 관리자 계정입니다."
+                            : cause instanceof IllegalArgumentException ? cause.getMessage()
+                            : "요청을 처리하지 못했어요. 잠시 후 다시 시도해 주세요.";
                     AppDialogs.showMessageDialog(parent,text,"처리 실패",JOptionPane.ERROR_MESSAGE);
                 }
                 finally { complete.run(); }

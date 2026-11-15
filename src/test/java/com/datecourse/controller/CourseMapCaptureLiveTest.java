@@ -39,6 +39,39 @@ class CourseMapCaptureLiveTest {
         } finally {fx(()->{context.map.dispose();context.stage.close();return null;});}
     }
 
+    @Test void previewDialogGeneratesActualMapAndClosesItsResources() throws Exception {
+        var ready=new CountDownLatch(1);
+        try{Platform.startup(()->{Platform.setImplicitExit(false);ready.countDown();});}
+        catch(IllegalStateException started){Platform.runLater(ready::countDown);}
+        assertTrue(ready.await(10,TimeUnit.SECONDS));
+        var owner=fx(()->{var stage=new Stage();stage.setScene(new Scene(new StackPane(),900,620));stage.show();return stage;});
+        try {
+            var plan=new RoutePlan(35.1578,129.0601,2,1000,"미리보기 재생성",List.of(new Place(1,"a","첫 장소","MEAL",35.1555,129.058,9000,4)));
+            byte[] png=fx(()->CoursePreviewDialog.generate(owner,plan)).get(25,TimeUnit.SECONDS);
+            var image=javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(png));assertEquals(1000,image.getWidth());assertEquals(650,image.getHeight());
+            long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(5);
+            while(System.nanoTime()<end && fx(()->javafx.stage.Window.getWindows().size()>1))Thread.sleep(20);
+            assertEquals(1,fx(()->javafx.stage.Window.getWindows().size()));
+        } finally {fx(()->{owner.close();return null;});}
+    }
+
+    @Test void cancellingPreviewDialogKeepsOwnerOpenAndDoesNotLeaveACaptureRunning() throws Exception {
+        var ready=new CountDownLatch(1);
+        try{Platform.startup(()->{Platform.setImplicitExit(false);ready.countDown();});}
+        catch(IllegalStateException started){Platform.runLater(ready::countDown);}
+        assertTrue(ready.await(10,TimeUnit.SECONDS));
+        var owner=fx(()->{var stage=new Stage();stage.setScene(new Scene(new StackPane(),900,620));stage.show();return stage;});
+        try {
+            var pending=fx(()->{
+                var future=CoursePreviewDialog.generate(owner,new RoutePlan(35.1578,129.06,2,1000,"취소",List.of()));
+                var dialog=javafx.stage.Window.getWindows().stream().filter(w->w!=owner).map(w->(Stage)w).findFirst().orElseThrow();
+                dialog.close();return future;
+            });
+            assertTrue(pending.isCancelled());assertTrue(fx(owner::isShowing));
+            assertEquals(1,fx(()->javafx.stage.Window.getWindows().size()));
+        } finally {fx(()->{owner.close();return null;});}
+    }
+
     @Test void capturesActualMapWithStraightLinesAndRestoresThePlanner() throws Exception {
         var ready=new CountDownLatch(1);
         try {Platform.startup(()->{Platform.setImplicitExit(false);ready.countDown();});}

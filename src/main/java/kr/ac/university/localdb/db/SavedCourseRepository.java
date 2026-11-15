@@ -30,7 +30,6 @@ public final class SavedCourseRepository {
     private final DataSource dataSource;
     private final com.datecourse.service.CoursePreviewRenderer previewRenderer;
     private volatile boolean previewSchemaReady;
-    private static final System.Logger LOG = System.getLogger(SavedCourseRepository.class.getName());
     private final RouteRangeValidator rangeValidator = new RouteRangeValidator();
     private static final ObjectMapper JSON = new ObjectMapper();
 
@@ -170,7 +169,8 @@ public final class SavedCourseRepository {
                 throw new IOException("미리보기 이미지 크기를 확인해 주세요.");
         } catch (IOException | SQLException | RuntimeException failure) {
             preview = null;
-            LOG.log(System.Logger.Level.WARNING, "미리보기 생성/준비 실패. 코스 원본 저장을 계속합니다.");
+            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.PREVIEW_STORAGE,
+                    com.datecourse.service.AppDiagnostics.Stage.IMAGE_ENCODE,failure);
         }
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
@@ -187,7 +187,8 @@ public final class SavedCourseRepository {
                     }
                     catch (SQLException failure) {
                         connection.rollback(point);
-                        LOG.log(System.Logger.Level.WARNING, "미리보기 저장 실패. 코스 원본 저장을 계속합니다.");
+                        com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.PREVIEW_STORAGE,
+                                com.datecourse.service.AppDiagnostics.Stage.DATABASE_WRITE,failure);
                     } finally { connection.releaseSavepoint(point); }
                 }
                 java.time.Instant updatedAt;
@@ -240,6 +241,47 @@ public final class SavedCourseRepository {
             insert.setBytes(3,png); insert.executeUpdate();
         }
         return true;
+    }
+
+    /** Updates only the derived PNG. Course title, timestamps and place snapshots are unchanged. */
+    public void refreshPreview(UserSession session,SavedCourse expected,byte[] png) throws SQLException,IOException {
+        requireSession(session);
+        if(png==null || png.length==0 || png.length>2_000_000)throw new IllegalArgumentException("미리보기 이미지를 확인해 주세요.");
+        initializePreviews();
+        try(var connection=dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                RoutePlan header;
+                try(var query=connection.prepareStatement("SELECT * FROM saved_courses WHERE course_id=? AND member_id=? FOR UPDATE")) {
+                    query.setLong(1,expected.courseId());query.setLong(2,session.memberId());
+                    try(var row=query.executeQuery()) {
+                        if(!row.next())throw new IllegalStateException("코스를 찾지 못했어요. 목록을 새로고침해 주세요.");
+                        header=new RoutePlan(row.getDouble("start_lat"),row.getDouble("start_lng"),row.getInt("people"),
+                                row.getInt("radius_m"),row.getString("title"),List.of());
+                    }
+                }
+                var places=new ArrayList<Place>();var radii=new LinkedHashMap<Long,Integer>();
+                try(var query=connection.prepareStatement("SELECT * FROM saved_course_places WHERE course_id=? ORDER BY visit_order")) {
+                    query.setLong(1,expected.courseId());
+                    try(var rows=query.executeQuery()) {
+                        while(rows.next()) {
+                            Place place=readPlaceSnapshot(rows);places.add(place);
+                            Integer radius=rows.getObject("arrival_radius_m",Integer.class);
+                            if(radius!=null)radii.put(place.recordId(),radius);
+                        }
+                    }
+                }
+                var current=new RoutePlan(header.startLat(),header.startLng(),header.people(),header.radius(),header.title(),places,radii);
+                if(!com.datecourse.service.CoursePreviewImage.fingerprint(current).equals(
+                        com.datecourse.service.CoursePreviewImage.fingerprint(expected.plan())))
+                    throw new IllegalStateException("코스가 변경됐어요. 목록을 새로고침한 뒤 다시 시도해 주세요.");
+                replacePreview(connection,expected.courseId(),current,png);
+                connection.commit();
+            } catch(SQLException|RuntimeException failure) {
+                try{connection.rollback();}catch(SQLException rollback){failure.addSuppressed(rollback);}
+                throw failure;
+            }
+        }
     }
 
     /** Fetches one optional BLOB, checking both ownership and the selected snapshot revision. */

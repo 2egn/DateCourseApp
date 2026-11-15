@@ -151,6 +151,20 @@ class SavedCourseRepositoryTest {
                 new RoutePlan(35.157,129.06,2,1000,"같은 공공 장소",List.of(a,alias))));
     }
 
+    @Test void previewOnlyRebuildPreservesCourseAndRejectsStaleOrForeignSnapshots() throws Exception {
+        var saved=repository.save(owner,example());
+        byte[] png=new com.datecourse.service.CoursePreviewImage().render(example());
+        repository.refreshPreview(owner,saved,png);
+        assertEquals(saved,repository.findAll(owner).getFirst());
+        assertArrayEquals(png,repository.findPreview(owner,saved).orElseThrow());
+        assertThrows(IllegalStateException.class,()->repository.refreshPreview(new UserSession(8,"Other"),saved,png));
+        var plan=example();var changed=new RoutePlan(plan.startLat(),plan.startLng(),4,plan.radius(),plan.title(),plan.places());
+        var updated=repository.save(owner,saved.courseId(),changed);
+        byte[] current=repository.findPreview(owner,updated).orElseThrow();
+        assertThrows(IllegalStateException.class,()->repository.refreshPreview(owner,saved,png));
+        assertArrayEquals(current,repository.findPreview(owner,updated).orElseThrow());
+    }
+
     @AfterEach
     void closePool() {
         if (pool != null) pool.close();

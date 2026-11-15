@@ -72,16 +72,16 @@ public final class WalkingRouteService {
                 .POST(HttpRequest.BodyPublishers.ofString(json.writeValueAsString(body), StandardCharsets.UTF_8)).build();
         HttpResponse<String> response;
         try { response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8)); }
-        catch (HttpTimeoutException failure) { throw new IOException("TMAP 도보 경로 응답 시간이 초과됐어요. 다시 조회해 주세요."); }
-        catch (IOException failure) { throw new IOException("TMAP에 연결하지 못했어요. 인터넷 연결을 확인해 주세요."); }
+        catch (HttpTimeoutException failure) { throw new IOException("이동시간 확인이 지연되고 있어요. 잠시 후 다시 시도해 주세요."); }
+        catch (IOException failure) { throw new IOException("이동시간을 확인하지 못했어요. 인터넷 연결을 확인해 주세요."); }
         if (response.statusCode() != 200) {
             String message = switch (response.statusCode()) {
                 case 401, 403 -> "도보 경로 서비스 인증을 확인할 수 없어요. 앱 제공자에게 문의해 주세요.";
-                case 429 -> "TMAP 요청 한도를 초과했어요. 잠시 후 다시 조회해 주세요.";
+                case 429 -> "이동시간 조회가 몰리고 있어요. 잠시 후 다시 시도해 주세요.";
                 case 400, 404 -> "선택한 위치 사이의 도보 경로를 찾지 못했어요.";
-                default -> "TMAP 도보 경로 조회에 실패했어요. 잠시 후 다시 시도해 주세요.";
+                default -> "이동시간을 확인하지 못했어요. 잠시 후 다시 시도해 주세요.";
             };
-            throw new IOException(message + " (HTTP " + response.statusCode() + ")");
+            throw new AppDiagnostics.HttpFailure(response.statusCode(),message);
         }
         Leg leg = parse(from, to, response.body());
         synchronized (cache) {
@@ -118,7 +118,7 @@ public final class WalkingRouteService {
             if (paths.isEmpty() || distance < 0 || time < 0) throw new IllegalArgumentException();
             return new Leg(from, to, distance, time, paths, steps);
         } catch (RuntimeException | IOException failure) {
-            throw new IOException("TMAP에서 올바른 도보 경로를 받지 못했어요. 위치를 바꾸거나 다시 조회해 주세요.");
+            throw new IOException("이 구간의 이동시간을 확인하지 못했어요. 위치를 바꾸거나 다시 시도해 주세요.");
         }
     }
 

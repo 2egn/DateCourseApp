@@ -59,7 +59,8 @@ class PlannerMapLoadTest {
                 result.load();
                 return result;
             });
-            assertTrue(error.get().contains("8080"));
+            assertTrue(error.get().contains("지도 새로고침"));
+            assertFalse(error.get().contains("8080"));
             fx(() -> { map.reload(); return null; });
             awaitPresented(view.get());
             assertEquals(2, attempts.get());
@@ -67,7 +68,8 @@ class PlannerMapLoadTest {
                 view.get().getEngine().executeScript("javaMapBridge.onMapError('SDK failed')");
                 return null;
             });
-            assertEquals("SDK failed", error.get());
+            assertTrue(error.get().contains("지도 새로고침"));
+            assertFalse(error.get().contains("SDK"));
             fx(() -> { map.load(); return null; });
             awaitPresented(view.get());
             assertEquals(3, attempts.get());

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -45,7 +46,10 @@
             <StackPane fx:id="previewPane" minHeight="180" prefHeight="420" maxHeight="Infinity" VBox.vgrow="ALWAYS">
                 <ImageView fx:id="coursePreview" preserveRatio="true" fitHeight="220"
                            accessibleText="저장한 코스의 장소 순서와 위치 연결도"/>
-                <Label fx:id="previewStatus" text="미리보기를 불러오고 있어요…" wrapText="true" styleClass="muted"/>
+                <VBox fx:id="previewNotice" alignment="CENTER" spacing="8" maxWidth="440">
+                    <Label fx:id="previewStatus" text="미리보기를 불러오고 있어요…" wrapText="true"/>
+                    <Hyperlink fx:id="previewRetry" text="미리보기 만들기" onAction="#onPreviewRetry" visible="false" managed="false"/>
+                </VBox>
             </StackPane>
             <Label fx:id="placesHeading" text="방문 장소 · 아래 목록을 스크롤해 전체 순서를 확인하세요" styleClass="muted"/>
             <ListView fx:id="placeList" minHeight="72" prefHeight="88" maxHeight="104"/>

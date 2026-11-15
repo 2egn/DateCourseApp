@@ -73,9 +73,7 @@ public final class PageFeedback {
     public void show(Kind kind, String text) {
         if (text == null || text.isBlank()) return;
         String brief = text.replaceAll("\\s+", " ").trim();
-        int sentence = brief.indexOf(". ");
-        if (sentence >= 0) brief = brief.substring(0, sentence + 1);
-        message.setText(brief.length() <= 90 ? brief : brief.substring(0, 89) + "…");
+        message.setText(brief.length() <= 180 ? brief : brief.substring(0, 179) + "…");
         message.setTooltip(new Tooltip(text));
         toast.getStyleClass().setAll("feedback-toast", "feedback-" + kind.name().toLowerCase(java.util.Locale.ROOT));
         toast.setAccessibleText(text);
@@ -108,6 +106,9 @@ public final class PageFeedback {
             busy.setVisible(pending > 0);
             busy.setManaged(pending > 0);
         };
+    }
+    public void updateLoading(String text) {
+        if(pending>0 && text!=null)busyMessage.setText(text);
     }
     public boolean isBusy() { return pending > 0; }
     public void dispose() { countdown.stop(); fade.stop(); layer.setVisible(false); }
