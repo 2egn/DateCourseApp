@@ -111,6 +111,21 @@ class SavedCourseRepositoryTest {
         assertTrue(repository.findPreview(owner,updated).isEmpty());
     }
 
+    @Test
+    void previewStatusReflectsTheCommittedDatabaseWriteIncludingFirstCreation() throws Exception {
+        byte[] png=new com.datecourse.service.CoursePreviewImage().render(example());
+        var first=repository.saveWithPreviewResult(owner,null,example(),png);
+        assertTrue(first.previewStored());
+        assertArrayEquals(png,repository.findPreview(owner,repository.findAll(owner).getFirst()).orElseThrow());
+        var missing=repository.saveWithPreviewResult(owner,first.course().courseId(),example(),null);
+        assertFalse(missing.previewStored());
+        assertTrue(repository.findPreview(owner,missing.course()).isEmpty());
+        execute("ALTER TABLE saved_course_previews ADD CONSTRAINT reject_image CHECK (OCTET_LENGTH(image_png)<1)");
+        var failed=repository.saveWithPreviewResult(owner,null,example(),png);
+        assertFalse(failed.previewStored());
+        assertEquals(2,repository.findAll(owner).size());
+    }
+
     @AfterEach
     void closePool() {
         if (pool != null) pool.close();

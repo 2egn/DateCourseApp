@@ -2208,6 +2208,35 @@ class MapSearchTest {
         return task.get(10, TimeUnit.SECONDS);
     }
 
+    @Test void cachedMapTilesCanBeCapturedWithoutANewTilesLoadedEvent() throws Exception {
+        WebEngine engine=loadMap();
+        fx(()->{
+            engine.executeScript("""
+                    [kakao.maps.Marker,kakao.maps.Circle,kakao.maps.Polyline,kakao.maps.CustomOverlay].forEach(function(type){
+                        type.prototype.getMap=function(){return window.testMap;};
+                    });
+                    var canvas=document.createElement('canvas');canvas.width=canvas.height=256;
+                    var tile=new Image();tile.src=canvas.toDataURL();document.getElementById('map').appendChild(tile);
+                    window.beginCourseCapture({startLat:35.1578,startLng:129.06,places:[]});
+                    """);
+            return null;
+        });
+        long deadline=System.nanoTime()+TimeUnit.SECONDS.toNanos(4);
+        boolean captured=false;
+        try {
+            while(System.nanoTime()<deadline) {
+                captured=fx(()->Boolean.TRUE.equals(engine.executeScript("window.courseCaptureReady()")));
+                if(captured)break;Thread.sleep(50);
+            }
+            assertTrue(captured,"이미 캐시된 타일에는 새 tilesloaded 이벤트가 없어도 준비 판정이 필요합니다.");
+            // An incomplete tile must still block capture.
+            fx(()->{
+                engine.executeScript("var pending=new Image();pending.src='data:image/png;base64,broken';document.getElementById('map').appendChild(pending)");
+                assertEquals(false,engine.executeScript("window.courseCaptureReady()"));return null;
+            });
+        } finally {fx(()->{engine.executeScript("window.endCourseCapture()");return null;});}
+    }
+
     private WebEngine loadMap() throws Exception {
         return loadMap(420, 500);
     }

@@ -317,16 +317,15 @@ public class ConditionController extends BasePageController {
         mainPage.setDisable(true);
         saveStatusLabel.setText("저장 중…");
         var preview = map.capturePreview(snapshot).handle((image, failure) -> image);
-        var previewSaved = new java.util.concurrent.atomic.AtomicBoolean();
         runWork("코스를 저장하고 있어요", () -> {
             byte[] png = null;
             var image = preview.get();
             if (image != null) try {
                 png = new com.datecourse.service.CoursePreviewImage().renderWithMap(snapshot, image);
-                previewSaved.set(true);
             } catch (java.io.IOException failure) { /* Course snapshots remain saveable. */ }
-            return savedCourseRepository.saveWithPreview(context.session(), id, snapshot, png);
-        }, saved -> {
+            return savedCourseRepository.saveWithPreviewResult(context.session(), id, snapshot, png);
+        }, result -> {
+            var saved = result.course();
             saving = false;
             headerBar.setDisable(false);
             mainPage.setDisable(false);
@@ -335,7 +334,7 @@ public class ConditionController extends BasePageController {
             context.invalidateCourses();
             context.courses(); // Refresh once after a successful write, without blocking the form.
             presentPlan(saved.plan());
-            saveStatusLabel.setText(previewSaved.get() ? "코스를 저장했어요."
+            saveStatusLabel.setText(result.previewStored() ? "코스를 저장했어요."
                     : "코스는 저장했어요. 지도 미리보기는 다시 저장할 때 재시도해 주세요.");
             notifyUser(PageFeedback.Kind.SUCCESS, saveStatusLabel.getText());
         }, failure -> {

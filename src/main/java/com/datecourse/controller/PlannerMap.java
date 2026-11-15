@@ -163,30 +163,36 @@ final class PlannerMap {
     /** FX-thread only. Preserve the complete SDK attribution and restore the original viewport. */
     java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(RoutePlan snapshot) {
         var result = new java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage>();
-        if (!canCapturePreview()) {
+        if (capturing || !loaded && !ready || ready && !Boolean.TRUE.equals(view.getEngine().executeScript(
+                "typeof window.beginCourseCapture === 'function'"))) {
             result.completeExceptionally(new IllegalStateException("지도가 준비되지 않았습니다."));
             return result;
         }
-        double width=view.getWidth(),height=view.getHeight();
+        double[] originalSize={view.getWidth(),view.getHeight()};
         boolean managed=view.isManaged();
         capturing=true;
         var timer=new javafx.animation.Timeline();
         Runnable restore=()->{
             timer.stop();
-            view.resize(width,height);view.setManaged(managed);
+            view.resize(originalSize[0],originalSize[1]);view.setManaged(managed);
             try {view.getEngine().executeScript("if(window.endCourseCapture)window.endCourseCapture()");}
             catch(Exception ignored) { /* Navigation may have disposed the page. */ }
             finally {capturing=false;render(false);}
         };
-        long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(10);
+        long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(20);
         boolean[] started={false};
         timer.getKeyFrames().add(new javafx.animation.KeyFrame(javafx.util.Duration.millis(100),event->{
             try {
                 if(System.nanoTime()>deadline)throw new java.io.IOException("지도 타일 준비 시간 초과");
                 if(!started[0]) {
+                    if(view.getEngine().getLoadWorker().getState()==Worker.State.FAILED)
+                        throw new java.io.IOException("지도 로딩 실패");
+                    // A first save may arrive before SDK/bridge readiness or the first visible layout.
+                    if(!ready || !view.isVisible() || view.getWidth()<=0 || view.getHeight()<=0)return;
                     // Let the native SDK animation finish before changing the viewport.
                     if(!Boolean.TRUE.equals(view.getEngine().executeScript(
                             "window.inspectMapCamera && !window.inspectMapCamera().moving")))return;
+                    originalSize[0]=view.getWidth();originalSize[1]=view.getHeight();
                     view.setManaged(false);view.resize(1000,520);
                     Object began=view.getEngine().executeScript("window.beginCourseCapture("+placePayload.plan(snapshot)+")");
                     if(!Boolean.TRUE.equals(began))throw new IllegalStateException("지도 캡처를 시작하지 못했습니다.");

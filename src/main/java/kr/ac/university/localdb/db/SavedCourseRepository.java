@@ -140,17 +140,24 @@ public final class SavedCourseRepository {
     }
 
     private SavedCourse persist(UserSession session, Long existingCourseId, RoutePlan plan) throws SQLException {
-        return persist(session, existingCourseId, plan, previewRenderer);
+        return persist(session, existingCourseId, plan, previewRenderer).course();
     }
 
     /** UI supplies the complete SDK screenshot; a missing image never prevents saving the course. */
     public SavedCourse saveWithPreview(UserSession session, Long courseId, RoutePlan plan, byte[] png) throws SQLException {
+        return saveWithPreviewResult(session,courseId,plan,png).course();
+    }
+
+    public record SaveResult(SavedCourse course, boolean previewStored) {}
+
+    /** Reports the committed image write, rather than assuming PNG generation means storage succeeded. */
+    public SaveResult saveWithPreviewResult(UserSession session, Long courseId, RoutePlan plan, byte[] png) throws SQLException {
         if(courseId!=null && courseId<=0)throw new IllegalArgumentException("저장 코스 번호를 확인해 주세요.");
         byte[] copy=png==null?null:png.clone();
         return persist(session,courseId,plan,ignored->copy);
     }
 
-    private SavedCourse persist(UserSession session, Long existingCourseId, RoutePlan plan,
+    private SaveResult persist(UserSession session, Long existingCourseId, RoutePlan plan,
                                 com.datecourse.service.CoursePreviewRenderer renderer) throws SQLException {
         validate(session, plan);
         byte[] preview = null;
@@ -172,9 +179,13 @@ public final class SavedCourseRepository {
                         ? insertCourse(connection, session.memberId(), plan)
                         : updateCourse(connection, existingCourseId, session.memberId(), plan);
                 replacePlaces(connection, courseId, plan);
+                boolean previewStored = false;
                 if (previewStorage) {
                     var point = connection.setSavepoint();
-                    try { replacePreview(connection, courseId, plan, preview); }
+                    try {
+                        replacePreview(connection, courseId, plan, preview);
+                        previewStored = preview != null;
+                    }
                     catch (SQLException failure) {
                         connection.rollback(point);
                         LOG.log(System.Logger.Level.WARNING, "미리보기 저장 실패. 코스 원본 저장을 계속합니다.");
@@ -187,7 +198,7 @@ public final class SavedCourseRepository {
                 }
                 SavedCourse result = new SavedCourse(courseId, session.memberId(), plan, updatedAt);
                 connection.commit();
-                return result;
+                return new SaveResult(result, previewStored);
             } catch (SQLException | RuntimeException failure) {
                 try { connection.rollback(); }
                 catch (SQLException rollbackFailure) { failure.addSuppressed(rollbackFailure); }

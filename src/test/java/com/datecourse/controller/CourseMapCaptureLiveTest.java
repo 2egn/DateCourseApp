@@ -19,6 +19,26 @@ class CourseMapCaptureLiveTest {
     private static <T>T fx(Callable<T> action)throws Exception {
         var task=new FutureTask<>(action);Platform.runLater(task);return task.get(10,TimeUnit.SECONDS);
     }
+    @Test void coldFirstCaptureAndImmediateSecondCaptureBothProduceImages() throws Exception {
+        var ready=new CountDownLatch(1);
+        try {Platform.startup(()->{Platform.setImplicitExit(false);ready.countDown();});}
+        catch(IllegalStateException started){Platform.runLater(ready::countDown);}
+        assertTrue(ready.await(10,TimeUnit.SECONDS));
+        var plan=new RoutePlan(35.1578,129.0601,2,1000,"첫 캡처",List.of(
+                new Place(1,"a","첫 장소","MEAL",35.1555,129.058,9000,4)));
+        var context=fx(()->{
+            var view=new WebView();var map=new PlannerMap(view,(lat,lng)->{},message->{});
+            var stage=new Stage();stage.setScene(new Scene(new StackPane(view),1000,520));stage.show();
+            map.present(plan,null,500,false,false);map.load();return new Context(stage,view,map);
+        });
+        try {
+            var first=fx(()->context.map.capturePreview(plan)).get(25,TimeUnit.SECONDS);
+            assertEquals(1000,first.getWidth());
+            var second=fx(()->context.map.capturePreview(plan)).get(25,TimeUnit.SECONDS);
+            assertEquals(520,second.getHeight());
+        } finally {fx(()->{context.map.dispose();context.stage.close();return null;});}
+    }
+
     @Test void capturesActualMapWithStraightLinesAndRestoresThePlanner() throws Exception {
         var ready=new CountDownLatch(1);
         try {Platform.startup(()->{Platform.setImplicitExit(false);ready.countDown();});}

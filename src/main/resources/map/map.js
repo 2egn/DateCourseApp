@@ -752,10 +752,23 @@
         return true;
     };
     window.courseCaptureReady = function() {
-        if (!courseCapture || !courseCapture.fitted || !courseCapture.tileTime
-                || performance.now()-Math.max(courseCapture.fitted,courseCapture.tileTime)<400) return false;
+        const state=courseCapture;
+        if (!state || !state.fitted) return false;
         const images=Array.from(document.querySelectorAll('#map img[src]'));
-        return images.length>0 && images.every(function(img){return img.complete && img.naturalWidth>0;});
+        if(!images.length || images.some(function(img){return !img.complete || !img.naturalWidth;})) {
+            state.stableFrame=null;state.stableSince=performance.now();return false;
+        }
+        // Cached tiles may not emit a new tilesloaded event when fitting leaves the viewport unchanged.
+        const hasTiles=images.some(function(img){return img.naturalWidth>=128 && img.naturalHeight>=128;});
+        if(!state.tileTime && !hasTiles)return false;
+        const center=map.getCenter();
+        const frame=JSON.stringify([map.getLevel(),center.getLat(),center.getLng(),
+            document.getElementById('map').clientWidth,document.getElementById('map').clientHeight,
+            images.map(function(img){return img.currentSrc || img.src;})]);
+        if(state.stableFrame!==frame) {
+            state.stableFrame=frame;state.stableSince=performance.now();return false;
+        }
+        return performance.now()-Math.max(state.fitted,state.tileTime||0,state.stableSince)>=400;
     };
     window.endCourseCapture = function() {
         if(!courseCapture)return;
