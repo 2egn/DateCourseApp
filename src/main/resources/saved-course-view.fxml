@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.image.ImageView?>
@@ -25,35 +25,37 @@
     </top>
 
     <left>
-        <VBox spacing="8" prefWidth="320">
+        <VBox spacing="10" prefWidth="280" minWidth="260" maxWidth="300">
             <padding>
                 <Insets top="10" right="10" bottom="20" left="20"/>
             </padding>
             <ListView fx:id="courseList" VBox.vgrow="ALWAYS"/>
+            <Label fx:id="detailSummary" wrapText="true" maxWidth="Infinity"/>
             <Label fx:id="emptyLabel" text="저장한 코스가 없어요." visible="false"/>
         </VBox>
     </left>
 
     <center>
-        <VBox spacing="10">
+        <VBox spacing="6">
             <padding>
-                <Insets top="10" right="20" bottom="20" left="10"/>
+                <Insets top="6" right="16" bottom="12" left="8"/>
             </padding>
             <Label fx:id="detailTitle" text="코스를 선택해주세요" styleClass="subtitle"/>
-            <Label fx:id="detailSummary"/>
-            <StackPane fx:id="previewPane" minHeight="240" prefHeight="260" maxHeight="260">
+            <Label fx:id="detailOverview" wrapText="true" maxWidth="Infinity"/>
+            <StackPane fx:id="previewPane" minHeight="180" prefHeight="420" maxHeight="Infinity" VBox.vgrow="ALWAYS">
                 <ImageView fx:id="coursePreview" preserveRatio="true" fitHeight="220"
                            accessibleText="저장한 코스의 장소 순서와 위치 연결도"/>
                 <Label fx:id="previewStatus" text="미리보기를 불러오고 있어요…" wrapText="true" styleClass="muted"/>
             </StackPane>
-            <ListView fx:id="placeList" VBox.vgrow="ALWAYS"/>
+            <Label fx:id="placesHeading" text="방문 장소 · 아래 목록을 스크롤해 전체 순서를 확인하세요" styleClass="muted"/>
+            <ListView fx:id="placeList" minHeight="72" prefHeight="88" maxHeight="104"/>
             <Label fx:id="messageLabel" styleClass="muted"/>
-            <HBox spacing="10">
+            <FlowPane hgap="8" vgap="6">
                 <Button fx:id="openButton" text="이 코스 불러오기" onAction="#onOpenClick" styleClass="secondary"/>
                 <Button fx:id="refreshButton" text="새로고침" onAction="#onRefreshClick" styleClass="secondary"/>
                 <Button fx:id="renameButton" text="이름 변경" onAction="#onRenameClick" styleClass="secondary"/>
                 <Button fx:id="deleteButton" text="삭제" onAction="#onDeleteClick" styleClass="danger"/>
-            </HBox>
+            </FlowPane>
         </VBox>
     </center>
 </BorderPane>

@@ -1187,7 +1187,7 @@ class MapSearchTest {
                 assertFalse(((StackPane) field(main, "savedPageHost")).isVisible());
                 assertEquals(id, field(main, "savedCourseId"));
                 assertEquals(plan, field(main, "appliedPlan"));
-                assertTrue(((javafx.scene.control.Label) field(list, "detailSummary")).getText().contains("가격 미확인"));
+                assertTrue(((javafx.scene.control.Label) field(list, "detailOverview")).getText().contains("가격 미확인"));
                 assertTrue(((javafx.scene.control.Label) field(list, "detailSummary")).getText().contains("최근 수정"));
                 ((TextField) field(main, "peopleField")).setText("3");
                 return null;

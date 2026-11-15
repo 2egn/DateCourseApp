@@ -1,6 +1,5 @@
 package com.datecourse.controller;
 
-import com.datecourse.model.Place;
 import com.datecourse.model.SavedCourse;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,6 +12,8 @@ public class SavedCourseController extends BasePageController {
     @FXML private ListView<SavedCourse> courseList;
     @FXML private ListView<String> placeList;
     @FXML private Label emptyLabel, detailTitle, detailSummary, messageLabel;
+    @FXML private Label detailOverview;
+    private final com.datecourse.service.SavedCoursePresenter presenter = new com.datecourse.service.SavedCoursePresenter();
     @FXML private Button deleteButton, renameButton, openButton, refreshButton;
     @FXML private javafx.scene.image.ImageView coursePreview;
     @FXML private javafx.scene.layout.StackPane previewPane;
@@ -32,6 +33,7 @@ public class SavedCourseController extends BasePageController {
     private boolean busy;
 
     @FXML public void initialize() {
+        detailSummary.setMinHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
         coursePreview.fitWidthProperty().bind(previewPane.widthProperty());
         coursePreview.fitHeightProperty().bind(previewPane.heightProperty());
         coursePreview.setCursor(javafx.scene.Cursor.HAND);
@@ -40,6 +42,15 @@ public class SavedCourseController extends BasePageController {
         coursePreview.setOnMouseClicked(event -> {if(event.getButton()==javafx.scene.input.MouseButton.PRIMARY)openPreview();});
         coursePreview.setOnKeyPressed(event -> {
             if(event.getCode()==javafx.scene.input.KeyCode.ENTER){openPreview();event.consume();}
+        });
+        messageLabel.managedProperty().bind(messageLabel.textProperty().isNotEmpty());
+        placeList.setCellFactory(list -> new ListCell<>() {
+            @Override protected void updateItem(String text, boolean empty) {
+                super.updateItem(text, empty);
+                setText(empty ? null : text);
+                setWrapText(true);
+                setTooltip(empty || text == null ? null : new Tooltip(text));
+            }
         });
         watchNotice(messageLabel, PageFeedback.Kind.ERROR);
         courseList.setCellFactory(list -> new ListCell<>() {
@@ -84,12 +95,13 @@ public class SavedCourseController extends BasePageController {
     private void showDetail(SavedCourse course) {
         placeList.getItems().clear();
         detailTitle.setText(course == null ? "코스를 선택해 주세요" : title(course));
-        detailSummary.setText(course == null ? "" : course.plan().people() + "명 · " + course.plan().radius()
-                + "m · " + course.plan().costEstimate().display() + "\n최근 수정 " + updatedText(course) + " (한국 시간)");
+        detailOverview.setText("");
+        detailSummary.setText("");
         if (course != null) {
-            int order = 1;
-            for (Place place : course.plan().places()) placeList.getItems().add(order++ + ". " + place.name()
-                    + " · " + place.priceText() + "\n" + place.details().address());
+            var summary=presenter.present(course);
+            detailOverview.setText(summary.overview());
+            detailSummary.setText(summary.details());
+            placeList.getItems().setAll(summary.places());
         }
         showPreview(course);
         updateButtons();
