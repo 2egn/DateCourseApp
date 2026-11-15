@@ -406,3 +406,15 @@
 /* Course review and persistent search recovery reuse native JavaFX controls. */
 .course-overview-stops { -fx-font-size: 13px; -fx-text-fill: #334155; -fx-line-spacing: 6px; }
 .search-empty-state { -fx-padding: 14px; -fx-background-color: #f5f7fa; -fx-background-radius: 10px; }
+
+/* Filter controls use a stable entry and bounded category editor. */
+.condition-screen .filter-entry { -fx-background-color: #fff1f4; -fx-border-color: #f08ca0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8 12; -fx-font-weight: bold; -fx-text-fill: #9d2446; -fx-cursor: hand; }
+.condition-screen .filter-entry:hover { -fx-background-color: #ffe2e9; }
+.filter-entry-icon { -fx-fill: transparent; -fx-stroke: #9d2446; -fx-stroke-width: 1.7; }
+.condition-screen .filter-editor { -fx-padding: 12; -fx-border-color: #e2e7ee; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #fafbfd; }
+.condition-screen .filter-category { -fx-padding: 6 10; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: #dce1e8; -fx-background-color: white; -fx-text-fill: #334155; -fx-cursor: hand; }
+.condition-screen .filter-category:selected { -fx-background-color: #ffe2e9; -fx-border-color: #f08ca0; -fx-text-fill: #9d2446; }
+.condition-screen .filter-chip { -fx-padding: 4 9; -fx-background-color: #edf2f7; -fx-background-radius: 14; -fx-text-fill: #334155; -fx-font-size: 12px; -fx-cursor: hand; }
+.condition-screen .filter-chip:hover { -fx-background-color: #dfe7ef; }
+
+.filter-scroll, .filter-scroll > .viewport { -fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0; }

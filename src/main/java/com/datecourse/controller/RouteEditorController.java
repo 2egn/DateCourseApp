@@ -61,7 +61,8 @@ public final class RouteEditorController extends BasePageController {
     @FXML private Button placeInfoButton;
     @FXML private Button fitRouteButton, walkingSettingsButton, resetDraftButton;
     @FXML private TitledPane coursePane, conditionPane, choicePane;
-    @FXML private TitledPane extraConditions;
+    @FXML private com.datecourse.ui.ExpandableFilterPane filterPane;
+    @FXML private VBox typeFilterSection, priceFilterSection;
     @FXML private VBox subtypeField, tagField;
     @FXML private ListView<PlaceSearchService.NearbyPlace> candidateList;
     @FXML private ScrollPane candidateScroll;
@@ -102,7 +103,18 @@ public final class RouteEditorController extends BasePageController {
         walkingSettingsButton.managedProperty().bind(walkingSettingsButton.visibleProperty());
         resetDraftButton.managedProperty().bind(resetDraftButton.visibleProperty());
         selectedRadiusSlider.managedProperty().bind(selectedRadiusSlider.visibleProperty());
-        extraConditions.managedProperty().bind(extraConditions.visibleProperty());
+        filterPane.setOnClear(this::onClearAdvancedFilters);
+        filterPane.setOnSearch(this::onRecommendNext);
+        recommendNextButton.visibleProperty().bind(filterPane.expandedProperty().not());
+        recommendNextButton.managedProperty().bind(recommendNextButton.visibleProperty());
+        filterPane.setSections(List.of(
+            new com.datecourse.ui.ExpandableFilterPane.Section("type","종류·업종","활동 안에서 원하는 종류와 세부 업종을 골라 주세요.",typeFilterSection,
+                ()->(subtypeBox.getValue()==null?0:1)+(detailTypeBox.getValue()==null?0:1)),
+            new com.datecourse.ui.ExpandableFilterPane.Section("price","가격 기준","기본 가격 상한은 유지하면서 참고·추정·무료 조건을 추가해요.",priceFilterSection,
+                ()->priceFilterBox.getValue()==null||priceFilterBox.getValue()==com.datecourse.model.PlacePriceFilter.ANY?0:1),
+            new com.datecourse.ui.ExpandableFilterPane.Section("features","특징","확인된 특징만 제공해요. 여러 개 고르면 모두 충족해야 해요.",tagField,
+                ()->featureSelector.selectedTags().size())
+        ));
         subtypeField.managedProperty().bind(subtypeField.visibleProperty());
         tagField.managedProperty().bind(tagField.visibleProperty());
         map = new PlannerMap(editMapView, (lat, lng) -> {}, editorError::setText);
@@ -643,12 +655,16 @@ public final class RouteEditorController extends BasePageController {
     private void extendFacets(){populateFacets(currentFacets());}
     private void updateFacetVisibility() {
         subtypeField.setVisible(subtypeBox.getItems().size()>2);
-        tagField.setVisible(true);extraConditions.setVisible(true);updateFacetSummary();
+        tagField.setVisible(true);updateFacetSummary();
     }
     private void updateFacetSummary() {
-        int count=(subtypeBox.getValue()==null?0:1)+(detailTypeBox.getValue()==null?0:1)+featureSelector.selectedTags().size()
-                +(priceFilterBox.getValue()==com.datecourse.model.PlacePriceFilter.ANY?0:1);
-        extraConditions.setText(count==0?"세부 조건 · 선택 사항":"세부 조건 · "+count+"개 적용");
+        var selections=new java.util.ArrayList<com.datecourse.ui.ExpandableFilterPane.Selection>();
+        if(subtypeBox.getValue()!=null)selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("type","종류: "+subtypeBox.getValue(),()->subtypeBox.setValue(null)));
+        if(detailTypeBox.getValue()!=null)selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("detail","업종: "+detailTypeBox.getValue(),()->detailTypeBox.setValue(null)));
+        if(priceFilterBox.getValue()!=null&&priceFilterBox.getValue()!=com.datecourse.model.PlacePriceFilter.ANY)
+            selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("price",priceFilterBox.getValue().toString(),()->priceFilterBox.setValue(com.datecourse.model.PlacePriceFilter.ANY)));
+        featureSelector.selectedTags().stream().sorted().forEach(tag->selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("feature:"+tag.name(),tag.label(),()->featureSelector.selectedTags().remove(tag))));
+        filterPane.setSelections(selections);
     }
     @FXML private void onClearAdvancedFilters() {
         updatingFacets=true;

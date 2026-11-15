@@ -29,6 +29,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
     private final MapBridge cameraPolicyBridge = new MapBridge(()->{},(lat,lng)->{},message->{});
+    @Test void filterEntryShowsRemovableSelectionsWithoutOpeningTheEditor() throws Exception {
+        FutureTask<Void> task=new FutureTask<>(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));Parent root=loader.load();
+            RouteEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
+            editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),
+                    new com.datecourse.service.PublicDemoPlaceRepository().findAll(),p->{},()->{});
+            var pane=(com.datecourse.ui.ExpandableFilterPane)field(editor,"filterPane");
+            var subtype=(javafx.scene.control.ComboBox<String>)field(editor,"subtypeBox");
+            var detail=(javafx.scene.control.ComboBox<String>)field(editor,"detailTypeBox");
+            var price=(javafx.scene.control.ComboBox<com.datecourse.model.PlacePriceFilter>)field(editor,"priceFilterBox");
+            var features=(com.datecourse.ui.PlaceFeatureSelector)field(editor,"featureSelector");
+            subtype.setValue("한식");detail.setValue("냉면/밀면");price.setValue(com.datecourse.model.PlacePriceFilter.ESTIMATED);
+            features.selectedTags().addAll(java.util.Set.of(com.datecourse.model.PlaceTag.GOOD_PRICE,com.datecourse.model.PlaceTag.NEAR_SUBWAY));
+            assertFalse(pane.isExpanded());assertEquals(5,pane.selections().size());
+            new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
+            var entry=(javafx.scene.control.Button)pane.lookup(".filter-entry");
+            assertTrue(entry.getText().contains("5개"));assertNotNull(entry.getGraphic());
+            pane.lookupAll(".filter-chip").stream().map(n->(javafx.scene.control.Button)n)
+                .filter(b->b.getText().startsWith("업종:")).findFirst().orElseThrow().fire();
+            assertNull(detail.getValue());assertEquals("한식",subtype.getValue());assertEquals(4,pane.selections().size());
+            pane.lookupAll(".filter-chip").stream().map(n->(javafx.scene.control.Button)n)
+                .filter(b->b.getText().contains("더 보기")).findFirst().orElseThrow().fire();
+            assertTrue(pane.isExpanded());assertEquals("selected",pane.currentSection());
+            pane.fireEvent(new javafx.scene.input.KeyEvent(javafx.scene.input.KeyEvent.KEY_PRESSED,"","",javafx.scene.input.KeyCode.ESCAPE,false,false,false,false));
+            assertFalse(pane.isExpanded());assertEquals(4,pane.selections().size());
+            Path directory=Path.of("build/ui-preview");Files.createDirectories(directory);
+            root.applyCss();root.layout();
+            ImageIO.write(SwingFXUtils.fromFXImage(root.lookup(".route-edit-form").snapshot(null,null),null),"png",directory.resolve("filter-entry-and-chips.png").toFile());
+            pane.setExpanded(true);pane.showSection("features");root.applyCss();root.layout();
+            ImageIO.write(SwingFXUtils.fromFXImage(root.lookup(".route-edit-form").snapshot(null,null),null),"png",directory.resolve("filter-features-editor.png").toFile());
+            root.resize(1100,760);root.applyCss();root.layout();
+            var scroller=(javafx.scene.control.ScrollPane)pane.lookup(".filter-scroll");
+            assertTrue(scroller.getHeight()<=280);
+            var entryBounds=entry.localToScene(entry.getBoundsInLocal());
+            assertTrue(entryBounds.getMinX()>=0 && entryBounds.getMaxX()<=1100);
+            ImageIO.write(SwingFXUtils.fromFXImage(root.lookup(".route-edit-form").snapshot(null,null),null),"png",directory.resolve("filter-compact-editor.png").toFile());
+            editor.dispose();return null;
+        });Platform.runLater(task);task.get(15,TimeUnit.SECONDS);
+    }
+
     @Test void expandedFiltersRememberActivitySelectionsAndClearOnlyAdvancedConditions() throws Exception {
         FutureTask<Void> task=new FutureTask<>(()->{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));Parent root=loader.load();
@@ -56,7 +96,7 @@ class MapSearchTest {
             assertEquals(com.datecourse.model.PlacePriceFilter.ANY,price.getValue());
             assertFalse(((CheckBox)field(editor,"includeUncertainPrice")).isDisabled());
             assertEquals("1.2",((TextField)field(editor,"placePriceField")).getText());
-            ((javafx.scene.control.TitledPane)field(editor,"extraConditions")).setExpanded(true);
+            ((com.datecourse.ui.ExpandableFilterPane)field(editor,"filterPane")).setExpanded(true);
             new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
             var form=root.lookup(".route-edit-form");
             Path directory=Path.of("build/ui-preview");Files.createDirectories(directory);
