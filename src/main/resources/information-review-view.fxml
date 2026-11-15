@@ -10,7 +10,7 @@
  <ModernScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"><Label fx:id="details" text="제보를 선택해 주세요." wrapText="true"/></ModernScrollPane>
  <Label text="승인할 값 · 가격은 1인 기준 원 단위 정수"/><TextField fx:id="correctedValue"/>
  <Label text="검토 메모 · 승인 근거 또는 반려 이유"/><TextArea fx:id="reviewNote" prefRowCount="3" wrapText="true"/>
- <HBox spacing="8"><Button fx:id="approveButton" text="검토 후 승인·수정" onAction="#approve"/><Button fx:id="rejectButton" text="반려" onAction="#reject"/></HBox>
+ <HBox spacing="8"><Button fx:id="approveButton" text="검토 후 승인·수정" onAction="#approve" styleClass="primary"/><Button fx:id="rejectButton" text="반려" onAction="#reject" styleClass="danger"/></HBox>
  </VBox></SplitPane></center>
  <bottom><HBox spacing="8" alignment="CENTER_LEFT"><Label fx:id="status" text="관리자 로그인으로 연결해 주세요." minHeight="36" wrapText="true" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
  <Button fx:id="previousButton" text="이전" onAction="#previousPage"/><Button fx:id="nextButton" text="다음" onAction="#nextPage"/>

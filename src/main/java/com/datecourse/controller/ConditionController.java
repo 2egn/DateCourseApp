@@ -134,6 +134,7 @@ public class ConditionController extends BasePageController {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                     "장소 목록을 바꾸면 현재 코스를 비워요. 계속할까요?", ButtonType.OK, ButtonType.CANCEL);
             confirm.initOwner(plannerRoot.getScene().getWindow());
+            com.datecourse.ui.DialogTheme.apply(confirm);
             if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
                 restoringSource = true;
                 sourceBox.setValue(old);
@@ -221,6 +222,7 @@ public class ConditionController extends BasePageController {
         Alert confirm=new Alert(Alert.AlertType.CONFIRMATION,
                 "종료하면 저장하지 않은 코스와 편집 초안이 사라져요. 종료할까요?",ButtonType.OK,ButtonType.CANCEL);
         confirm.initOwner(plannerRoot.getScene().getWindow());
+        com.datecourse.ui.DialogTheme.apply(confirm);
         return confirm.showAndWait().orElse(ButtonType.CANCEL)==ButtonType.OK;
     }
 
@@ -230,6 +232,7 @@ public class ConditionController extends BasePageController {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                     "로그아웃하면 저장하지 않은 코스와 편집 초안이 사라져요. 로그아웃할까요?", ButtonType.OK, ButtonType.CANCEL);
             confirm.initOwner(plannerRoot.getScene().getWindow());
+            com.datecourse.ui.DialogTheme.apply(confirm);
             if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         }
         logoutNow();
@@ -298,6 +301,7 @@ public class ConditionController extends BasePageController {
     private java.util.Optional<String> askCourseTitle(RoutePlan plan) {
         TextInputDialog dialog = new TextInputDialog(plan.title());
         dialog.initOwner(plannerRoot.getScene().getWindow());
+        com.datecourse.ui.DialogTheme.apply(dialog);
         dialog.setTitle(savedCourseId == null ? "새 코스 저장" : "코스 수정 저장");
         dialog.setHeaderText("저장할 코스 이름을 입력해 주세요. (1~20자)");
         dialog.setContentText("코스 이름");
@@ -456,6 +460,7 @@ public class ConditionController extends BasePageController {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                 "저장하지 않은 현재 코스를 바꿀까요?", ButtonType.OK, ButtonType.CANCEL);
         confirm.initOwner(plannerRoot.getScene().getWindow());
+        com.datecourse.ui.DialogTheme.apply(confirm);
         return confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
     }
 

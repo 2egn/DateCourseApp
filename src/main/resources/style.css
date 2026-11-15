@@ -6,9 +6,9 @@
     -app-primary-dark: #e8506a;
     -app-primary-light: #ffe3e8;
     -app-bg: #fafafa;
-    -app-text: #333333;
-    -app-muted: #888888;
-    -app-border: #e3e3e3;
+    -app-text: #191f28;
+    -app-muted: #6b7684;
+    -app-border: #e5e8eb;
     -app-danger: #e03131;
 
     -fx-font-family: "Malgun Gothic";
@@ -18,7 +18,7 @@
 
 /* ===== 글자 ===== */
 .label { -fx-text-fill: -app-text; }
-.title { -fx-font-size: 24px; -fx-font-weight: bold; }
+.label.title { -fx-font-size: 20px; -fx-font-weight: bold; }
 .subtitle { -fx-font-size: 16px; -fx-font-weight: bold; }
 .section { -fx-font-weight: bold; }
 .muted { -fx-text-fill: -app-muted; -fx-font-size: 11px; }
@@ -41,30 +41,28 @@
 
 /* ===== 버튼 ===== */
 .button {
-    -fx-min-height: 36;
-    -fx-pref-height: 36;
-    -fx-max-height: 36;
-    -fx-font-size: 13px;
-    -fx-background-color: -app-primary;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 8;
-    -fx-padding: 8 18;
-    -fx-cursor: hand;
+    -fx-min-height: 36; -fx-pref-height: 36; -fx-max-height: 36;
+    -fx-font-size: 13px; -fx-font-weight: normal;
+    -fx-background-color: #f2f4f6; -fx-text-fill: #334155;
+    -fx-border-color: #dce1e8; -fx-border-width: 1;
+    -fx-background-radius: 8; -fx-border-radius: 8;
+    -fx-padding: 6 12; -fx-cursor: hand;
 }
-.button:hover { -fx-background-color: -app-primary-dark; }
-.button:disabled { -fx-opacity: 0.4; }
-
-.button.secondary {
-    -fx-background-color: white;
-    -fx-text-fill: -app-primary;
-    -fx-border-color: -app-primary;
-    -fx-border-radius: 8;
+.button:hover { -fx-background-color: #e9edf1; }
+.button:focused { -fx-border-color: #64748b; }
+.button:disabled { -fx-opacity: 0.4; -fx-cursor: default; }
+.button.primary, .button:default {
+    -fx-background-color: -app-primary; -fx-text-fill: -app-text;
+    -fx-border-color: transparent; -fx-font-weight: bold;
 }
-.button.secondary:hover { -fx-background-color: -app-primary-light; }
-
-.button.danger { -fx-background-color: -app-danger; }
-.button.danger:hover { -fx-background-color: #c92a2a; }
+.button.primary:hover, .button:default:hover { -fx-background-color: #ff8294; }
+.button.secondary { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-border-color: #dce1e8; }
+.button.secondary:hover { -fx-background-color: #e9edf1; }
+.button.danger { -fx-background-color: #fff1f2; -fx-text-fill: #b4233f; -fx-border-color: #edb8c1; }
+.button.danger:hover { -fx-background-color: #ffe3e8; }
+.hyperlink { -fx-font-size: 12px; -fx-text-fill: #526174; -fx-padding: 2 0; -fx-underline: false; }
+.hyperlink:hover { -fx-underline: true; }
+.hyperlink:focused { -fx-border-color: #9ca3af; -fx-border-radius: 3; }
 
 /* ===== 입력칸 ===== */
 .text-field, .text-area, .combo-box, .spinner {
@@ -73,7 +71,11 @@
     -fx-border-color: -app-border;
     -fx-border-radius: 8;
 }
-.text-field, .combo-box .text-field { -fx-padding: 7 10; }
+.text-field, .combo-box .text-field { -fx-padding: 8 12; -fx-font-size: 13px; }
+.text-field, .combo-box, .spinner { -fx-min-height: 40; -fx-pref-height: 40; }
+.text-field { -fx-background-color: #f2f4f6; -fx-text-fill: -app-text; -fx-prompt-text-fill: #929ba6; }
+.text-area { -fx-font-size: 13px; }
+.text-area .content { -fx-padding: 10 12; }
 .text-field:focused, .text-area:focused, .combo-box:focused {
     -fx-border-color: -app-primary;
 }
@@ -140,7 +142,7 @@
     -fx-padding: 0;
 }
 .condition-screen .condition-form { -fx-background-color: white; }
-.condition-screen .condition-title { -fx-font-size: 19px; -fx-font-weight: bold; }
+.condition-screen .condition-title { -fx-font-size: 20px; -fx-font-weight: bold; }
 .condition-screen .drawer-toggle {
     -fx-background-color: white;
     -fx-text-fill: -app-text;
@@ -213,7 +215,7 @@
     -fx-border-color: #eef0f3;
     -fx-border-width: 0 1 0 0;
 }
-.condition-screen .condition-title { -fx-font-size: 21px; -fx-font-weight: bold; }
+.condition-screen .condition-title { -fx-font-size: 20px; -fx-font-weight: bold; }
 .condition-screen .planner-caption { -fx-font-size: 12px; -fx-text-fill: #6b7684; }
 .condition-screen .field-label { -fx-font-size: 13px; -fx-text-fill: #6b7684; }
 .condition-screen .text-field {
@@ -222,13 +224,13 @@
     -fx-border-color: transparent;
     -fx-border-radius: 10;
     -fx-border-width: 1.5;
-    -fx-padding: 11 12;
-    -fx-font-size: 15px;
+    -fx-padding: 8 12;
+    -fx-font-size: 13px;
     -fx-text-fill: #191f28;
     -fx-prompt-text-fill: #929ba6;
 }
 .condition-screen .text-field:focused { -fx-border-color: #ff6b81; }
-.condition-screen .place-count-editor { -fx-padding: 11 34 11 12; }
+.condition-screen .place-count-editor { -fx-padding: 8 34 8 12; }
 .condition-screen .place-count-buttons { -fx-padding: 2 4 2 0; }
 .condition-screen .place-count-arrow {
     -fx-background-color: transparent;
@@ -432,3 +434,9 @@
 .condition-screen .filter-editor.filter-tone-green { -fx-background-color: #f6fbf7; -fx-border-color: #c9e5d2; }
 .condition-screen .filter-chip { -fx-border-radius: 14; -fx-border-width: 1; -fx-border-color: transparent; }
 .condition-screen .filter-chip:hover { -fx-opacity: .8; }
+
+/* Native confirmation/text-input dialogs use the same palette and control roles. */
+.dialog-pane { -fx-background-color: white; -fx-padding: 20; }
+.dialog-pane .header-panel { -fx-background-color: white; -fx-padding: 0 0 12 0; }
+.dialog-pane .header-panel .label { -fx-font-size: 16px; -fx-font-weight: bold; }
+.dialog-pane .content.label { -fx-font-size: 13px; -fx-wrap-text: true; }

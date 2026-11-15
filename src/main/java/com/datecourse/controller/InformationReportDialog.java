@@ -15,6 +15,7 @@ final class InformationReportDialog {
     static Dialog<Submission> create(Window owner,Place place) {
         Dialog<Submission> dialog=new Dialog<>();dialog.setTitle("정보 정정 제보 · "+place.name());
         if(owner!=null)dialog.initOwner(owner);
+        com.datecourse.ui.DialogTheme.apply(dialog);
         ComboBox<InformationReport.Field> field=new ComboBox<>();field.getItems().setAll(InformationReport.Field.values());field.getSelectionModel().selectFirst();
         Label current=new Label();current.setWrapText(true);
         TextField value=new TextField();value.setPromptText("가격은 원 단위 · 1인 기본 이용 기준");

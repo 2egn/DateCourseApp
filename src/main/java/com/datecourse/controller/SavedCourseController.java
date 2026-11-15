@@ -272,6 +272,7 @@ public class SavedCourseController extends BasePageController {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                 "'" + title(selected) + "' 코스를 삭제할까요?", ButtonType.OK, ButtonType.CANCEL);
         confirm.initOwner(courseList.getScene().getWindow());
+        com.datecourse.ui.DialogTheme.apply(confirm);
         if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
         var owner = userContext.session();
         var storage = repository;
@@ -286,6 +287,7 @@ public class SavedCourseController extends BasePageController {
         if (busy || selected == null) return;
         TextInputDialog dialog = new TextInputDialog(selected.plan().title());
         dialog.initOwner(courseList.getScene().getWindow());
+        com.datecourse.ui.DialogTheme.apply(dialog);
         dialog.setHeaderText("코스 이름을 입력해 주세요. (1~20자)");
         dialog.showAndWait().ifPresent(input -> {
             String title = input.trim();

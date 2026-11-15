@@ -123,7 +123,7 @@ public final class UiTheme {
         }
     }
     public static void button(JButton button,boolean primary) {
-        button.setFont(BODY.deriveFont(Font.BOLD));button.setFocusPainted(false);button.setBorderPainted(false);
+        button.setFont(BODY.deriveFont(primary?Font.BOLD:Font.PLAIN));button.setFocusPainted(false);button.setBorderPainted(false);
         button.setContentAreaFilled(false);button.setOpaque(false);button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         button.setPreferredSize(new Dimension(200,54));
         button.setBorder(BorderFactory.createEmptyBorder(12,20,12,20));
@@ -131,7 +131,7 @@ public final class UiTheme {
         button.setUI(new BasicButtonUI(){
             public void paint(Graphics g,JComponent c){
                 Graphics2D p=(Graphics2D)g.create();p.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-                Color fill=!button.isEnabled()?new Color(0xE5E8EB):(primary?ACCENT:SOFT);
+                Color fill=!button.isEnabled()?new Color(0xE5E8EB):(primary?ACCENT:INPUT);
                 if(button.getModel().isPressed())fill=fill.darker();
                 else if(button.getModel().isRollover()&&button.isEnabled())fill=primary?new Color(0xFF8294):new Color(0xFFE4E9);
                 p.setColor(fill);p.fillRoundRect(0,0,c.getWidth(),c.getHeight(),18,18);p.dispose();super.paint(g,c);
