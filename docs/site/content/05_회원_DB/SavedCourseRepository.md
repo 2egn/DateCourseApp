@@ -4,11 +4,23 @@ source: src/main/java/kr/ac/university/localdb/db/SavedCourseRepository.java
 source_commit: ea2242b
 source_sha256: 8a85e31430e467229c6c0c5f6e2b376a83a67f3bb2331c306fe2191fd2b8b9e0
 readability_updated: 2026-11-14
+reviewed_commit: b69d00e
+reviewed_at: 2026-11-15
 ---
 
 # SavedCourseRepository
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.
+
+## 최신 변경 · 2026-11-15
+
+코스·장소·가격 스냅샷에 공공 속성과 정정 근거를 보존해요. 지도 PNG는 별도 테이블에 저장하며 저장한 코스의 내용 지문이 맞는 이미지인지 확인해요. 이미지 재생성은 해당 회원 소유 코스에만 적용해요.
+
+[[현재_구현_흐름|최신 사용 흐름]] · [[최종_검토_2026_11_15|검증 범위]]
+
+## 이전 버전의 상세 설명
+
+아래 함수표·발췌·원본 링크는 기존 source_commit 기준 기록이에요. 위 최신 변경과 함께 읽어 주세요.
 
 ## 한눈에 보기
 

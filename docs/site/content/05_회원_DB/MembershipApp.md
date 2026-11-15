@@ -4,11 +4,23 @@ source: src/main/java/kr/ac/university/localdb/ui/MembershipApp.java
 source_commit: ea2242b
 source_sha256: d737d81e8b5675f8103a47844304fefe4f0ce7936f5cb36dc4a5f6f70993a2d6
 readability_updated: 2026-11-14
+reviewed_commit: b69d00e
+reviewed_at: 2026-11-15
 ---
 
 # MembershipApp
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.
+
+## 최신 변경 · 2026-11-15
+
+관리자 인증도 실제 연결돼 있어요. 같은 창에서 MemberAdminPanel과 제보 검토를 보여주고 로그아웃할 수 있어요. 일반 회원 종료는 JavaFX의 미저장 판단으로, 관리자 종료는 작업 중 여부와 회원 편집 확인으로 연결돼요.
+
+[[현재_구현_흐름|최신 사용 흐름]] · [[최종_검토_2026_11_15|검증 범위]]
+
+## 이전 버전의 상세 설명
+
+아래 함수표·발췌·원본 링크는 기존 source_commit 기준 기록이에요. 위 최신 변경과 함께 읽어 주세요.
 
 ## 한눈에 보기
 

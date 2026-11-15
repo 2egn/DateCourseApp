@@ -4,11 +4,23 @@ source: src/main/java/kr/ac/university/localdb/db/MemberRepository.java
 source_commit: ea2242b
 source_sha256: 81da193d44c06490b324e3dcbf00df28330540f52a79a20d51a1658ac41efd82
 readability_updated: 2026-11-14
+reviewed_commit: b69d00e
+reviewed_at: 2026-11-15
 ---
 
 # MemberRepository
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.
+
+## 최신 변경 · 2026-11-15
+
+관리자 로그인 성공 시에만 AdminSession을 발급해요. 회원 수정·탈퇴·삭제는 트랜잭션 안에서 읽은 최신 회원과 화면의 회원을 비교해요. 탈퇴는 상태만 변경하고 저장 코스가 있으면 영구 삭제하지 않아요. 화면 상태명은 정상/탈퇴이고 DB 코드는 유지해요.
+
+[[현재_구현_흐름|최신 사용 흐름]] · [[최종_검토_2026_11_15|검증 범위]]
+
+## 이전 버전의 상세 설명
+
+아래 함수표·발췌·원본 링크는 기존 source_commit 기준 기록이에요. 위 최신 변경과 함께 읽어 주세요.
 
 ## 한눈에 보기
 

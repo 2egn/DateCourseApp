@@ -4,11 +4,36 @@ source: src/main/java/com/datecourse/controller/RouteEditorController.java
 source_commit: ea2242b
 source_sha256: 6fb9b6cda444a93b789a07f996fdfc94cb384676546f95c324f69fe0545f9330
 readability_updated: 2026-11-14
+reviewed_commit: b69d00e
+reviewed_at: 2026-11-15
 ---
 
 # RouteEditorController
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.
+
+## 최신 변경 · 2026-11-15
+
+세 영역 중 하나만 열고, 업종·상세 종류·태그·가격 필터와 후보 5~30곳 선택을 제공해요. 장소 추가 시 새 구간 포커스와 도보 시간·누적 시간을 갱신해요. 기존 장소의 반경은 추가 당시 다음 장소 조건을 수정하는 값이에요.
+
+[[현재_구현_흐름|최신 사용 흐름]] · [[최종_검토_2026_11_15|검증 범위]]
+
+## 현재 편집 흐름
+
+```mermaid
+flowchart TD
+ A["begin()"] --> B["onRecommendNext()"]
+ B --> C["onAddCandidate()"]
+ C --> D["changed()"]
+ D --> E["refreshSummary()"]
+ D --> F["map.fitLeg()"]
+ E --> B
+ E --> G["onFinish()"]
+```
+
+## 이전 버전의 상세 설명
+
+아래 함수표·발췌·원본 링크는 기존 source_commit 기준 기록이에요. 위 최신 변경과 함께 읽어 주세요.
 
 ## 한눈에 보기
 
@@ -29,7 +54,11 @@ public final class RouteEditorController extends BasePageController {
 | `begin()` | 새 편집본과 후보 자료를 받아요. |
 | `resume()` | 이전 초안·조건·선택을 유지해 다시 열어요. |
 | `onRecommendNext()` | 전체 범위와 이전 장소 범위가 겹치는 후보를 찾아요. |
-| `onFinish()` | 범위 위반이 없는지 확인한 뒤 메인으로 전달해요. |
+| `onFinish()` | 전체 범위와 구간 반경을 검사하고 문제가 없을 때 편집본을 메인으로 전달해요. |
+| `onAddCandidate()` | 선택 후보를 코스에 추가하고 새 구간을 맞춰요. |
+| `changed()` | refreshSummary()로 합계·유효성을 갱신하고 후보 상태와 지도를 정리해요. |
+| `refreshSummary()` | 장소 수·누적 금액·구간 상태와 버튼을 갱신해요. |
+| `map.fitLeg()` | 직전 장소와 새 장소 구간을 지도에 맞춰요. |
 | `resetDraft()` | 초안의 장소·후보를 비우며 DB 코스는 지우지 않아요. |
 
 ## 동작 흐름

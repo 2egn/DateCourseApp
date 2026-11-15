@@ -4,11 +4,23 @@ source: src/main/java/com/datecourse/model/Place.java
 source_commit: ea2242b
 source_sha256: a44baeb21e7cf2580239a0a10bd80424de113d3a1b55de201ad43aa86049d4e5
 readability_updated: 2026-11-14
+reviewed_commit: b69d00e
+reviewed_at: 2026-11-15
 ---
 
 # Place
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.
+
+## 최신 변경 · 2026-11-15
+
+PlaceDetails가 공공 사실·가격 근거·외부 장소 연결 상태를 보관해요. 외부 제공자 상세 스냅샷은 영구 저장용 Place에 넣지 않아요. 공통 표시는 PlacePresenter가 만들어요.
+
+[[현재_구현_흐름|최신 사용 흐름]] · [[최종_검토_2026_11_15|검증 범위]]
+
+## 이전 버전의 상세 설명
+
+아래 함수표·발췌·원본 링크는 기존 source_commit 기준 기록이에요. 위 최신 변경과 함께 읽어 주세요.
 
 ## 한눈에 보기
 

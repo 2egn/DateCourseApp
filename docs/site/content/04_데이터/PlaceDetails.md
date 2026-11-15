@@ -4,11 +4,23 @@ source: src/main/java/com/datecourse/model/PlaceDetails.java
 source_commit: ea2242b
 source_sha256: ebd34a4e2a87bed374df6cc3b3270f2cc783a8ce54665d93d55f0179dbe99896
 readability_updated: 2026-11-14
+reviewed_commit: b69d00e
+reviewed_at: 2026-11-15
 ---
 
 # PlaceDetails
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.
+
+## 최신 변경 · 2026-11-15
+
+공공 태그와 필드 근거, 외부 장소 연결을 구분해요. UNKNOWN은 불가능이 아니라 미확인이에요. 이름·주소 정정으로 동일성 근거가 달라지면 외부 연결을 재검토 상태로 바꿔요.
+
+[[현재_구현_흐름|최신 사용 흐름]] · [[최종_검토_2026_11_15|검증 범위]]
+
+## 이전 버전의 상세 설명
+
+아래 함수표·발췌·원본 링크는 기존 source_commit 기준 기록이에요. 위 최신 변경과 함께 읽어 주세요.
 
 ## 한눈에 보기
 

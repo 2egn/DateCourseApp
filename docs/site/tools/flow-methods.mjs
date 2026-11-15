@@ -37,16 +37,16 @@ const records={
  SearchCondition:{SearchCondition:'이전 일괄 추천에서 쓸 예산·인원·분류·좌표·반경·장소 수 조건을 묶는다.','PlaceSearchService.recommend':'기존 일괄 추천 서비스가 이 record의 조건을 읽어 코스를 만든다.'}
 };
 export const methodNames=text=>[...new Set([...text.matchAll(/([A-Za-z_$][\w.$]*)\s*\(/g)].map(m=>m[1]))];
-export function extractMethods(text){const section=text.match(/## 주요 메서드[^\n]*\n([\s\S]*?)(?=\n## |$)/)?.[1]||'';const result={};for(const line of section.split('\n')){if(!line.startsWith('|'))continue;const cells=line.split('|');if(cells.length<4)continue;for(const name of methodNames(cells[1]))result[name]=cells.slice(2,-1).join('|').replace(/<br\s*\/?>/g,' ').replace(/`/g,'').trim();}return result;}
+export function extractMethods(text){const section=text.match(/## 주요 (?:메서드|함수)[^\n]*\n([\s\S]*?)(?=\n## |$)/)?.[1]||'';const result={};for(const line of section.split('\n')){if(!line.startsWith('|'))continue;const cells=line.split('|');if(cells.length<4)continue;for(const name of methodNames(cells[1]))result[name]=cells.slice(2,-1).join('|').replace(/<br\s*\/?>/g,' ').replace(/`/g,'').trim();}return result;}
 export function enrichMethods(text,stem,all){
  if(records[stem]){
   if(stem==='Course')text=text.replaceAll('name()','title()');
   if(stem==='Review')text=text.replaceAll('name()','content()');
   if(stem==='SearchCondition')text=text.replace(/(?<![\w.])recommend\(\)에서 조건 읽기/,'PlaceSearchService.recommend()에서 조건 읽기');
   const table='## 주요 메서드와 흐름도 호출\n\n| 메서드 | 하는 일 |\n|---|---|\n'+Object.entries(records[stem]).map(([n,d])=>'| `'+n+'()` | '+d+' |').join('\n')+'\n\n';
-  if(!text.includes('## 주요 메서드'))text=text.replace(/(?=## (?:코드 읽는 법|사용한 Java 라이브러리))/,(match)=>table+match);
+  if(!/## 주요 (?:메서드|함수)/.test(text))text=text.replace(/(?=## (?:코드 읽는 법|사용한 Java 라이브러리))/,(match)=>table+match);
  }
- if(!text.includes('## 주요 메서드'))return text;
+ if(!/## 주요 (?:메서드|함수)/.test(text))return text;
  if(stem==='AppDialogs')text=text.replace('showMessage/Confirm/OptionDialog()','showMessageDialog() / showConfirmDialog() / showOptionDialog()');
  const diagrams=[...text.matchAll(/```mermaid\n([\s\S]*?)```/g)].map(m=>m[1]).join('\n'),current=extractMethods(text),additions={};
  for(const name of methodNames(diagrams)){
@@ -54,6 +54,6 @@ export function enrichMethods(text,stem,all){
   const description=extra[stem]?.[name]||all[name]||current[name.split('.').at(-1)]||api[name];
   if(description)additions[name]=description;
  }
- if(Object.keys(additions).length)text=text.replace(/(## 주요 메서드[^\n]*\n)([\s\S]*?)(?=\n## |$)/,(_,heading,table)=>heading+table.trimEnd()+'\n'+Object.entries(additions).map(([n,d])=>'| `'+n+'()` | '+d+' |').join('\n')+'\n');
+ if(Object.keys(additions).length)text=text.replace(/(## 주요 (?:메서드|함수)[^\n]*\n)([\s\S]*?)(?=\n## |$)/,(_,heading,table)=>heading+table.trimEnd()+'\n'+Object.entries(additions).map(([n,d])=>'| `'+n+'()` | '+d+' |').join('\n')+'\n');
  return text;
 }

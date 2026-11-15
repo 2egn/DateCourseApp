@@ -4,11 +4,23 @@ source: src/main/java/com/datecourse/controller/ConditionController.java
 source_commit: ea2242b
 source_sha256: 2bd12215086f8382b60ffa9379f58a9e800f1e53688fb576b35261f0c22c7c86
 readability_updated: 2026-11-14
+reviewed_commit: b69d00e
+reviewed_at: 2026-11-15
 ---
 
 # ConditionController
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.
+
+## 최신 변경 · 2026-11-15
+
+로그인별 UserContext를 공유하며, 저장 시 지도 준비→이미지→DB 저장 단계를 안내해요. 공통 조건 초기화는 인원·반경·출발지 선택까지 복원해요. 종료·로그아웃 때 미저장 내용을 확인해요. 저장된 코스와 이미지의 성공 여부를 구분하고 이미지 복구는 저장 목록으로 안내해요.
+
+[[현재_구현_흐름|최신 사용 흐름]] · [[최종_검토_2026_11_15|검증 범위]]
+
+## 이전 버전의 상세 설명
+
+아래 함수표·발췌·원본 링크는 기존 source_commit 기준 기록이에요. 위 최신 변경과 함께 읽어 주세요.
 
 ## 한눈에 보기
 

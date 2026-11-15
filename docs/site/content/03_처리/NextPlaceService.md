@@ -4,11 +4,23 @@ source: src/main/java/com/datecourse/service/NextPlaceService.java
 source_commit: ea2242b
 source_sha256: 1e013ddb325051be362ce7b3d5362afd65c004eab97f1e6361b93c0259a9b487
 readability_updated: 2026-11-14
+reviewed_commit: b69d00e
+reviewed_at: 2026-11-15
 ---
 
 # NextPlaceService
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.
+
+## 최신 변경 · 2026-11-15
+
+후보 표시 수 5·10·15·20·30과 업종·상세 종류·태그·가격 필터를 지원해요. 전체 원과 다음 장소 원의 교집합, 중복 제외, 가격 조건을 함께 적용해요. 도보 경로로 후보 전체를 비교하는 기능은 별도예요.
+
+[[현재_구현_흐름|최신 사용 흐름]] · [[최종_검토_2026_11_15|검증 범위]]
+
+## 이전 버전의 상세 설명
+
+아래 함수표·발췌·원본 링크는 기존 source_commit 기준 기록이에요. 위 최신 변경과 함께 읽어 주세요.
 
 ## 한눈에 보기
 

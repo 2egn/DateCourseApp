@@ -4,11 +4,23 @@ source: src/main/java/com/datecourse/controller/SavedCourseController.java
 source_commit: ea2242b
 source_sha256: bb25f532492d2e91244aa3b5389ed547ff641ea08967090fed710ee6ae47098e
 readability_updated: 2026-11-14
+reviewed_commit: b69d00e
+reviewed_at: 2026-11-15
 ---
 
 # SavedCourseController
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.
+
+## 최신 변경 · 2026-11-15
+
+로그인별 저장 목록 캐시를 재사용하고 변경 후 갱신해요. 요약·확대된 이미지·방문 순서를 보여주며 이미지 조회 실패와 이미지 없음의 재시도를 구분해요. 미리보기만 재생성할 때 코스는 새로 저장하지 않아요.
+
+[[현재_구현_흐름|최신 사용 흐름]] · [[최종_검토_2026_11_15|검증 범위]]
+
+## 이전 버전의 상세 설명
+
+아래 함수표·발췌·원본 링크는 기존 source_commit 기준 기록이에요. 위 최신 변경과 함께 읽어 주세요.
 
 ## 한눈에 보기
 

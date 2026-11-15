@@ -26,7 +26,7 @@ public final class PlaceSearchService {
 
 | 함수 | 하는 일 |
 |---|---|
-| `nearby()` | 유효한 장소를 거리로 정렬하고 중복을 줄여요. |
+| `nearby()` | 유효한 장소를 거리로 정렬하고 중복을 줄여 NearbyPlace 목록으로 돌려줘요. |
 
 ## 동작 흐름
 
