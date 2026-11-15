@@ -2,6 +2,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import com.datecourse.ui.FormScrollPane?>
+<?import com.datecourse.ui.PlaceFeatureSelector?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
 <?import javafx.scene.shape.SVGPath?>
@@ -38,10 +39,16 @@
  <Button fx:id="priceDown" accessibleText="1인 가격 상한 천원 줄이기" maxWidth="Infinity" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-down"><graphic><SVGPath content="M 1 1 L 5 5 L 9 1" styleClass="place-count-chevron"/></graphic></Button>
  </VBox></StackPane><Label fx:id="priceWonLabel" text="20,000원 / 1인" styleClass="planner-caption" wrapText="true"/></VBox>
  <VBox spacing="6" HBox.hgrow="ALWAYS" minWidth="0" prefWidth="150"><Label fx:id="radiusLabel" text="직선 반경 · 500m" styleClass="planner-caption" wrapText="true"/><Slider fx:id="radiusSlider" min="200" max="2000" value="500" minWidth="60" prefWidth="120"/></VBox></HBox>
- <TitledPane fx:id="extraConditions" text="세부 조건 · 선택 사항" expanded="false" animated="false" styleClass="compact-pane"><content><HBox spacing="8">
- <VBox fx:id="subtypeField" spacing="4" HBox.hgrow="ALWAYS" minWidth="0"><Label text="종류" styleClass="planner-caption"/><ComboBox fx:id="subtypeBox" maxWidth="Infinity"/></VBox>
- <VBox fx:id="tagField" spacing="4" HBox.hgrow="ALWAYS" minWidth="0"><Label text="특징 · 해당 장소만" styleClass="planner-caption"/><ComboBox fx:id="tagBox" maxWidth="Infinity"/></VBox>
- </HBox></content></TitledPane>
+ <TitledPane fx:id="extraConditions" text="세부 조건 · 선택 사항" expanded="false" animated="false" styleClass="compact-pane"><content><VBox spacing="12">
+ <FlowPane hgap="10" vgap="10">
+ <VBox fx:id="subtypeField" spacing="4" prefWidth="120"><Label text="종류" styleClass="planner-caption"/><ComboBox fx:id="subtypeBox" maxWidth="Infinity"/></VBox>
+ <VBox spacing="4" prefWidth="180"><Label text="세부 업종" styleClass="planner-caption"/><ComboBox fx:id="detailTypeBox" maxWidth="Infinity"/></VBox>
+ <VBox spacing="4" prefWidth="170"><Label text="가격 정보 기준" styleClass="planner-caption"/><ComboBox fx:id="priceFilterBox" maxWidth="Infinity"/></VBox>
+ </FlowPane>
+ <Label fx:id="priceFilterDescription" wrapText="true" styleClass="planner-caption"/>
+ <VBox fx:id="tagField" spacing="5"><Label text="원하는 특징 · 모두 충족" styleClass="planner-caption"/><PlaceFeatureSelector fx:id="featureSelector"/></VBox>
+ <Hyperlink text="세부 조건 초기화" onAction="#onClearAdvancedFilters"/>
+ </VBox></content></TitledPane>
  <FlowPane hgap="12" vgap="8" alignment="CENTER_LEFT"><CheckBox fx:id="includeUncertainPrice" text="가격 미확인도 포함" selected="false"/><HBox spacing="8" alignment="CENTER_LEFT"><Label text="후보 수" styleClass="planner-caption" minWidth="-Infinity"/><ComboBox fx:id="conditionCandidateLimitBox" prefWidth="76" accessibleText="조건에 맞는 후보 표시 개수"/><Button fx:id="recommendNextButton" text="후보 검색" onAction="#onRecommendNext" styleClass="planner-primary" minWidth="-Infinity"/></HBox></FlowPane>
  <VBox fx:id="emptyResults" spacing="8" visible="false" managed="false" styleClass="search-empty-state">
  <Label text="조건에 맞는 장소가 없어요" styleClass="section"/>

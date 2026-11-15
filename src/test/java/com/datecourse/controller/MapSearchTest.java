@@ -29,6 +29,42 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MapSearchTest {
     private final MapBridge cameraPolicyBridge = new MapBridge(()->{},(lat,lng)->{},message->{});
+    @Test void expandedFiltersRememberActivitySelectionsAndClearOnlyAdvancedConditions() throws Exception {
+        FutureTask<Void> task=new FutureTask<>(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));Parent root=loader.load();
+            RouteEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
+            var places=new com.datecourse.service.PublicDemoPlaceRepository().findAll();
+            editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),places,p->{},()->{});
+            var subtype=(javafx.scene.control.ComboBox<String>)field(editor,"subtypeBox");
+            var detail=(javafx.scene.control.ComboBox<String>)field(editor,"detailTypeBox");
+            var price=(javafx.scene.control.ComboBox<com.datecourse.model.PlacePriceFilter>)field(editor,"priceFilterBox");
+            var features=(com.datecourse.ui.PlaceFeatureSelector)field(editor,"featureSelector");
+            assertTrue(detail.getItems().contains("냉면/밀면"));assertTrue(detail.getItems().contains("국/탕/찌개류"));
+            subtype.setValue("한식");detail.setValue("냉면/밀면");
+            features.selectedTags().addAll(java.util.Set.of(com.datecourse.model.PlaceTag.GOOD_PRICE,com.datecourse.model.PlaceTag.NEAR_SUBWAY));
+            price.setValue(com.datecourse.model.PlacePriceFilter.ESTIMATED);
+            assertTrue(((CheckBox)field(editor,"includeUncertainPrice")).isDisabled());
+            var activity=(javafx.scene.control.ComboBox<String>)field(editor,"activityBox");
+            activity.setValue("카페");assertNull(detail.getValue());assertTrue(features.selectedTags().isEmpty());
+            activity.setValue("식사");assertEquals("한식",subtype.getValue());assertEquals("냉면/밀면",detail.getValue());
+            assertEquals(2,features.selectedTags().size());assertEquals(com.datecourse.model.PlacePriceFilter.ESTIMATED,price.getValue());
+            subtype.setValue("중식");assertNull(detail.getValue());
+            assertFalse(detail.getItems().contains("냉면/밀면"));
+            ((TextField)field(editor,"placePriceField")).setText("1.2");
+            invoke(editor,"onClearAdvancedFilters");
+            assertNull(subtype.getValue());assertNull(detail.getValue());assertTrue(features.selectedTags().isEmpty());
+            assertEquals(com.datecourse.model.PlacePriceFilter.ANY,price.getValue());
+            assertFalse(((CheckBox)field(editor,"includeUncertainPrice")).isDisabled());
+            assertEquals("1.2",((TextField)field(editor,"placePriceField")).getText());
+            ((javafx.scene.control.TitledPane)field(editor,"extraConditions")).setExpanded(true);
+            new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
+            var form=root.lookup(".route-edit-form");
+            Path directory=Path.of("build/ui-preview");Files.createDirectories(directory);
+            ImageIO.write(SwingFXUtils.fromFXImage(form.snapshot(null,null),null),"png",directory.resolve("expanded-place-filters.png").toFile());
+            ((PlannerMap)field(editor,"map")).dispose();return null;
+        });Platform.runLater(task);task.get(15,TimeUnit.SECONDS);
+    }
+
     @Test void emptySearchOffersExplicitRecoveryAndPriceConversionStaysVisible() throws Exception {
         FutureTask<Void> task=new FutureTask<>(()->{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();
@@ -452,10 +488,10 @@ class MapSearchTest {
             var place=new com.datecourse.model.Place(1,"facility","예약 장소","MEAL",35.1578,129.06,com.datecourse.model.PriceEstimate.exact(5000),0,details);
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();RouteEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
             editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,1000,"",java.util.List.of()),java.util.List.of(place),p->{},()->{});
-            var tags=(javafx.scene.control.ComboBox<com.datecourse.model.PlaceTag>)field(editor,"tagBox");
-            assertTrue(tags.getItems().contains(com.datecourse.model.PlaceTag.RESERVABLE));
-            assertFalse(tags.getItems().contains(com.datecourse.model.PlaceTag.PARKING));
-            tags.setValue(com.datecourse.model.PlaceTag.RESERVABLE);invoke(editor,"onRecommendNext");
+            var tags=(com.datecourse.ui.PlaceFeatureSelector)field(editor,"featureSelector");
+            assertTrue(tags.availableTags().contains(com.datecourse.model.PlaceTag.RESERVABLE));
+            assertFalse(tags.availableTags().contains(com.datecourse.model.PlaceTag.PARKING));
+            tags.selectedTags().add(com.datecourse.model.PlaceTag.RESERVABLE);invoke(editor,"onRecommendNext");
             assertEquals(1,((javafx.scene.control.ListView<?>)field(editor,"candidateList")).getItems().size());
             return null;
         });

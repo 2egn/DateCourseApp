@@ -29,7 +29,10 @@ public final class RouteEditorController extends BasePageController {
     @FXML private WebView editMapView;
     @FXML private ComboBox<String> activityBox;
     @FXML private ComboBox<String> subtypeBox;
-    @FXML private ComboBox<PlaceTag> tagBox;
+    @FXML private Label priceFilterDescription;
+    @FXML private ComboBox<String> detailTypeBox;
+    @FXML private ComboBox<com.datecourse.model.PlacePriceFilter> priceFilterBox;
+    @FXML private com.datecourse.ui.PlaceFeatureSelector featureSelector;
     @FXML private ComboBox<Integer> candidateLimitBox;
     @FXML private ComboBox<Integer> conditionCandidateLimitBox;
     @FXML private Label candidateStatus, candidateCount, priceWonLabel, emptyResultMessage;
@@ -42,8 +45,9 @@ public final class RouteEditorController extends BasePageController {
     private long searchVersion;
     private boolean updatingFacets;
     private String facetsActivity;
-    private final java.util.Map<String,String> rememberedSubtypes = new java.util.HashMap<>();
-    private final java.util.Map<String,PlaceTag> rememberedTags = new java.util.HashMap<>();
+    private record FacetSelection(String subtype,String detailType,java.util.Set<PlaceTag> tags,
+                                  com.datecourse.model.PlacePriceFilter priceFilter) {}
+    private final java.util.Map<String,FacetSelection> rememberedFacets = new java.util.HashMap<>();
     private Consumer<Place> onReport = ignored -> notifyUser(PageFeedback.Kind.INFO,"로그인 후 제보할 수 있어요.");
     @FunctionalInterface public interface PlaceRefresh { List<Place> apply(List<Place> places) throws Exception; }
     private PlaceRefresh placeRefresh;
@@ -116,20 +120,18 @@ public final class RouteEditorController extends BasePageController {
         candidateLimitBox.setValue(5);
         conditionCandidateLimitBox.setItems(candidateLimitBox.getItems());
         conditionCandidateLimitBox.valueProperty().bindBidirectional(candidateLimitBox.valueProperty());
-        subtypeBox.setPromptText("전체 종류"); tagBox.setPromptText("특징 제한 없음");
-        tagBox.setTooltip(new Tooltip("선택한 특징이 확인된 장소만 보여줘요. 불가 또는 미확인인 장소는 제외돼요."));
-        subtypeBox.setCellFactory(v->new ListCell<>() {
-            @Override protected void updateItem(String s,boolean empty){super.updateItem(s,empty);setText(empty?null:s==null?"전체 종류":s);}
-        });
-        tagBox.setCellFactory(v->new ListCell<>() {
-            @Override protected void updateItem(PlaceTag t,boolean empty){super.updateItem(t,empty);setText(empty?null:t==null?"특징 제한 없음":t.label());}
-        });
-        subtypeBox.setButtonCell(new ListCell<>() {
-            @Override protected void updateItem(String s,boolean empty){super.updateItem(s,empty);setText(empty||s==null?"전체 종류":s);}
-        });
-        tagBox.setButtonCell(new ListCell<>() {
-            @Override protected void updateItem(PlaceTag t,boolean empty){super.updateItem(t,empty);setText(empty||t==null?"특징 제한 없음":t.label());}
-        });
+        installFacetLabels(subtypeBox,"전체 종류");
+        installFacetLabels(detailTypeBox,"전체 업종");
+        priceFilterBox.getItems().setAll(com.datecourse.model.PlacePriceFilter.values());
+        priceFilterBox.setValue(com.datecourse.model.PlacePriceFilter.ANY);
+        includeUncertainPrice.disableProperty().bind(priceFilterBox.valueProperty().isNotEqualTo(com.datecourse.model.PlacePriceFilter.ANY));
+        priceFilterDescription.textProperty().bind(javafx.beans.binding.Bindings.createStringBinding(()->switch(priceFilterBox.getValue()){
+            case ANY->"가격 상한과 '가격 미확인도 포함' 설정을 사용해요.";
+            case REFERENCE->"추정 가격과 미확인은 제외해요. 참고 가격은 현재 메뉴의 검증을 뜻하지 않아요.";
+            case ESTIMATED->"추정 금액이 있는 장소만 포함해요. 가격 상한은 계속 적용돼요.";
+            case FREE->"금액이 0원으로 확인된 장소만 포함해요. 미확인은 무료로 처리하지 않아요.";
+        },priceFilterBox.valueProperty()));
+        priceFilterBox.setTooltip(new Tooltip("참고 가격은 추정값을 제외한 참고 정보예요. 현재 메뉴의 검증을 뜻하지 않아요. 무료만은 금액이 0원으로 확인된 장소만 포함해요."));
         candidateLimitBox.valueProperty().addListener((o,a,b)->{if(b!=null)displayCandidates();});
         NumberStepper.installPrice(placePriceField, priceUp, priceDown);
         priceWonLabel.textProperty().bind(javafx.beans.binding.Bindings.createStringBinding(()->{
@@ -189,11 +191,15 @@ public final class RouteEditorController extends BasePageController {
             showCandidate();
         });
         activityBox.valueProperty().addListener((obs, old, value) -> {
-            if(old!=null){rememberedSubtypes.put(old,subtypeBox.getValue());rememberedTags.put(old,tagBox.getValue());}
+            if(old!=null)rememberedFacets.put(old,currentFacets());
             refreshFacets();markCandidatesDirty();
         });
-        subtypeBox.valueProperty().addListener((o,a,b)->{if(!updatingFacets)markCandidatesDirty();});
-        tagBox.valueProperty().addListener((o,a,b)->{if(!updatingFacets)markCandidatesDirty();});
+        subtypeBox.valueProperty().addListener((o,a,b)->{
+            if(!updatingFacets){updatingFacets=true;try{refreshDetailTypes(false);}finally{updatingFacets=false;}markCandidatesDirty();}
+        });
+        detailTypeBox.valueProperty().addListener((o,a,b)->{if(!updatingFacets)markCandidatesDirty();});
+        priceFilterBox.valueProperty().addListener((o,a,b)->{if(!updatingFacets)markCandidatesDirty();});
+        featureSelector.selectedTags().addListener((javafx.collections.SetChangeListener<PlaceTag>)change->{if(!updatingFacets)markCandidatesDirty();});
         placePriceField.textProperty().addListener((obs, old, value) -> markCandidatesDirty());
         includeUncertainPrice.selectedProperty().addListener((obs, old, value) -> markCandidatesDirty());
         radiusSlider.valueProperty().addListener((obs, old, value) -> {
@@ -317,7 +323,8 @@ public final class RouteEditorController extends BasePageController {
             int price = NumberStepper.readWon(placePriceField);
             NextPlaceCondition condition=new NextPlaceCondition(activityBox.getValue(),price,radius(),includeUncertainPrice.isSelected(),
                 subtypeBox.getValue()==null?java.util.Set.of():java.util.Set.of(subtypeBox.getValue()),
-                tagBox.getValue()==null?java.util.Set.of():java.util.Set.of(tagBox.getValue()),candidateLimitBox.getValue());
+                java.util.Set.copyOf(featureSelector.selectedTags()),candidateLimitBox.getValue(),
+                detailTypeBox.getValue()==null?java.util.Set.of():java.util.Set.of(detailTypeBox.getValue()),priceFilterBox.getValue());
             long version=++searchVersion;
             RoutePlan context=draft(); List<Place> source=allPlaces;
             candidatesDirty=true;map.setCandidateActionsEnabled(false);candidateList.refresh();candidateStatus.setText("후보 갱신 중…");
@@ -363,7 +370,7 @@ public final class RouteEditorController extends BasePageController {
         }
     }
     @FXML private void onIncludeUnknownRecovery(){includeUncertainPrice.setSelected(true);onRecommendNext();}
-    @FXML private void onClearFacetsRecovery(){subtypeBox.setValue(null);tagBox.setValue(null);onRecommendNext();}
+    @FXML private void onClearFacetsRecovery(){onClearAdvancedFilters();onRecommendNext();}
     @FXML private void onExpandRadiusRecovery(){radiusSlider.setValue(radiusSlider.getMax());onRecommendNext();}
     @FXML private void onReviewPriceRecovery(){placePriceField.requestFocus();placePriceField.selectAll();}
 
@@ -573,6 +580,7 @@ public final class RouteEditorController extends BasePageController {
                 .forEach(title -> title.setCursor(pane.isExpanded() ? javafx.scene.Cursor.DEFAULT : javafx.scene.Cursor.HAND));
     }
     private void markCandidatesDirty() {
+        updateFacetSummary();
         emptyResults.setVisible(false);
         searchVersion++; candidatesDirty=true;
         map.setCandidateActionsEnabled(false);
@@ -591,42 +599,63 @@ public final class RouteEditorController extends BasePageController {
         recommendNextButton.setText(candidates.isEmpty() ? "후보 검색" : "후보 업데이트");
         candidateList.refresh();refreshMap(false);
     }
+    private void installFacetLabels(ComboBox<String> box,String all) {
+        box.setPromptText(all);
+        box.setCellFactory(v->new ListCell<>(){@Override protected void updateItem(String text,boolean empty){
+            super.updateItem(text,empty);setText(empty?null:text==null?all:text);
+        }});
+        box.setButtonCell(new ListCell<>(){@Override protected void updateItem(String text,boolean empty){
+            super.updateItem(text,empty);setText(text==null?all:text);
+        }});
+    }
+    private FacetSelection currentFacets(){return new FacetSelection(subtypeBox.getValue(),detailTypeBox.getValue(),
+            java.util.Set.copyOf(featureSelector.selectedTags()),priceFilterBox.getValue());}
+    private List<Place> activityPlaces(){return allPlaces.stream().filter(p->PlaceSearchService.categoryName(p.category()).equals(activityBox.getValue())).toList();}
     private void refreshFacets() {
         if(subtypeBox==null)return;
+        FacetSelection selection=java.util.Objects.equals(activityBox.getValue(),facetsActivity)?currentFacets():
+                rememberedFacets.getOrDefault(activityBox.getValue(),new FacetSelection(null,null,java.util.Set.of(),com.datecourse.model.PlacePriceFilter.ANY));
+        populateFacets(selection);facetsActivity=activityBox.getValue();
+    }
+    private void populateFacets(FacetSelection selection) {
         updatingFacets=true;
         try {
-            var category=activityBox.getValue();
-            if(java.util.Objects.equals(category,facetsActivity)) {
-                rememberedSubtypes.put(category,subtypeBox.getValue());rememberedTags.put(category,tagBox.getValue());
-            }
-            var source=allPlaces.stream().filter(p->PlaceSearchService.categoryName(p.category()).equals(category)).toList();
-            var subtypes=new java.util.ArrayList<String>();subtypes.add(null);
-            subtypes.addAll(source.stream().map(PlaceFacets::subtype).distinct().sorted().toList());
-            subtypeBox.getItems().setAll(subtypes);
-            String remembered=rememberedSubtypes.get(category);
-            subtypeBox.setValue(subtypes.contains(remembered)?remembered:null);
-            var tags=new java.util.ArrayList<PlaceTag>();tags.add(null);
-            tags.addAll(source.stream().flatMap(p->p.details().availableTags().stream()).distinct().sorted().toList());
-            tagBox.getItems().setAll(tags);
-            tagBox.setValue(tags.contains(rememberedTags.get(category))?rememberedTags.get(category):null);
-            facetsActivity=category;
+            var source=activityPlaces();
+            var types=new java.util.ArrayList<String>();types.add(null);
+            types.addAll(source.stream().map(PlaceFacets::subtype).distinct().sorted().toList());
+            if(selection.subtype()!=null&&!types.contains(selection.subtype()))types.add(selection.subtype());
+            subtypeBox.getItems().setAll(types);subtypeBox.setValue(selection.subtype());
+            detailTypeBox.setValue(selection.detailType());refreshDetailTypes(true);
+            priceFilterBox.setValue(selection.priceFilter());
+            featureSelector.configure(source,selection.tags());
             updateFacetVisibility();
         } finally {updatingFacets=false;}
     }
-    /** New approved subtypes become selectable without changing the applied filter. */
-    private void extendFacets() {
-        updatingFacets=true;
-        try {
-            var source=allPlaces.stream().filter(p->PlaceSearchService.categoryName(p.category()).equals(activityBox.getValue())).toList();
-            source.stream().map(PlaceFacets::subtype).distinct().sorted().filter(s->!subtypeBox.getItems().contains(s)).forEach(subtypeBox.getItems()::add);
-            source.stream().flatMap(p->p.details().availableTags().stream()).distinct().sorted().filter(t->!tagBox.getItems().contains(t)).forEach(tagBox.getItems()::add);
-            updateFacetVisibility();
-        } finally {updatingFacets=false;}
+    private void refreshDetailTypes(boolean retainMissing) {
+        String selected=detailTypeBox.getValue();
+        var types=new java.util.ArrayList<String>();types.add(null);
+        types.addAll(activityPlaces().stream().filter(p->subtypeBox.getValue()==null||subtypeBox.getValue().equals(PlaceFacets.subtype(p)))
+                .map(PlaceFacets::detailType).distinct().sorted().toList());
+        if(retainMissing&&selected!=null&&!types.contains(selected))types.add(selected);
+        detailTypeBox.getItems().setAll(types);detailTypeBox.setValue(types.contains(selected)?selected:null);
     }
+    /** Refresh counts and options without silently broadening any applied condition. */
+    private void extendFacets(){populateFacets(currentFacets());}
     private void updateFacetVisibility() {
         subtypeField.setVisible(subtypeBox.getItems().size()>2);
-        tagField.setVisible(tagBox.getItems().size()>1);
-        extraConditions.setVisible(subtypeField.isVisible()||tagField.isVisible());
+        tagField.setVisible(true);extraConditions.setVisible(true);updateFacetSummary();
+    }
+    private void updateFacetSummary() {
+        int count=(subtypeBox.getValue()==null?0:1)+(detailTypeBox.getValue()==null?0:1)+featureSelector.selectedTags().size()
+                +(priceFilterBox.getValue()==com.datecourse.model.PlacePriceFilter.ANY?0:1);
+        extraConditions.setText(count==0?"세부 조건 · 선택 사항":"세부 조건 · "+count+"개 적용");
+    }
+    @FXML private void onClearAdvancedFilters() {
+        updatingFacets=true;
+        try {subtypeBox.setValue(null);detailTypeBox.setValue(null);priceFilterBox.setValue(com.datecourse.model.PlacePriceFilter.ANY);
+            featureSelector.selectedTags().clear();refreshDetailTypes(false);
+        } finally {updatingFacets=false;}
+        markCandidatesDirty();
     }
     @FXML private void onCandidateDetail() { if (state == EditorState.CHOICE && candidate() != null) map.showDetail(candidate()); }
     @FXML private void onPlaceDetail() {

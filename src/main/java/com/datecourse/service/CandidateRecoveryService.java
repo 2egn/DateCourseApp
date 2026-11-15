@@ -17,8 +17,8 @@ public final class CandidateRecoveryService {
         var suggestions=new ArrayList<Suggestion>();
         if(!condition.includeUnknown()) offer(suggestions,Change.INCLUDE_UNKNOWN,places,route,
                 copy(condition,condition.maxPrice(),condition.radius(),true,condition.subtypes(),condition.tags()));
-        if(!condition.subtypes().isEmpty() || !condition.tags().isEmpty()) offer(suggestions,Change.CLEAR_FACETS,places,route,
-                copy(condition,condition.maxPrice(),condition.radius(),condition.includeUnknown(),Set.of(),Set.of()));
+        if(!condition.subtypes().isEmpty() || !condition.tags().isEmpty() || !condition.detailTypes().isEmpty() || condition.priceFilter()!=PlacePriceFilter.ANY) offer(suggestions,Change.CLEAR_FACETS,places,route,
+                new NextPlaceCondition(condition.activity(),condition.maxPrice(),condition.radius(),condition.includeUnknown(),Set.of(),Set.of(),condition.displayLimit()));
         if(radius>condition.radius()) offer(suggestions,Change.EXPAND_RADIUS,places,route,
                 copy(condition,condition.maxPrice(),radius,condition.includeUnknown(),condition.subtypes(),condition.tags()));
         if(condition.maxPrice()<100000000) offer(suggestions,Change.REVIEW_PRICE,places,route,
@@ -30,7 +30,7 @@ public final class CandidateRecoveryService {
             case EXPAND_RADIUS->"반경을 "+radius+"m로 넓히면 "+suggestion.matches()+"곳을 볼 수 있어요.";
             case REVIEW_PRICE->"현재 가격 상한 때문에 제외된 장소가 "+suggestion.matches()+"곳 있어요.";
         }).collect(java.util.stream.Collectors.joining("\n"));
-        else if(matches(places,route,copy(condition,100000000,radius,true,Set.of(),Set.of())).isEmpty())
+        else if(matches(places,route,new NextPlaceCondition(condition.activity(),100000000,radius,true,Set.of(),Set.of(),condition.displayLimit())).isEmpty())
             message="전체 범위 안에 추가할 수 있는 '"+condition.activity()+"' 장소가 없어요. 활동을 바꾸거나 공통 조건의 전체 범위를 확인해 주세요.";
         else message="여러 조건에 함께 걸려 있어요. 활동·가격·반경·세부 조건을 함께 확인해 주세요.";
         return new Advice(message,suggestions);
@@ -42,6 +42,6 @@ public final class CandidateRecoveryService {
         return search.matching(places,route.places(),route.startLat(),route.startLng(),route.people(),route.radius(),condition);
     }
     private NextPlaceCondition copy(NextPlaceCondition c,int price,int radius,boolean unknown,Set<String> subtypes,Set<PlaceTag> tags) {
-        return new NextPlaceCondition(c.activity(),price,radius,unknown,subtypes,tags,c.displayLimit());
+        return new NextPlaceCondition(c.activity(),price,radius,unknown,subtypes,tags,c.displayLimit(),c.detailTypes(),c.priceFilter());
     }
 }

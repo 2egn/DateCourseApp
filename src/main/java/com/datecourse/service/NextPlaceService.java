@@ -50,6 +50,8 @@ public final class NextPlaceService {
                             || candidate.place().priceEstimate().minimum() <= maxPricePerPerson))
                 .filter(candidate -> confirmed.stream().noneMatch(p -> candidate.place().sameIdentityAs(p)))
                 .filter(candidate -> condition.subtypes().isEmpty() || condition.subtypes().contains(PlaceFacets.subtype(candidate.place())))
+                .filter(candidate -> condition.detailTypes().isEmpty() || condition.detailTypes().contains(PlaceFacets.detailType(candidate.place())))
+                .filter(candidate -> condition.priceFilter().accepts(candidate.place().priceEstimate()))
                 .filter(candidate -> condition.tags().stream().allMatch(candidate.place().details()::hasTag))
                 .toList();
     }
