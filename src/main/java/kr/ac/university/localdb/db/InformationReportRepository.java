@@ -100,7 +100,34 @@ public final class InformationReportRepository {
         }
     }
 
+    public record Correction(String value,String source,String reviewedAt) {}
+    public record ReviewContext(InformationReport report,Correction correction) {}
+
+    ReviewContext reviewContext(long id) throws SQLException {
+        initialize();
+        try(Connection connection=pool.getConnection();PreparedStatement query=connection.prepareStatement("SELECT * FROM place_information_reports WHERE report_id=?")) {
+            query.setLong(1,id);
+            try(ResultSet row=query.executeQuery()) {
+                if(!row.next())throw new IllegalArgumentException("제보를 찾지 못했어요. 목록을 새로고침해 주세요.");
+                var report=new InformationReport(row.getLong("report_id"),row.getString("place_id"),row.getString("place_name"),row.getString("field_name"),
+                        row.getString("original_value"),row.getString("proposed_value"),row.getString("reason"),row.getString("source_url"),row.getString("status"),
+                        row.getString("review_note"),row.getString("created_at"),row.getString("reviewed_value"));
+                return new ReviewContext(report,readCorrection(connection,report.placeId(),report.field(),false));
+            }
+        }
+    }
+    private Correction readCorrection(Connection connection,String placeId,String field,boolean lock)throws SQLException {
+        try(PreparedStatement query=connection.prepareStatement("SELECT corrected_value,source_url,reviewed_at FROM place_information_overrides WHERE place_id=? AND field_name=?"+(lock?" FOR UPDATE":""))) {
+            query.setString(1,placeId);query.setString(2,field);
+            try(ResultSet row=query.executeQuery()){return row.next()?new Correction(row.getString(1),row.getString(2),row.getString(3)):null;}
+        }
+    }
+
     void review(long id, boolean approve, String corrected, String note) throws SQLException {
+        review(reviewContext(id),approve,corrected,note);
+    }
+    void review(ReviewContext expected, boolean approve, String corrected, String note) throws SQLException {
+        long id=expected.report().id();
         note=text(note,1000,false); initialize();
         try (Connection c=pool.getConnection()) {
             c.setAutoCommit(false);
@@ -114,6 +141,8 @@ public final class InformationReportRepository {
                     }
                 }
                 if(approve) {
+                    if(!Objects.equals(readCorrection(c,placeId,field,true),expected.correction()))
+                        throw new IllegalArgumentException("다른 검토에서 정정값이 바뀌었어요. 새로고침 후 최신 정보를 확인해 주세요.");
                     corrected=value(InformationReport.Field.valueOf(field),corrected);
                     try (PreparedStatement d=c.prepareStatement("DELETE FROM place_information_overrides WHERE place_id=? AND field_name=?")) {
                         d.setString(1,placeId);d.setString(2,field);d.executeUpdate();

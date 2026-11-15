@@ -8,7 +8,7 @@
  <top><HBox spacing="10" alignment="CENTER_LEFT"><Label text="장소 정보 정정 제보" styleClass="title"/><Region HBox.hgrow="ALWAYS"/><Label text="상태"/><ComboBox fx:id="filterBox" prefWidth="130"/><Button fx:id="refreshButton" text="새로고침" onAction="#reload"/></HBox></top>
  <center><SplitPane dividerPositions="0.36"><ListView fx:id="reports"/><VBox spacing="8"><padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
  <ModernScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"><Label fx:id="details" text="제보를 선택해 주세요." wrapText="true"/></ModernScrollPane>
- <Label text="승인할 값 · 가격은 1인 기준 원 단위 정수"/><TextField fx:id="correctedValue"/>
+ <Label fx:id="valueHelp" text="승인할 정보"/><TextField fx:id="correctedValue"/>
  <Label text="검토 메모 · 승인 근거 또는 반려 이유"/><TextArea fx:id="reviewNote" prefRowCount="3" wrapText="true"/>
  <HBox spacing="8"><Button fx:id="approveButton" text="검토 후 승인·수정" onAction="#approve" styleClass="primary"/><Button fx:id="rejectButton" text="반려" onAction="#reject" styleClass="danger"/></HBox>
  </VBox></SplitPane></center>

@@ -19,7 +19,6 @@ import kr.ac.university.localdb.db.MemberRepository;
 import kr.ac.university.localdb.UserSession;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -36,6 +35,7 @@ public class MembershipApp {
     private volatile MemberRepository repository;
     private volatile ConditionController plannerController;
     private boolean closePending;
+    private java.util.function.BooleanSupplier adminCloseCheck;
     private UserSession userSession;
     private Timer screenTransition;
     private JPanel authenticationContent;
@@ -82,6 +82,7 @@ public class MembershipApp {
 
     private void requestWindowClose() {
         if(closePending)return;
+        if(adminCloseCheck!=null && !adminCloseCheck.getAsBoolean())return;
         ConditionController controller=plannerController;
         if(controller==null){exitApplication.run();return;}
         closePending=true;
@@ -334,6 +335,7 @@ public class MembershipApp {
         pages.show(pagePanel, "login");
         home.setContentPane(authenticationContent);
         home.setTitle("로그인 / 회원가입");
+        home.setMinimumSize(new Dimension(0,0));
         Rectangle usable = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         home.setSize(Math.min(580, usable.width), Math.min(900, usable.height));
         home.setLocationRelativeTo(null);
@@ -374,104 +376,44 @@ public class MembershipApp {
     }
     /** 인증된 관리자 세션으로 회원 검색·수정·비활성화·영구 삭제 기능을 연결합니다. */
     private void showAdmin(MemberRepository.AdminSession session) {
-        JFrame window = new JFrame("관리자 · 회원 관리");
-        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        DefaultTableModel model = new DefaultTableModel(new String[]{"번호","이메일","이름","전화번호","상태","가입일","삭제"},0) {
-            @Override public boolean isCellEditable(int r,int c) { return false; }
+        var members=new MemberAdminPanel(session);
+        var reviewBusy=new java.util.concurrent.atomic.AtomicBoolean();
+        var reviewController=new java.util.concurrent.atomic.AtomicReference<com.datecourse.controller.InformationReviewController>();
+        var tabs=new JTabbedPane();tabs.addTab("회원 관리",members);
+        var reportPanel=new JFXPanel();tabs.addTab("장소 정보 제보",reportPanel);
+        var logoutButton=new JButton("로그아웃");UiTheme.button(logoutButton,false);
+        logoutButton.setPreferredSize(new Dimension(120,40));
+        var top=new JPanel(new BorderLayout());top.setBorder(BorderFactory.createEmptyBorder(12,24,12,24));
+        var title=new JLabel("DateCourse · 관리자");title.setFont(UiTheme.BODY.deriveFont(Font.BOLD,18f));top.add(title,BorderLayout.WEST);top.add(logoutButton,BorderLayout.EAST);
+        adminCloseCheck=()->{
+            if(reviewBusy.get()){AppDialogs.showMessageDialog(home,"제보 처리 작업이 끝난 뒤 다시 시도해 주세요.");return false;}
+            return members.confirmLeave();
         };
-        JTable table = new JTable(model); table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setAutoCreateRowSorter(true); table.setRowHeight(44);
-        table.setShowGrid(false);table.setIntercellSpacing(new Dimension(0,0));table.setSelectionBackground(UiTheme.SOFT);table.setSelectionForeground(UiTheme.TEXT);
-        table.getTableHeader().setBackground(UiTheme.INPUT);table.getTableHeader().setForeground(UiTheme.MUTED);
-        table.getTableHeader().setPreferredSize(new Dimension(0,44));
-        JTextField search = new UiTheme.TextField(20); JButton refresh = new JButton("검색 / 새로고침");
-        JTextField person = new UiTheme.TextField(15), telephone = new UiTheme.TextField(15);
-        JComboBox<String> status = new JComboBox<>(new String[]{"ACTIVE","INACTIVE"});
-        JButton save = new JButton("선택 회원 수정"), deactivate = new JButton("선택 회원 탈퇴 처리");
-        UiTheme.button(refresh,false);UiTheme.button(save,true);UiTheme.button(deactivate,false);
-        JLabel count = new JLabel("회원 목록");
-        // 최초 표시, 검색, 변경 성공 후에 같은 조회 흐름으로 목록과 회원 수를 갱신합니다.
-        Runnable reload = () -> {
-            String keyword = search.getText();
-            run(window,refresh,() -> session.list(keyword),members -> {
-                model.setRowCount(0);
-                for (var member : members) model.addRow(new Object[]{member.id(),member.email(),member.name(),member.phone(),member.status(),member.created(),"INACTIVE".equals(member.status()) ? "×" : ""});
-                person.setText(""); telephone.setText(""); count.setText("조회된 회원 " + members.size() + "명 · INACTIVE는 탈퇴/비활성 상태");
-            });
-        };
-        // 마지막 열의 ×는 비활성 회원에만 표시하며, 실제 삭제는 아래 클릭 이벤트에서 처리합니다.
-        table.getColumnModel().getColumn(6).setMaxWidth(48);
-        table.getColumnModel().getColumn(6).setCellRenderer((grid,value,selected,focused,row,column) -> {
-            JLabel cross=new JLabel(String.valueOf(value),SwingConstants.CENTER);
-            cross.setFont(UiTheme.BODY.deriveFont(Font.BOLD,22f)); cross.setForeground(new Color(0xB4233F));
-            cross.setOpaque(true);cross.setBackground(selected ? UiTheme.SOFT : Color.WHITE);
-            cross.setToolTipText("×".equals(value) ? "비활성 회원 영구 삭제" : "활성 회원은 삭제할 수 없습니다.");
-            return cross;
+        logoutButton.addActionListener(event->{
+            if(adminCloseCheck!=null&&!adminCloseCheck.getAsBoolean())return;
+            adminCloseCheck=null;
+            Platform.runLater(()->{if(reviewController.get()!=null)reviewController.get().clear();});
+            logout(reportPanel);
         });
-        table.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent event) {
-                int viewRow=table.rowAtPoint(event.getPoint()), viewCol=table.columnAtPoint(event.getPoint());
-                if(viewRow<0 || viewCol<0 || table.convertColumnIndexToModel(viewCol)!=6) return;
-                // 정렬된 화면의 행 번호를 원본 모델의 행 번호로 변환해야 정확한 회원을 찾습니다.
-                int row=table.convertRowIndexToModel(viewRow);
-                if(!"INACTIVE".equals(model.getValueAt(row,4))) return;
-                long id=((Number)model.getValueAt(row,0)).longValue();
-                if(AppDialogs.showConfirmDialog(window,model.getValueAt(row,1)+" 회원을 영구 삭제할까요?\n삭제한 회원 정보는 복구할 수 없습니다.",
-                        "회원 삭제",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE)!=JOptionPane.YES_OPTION) return;
-                run(window,refresh,() -> { session.deleteInactive(id); return true; },ok -> reload.run());
-            }
-        });
-        // 선택한 회원 정보를 하단 편집란에 채우고, 저장 시 해당 회원 ID로 수정합니다.
-        table.getSelectionModel().addListSelectionListener(e -> {
-            if (table.getSelectedRow()<0) return;
-            int row=table.convertRowIndexToModel(table.getSelectedRow());
-            person.setText(String.valueOf(model.getValueAt(row,2)));
-            Object value=model.getValueAt(row,3); telephone.setText(value==null ? "" : value.toString());
-            status.setSelectedItem(model.getValueAt(row,4));
-        });
-        refresh.addActionListener(e -> reload.run()); search.addActionListener(e -> reload.run());
-        save.addActionListener(e -> {
-            if (table.getSelectedRow()<0) { AppDialogs.showMessageDialog(window,"수정할 회원을 선택하세요."); return; }
-            int row=table.convertRowIndexToModel(table.getSelectedRow());
-            long id=((Number)model.getValueAt(row,0)).longValue();
-            String n=person.getText(), p=telephone.getText(), state=(String)status.getSelectedItem();
-            run(window,save,() -> { session.update(id,n,p,state); return true; },ok -> reload.run());
-        });
-        // 탈퇴 처리는 정보를 남긴 채 상태만 INACTIVE로 바꾸며, 영구 삭제와 구분됩니다.
-        deactivate.addActionListener(e -> {
-            if (table.getSelectedRow()<0) { AppDialogs.showMessageDialog(window,"탈퇴 처리할 회원을 선택하세요."); return; }
-            int row=table.convertRowIndexToModel(table.getSelectedRow());
-            if (AppDialogs.showConfirmDialog(window,model.getValueAt(row,1)+" 회원을 비활성화할까요?",
-                    "탈퇴 처리",JOptionPane.YES_NO_OPTION)!=JOptionPane.YES_OPTION) return;
-            long id=((Number)model.getValueAt(row,0)).longValue();
-            String n=String.valueOf(model.getValueAt(row,2)); Object v=model.getValueAt(row,3);
-            run(window,deactivate,() -> { session.update(id,n,v==null?"":v.toString(),"INACTIVE"); return true; },ok -> reload.run());
-        });
-        JPanel top = new JPanel(); top.add(new JLabel("이메일 / 이름")); top.add(search); top.add(refresh);
-        JPanel editor = new JPanel(new GridLayout(0,2,8,8));
-        field(editor,"이름",person); field(editor,"전화번호",telephone); field(editor,"상태",status);
-        editor.add(save); editor.add(deactivate);
-        JPanel bottom = new JPanel(new BorderLayout(8,8)); bottom.add(editor,BorderLayout.CENTER); bottom.add(count,BorderLayout.SOUTH);
-        JPanel content = new JPanel(new BorderLayout(20,20)); content.setBorder(BorderFactory.createEmptyBorder(28,28,28,28));
-        JPanel header=new JPanel(new BorderLayout(0,24));header.add(UiTheme.heading("회원 관리","가입한 회원의 정보를 한눈에 확인하세요"),BorderLayout.NORTH);header.add(top,BorderLayout.SOUTH);
-        JScrollPane list=new JScrollPane(table);list.setBorder(BorderFactory.createEmptyBorder());
-        content.add(header,BorderLayout.NORTH); content.add(list,BorderLayout.CENTER); content.add(bottom,BorderLayout.SOUTH);
-        JTabbedPane tabs=new JTabbedPane();tabs.addTab("회원 관리",content);
-        JFXPanel reportPanel=new JFXPanel();tabs.addTab("장소 정보 제보",reportPanel);
         Platform.runLater(()->{
             try {
-                FXMLLoader loader=new FXMLLoader(getClass().getResource("/information-review-view.fxml"));
-                Parent page=loader.load();
-                com.datecourse.controller.InformationReviewController controller=loader.getController();
+                var loader=new FXMLLoader(getClass().getResource("/information-review-view.fxml"));Parent page=loader.load();
+                var controller=loader.<com.datecourse.controller.InformationReviewController>getController();reviewController.set(controller);
+                controller.loadingProperty().addListener((o,a,value)->reviewBusy.set(value));
                 controller.configure(session);reportPanel.setScene(new Scene(page));
             } catch(IOException failure) {
-                reportPanel.setScene(new Scene(new javafx.scene.control.Label("제보 화면을 열지 못했어요.")));
+                com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.SCREEN_LOAD,
+                        com.datecourse.service.AppDiagnostics.Stage.START,failure);
+                reportPanel.setScene(new Scene(new javafx.scene.control.Label("제보 화면을 열지 못했어요. 다시 로그인해 주세요.")));
             }
         });
-        window.setContentPane(tabs); window.setSize(1080,780); window.setLocationRelativeTo(home); window.setVisible(true); reload.run();
+        var content=new JPanel(new BorderLayout());content.add(top,BorderLayout.NORTH);content.add(tabs,BorderLayout.CENTER);
+        home.setContentPane(content);home.setTitle("DateCourse · 관리자");
+        Rectangle usable=GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        home.setMinimumSize(new Dimension(Math.min(900,usable.width),Math.min(680,usable.height)));
+        home.setSize(Math.min(1200,usable.width),Math.min(840,usable.height));home.setLocationRelativeTo(null);home.revalidate();home.repaint();
     }
 
-    /** 별도 마무리 처리가 없는 작업은 빈 완료 콜백을 사용합니다. */
     private static <T> void run(Component parent,JButton button,Callable<T> action,Consumer<T> success) {
         run(parent,button,action,success,() -> {});
     }

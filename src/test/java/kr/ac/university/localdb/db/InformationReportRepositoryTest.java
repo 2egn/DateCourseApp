@@ -135,6 +135,19 @@ class InformationReportRepositoryTest {
         }
         assertNull(members.login("demo@example.test",fixture).adminSession());
     }
+    @Test void reviewContextShowsLatestCorrectionAndRejectsStaleApproval() throws Exception {
+        long first=reports.submit(owner,original,InformationReport.Field.PRICE,"9000","첫 제보","");
+        long second=reports.submit(owner,original,InformationReport.Field.PRICE,"9500","다음 제보","");
+        var stale=reports.reviewContext(second);assertNull(stale.correction());
+        reports.review(first,true,"9000","확인 완료");
+        assertThrows(IllegalArgumentException.class,()->reports.review(stale,true,"9500","이전 화면에서 승인"));
+        assertEquals("PENDING",reports.reviewContext(second).report().status());
+        assertEquals(9000,reports.apply(List.of(original)).getFirst().price());
+        var fresh=reports.reviewContext(second);assertEquals("9000",fresh.correction().value());
+        reports.review(fresh,true,"9500","최신 정정을 확인한 뒤 승인");
+        assertEquals(9500,reports.apply(List.of(original)).getFirst().price());
+        assertThrows(IllegalArgumentException.class,()->reports.review(fresh,true,"9500","중복 처리"));
+    }
     @Test void administratorScreenApprovesPendingRowThroughItsActualButton() throws Exception {
         char[] fixture="test-only-admin-password".toCharArray();
         try(var c=pool.getConnection();var s=c.createStatement()) {s.executeUpdate("CREATE TABLE app_admins(username VARCHAR(50) PRIMARY KEY,password_hash VARCHAR(255))");}
@@ -147,13 +160,17 @@ class InformationReportRepositoryTest {
         try{javafx.application.Platform.startup(()->{javafx.application.Platform.setImplicitExit(false);started.countDown();});}
         catch(IllegalStateException alreadyStarted){javafx.application.Platform.runLater(started::countDown);}
         assertTrue(started.await(10,java.util.concurrent.TimeUnit.SECONDS));
+        var allowReview=new java.util.concurrent.atomic.AtomicBoolean(false);
         javafx.scene.Parent root=fx(()->{
             var loader=new javafx.fxml.FXMLLoader(getClass().getResource("/information-review-view.fxml"));
             javafx.scene.Parent page=loader.load();new javafx.scene.Scene(page,1020,690);page.resize(1020,690);page.applyCss();page.layout();
-            ((com.datecourse.controller.InformationReviewController)loader.getController()).configure(session);return page;
+            var controller=(com.datecourse.controller.InformationReviewController)loader.getController();
+            var confirm=controller.getClass().getDeclaredField("confirmation");confirm.setAccessible(true);
+            confirm.set(controller,(java.util.function.BiPredicate<String,String>)(title,message)->allowReview.get());
+            controller.configure(session);return page;
         });
         long end=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(10);
-        while(fx(()->((javafx.scene.control.ListView<?>)root.lookup("#reports")).getItems().isEmpty())&&System.nanoTime()<end)Thread.sleep(20);
+        while(fx(()->root.lookup("#approveButton").isDisabled())&&System.nanoTime()<end)Thread.sleep(20);
         fx(()->{
             var list=(javafx.scene.control.ListView<?>)root.lookup("#reports");assertEquals(1,list.getItems().size());list.getSelectionModel().selectFirst();
             ((javafx.scene.control.TextField)root.lookup("#correctedValue")).setText("9500");
@@ -163,6 +180,9 @@ class InformationReportRepositoryTest {
             javax.imageio.ImageIO.write(javafx.embed.swing.SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",file.toFile());
             var button=(javafx.scene.control.Button)root.lookup("#approveButton");assertFalse(button.isDisabled());button.fire();return null;
         });
+        assertEquals("PENDING",reports.reports().getFirst().status());
+        allowReview.set(true);
+        fx(()->{((javafx.scene.control.Button)root.lookup("#approveButton")).fire();return null;});
         while(!"APPROVED".equals(reports.reports().getFirst().status())&&System.nanoTime()<end)Thread.sleep(20);
         assertEquals("APPROVED",reports.reports().getFirst().status());assertEquals(9500,reports.apply(List.of(original)).getFirst().price());
         // Wait for the follow-up list refresh before the test's pool is closed.
@@ -253,7 +273,8 @@ class InformationReportRepositoryTest {
         long end=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(8);
         while(System.nanoTime()<end) {
             if(fx(()->((javafx.scene.control.Label)root.lookup("#status")).getText().endsWith(page)
-                    && ((javafx.scene.control.ListView<?>)root.lookup("#reports")).getItems().size()==count))return;
+                    && ((javafx.scene.control.ListView<?>)root.lookup("#reports")).getItems().size()==count
+                    && !root.lookup("#filterBox").isDisabled()))return;
             Thread.sleep(20);
         }
         fail("제보 페이지 로드 시간 초과");
