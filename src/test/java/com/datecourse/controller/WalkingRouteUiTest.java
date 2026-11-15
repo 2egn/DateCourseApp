@@ -67,6 +67,8 @@ class WalkingRouteUiTest {
             var calls = new java.util.concurrent.atomic.AtomicInteger();
             PlannerMap map = fx(() -> {
                 view.set(new WebView());
+                var stage=new javafx.stage.Stage();stage.setScene(new javafx.scene.Scene(new javafx.scene.layout.StackPane(view.get()),800,600));stage.show();
+                view.get().getProperties().put("testStage",stage);
                 PlannerMap result = new PlannerMap(view.get(),(lat,lng)->{},error -> fail(error),
                         () -> URI.create("http://localhost/not-used"));
                 result.setWalkingRouter(stops -> {
@@ -132,6 +134,8 @@ class WalkingRouteUiTest {
         try {
             PlannerMap map = fx(() -> {
                 view.set(new WebView());
+                var stage=new javafx.stage.Stage();stage.setScene(new javafx.scene.Scene(new javafx.scene.layout.StackPane(view.get()),800,600));stage.show();
+                view.get().getProperties().put("testStage",stage);
                 PlannerMap result = new PlannerMap(view.get(), (lat,lng)->{}, error -> fail(error),
                         () -> URI.create("http://localhost:" + server.getAddress().getPort() + "/map.html"));
                 result.setWalkingRouter(stops -> {
@@ -162,7 +166,7 @@ class WalkingRouteUiTest {
             assertEquals(true, fx(() -> view.get().getEngine().executeScript("window.walking===null && window.walkingMessage.includes('코스')")));
         } finally {
             releaseOld.countDown();
-            if (view.get()!=null) fx(() -> { view.get().getEngine().load(null); return null; });
+            if (view.get()!=null) fx(() -> {view.get().getEngine().load(null);((javafx.stage.Stage)view.get().getProperties().get("testStage")).close();return null;});
             server.stop(0);
         }
     }

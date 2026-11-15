@@ -833,7 +833,6 @@
     window.fitRouteView = function (wholeRoute, intent) {
         if (!ready || !routePresentation) return;
         if (window.resetMapZoom) window.resetMapZoom();
-        map.relayout();
         const plan = routePresentation;
         const points = wholeRoute ? [new kakao.maps.LatLng(plan.startLat, plan.startLng)].concat(
             plan.places.concat(routeCandidates).map(function (p) {return new kakao.maps.LatLng(p.lat, p.lng);})) : rangePoints();
@@ -1168,63 +1167,55 @@
         kakao.maps.load(function () {
             if (sdkTimedOut) return;
             clearTimeout(sdkTimeout);
-            try {
-                map = new kakao.maps.Map(document.getElementById("map"), {
-                    center: new kakao.maps.LatLng(35.1796, 129.0756), level: 5,
-                    disableDoubleClickZoom: USE_INSTANT_ZOOM
-                });
+            window.whenMapViewportReady(document.getElementById('map'), function () {
+                try {
+                    map = new kakao.maps.Map(document.getElementById("map"), {
+                        center: new kakao.maps.LatLng(35.1796, 129.0756), level: 5,
+                        disableDoubleClickZoom: USE_INSTANT_ZOOM
+                    });
 
-                camera = window.createMapCamera(map, document.getElementById('map'), decideCamera);
-                marker = new kakao.maps.Marker({ image: markerImage('', true), title: '출발 위치 · 탐색 반경 중심', zIndex: 5 });
-                circle = new kakao.maps.Circle({
-                    center: map.getCenter(), radius: radiusMeter,
-                    strokeWeight: 2.5, strokeColor: "#2563eb", strokeOpacity: 0.85,
-                    strokeStyle: "solid", fillOpacity: 0, zIndex: 0
-                });
-                circleOutline = new kakao.maps.Circle({
-                    center: map.getCenter(), radius: radiusMeter,
-                    strokeWeight: 6, strokeColor: "#ffffff", strokeOpacity: 0.95,
-                    strokeStyle: "solid", fillOpacity: 0, zIndex: -1
-                });
-                function select(event) {
-                    if (mapObjectClick) return;
-                    placePinPreview.hide();
-                    const closedWalking = window.dismissWalkingPopup();
-                    const closedDetail = itinerary.dismissDetail();
-                    if (closedWalking || closedDetail) return;
-                    if (routeLocked) return;
-                    dismissSearch();
-                    window.selectMapLocation(event.latLng.getLat(), event.latLng.getLng());
-                }
-                kakao.maps.event.addListener(map, "click", select);
-                kakao.maps.event.addListener(circle, "click", select);
-                kakao.maps.event.addListener(circleOutline, "click", select);
-                ready = true;
-                if (kakao.maps.services && kakao.maps.services.Places) {
-                    places = new kakao.maps.services.Places();
-                    searchButton.disabled = false;
-                } else {
-                    searchNotice("장소 검색을 불러오지 못했어요. 지도에서 직접 위치를 선택해 주세요.");
-                }
-                if (kakao.maps.services && kakao.maps.services.Geocoder) {
-                    geocoder = new kakao.maps.services.Geocoder();
-                }
-                status.textContent = "지도에서 출발 위치를 클릭해 주세요.";
-                window.connectJavaMapBridge();
+                    camera = window.createMapCamera(map, document.getElementById('map'), decideCamera);
+                    marker = new kakao.maps.Marker({ image: markerImage('', true), title: '출발 위치 · 탐색 반경 중심', zIndex: 5 });
+                    circle = new kakao.maps.Circle({
+                        center: map.getCenter(), radius: radiusMeter,
+                        strokeWeight: 2.5, strokeColor: "#2563eb", strokeOpacity: 0.85,
+                        strokeStyle: "solid", fillOpacity: 0, zIndex: 0
+                    });
+                    circleOutline = new kakao.maps.Circle({
+                        center: map.getCenter(), radius: radiusMeter,
+                        strokeWeight: 6, strokeColor: "#ffffff", strokeOpacity: 0.95,
+                        strokeStyle: "solid", fillOpacity: 0, zIndex: -1
+                    });
+                    function select(event) {
+                        if (mapObjectClick) return;
+                        placePinPreview.hide();
+                        const closedWalking = window.dismissWalkingPopup();
+                        const closedDetail = itinerary.dismissDetail();
+                        if (closedWalking || closedDetail) return;
+                        if (routeLocked) return;
+                        dismissSearch();
+                        window.selectMapLocation(event.latLng.getLat(), event.latLng.getLng());
+                    }
+                    kakao.maps.event.addListener(map, "click", select);
+                    kakao.maps.event.addListener(circle, "click", select);
+                    kakao.maps.event.addListener(circleOutline, "click", select);
+                    ready = true;
+                    if (kakao.maps.services && kakao.maps.services.Places) {
+                        places = new kakao.maps.services.Places();
+                        searchButton.disabled = false;
+                    } else {
+                        searchNotice("장소 검색을 불러오지 못했어요. 지도에서 직접 위치를 선택해 주세요.");
+                    }
+                    if (kakao.maps.services && kakao.maps.services.Geocoder) {
+                        geocoder = new kakao.maps.services.Geocoder();
+                    }
+                    status.textContent = "지도에서 출발 위치를 클릭해 주세요.";
+                    window.connectJavaMapBridge();
 
-                let resizeTimer;
-                window.addEventListener("resize", function () {
-                    clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(function () {
-                        camera.cancel();
-                        const center = map.getCenter();
-                        map.relayout();
-                        map.setCenter(center);
-                    }, 80);
-                });
-            } catch (failure) {
-                reportFailure("지도를 표시하지 못했습니다. 앱 또는 페이지를 다시 열어 주세요.");
-            }
+                } catch (failure) {
+                    reportFailure("지도를 표시하지 못했습니다. 앱 또는 페이지를 다시 열어 주세요.");
+                }
+            });
         });
     };
     document.head.appendChild(sdk);

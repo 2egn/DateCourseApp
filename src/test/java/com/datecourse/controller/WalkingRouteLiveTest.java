@@ -173,6 +173,33 @@ class WalkingRouteLiveTest {
         }
     }
 
+    @Test void hiddenEditorMapInitializesAtVisibleSizeAndSurvivesLargeResize() throws Exception {
+        java.net.URI page=com.datecourse.service.MapPageServer.sharedPage();
+        Context context=fx(()->{
+            WebView view=new WebView();view.setVisible(false);view.setManaged(false);
+            var root=new javafx.scene.layout.StackPane(view);
+            Stage stage=new Stage();stage.setScene(new Scene(root,1100,760));stage.show();
+            PlannerMap map=new PlannerMap(view,(lat,lng)->{},message->{},()->page);
+            map.present(new RoutePlan(35.1578,129.06,2,1000,"hidden",List.of()),null,500,true,true);
+            map.load();return new Context(stage,root,view,map);
+        });
+        try {
+            Thread.sleep(250);
+            assertEquals(javafx.concurrent.Worker.State.READY,fx(()->context.view().getEngine().getLoadWorker().getState()));
+            fx(()->{context.view().setVisible(true);context.view().setManaged(true);context.root().applyCss();context.root().layout();context.map().fit(false);return null;});
+            await(context,"typeof window.inspectMapCamera==='function' && !!inspectMapCamera() && !!inspectMapCamera().last && !inspectMapCamera().moving && !inspectMapCamera().pending && inspectMapCamera().level<10 && Math.abs(inspectMapCamera().lat-35.1578)<.0001",20);
+            fx(()->{context.stage().setWidth(2560);context.stage().setHeight(1000);return null;});
+            await(context,"document.documentElement.clientWidth>2000 && inspectMapCamera().width===document.getElementById('map').clientWidth && inspectMapCamera().height===document.getElementById('map').clientHeight",10);
+            fx(()->{context.map().fit(false);return null;});
+            await(context,"!inspectMapCamera().moving && !inspectMapCamera().pending && inspectMapCamera().level<10 && Math.abs(inspectMapCamera().lat-35.1578)<.0001 && Math.abs(inspectMapCamera().lng-129.06)<.0001",10);
+            fx(()->{
+                try {Path directory=Path.of("build/ui-preview");Files.createDirectories(directory);
+                    ImageIO.write(SwingFXUtils.fromFXImage(context.root().snapshot(null,null),null),"png",directory.resolve("map-hidden-resize-live.png").toFile());
+                }catch(Exception e){throw new RuntimeException(e);}return null;
+            });
+        } finally {fx(()->{context.map().dispose();context.stage().close();return null;});}
+    }
+
     private void await(Context context,String condition,int seconds) throws Exception {
         long deadline=System.nanoTime()+TimeUnit.SECONDS.toNanos(seconds);
         while(System.nanoTime()<deadline){

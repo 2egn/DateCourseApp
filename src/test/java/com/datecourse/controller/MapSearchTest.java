@@ -117,6 +117,29 @@ class MapSearchTest {
         });Platform.runLater(task);task.get(15,TimeUnit.SECONDS);
     }
 
+    @Test void cameraDoesNotFitHiddenViewportAndReplaysLatestGoalAfterLayout() throws Exception {
+        WebEngine engine=loadMap(1100,720,false);
+        script(engine,"""
+            window.viewportWidth=0;window.viewportHeight=0;
+            window.sizedElement=document.createElement('div');
+            Object.defineProperty(sizedElement,'clientWidth',{get:function(){return viewportWidth;}});
+            Object.defineProperty(sizedElement,'clientHeight',{get:function(){return viewportHeight;}});
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));testMap.setLevel(5,{});zoomCalls=[];
+            window.sizeCamera=createMapCamera(testMap,sizedElement,function(f,i){return JSON.parse(cameraPolicyBridge.decideCameraTransition(i,f.level,f.fitLevel,f.screenDistance,f.overflowRatio,f.reducedMotion));});
+            window.circleGoal=function(lat){return {intent:'FIT',points:[new kakao.maps.LatLng(lat-.009,129.049),new kakao.maps.LatLng(lat+.009,129.071)]};};
+            sizeCamera.request(circleGoal(35.1578));sizeCamera.request(circleGoal(35.1598));
+            """);
+        assertEquals(5,((Number)script(engine,"testMap.getLevel()")).intValue());
+        assertEquals(0,((Number)script(engine,"zoomCalls.length")).intValue());
+        assertEquals(true,script(engine,"sizeCamera.inspect().pending"));
+        script(engine,"viewportWidth=1400;viewportHeight=800;sizeCamera.resize()");
+        Thread.sleep(150);
+        assertEquals(35.1598,((Number)script(engine,"testMap.getCenter().getLat()")).doubleValue(),1e-8);
+        assertTrue(((Number)script(engine,"testMap.getLevel()")).intValue()<10);
+        assertEquals(false,script(engine,"sizeCamera.inspect().pending"));
+        script(engine,"sizeCamera.dispose()");
+    }
+
     @Test void cameraKeepsOnlyLatestGoalAndManualInputCancelsWaitingMove() throws Exception {
         WebEngine engine=loadMap(1100,720,false);
         script(engine,"""

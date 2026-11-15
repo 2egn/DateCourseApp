@@ -49,6 +49,8 @@ class PlannerMapLoadTest {
             AtomicReference<WebView> view = new AtomicReference<>();
             PlannerMap map = fx(() -> {
                 view.set(new WebView());
+                var stage=new javafx.stage.Stage();stage.setScene(new javafx.scene.Scene(new javafx.scene.layout.StackPane(view.get()),800,600));stage.show();
+                view.get().getProperties().put("testStage",stage);
                 PlannerMap result = new PlannerMap(view.get(), (lat, lng) -> {}, error::set, () -> {
                     if (attempts.incrementAndGet() == 1) throw new IOException("server unavailable");
                     return URI.create("http://localhost:" + server.getAddress().getPort() + "/map.html");
@@ -69,8 +71,30 @@ class PlannerMapLoadTest {
             fx(() -> { map.load(); return null; });
             awaitPresented(view.get());
             assertEquals(3, attempts.get());
-            fx(() -> { view.get().getEngine().load(null); return null; });
+            fx(() -> { map.dispose();((javafx.stage.Stage)view.get().getProperties().get("testStage")).close(); return null; });
         } finally { server.stop(0); }
+    }
+
+    @Test void mapPageWaitsForHiddenAncestorToBecomeVisible() throws Exception {
+        HttpServer server=HttpServer.create(new InetSocketAddress("127.0.0.1",0),0);
+        AtomicInteger requests=new AtomicInteger();
+        server.createContext("/map.html",exchange->{
+            requests.incrementAndGet();byte[] html="<html><script>window.presentRoute=function(p){window.presented=p;};window.connectJavaMapBridge=function(){javaMapBridge.onMapReady();};</script></html>".getBytes(StandardCharsets.UTF_8);
+            try(exchange){exchange.getResponseHeaders().set("Content-Type","text/html");exchange.sendResponseHeaders(200,html.length);exchange.getResponseBody().write(html);}
+        });server.start();
+        record Context(javafx.stage.Stage stage,javafx.scene.layout.StackPane pane,WebView view,PlannerMap map){}
+        Context context=fx(()->{
+            WebView view=new WebView();var pane=new javafx.scene.layout.StackPane(view);pane.setVisible(false);
+            var stage=new javafx.stage.Stage();stage.setScene(new javafx.scene.Scene(pane,800,600));stage.show();
+            var map=new PlannerMap(view,(lat,lng)->{},message->{},()->URI.create("http://localhost:"+server.getAddress().getPort()+"/map.html"));
+            map.present(new RoutePlan(35.1796,129.0756,2,1000,"",List.of()),null,500,false,true);map.load();
+            return new Context(stage,pane,view,map);
+        });
+        try{
+            fx(()->null);assertEquals(0,requests.get());
+            assertEquals(javafx.concurrent.Worker.State.READY,fx(()->context.view().getEngine().getLoadWorker().getState()));
+            fx(()->{context.pane().setVisible(true);return null;});awaitPresented(context.view());assertEquals(1,requests.get());
+        }finally{fx(()->{context.map().dispose();context.stage().close();return null;});server.stop(0);}
     }
 
     private void awaitPresented(WebView view) throws Exception {

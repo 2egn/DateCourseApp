@@ -60,6 +60,8 @@ final class PlannerMap {
     private final PageSource pageSource;
     private URI page;
     private final WebView view;
+    private final MapViewportLifecycle viewport;
+    private boolean pageLoadPending;
     private final Consumer<String> error;
     private final MapBridge bridge;
     private boolean ready;
@@ -88,6 +90,9 @@ final class PlannerMap {
 
     PlannerMap(WebView view, BiConsumer<Double, Double> selected, Consumer<String> error, PageSource pageSource) {
         this.view = view;
+        viewport = new MapViewportLifecycle(view, () -> {
+            if(pageLoadPending){pageLoadPending=false;view.getEngine().load(page.toString());}
+        });
         this.error = error;
         this.pageSource = pageSource;
         bridge = new MapBridge(() -> {
@@ -134,13 +139,15 @@ final class PlannerMap {
         try {
             page = pageSource.page();
             loaded = true;
-            view.getEngine().load(page.toString());
+            pageLoadPending = true;
+            viewport.refresh();
         } catch (IOException failure) {
             error.accept("지도 서버를 시작하지 못했어요. 다른 앱이나 수동 지도 서버의 8080 포트 사용을 확인하고 다시 불러와 주세요.");
         }
     }
 
     void reload() {
+        pageLoadPending = false;
         ready = false;
         loaded = false;
         view.getEngine().getLoadWorker().cancel();
@@ -149,6 +156,8 @@ final class PlannerMap {
     }
 
     void dispose() {
+        pageLoadPending = false;
+        viewport.close();
         walkingPending = false;
         walkingVersion++;
         if (walkingTask != null) walkingTask.cancel();
