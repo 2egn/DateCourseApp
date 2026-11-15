@@ -418,3 +418,17 @@
 .condition-screen .filter-chip:hover { -fx-background-color: #dfe7ef; }
 
 .filter-scroll, .filter-scroll > .viewport { -fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0; }
+
+/* Category tones are shared by tabs, editor outline and selected chips. */
+.condition-screen .filter-category.filter-tone-blue, .condition-screen .filter-chip.filter-tone-blue { -fx-background-color: #eef4ff; -fx-border-color: #cbdcf8; -fx-text-fill: #2b5590; }
+.condition-screen .filter-category.filter-tone-amber, .condition-screen .filter-chip.filter-tone-amber { -fx-background-color: #fff7e6; -fx-border-color: #efdab2; -fx-text-fill: #805c19; }
+.condition-screen .filter-category.filter-tone-green, .condition-screen .filter-chip.filter-tone-green { -fx-background-color: #edf8f0; -fx-border-color: #c9e5d2; -fx-text-fill: #2b6d48; }
+.condition-screen .filter-category.filter-tone-blue:selected { -fx-background-color: #dce9ff; -fx-border-color: #739bd2; }
+.condition-screen .filter-category.filter-tone-amber:selected { -fx-background-color: #ffedc5; -fx-border-color: #bd933d; }
+.condition-screen .filter-category.filter-tone-green:selected { -fx-background-color: #d9efdf; -fx-border-color: #72aa84; }
+.condition-screen .filter-category.filter-tone-neutral:selected { -fx-background-color: #e8edf3; -fx-border-color: #94a3b8; -fx-text-fill: #334155; }
+.condition-screen .filter-editor.filter-tone-blue { -fx-background-color: #f7faff; -fx-border-color: #cbdcf8; }
+.condition-screen .filter-editor.filter-tone-amber { -fx-background-color: #fffcf4; -fx-border-color: #efdab2; }
+.condition-screen .filter-editor.filter-tone-green { -fx-background-color: #f6fbf7; -fx-border-color: #c9e5d2; }
+.condition-screen .filter-chip { -fx-border-radius: 14; -fx-border-width: 1; -fx-border-color: transparent; }
+.condition-screen .filter-chip:hover { -fx-opacity: .8; }

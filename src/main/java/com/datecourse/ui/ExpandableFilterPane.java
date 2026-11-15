@@ -13,10 +13,16 @@ import java.util.function.IntSupplier;
 
 /** A reusable filter surface: stable entry/chips, registered categories and bounded editing area. */
 public final class ExpandableFilterPane extends VBox {
-    public record Section(String id,String title,String description,Node content,IntSupplier selectedCount) {
-        public Section {Objects.requireNonNull(id);Objects.requireNonNull(content);Objects.requireNonNull(selectedCount);}
+    public enum Tone {
+        NEUTRAL, BLUE, AMBER, GREEN;
+        String styleClass(){return "filter-tone-"+name().toLowerCase(Locale.ROOT);}
     }
-    public record Selection(String id,String label,Runnable remove) {
+    public record Section(String id,String title,String description,Node content,IntSupplier selectedCount,Tone tone) {
+        public Section(String id,String title,String description,Node content,IntSupplier count){this(id,title,description,content,count,Tone.NEUTRAL);}
+        public Section {Objects.requireNonNull(id);Objects.requireNonNull(content);Objects.requireNonNull(selectedCount);Objects.requireNonNull(tone);}
+    }
+    public record Selection(String id,String label,Runnable remove,String sectionId) {
+        public Selection(String id,String label,Runnable remove){this(id,label,remove,null);}
         public Selection {Objects.requireNonNull(id);Objects.requireNonNull(label);Objects.requireNonNull(remove);}
     }
     private static final String SELECTED="selected";
@@ -68,19 +74,21 @@ public final class ExpandableFilterPane extends VBox {
         Set<String> ids=new HashSet<>();ids.add(SELECTED);
         for(Section section:values)if(!ids.add(section.id()))throw new IllegalArgumentException("필터 그룹 ID가 중복됐어요.");
         sections=List.copyOf(values);categories.getChildren().clear();buttons.clear();tabs.getToggles().clear();
-        category(SELECTED,"선택한 필터");sections.forEach(s->category(s.id(),s.title()));
+        category(SELECTED,"선택한 필터",Tone.NEUTRAL);sections.forEach(s->category(s.id(),s.title(),s.tone()));
         clear.setMinHeight(28);categories.getChildren().add(clear);
         if(current==null||!buttons.containsKey(current))current=sections.isEmpty()?SELECTED:sections.getFirst().id();
         showSection(current);refresh();
     }
-    private void category(String id,String title){
+    private void category(String id,String title,Tone tone){
         ToggleButton button=new ToggleButton(title);button.setUserData(id);button.setToggleGroup(tabs);
-        button.getStyleClass().add("filter-category");button.setOnAction(e->{button.setSelected(true);showSection(id);});
+        button.getStyleClass().addAll("filter-category",tone.styleClass());button.setOnAction(e->{button.setSelected(true);showSection(id);});
         buttons.put(id,button);categories.getChildren().add(button);
     }
     public void showSection(String id){
         if(!buttons.containsKey(id))throw new IllegalArgumentException("필터 그룹을 확인해 주세요.");
         current=id;buttons.get(id).setSelected(true);content.getChildren().clear();
+        editor.getStyleClass().removeAll(Arrays.stream(Tone.values()).map(Tone::styleClass).toList());
+        editor.getStyleClass().add(toneFor(id).styleClass());
         if(id.equals(SELECTED)){
             description.setText("선택한 조건을 하나씩 해제할 수 있어요. 변경 후 후보 검색을 눌러 반영해 주세요.");
             content.getChildren().add(allSelected);
@@ -104,8 +112,11 @@ public final class ExpandableFilterPane extends VBox {
         if(buttons.containsKey(SELECTED))buttons.get(SELECTED).setText("선택한 필터 · "+selections.size());
         for(Section section:sections){int count=section.selectedCount().getAsInt();buttons.get(section.id()).setText(section.title()+(count==0?"":" · "+count));}
     }
+    private Tone toneFor(String sectionId){
+        return sections.stream().filter(s->s.id().equals(sectionId)).map(Section::tone).findFirst().orElse(Tone.NEUTRAL);
+    }
     private Button chip(Selection selection){
-        Button chip=new Button(selection.label()+" ×");chip.getStyleClass().add("filter-chip");
+        Button chip=new Button(selection.label()+" ×");chip.getStyleClass().addAll("filter-chip",toneFor(selection.sectionId()).styleClass());
         chip.setAccessibleText(selection.label()+" 필터 해제");chip.setWrapText(true);chip.setMaxWidth(260);
         chip.setTooltip(new Tooltip(selection.label()+" · 눌러서 해제"));chip.setOnAction(e->selection.remove().run());return chip;
     }

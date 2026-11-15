@@ -109,11 +109,11 @@ public final class RouteEditorController extends BasePageController {
         recommendNextButton.managedProperty().bind(recommendNextButton.visibleProperty());
         filterPane.setSections(List.of(
             new com.datecourse.ui.ExpandableFilterPane.Section("type","종류·업종","활동 안에서 원하는 종류와 세부 업종을 골라 주세요.",typeFilterSection,
-                ()->(subtypeBox.getValue()==null?0:1)+(detailTypeBox.getValue()==null?0:1)),
+                ()->(subtypeBox.getValue()==null?0:1)+(detailTypeBox.getValue()==null?0:1),com.datecourse.ui.ExpandableFilterPane.Tone.BLUE),
             new com.datecourse.ui.ExpandableFilterPane.Section("price","가격 기준","기본 가격 상한은 유지하면서 참고·추정·무료 조건을 추가해요.",priceFilterSection,
-                ()->priceFilterBox.getValue()==null||priceFilterBox.getValue()==com.datecourse.model.PlacePriceFilter.ANY?0:1),
+                ()->priceFilterBox.getValue()==null||priceFilterBox.getValue()==com.datecourse.model.PlacePriceFilter.ANY?0:1,com.datecourse.ui.ExpandableFilterPane.Tone.AMBER),
             new com.datecourse.ui.ExpandableFilterPane.Section("features","특징","확인된 특징만 제공해요. 여러 개 고르면 모두 충족해야 해요.",tagField,
-                ()->featureSelector.selectedTags().size())
+                ()->featureSelector.selectedTags().size(),com.datecourse.ui.ExpandableFilterPane.Tone.GREEN)
         ));
         subtypeField.managedProperty().bind(subtypeField.visibleProperty());
         tagField.managedProperty().bind(tagField.visibleProperty());
@@ -166,7 +166,7 @@ public final class RouteEditorController extends BasePageController {
                 rank.getStyleClass().add("candidate-rank");
                 name.getStyleClass().add("section");
                 meta.getStyleClass().add("planner-caption");
-                badges.getStyleClass().add("candidate-evidence");
+                badges.getStyleClass().add("planner-caption");
                 VBox copy = new VBox(2, name, meta, badges);
                 copy.setMinWidth(0);
                 HBox.setHgrow(copy, Priority.ALWAYS);
@@ -192,9 +192,10 @@ public final class RouteEditorController extends BasePageController {
                 var presentation=placePresenter.present(nearby.place());
                 String reason=presentation.badges().stream().limit(2).map(com.datecourse.service.PlacePresenter.Badge::label)
                         .collect(java.util.stream.Collectors.joining(" · "));
-                badges.setText(reason.isBlank()?PlaceFacets.subtype(nearby.place()):reason);
-                badges.setTooltip(new Tooltip(presentation.candidateDescription()));
-                setAccessibleText(nearby.place().name() + " · 선택하면 상세 카드 열기");
+                String type=placePresenter.candidateType(nearby.place());
+                badges.setText(type+(reason.isBlank()?"":" · "+reason));
+                badges.setTooltip(new Tooltip(type+"\n"+presentation.candidateDescription()));
+                setAccessibleText(nearby.place().name() + " · "+type+" · 선택하면 상세 카드 열기");
                 setGraphic(row);
             }
         });
@@ -659,11 +660,11 @@ public final class RouteEditorController extends BasePageController {
     }
     private void updateFacetSummary() {
         var selections=new java.util.ArrayList<com.datecourse.ui.ExpandableFilterPane.Selection>();
-        if(subtypeBox.getValue()!=null)selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("type","종류: "+subtypeBox.getValue(),()->subtypeBox.setValue(null)));
-        if(detailTypeBox.getValue()!=null)selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("detail","업종: "+detailTypeBox.getValue(),()->detailTypeBox.setValue(null)));
+        if(subtypeBox.getValue()!=null)selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("type","종류: "+subtypeBox.getValue(),()->subtypeBox.setValue(null),"type"));
+        if(detailTypeBox.getValue()!=null)selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("detail","업종: "+detailTypeBox.getValue(),()->detailTypeBox.setValue(null),"type"));
         if(priceFilterBox.getValue()!=null&&priceFilterBox.getValue()!=com.datecourse.model.PlacePriceFilter.ANY)
-            selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("price",priceFilterBox.getValue().toString(),()->priceFilterBox.setValue(com.datecourse.model.PlacePriceFilter.ANY)));
-        featureSelector.selectedTags().stream().sorted().forEach(tag->selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("feature:"+tag.name(),tag.label(),()->featureSelector.selectedTags().remove(tag))));
+            selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("price",priceFilterBox.getValue().toString(),()->priceFilterBox.setValue(com.datecourse.model.PlacePriceFilter.ANY),"price"));
+        featureSelector.selectedTags().stream().sorted().forEach(tag->selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("feature:"+tag.name(),tag.label(),()->featureSelector.selectedTags().remove(tag),"features")));
         filterPane.setSelections(selections);
     }
     @FXML private void onClearAdvancedFilters() {

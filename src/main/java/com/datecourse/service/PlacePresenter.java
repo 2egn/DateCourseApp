@@ -38,6 +38,13 @@ public final class PlacePresenter {
         return new Presentation(priceLabel,place.priceText(),priceSummary,candidateSummary,description,
                 informationSummary,badges,lines);
     }
+    /** Stable category/type label for compact candidates; do not repeat identical cafe labels. */
+    public String candidateType(Place place) {
+        String category=PlaceSearchService.categoryName(place.category());
+        if(place.details().subcategory().isBlank())return category;
+        String detail=PlaceFacets.detailType(place);
+        return category.equals(detail)?category:category+" · "+detail;
+    }
     private Badge badge(PlaceDetails details,PlaceTag tag) {
         var typed=details.attributeFacts().stream().filter(f->f.feature()==PlaceFeature.from(tag)).findFirst();
         String description;
