@@ -470,8 +470,8 @@
       "present": true
     },
     "index.md": {
-      "fingerprint": "f3926e6239527eeae91b58c0ab90bec358d3829eeceeb398da2c80785a7c96b5",
-      "revision": 5,
+      "fingerprint": "4271cd652e1467464eda2202778cff2e0e80247d7239794f5521686d9e7afd92",
+      "revision": 7,
       "updated": true,
       "present": true
     },
@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "848a9b548e53fd9a0343805a36246f2d5c231a13021d987af614f6ece0324298",
-      "revision": 13,
+      "fingerprint": "f4f299a31cd356216825e411c4dc0e27b0b929cf17494e77be7f8b7edaa4370d",
+      "revision": 14,
       "updated": true,
       "present": true
     },
@@ -686,8 +686,8 @@
       "present": true
     },
     "현재_구현_흐름.md": {
-      "fingerprint": "e274c38876da76fd1a778a22f655dcaa9e467da0a95b8113a26ce2df3959a774",
-      "revision": 3,
+      "fingerprint": "27ccf2c3fc862c4391025943ccb11e0d6c94403254fb3f6598a2bd18bc87d174",
+      "revision": 4,
       "updated": true,
       "present": true
     },
@@ -801,6 +801,12 @@
     },
     "05_회원_DB/PlaceCatalogRepository.md": {
       "fingerprint": "22d8266f8cbdfc35b9dade1edee11a875baac22c696dc2e1820e57cf7b25bf97",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "변경_요약.md": {
+      "fingerprint": "dcd5f55a65e7185e07848470a255513ab608838f44a1121324d03a58c3dcf01a",
       "revision": 1,
       "updated": true,
       "present": true

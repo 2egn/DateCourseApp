@@ -1,3 +1,4 @@
+import {applyNov16,IMPLEMENTATION_REFERENCE} from './board-nov16.mjs';
 import {COPY_VERSION,TASK_COPY} from './board-copy.mjs';
 import {AUDIT_VERSION,AUDIT_TASKS,AUDIT_ADDITIONS} from './board-audit.mjs';
 import {taskTree} from '../web/dashboard/task-tree.js';
@@ -119,6 +120,7 @@ export class TaskBoard {
    applyDb01Design(this.sql);
    applyDb02Implementation(this.sql);
    applyNov14(this.sql);
+   applyNov16(this.sql);
   });
  }
  async fetch(request){
@@ -128,7 +130,7 @@ export class TaskBoard {
    if(request.method==='GET'&&url.pathname==='/api/board'){
     const tasks=this.sql.exec('SELECT * FROM tasks ORDER BY updatedAt DESC,id ASC').toArray().map(row=>({...row,archived:!!row.archived}));
     const tree=taskTree(tasks);
-    return json({tasks:tasks.map(task=>({...task,parentId:tree.parents.get(task.id)||'',dependencyWarning:tree.warnings.has(task.id)})),statuses:STATUSES,areas:AREAS,priorities:PRIORITIES});
+    return json({implementation:IMPLEMENTATION_REFERENCE,tasks:tasks.map(task=>({...task,parentId:tree.parents.get(task.id)||'',dependencyWarning:tree.warnings.has(task.id)})),statuses:STATUSES,areas:AREAS,priorities:PRIORITIES});
    }
    if(request.method==='POST'&&url.pathname==='/api/board/tasks'){
     const input=changes(await readJson(request),false);const id='T-'+crypto.randomUUID().slice(0,8).toUpperCase();const now=new Date().toISOString();

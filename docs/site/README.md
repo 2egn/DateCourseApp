@@ -4,6 +4,15 @@
 
 주소: https://datecourseapp-team-docs.ate-ourse-pp.workers.dev
 
+## 2026-11-16 표시·보드 갱신
+
+문서는 짧은 요약 → 항목의 간략 설명 → 상세 순서로 펼친다. `compact-docs.mjs`가 Quartz의 HTML을 기본 `<details>`로 묶고 원문·앵커·표·코드는 보존한다. `compact-docs.js`는 전체 펼치기/접기, 직접 링크 경로 열기, 인쇄 복원을 처리한다. `content/변경_요약.md`는 주요 파일과 함수를 같은 계층으로 정리한다.
+
+보드는 `applyNov16`을 한 번 적용한다. 자동 생성·점검 카드만 갱신하며 팀원 수정·보관·담당자·우선순위·선행 관계는 보존한다. 기존 설명은 이전 기록으로 남기고 최신 근거를 앞에 둔다. 설명 한도를 넘으면 덮어쓰지 않고 건너뛴다. 수동 최종 시연과 미구현 기능은 완료로 바꾸지 않는다.
+
+검사: Node 54개, `check-compact-docs.mjs`, `check-latest-board.mjs`, 기존 흐름도·표·문서 읽음 표시 브라우저 검사.
+빌드 설치 위치가 다른 경우 `DOCS_QUARTZ_DIR`로 기존 Quartz 디렉터리를 지정할 수 있다. 기본 경로는 `build/docs-tools/quartz`다.
+
 ## 접근 기준
 
 - 대상: `2egn/DateCourseApp`의 소유자와 **초대 수락한 Collaborators**.

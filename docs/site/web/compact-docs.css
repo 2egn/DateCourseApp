@@ -1,0 +1,20 @@
+article[data-compact-document]{line-height:1.7}
+article .doc-overview{font-size:1rem;margin:.4rem 0 .7rem;color:var(--dark)}
+.doc-controls{display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;margin:.5rem 0 .8rem;font-size:.8rem;color:var(--gray)}
+.doc-controls span{margin-right:auto}
+.doc-controls button{font:inherit;color:var(--darkgray);background:var(--lightgray);border:1px solid transparent;border-radius:5px;padding:.25rem .55rem;cursor:pointer}
+.doc-controls button:hover{border-color:var(--gray)}
+.doc-controls button:focus-visible,article summary:focus-visible{outline:2px solid var(--secondary);outline-offset:3px}
+article details.doc-section,article details.doc-item{border:0;border-bottom:1px solid var(--lightgray);margin:0;padding:0}
+article details.doc-section>summary,article details.doc-item>summary{cursor:pointer;padding:.55rem .15rem;color:var(--dark);font-weight:600;overflow-wrap:anywhere}
+article details.doc-section>summary::marker,article details.doc-item>summary::marker{color:var(--gray);font-size:.8em}
+article details.doc-section>summary h2,article details.doc-section>summary h3{display:inline;font-size:1rem;line-height:1.6;margin:0}
+article summary .anchor{display:none}
+article .doc-section-body{padding:0 .3rem .7rem .9rem;min-width:0}
+article .doc-section-body p,article .doc-section-body ul,article .doc-section-body ol{margin:.45rem 0}
+article .doc-section-body pre{margin:.6rem 0}
+article .doc-section-body table{font-size:.9rem;margin:.55rem 0}
+article details[data-doc-level=nested]>summary,article details.doc-item>summary{font-size:.92rem}
+article :is(h2,h3,h4,[id]){scroll-margin-top:5rem}
+@media(max-width:800px){article .doc-section-body{padding-left:.6rem}.doc-controls{font-size:.78rem}.doc-controls span{flex-basis:100%}article details.doc-section>summary{padding:.6rem 0}}
+@media print{.doc-controls{display:none}article details.doc-section{border:0}article .doc-section-body{padding-left:0}}

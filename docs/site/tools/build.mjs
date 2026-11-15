@@ -4,11 +4,12 @@ import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
 import {spawnSync} from 'node:child_process';
 import {extractMethods,enrichMethods,methodNames} from './flow-methods.mjs';
+import {compactDocument} from './compact-docs.mjs';
 import {optimizeAssets} from './optimize-assets.mjs';
 import {normalizeTableLinks} from './table-links.mjs';
 import {updateDocumentRevisions} from './document-revisions.mjs';
 const site=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),root=path.resolve(site,'../..');
-const quartz=path.join(root,'build/docs-tools/quartz');
+const quartz=process.env.DOCS_QUARTZ_DIR?path.resolve(process.env.DOCS_QUARTZ_DIR):path.join(root,'build/docs-tools/quartz');
 const source=process.env.DOCS_NOTES_DIR||path.join(process.env.USERPROFILE,'OneDrive/OneSyncFiles/SchoolStudies/Java/프로젝트/DateCourseApp');
 if(!fs.existsSync(source))throw Error('DOCS_NOTES_DIR에 문서 원본 폴더를 지정해 주세요.');
 const yaml=createRequire(path.join(quartz,'package.json'))('yaml');
@@ -86,7 +87,7 @@ fs.copyFileSync(path.join(root,'data/sql/07_saved_courses.sql'),path.join(site,'
 fs.copyFileSync(path.join(root,'data/sql/08_saved_course_price_estimates.sql'),path.join(site,'public/downloads/08_saved_course_price_estimates.sql'));
 fs.cpSync(path.join(site,'web/connect'),path.join(site,'public/connect'),{recursive:true});
 fs.copyFileSync(path.join(site,'web/navigation.css'),path.join(site,'public/navigation.css'));
-for(const file of ['flow-tooltips.css','flow-tooltips.js','responsive-navigation.js','document-updates.js','document-updates.css','learning-demos.css','learning-demos.js'])fs.copyFileSync(path.join(site,'web',file),path.join(site,'public',file));
+for(const file of ['compact-docs.css','compact-docs.js','flow-tooltips.css','flow-tooltips.js','responsive-navigation.js','document-updates.js','document-updates.css','learning-demos.css','learning-demos.js'])fs.copyFileSync(path.join(site,'web',file),path.join(site,'public',file));
 const navigation=active=>`<header class="team-navigation"><a class="team-brand" href="/" data-router-ignore>DateCourseApp</a><nav aria-label="사이트 메뉴"><a href="/" data-router-ignore${active==='docs'?' aria-current="page"':''}>문서</a><a href="/dashboard/" data-router-ignore${active==='board'?' aria-current="page"':''}>작업 보드</a><a href="/업데이트_내역.html" data-router-ignore${active==='updates'?' aria-current="page"':''}>업데이트</a><a href="/connect/" data-router-ignore${active==='connect'?' aria-current="page"':''}>Codex 연결</a></nav></header>`;
 function addNavigation(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){
  const file=path.join(dir,item.name);if(item.isDirectory()){addNavigation(file);continue;}if(!item.name.endsWith('.html'))continue;
@@ -96,6 +97,8 @@ function addNavigation(dir){for(const item of fs.readdirSync(dir,{withFileTypes:
  html=html.replace('</head>','<link rel="stylesheet" href="/document-updates.css"><script type="module" src="/document-updates.js" data-persist></script></head>');
  html=html.replace('</body>','<script type="application/json" data-document-revisions>'+revisionJson+'</script></body>');
  if(active==='docs'){
+  html=compactDocument(html,quartz);
+  html=html.replace('</head>','<link rel="stylesheet" href="/compact-docs.css"><script type="module" src="/compact-docs.js" data-persist></script></head>');
   html=html.replace('</head>','<link rel="stylesheet" href="/flow-tooltips.css"><script type="module" src="/flow-tooltips.js" data-persist></script><script type="module" src="/responsive-navigation.js" data-persist></script><link rel="stylesheet" href="/learning-demos.css"><script type="module" src="/learning-demos.js" data-persist></script></head>');
   const relative=path.relative(path.join(site,'public'),file).replace(/\.html$/,'.md');
   // Quartz normalizes Latin filenames to lowercase. Match the source without

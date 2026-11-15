@@ -6,7 +6,6 @@ test('current implementation sync keeps teammate ownership and dependencies, ski
  const ctx={storage:{sql,transactionSync(fn){db.exec('BEGIN');try{const value=fn();db.exec('COMMIT');return value;}catch(e){db.exec('ROLLBACK');throw e;}}}};
  new TaskBoard(ctx);
  assert.equal(db.prepare('SELECT status FROM tasks WHERE id=?').get('DB-03').status,'done');
- assert.equal(db.prepare('SELECT status FROM tasks WHERE id=?').get('TIME-01').status,'todo');
  db.prepare('DELETE FROM board_meta WHERE key=?').run(NOV14_VERSION);
  db.prepare('UPDATE tasks SET assignee=?,dependencies=?,priority=?,description=? WHERE id=?').run('teammate','DB-01','low','팀원 메모','UI-01');
  db.prepare('UPDATE tasks SET archived=1,status=? WHERE id=?').run('progress','UI-02');
