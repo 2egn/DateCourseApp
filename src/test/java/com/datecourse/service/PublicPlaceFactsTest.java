@@ -16,6 +16,17 @@ class PublicPlaceFactsTest {
         return (ObjectNode) mapper.readTree(Path.of("data/places/appeal/busan-2026-11-14/demo_appeal_facts.json").toFile());
     }
     private InputStream stream(ObjectNode facts) throws IOException { return new ByteArrayInputStream(mapper.writeValueAsBytes(facts)); }
+    @Test void bundledFingerprintUsesLfSnapshotAndStillRejectsChangedContent() throws Exception {
+        assertFalse(new String(source, java.nio.charset.StandardCharsets.UTF_8).contains("\r\n"));
+        byte[] packaged;
+        try(var input=getClass().getResourceAsStream("/datasets/seomyeon-public-estimates.json")) {
+            assertNotNull(input);packaged=input.readAllBytes();
+        }
+        assertArrayEquals(source,packaged);
+        assertEquals(127,PublicPlaceFacts.read(packaged,stream(facts())).size());
+        var changed=mapper.readTree(source);((ObjectNode)changed.path("places").get(0)).put("name","changed");
+        assertThrows(IOException.class,()->PublicPlaceFacts.read(mapper.writeValueAsBytes(changed),stream(facts())));
+    }
     @Test void bundledPublicDataLoadsTypedFactsWithoutApprovingLegacyIds() throws Exception {
         var places = new PublicDemoPlaceRepository().findAll();
         assertEquals(127, places.size());

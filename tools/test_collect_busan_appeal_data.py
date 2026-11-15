@@ -3,10 +3,24 @@ import csv
 import hashlib
 import json
 import unittest
-from collect_busan_appeal_data import ROOT, OUT, distance, name_key, road_key, source_date, valid_point
+import tempfile
+from pathlib import Path
+from collect_busan_appeal_data import ROOT, OUT, distance, name_key, road_key, source_date, valid_point, read_lf_bytes
 
 
 class AppealDataTest(unittest.TestCase):
+    def test_demo_fingerprint_requires_lf_without_modifying_input(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'demo.json'
+            path.write_bytes(b'{"places": []}\n')
+            self.assertEqual(path.read_bytes(), read_lf_bytes(path))
+            path.write_bytes(b'{"places": []}\r\n')
+            before = path.read_bytes()
+            with self.assertRaisesRegex(ValueError, 'LF'):
+                read_lf_bytes(path)
+            self.assertEqual(before, path.read_bytes())
+
+
     def test_matching_preserves_branches_and_building_numbers(self):
         self.assertEqual(name_key('(주)사미헌'), name_key('사미헌'))
         self.assertNotEqual(name_key('카페 서면점'), name_key('카페 전포점'))

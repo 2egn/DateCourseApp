@@ -154,7 +154,16 @@ def railway_rows():
                      'selection': '역사도로명주소에 부산 포함; 좌표 유효. 부산 전체 역사·출입구의 완전한 목록을 보장하지 않음.'}
 
 
+def read_lf_bytes(path):
+    data = path.read_bytes()
+    if b'\r\n' in data:
+        raise ValueError('Demo snapshot must use LF line endings before generating public facts.')
+    return data
+
+
 def collect():
+    demo_path = ROOT / 'data/places/demo/seomyeon-public-estimates.json'
+    demo_bytes = read_lf_bytes(demo_path)
     (OUT / 'raw').mkdir(parents=True, exist_ok=True)
     sources = [download_file('model', '15055847'), download_file('bus', '15067528')]
     stations, rail_source = railway_rows()
@@ -206,7 +215,6 @@ def collect():
     write_csv(OUT / 'designation_links.csv', links)
     write_json(OUT / 'designation_review_needed.json', review)
 
-    demo_path = ROOT / 'data/places/demo/seomyeon-public-estimates.json'
     demos = read_json(demo_path)['places']
     model_by_id = {r['public_place_id']: r for r in links if r['tag'] == 'MODEL_RESTAURANT'}
     facts, nearest = [], []
@@ -240,7 +248,7 @@ def collect():
         'bus_stop_within_m': {str(m): sum(float(p['bus_distance_m']) <= m for p in nearest) for m in (50,100,150,200)},
         'note': '거리 표시는 소수점 첫째 자리 반올림. 기본 태그 판정은 반올림 전 거리로 계산함.'})
     write_json(OUT / 'demo_appeal_facts.json', {'schemaVersion': 1, 'generatedAt': datetime.now(timezone.utc).isoformat(),
-                'datasetSha256': hashlib.sha256(demo_path.read_bytes()).hexdigest(), 'places': facts,
+                'datasetSha256': hashlib.sha256(demo_bytes).hexdigest(), 'places': facts,
                 'rules': {'NEAR_SUBWAY': '역사 중심 직선거리 500m 이하',
                           'NEAR_BUS': '정류장 좌표 직선거리 200m 이하'}})
     # Extra facility facts stay outside the application's current PlaceTag enum.
