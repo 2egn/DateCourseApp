@@ -33,10 +33,10 @@ public record Place (
         if (stableKey().equals(other.stableKey())) return true;
         // Distinct public source IDs must not be merged just because names and coordinates coincide.
         if (hasPublicIdentity() && other.hasPublicIdentity()) return false;
-        return name != null && name.equals(other.name) && lat == other.lat && lng == other.lng;
+        return name != null && !name.isBlank() && name.equals(other.name) && lat == other.lat && lng == other.lng;
     }
 
-    private boolean hasPublicIdentity() {
+    public boolean hasPublicIdentity() {
         String id = details.externalIds().get("public");
         return id != null && !id.isBlank();
     }

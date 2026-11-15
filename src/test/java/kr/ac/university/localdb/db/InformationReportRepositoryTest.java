@@ -24,6 +24,24 @@ class InformationReportRepositoryTest {
         reports=new InformationReportRepository(pool);
     }
     @AfterEach void close(){pool.close();}
+    @Test void pendingReportsStayReachableBeyondThreeHundredNewerReports() throws Exception {
+        long oldest=reports.submit(owner,original,InformationReport.Field.PRICE,"9000","오래된 미검토","");
+        for(int i=0;i<305;i++)reports.submit(owner,original,InformationReport.Field.PRICE,"9000","최근 제보","");
+        var seen=new java.util.HashSet<Long>();Long cursor=null;int pages=0;
+        do {
+            var page=reports.reports(InformationReportRepository.ReportFilter.PENDING,cursor,50);
+            assertTrue(page.items().size()<=50);
+            for(var item:page.items()){assertEquals("PENDING",item.status());assertTrue(seen.add(item.id()));}
+            cursor=page.nextBeforeId();pages++;
+        } while(cursor!=null);
+        assertEquals(306,seen.size());assertTrue(seen.contains(oldest));assertEquals(7,pages);
+        reports.review(oldest,false,"","검토 후 반려");
+        var rejected=reports.reports(InformationReportRepository.ReportFilter.REJECTED,null,50);
+        assertEquals(List.of(oldest),rejected.items().stream().map(InformationReport::id).toList());
+        assertNull(rejected.nextBeforeId());
+        assertThrows(IllegalArgumentException.class,()->reports.reports(InformationReportRepository.ReportFilter.ALL,-1L,50));
+    }
+
     @Test void reviewedIdentityCorrectionInvalidatesLinkAndRetainsOtherEvidence() throws Exception {
         var link=new ExternalPlaceLink(ExternalPlaceLink.Provider.GOOGLE_PLACES,"google_id",ExternalPlaceLink.Confidence.HIGH,
             ExternalPlaceLink.ReviewStatus.CONFIRMED,ExternalPlaceLink.EntityKind.VENUE,"name_phone","2026-11-14T00:00:00Z","동일성 검토");
@@ -187,6 +205,60 @@ class InformationReportRepositoryTest {
             +"\n\n문화: "+culture.name()+" · "+culture.priceText()+"\n\n원래 코스: "+plan.costEstimate().display()
             +"\n\n가상 승인 후 7,000원 조건에서 해당 식당 제외 확인. 기존 저장본 유지 확인.\n\n명시적 수정 저장 후: "+updated.costEstimate().display()+"\n");
     }
+    @Test void administratorCanNavigatePendingPagesAndFilterReviewedRows() throws Exception {
+        char[] fixture="test-only-admin-password".toCharArray();
+        try(var c=pool.getConnection();var statement=c.createStatement()) {
+            statement.executeUpdate("CREATE TABLE app_admins(username VARCHAR(50) PRIMARY KEY,password_hash VARCHAR(255))");
+        }
+        try(var c=pool.getConnection();var statement=c.prepareStatement("INSERT INTO app_admins VALUES (?,?)")) {
+            statement.setString(1,MemberRepository.ADMIN_USERNAME);statement.setString(2,kr.ac.university.localdb.PasswordHash.create(fixture));statement.executeUpdate();
+        }
+        var session=new MemberRepository(pool).login(MemberRepository.ADMIN_USERNAME,fixture).adminSession();
+        long oldest=reports.submit(owner,original,InformationReport.Field.PRICE,"9000","첫 제보","");
+        for(int i=0;i<54;i++)reports.submit(owner,original,InformationReport.Field.PRICE,"9000","추가 제보","");
+        long rejected=reports.submit(owner,original,InformationReport.Field.PRICE,"9000","반려할 제보","");
+        reports.review(rejected,false,"","확인 불가");
+        var started=new java.util.concurrent.CountDownLatch(1);
+        try{javafx.application.Platform.startup(()->{javafx.application.Platform.setImplicitExit(false);started.countDown();});}
+        catch(IllegalStateException running){javafx.application.Platform.runLater(started::countDown);}
+        assertTrue(started.await(5,java.util.concurrent.TimeUnit.SECONDS));
+        var root=fx(()->{
+            var loader=new javafx.fxml.FXMLLoader(getClass().getResource("/information-review-view.fxml"));
+            javafx.scene.Parent page=loader.load();new javafx.scene.Scene(page,1020,690);page.resize(1020,690);page.applyCss();page.layout();
+            loader.<com.datecourse.controller.InformationReviewController>getController().configure(session);return page;
+        });
+        awaitReportPage(root,"1페이지",50);
+        fx(()->{assertFalse(root.lookup("#nextButton").isDisabled());
+            ((javafx.scene.control.Button)root.lookup("#nextButton")).fire();return null;});
+        awaitReportPage(root,"2페이지",5);
+        fx(()->{
+            var list=(javafx.scene.control.ListView<InformationReport>)root.lookup("#reports");
+            assertTrue(list.getItems().stream().anyMatch(r->r.id()==oldest));
+            assertTrue(root.lookup("#nextButton").isDisabled());
+            ((javafx.scene.control.Button)root.lookup("#previousButton")).fire();return null;
+        });
+        awaitReportPage(root,"1페이지",50);
+        fx(()->{((javafx.scene.control.ComboBox<InformationReportRepository.ReportFilter>)root.lookup("#filterBox"))
+                .setValue(InformationReportRepository.ReportFilter.REJECTED);return null;});
+        awaitReportPage(root,"1페이지",1);
+        fx(()->{
+            var list=(javafx.scene.control.ListView<InformationReport>)root.lookup("#reports");
+            assertEquals(rejected,list.getItems().getFirst().id());assertTrue(root.lookup("#approveButton").isDisabled());
+            root.applyCss();root.layout();var file=java.nio.file.Path.of("build/ui-preview/report-status-pages.png");
+            java.nio.file.Files.createDirectories(file.getParent());
+            javax.imageio.ImageIO.write(javafx.embed.swing.SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",file.toFile());return null;
+        });
+    }
+    private static void awaitReportPage(javafx.scene.Parent root,String page,int count)throws Exception {
+        long end=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(8);
+        while(System.nanoTime()<end) {
+            if(fx(()->((javafx.scene.control.Label)root.lookup("#status")).getText().endsWith(page)
+                    && ((javafx.scene.control.ListView<?>)root.lookup("#reports")).getItems().size()==count))return;
+            Thread.sleep(20);
+        }
+        fail("제보 페이지 로드 시간 초과");
+    }
+
     private static <T>T fx(java.util.concurrent.Callable<T> work) throws Exception {
         var task=new java.util.concurrent.FutureTask<T>(work);javafx.application.Platform.runLater(task);return task.get(10,java.util.concurrent.TimeUnit.SECONDS);
     }

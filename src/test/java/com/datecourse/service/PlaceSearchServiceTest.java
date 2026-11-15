@@ -15,6 +15,25 @@ class PlaceSearchServiceTest {
         return new SearchCondition(budget, people, List.of(categories), 35.157, 129.06, 500);
     }
 
+    private Place publicPlace(long id,String publicId,String providerId,double lat) {
+        return new Place(id,providerId,"같은 이름","CAFE",lat,129.06,com.datecourse.model.PriceEstimate.exact(5000),0,
+                new com.datecourse.model.PlaceDetails("","","","","","","","",java.util.Map.of("public",publicId)));
+    }
+    @Test void searchUsesTheSamePublicIdentityRulesAsTheDomain() {
+        Place a=publicPlace(1,"source-A","shared",35.157);
+        Place b=publicPlace(2,"source-B","shared",35.157);
+        Place alias=publicPlace(3,"source-A","other",35.1571);
+        assertFalse(a.sameIdentityAs(b));assertTrue(a.sameIdentityAs(alias));
+        assertEquals(2,service.nearby(List.of(a,b),35.157,129.06,500,List.of()).size());
+        assertEquals(1,service.nearby(List.of(a,alias),35.157,129.06,500,List.of()).size());
+        Place legacy=new Place(4,"legacy","같은 이름","CAFE",35.157,129.06,1000,0);
+        assertEquals(2,service.nearby(List.of(legacy,a,b),35.157,129.06,500,List.of()).size());
+        Place unnamed=new Place(5,"x","","CAFE",35.157,129.06,1000,0);
+        Place otherUnnamed=new Place(6,"y","","CAFE",35.157,129.06,1000,0);
+        assertFalse(unnamed.sameIdentityAs(otherUnnamed));
+        assertEquals(2,service.nearby(List.of(unnamed,otherUnnamed),35.157,129.06,500,List.of()).size());
+    }
+
     @Test void filtersActualCategoryCodesAndMeterRadiusAndSortsByDistance() {
         Place near = place(1, "CAFE", 35.1571, 5000);
         Place far = place(2, "CAFE", 35.17, 5000);

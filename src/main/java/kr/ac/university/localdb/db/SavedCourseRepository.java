@@ -183,8 +183,7 @@ public final class SavedCourseRepository {
                 if (previewStorage) {
                     var point = connection.setSavepoint();
                     try {
-                        replacePreview(connection, courseId, plan, preview);
-                        previewStored = preview != null;
+                        previewStored = replacePreview(connection, courseId, plan, preview);
                     }
                     catch (SQLException failure) {
                         connection.rollback(point);
@@ -221,16 +220,26 @@ public final class SavedCourseRepository {
         previewSchemaReady = true;
     }
 
-    private void replacePreview(Connection connection, long id, RoutePlan plan, byte[] png) throws SQLException {
+    private boolean replacePreview(Connection connection, long id, RoutePlan plan, byte[] png) throws SQLException {
+        String hash=com.datecourse.service.CoursePreviewImage.fingerprint(plan);
+        if(png==null) {
+            try(var remove=connection.prepareStatement("DELETE FROM saved_course_previews WHERE course_id=? AND content_hash<>?")) {
+                remove.setLong(1,id);remove.setString(2,hash);remove.executeUpdate();
+            }
+            try(var query=connection.prepareStatement("SELECT course_id FROM saved_course_previews WHERE course_id=? AND content_hash=?")) {
+                query.setLong(1,id);query.setString(2,hash);
+                try(var row=query.executeQuery()){return row.next();}
+            }
+        }
         try (var remove = connection.prepareStatement("DELETE FROM saved_course_previews WHERE course_id=?")) {
             remove.setLong(1,id); remove.executeUpdate();
         }
-        if (png == null) return;
         try (var insert = connection.prepareStatement(
                 "INSERT INTO saved_course_previews(course_id,content_hash,image_png) VALUES(?,?,?)")) {
-            insert.setLong(1,id); insert.setString(2,com.datecourse.service.CoursePreviewImage.fingerprint(plan));
+            insert.setLong(1,id); insert.setString(2,hash);
             insert.setBytes(3,png); insert.executeUpdate();
         }
+        return true;
     }
 
     /** Fetches one optional BLOB, checking both ownership and the selected snapshot revision. */
@@ -342,9 +351,13 @@ public final class SavedCourseRepository {
         if (plan.people() < 1 || plan.people() > 20 || plan.radius() < 200 || plan.radius() > 2000)
             throw new IllegalArgumentException("인원은 1~20명, 전체 반경은 200~2000m여야 합니다.");
         Set<Long> records = new HashSet<>();
+        List<Place> identities = new ArrayList<>();
         for (Place place : plan.places()) {
             if (place.recordId() <= 0 || !records.add(place.recordId()))
                 throw new IllegalArgumentException("장소 번호가 잘못되었거나 같은 장소가 중복되어 있습니다.");
+            if(identities.stream().anyMatch(place::sameIdentityAs))
+                throw new IllegalArgumentException("같은 장소가 코스에 중복되어 있습니다.");
+            identities.add(place);
             text(place.placeId(), 255, false, "장소 ID");
             text(place.name(), 255, true, "장소 이름");
             text(place.category(), 100, true, "장소 분류");

@@ -18,22 +18,22 @@ public final class PlaceSearchService {
                 .filter(p -> valid(p) && (categories.isEmpty() || categories.contains(categoryName(p.category()))))
                 .map(p -> new NearbyPlace(p, calculation.calculateDistance(lat, lng, p.lat(), p.lng())))
                 .filter(p -> p.distanceMeters() <= radius)
-                .sorted(Comparator.comparingLong((NearbyPlace p) -> p.place().priceEstimate().sortUpperBound())
+                .sorted(Comparator.comparing((NearbyPlace p) -> !p.place().hasPublicIdentity())
+                        .thenComparingLong(p -> p.place().priceEstimate().sortUpperBound())
                         .thenComparingDouble(NearbyPlace::distanceMeters)
                         .thenComparingLong(p -> p.place().recordId()))
                 .toList();
-        Set<String> ids = new HashSet<>();
-        Set<PlaceLocation> locations = new HashSet<>();
+        Map<String,List<Place>> identities = new HashMap<>();
+        Map<PlaceLocation,List<Place>> locations = new HashMap<>();
         List<NearbyPlace> distinct = new ArrayList<>();
         for (NearbyPlace candidate : candidates) {
             Place place = candidate.place();
-            PlaceLocation location = place.name() == null || place.name().isBlank() ? null
-                    : new PlaceLocation(place.name(), place.lat(), place.lng());
-            boolean duplicate = ids.contains(identity(place))
-                    || (location != null && locations.contains(location));
-            // 중복 행의 ID도 기억해 이후 같은 ID가 다시 들어오는 것을 막는다.
-            ids.add(identity(place));
-            if (location != null) locations.add(location);
+            PlaceLocation location = new PlaceLocation(place.name(), place.lat(), place.lng());
+            boolean duplicate = identities.getOrDefault(place.stableKey(),List.of()).stream().anyMatch(place::sameIdentityAs)
+                    || locations.getOrDefault(location,List.of()).stream().anyMatch(place::sameIdentityAs);
+            // Authoritative public identities are considered first, so legacy aliases cannot merge distinct public places.
+            identities.computeIfAbsent(place.stableKey(),key->new ArrayList<>()).add(place);
+            locations.computeIfAbsent(location,key->new ArrayList<>()).add(place);
             if (!duplicate) distinct.add(candidate);
         }
         return distinct.stream()
@@ -92,7 +92,7 @@ public final class PlaceSearchService {
     }
 
     private String identity(Place place) {
-        return place.placeId() != null && !place.placeId().isBlank() ? place.placeId() : "record:" + place.recordId();
+        return place.stableKey();
     }
 
     public static String categoryName(String code) {

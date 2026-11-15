@@ -206,6 +206,24 @@ public class ConditionController extends BasePageController {
         }
     }
 
+    private java.util.function.BooleanSupplier closeConfirmation = this::confirmUnsavedClose;
+
+    /** Called on the JavaFX thread by the native Swing close handler. */
+    public boolean confirmWindowClose() {
+        if(saving || isLoading() || feedback != null && feedback.isBusy()) {
+            notifyUser(PageFeedback.Kind.INFO,"진행 중인 작업이 끝난 뒤 종료해 주세요.");
+            return false;
+        }
+        return !hasUnsavedChanges() || closeConfirmation.getAsBoolean();
+    }
+
+    private boolean confirmUnsavedClose() {
+        Alert confirm=new Alert(Alert.AlertType.CONFIRMATION,
+                "종료하면 저장하지 않은 코스와 편집 초안이 사라져요. 종료할까요?",ButtonType.OK,ButtonType.CANCEL);
+        confirm.initOwner(plannerRoot.getScene().getWindow());
+        return confirm.showAndWait().orElse(ButtonType.CANCEL)==ButtonType.OK;
+    }
+
     @FXML private void onLogout() {
         if (saving || feedback.isBusy() || userSession == null || logoutHandler == null) return;
         if (hasUnsavedChanges()) {

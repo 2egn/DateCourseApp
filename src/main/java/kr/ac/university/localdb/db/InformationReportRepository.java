@@ -63,15 +63,40 @@ public final class InformationReportRepository {
     }
 
     // These management operations are exposed to the UI only through an authenticated AdminSession.
+    public enum ReportFilter {
+        PENDING("검토 대기"), APPROVED("승인"), REJECTED("반려"), ALL("전체");
+        private final String label;
+        ReportFilter(String label){this.label=label;}
+        @Override public String toString(){return label;}
+    }
+    public record ReportPage(List<InformationReport> items, Long nextBeforeId) {
+        public ReportPage {items=List.copyOf(items);}
+    }
+
     List<InformationReport> reports() throws SQLException {
+        return reports(ReportFilter.ALL,null,300).items();
+    }
+
+    /** ID cursor paging keeps old pending reports reachable without loading the entire history. */
+    ReportPage reports(ReportFilter filter, Long beforeId, int limit) throws SQLException {
+        java.util.Objects.requireNonNull(filter);
+        if(limit<1 || limit>300 || beforeId!=null && beforeId<=0)throw new IllegalArgumentException("제보 조회 범위를 확인해 주세요.");
         initialize();
-        try (Connection c=pool.getConnection(); PreparedStatement s=c.prepareStatement(
-                "SELECT * FROM place_information_reports ORDER BY report_id DESC LIMIT 300"); ResultSet r=s.executeQuery()) {
-            List<InformationReport> rows=new ArrayList<>();
-            while(r.next()) rows.add(new InformationReport(r.getLong("report_id"),r.getString("place_id"),r.getString("place_name"),
-                r.getString("field_name"),r.getString("original_value"),r.getString("proposed_value"),r.getString("reason"),
-                r.getString("source_url"),r.getString("status"),r.getString("review_note"),r.getString("created_at"),r.getString("reviewed_value")));
-            return List.copyOf(rows);
+        String sql="SELECT * FROM place_information_reports WHERE report_id<?"
+                +(filter==ReportFilter.ALL?"":" AND status=?")+" ORDER BY report_id DESC LIMIT ?";
+        try (Connection c=pool.getConnection(); PreparedStatement s=c.prepareStatement(sql)) {
+            int parameter=1;s.setLong(parameter++,beforeId==null?Long.MAX_VALUE:beforeId);
+            if(filter!=ReportFilter.ALL)s.setString(parameter++,filter.name());
+            s.setInt(parameter,limit+1);
+            try(ResultSet r=s.executeQuery()) {
+                List<InformationReport> rows=new ArrayList<>();
+                while(r.next()) rows.add(new InformationReport(r.getLong("report_id"),r.getString("place_id"),r.getString("place_name"),
+                    r.getString("field_name"),r.getString("original_value"),r.getString("proposed_value"),r.getString("reason"),
+                    r.getString("source_url"),r.getString("status"),r.getString("review_note"),r.getString("created_at"),r.getString("reviewed_value")));
+                boolean more=rows.size()>limit;
+                if(more)rows.removeLast();
+                return new ReportPage(rows,more?rows.getLast().id():null);
+            }
         }
     }
 

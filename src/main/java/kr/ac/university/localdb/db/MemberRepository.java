@@ -159,6 +159,9 @@ public class MemberRepository implements AutoCloseable {
         public java.util.List<com.datecourse.model.InformationReport> informationReports() throws SQLException {
             return MemberRepository.this.informationReports().reports();
         }
+        public InformationReportRepository.ReportPage informationReports(InformationReportRepository.ReportFilter filter,Long beforeId) throws SQLException {
+            return MemberRepository.this.informationReports().reports(filter,beforeId,50);
+        }
         public void reviewInformation(long id, boolean approve, String corrected, String note) throws SQLException {
             MemberRepository.this.informationReports().review(id,approve,corrected,note);
         }

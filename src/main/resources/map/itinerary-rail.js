@@ -286,7 +286,7 @@
                 activePlaceId = null; expandedPlaceId = null;
                 const occurrences = new Map();
                 visits = items.map(function (place) {
-                    const id = String(place.placeId || place.recordId || (place.name + ':' + place.lat + ':' + place.lng));
+                    const id = String(place.identityKey || place.placeId || place.recordId || (place.name + ':' + place.lat + ':' + place.lng));
                     const count = (occurrences.get(id) || 0) + 1; occurrences.set(id, count);
                     return Object.assign({}, place, { visitId: id + ':' + count });
                 });

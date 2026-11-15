@@ -73,12 +73,12 @@ class SavedCourseRepositoryTest {
     }
 
     @Test
-    void rendererFailureDoesNotLoseCourseAndRemovesTheOldPreview() throws Exception {
+    void rendererFailureKeepsTheExistingPreviewWhenContentMatches() throws Exception {
         var first = repository.save(owner,example());
         var failing = new SavedCourseRepository(pool, plan -> {throw new java.io.IOException("test");});
         var updated = failing.save(owner,first.courseId(),example());
         assertEquals(example(),storedPlan(updated.courseId()));
-        assertTrue(repository.findPreview(owner,updated).isEmpty());
+        assertTrue(repository.findPreview(owner,updated).isPresent());
     }
 
     @Test
@@ -108,7 +108,7 @@ class SavedCourseRepositoryTest {
         assertArrayEquals(png,repository.findPreview(owner,first).orElseThrow());
         var updated = repository.saveWithPreview(owner,first.courseId(),example(),null);
         assertEquals(example(),storedPlan(updated.courseId()));
-        assertTrue(repository.findPreview(owner,updated).isEmpty());
+        assertArrayEquals(png,repository.findPreview(owner,updated).orElseThrow());
     }
 
     @Test
@@ -118,12 +118,37 @@ class SavedCourseRepositoryTest {
         assertTrue(first.previewStored());
         assertArrayEquals(png,repository.findPreview(owner,repository.findAll(owner).getFirst()).orElseThrow());
         var missing=repository.saveWithPreviewResult(owner,first.course().courseId(),example(),null);
-        assertFalse(missing.previewStored());
-        assertTrue(repository.findPreview(owner,missing.course()).isEmpty());
-        execute("ALTER TABLE saved_course_previews ADD CONSTRAINT reject_image CHECK (OCTET_LENGTH(image_png)<1)");
+        assertTrue(missing.previewStored());
+        assertArrayEquals(png,repository.findPreview(owner,missing.course()).orElseThrow());
+        execute("ALTER TABLE saved_course_previews ADD CONSTRAINT reject_image CHECK (OCTET_LENGTH(image_png)<1) NOCHECK");
         var failed=repository.saveWithPreviewResult(owner,null,example(),png);
         assertFalse(failed.previewStored());
         assertEquals(2,repository.findAll(owner).size());
+    }
+
+    @Test void missingCaptureInvalidatesOnlyImagesWhoseContentChanged() throws Exception {
+        byte[] png=new com.datecourse.service.CoursePreviewImage().render(example());
+        var first=repository.saveWithPreviewResult(owner,null,example(),png);
+        var plan=example();
+        var renamed=new RoutePlan(plan.startLat(),plan.startLng(),plan.people(),plan.radius(),"이름만 수정",plan.places());
+        var same=repository.saveWithPreviewResult(owner,first.course().courseId(),renamed,null);
+        assertTrue(same.previewStored());assertArrayEquals(png,repository.findPreview(owner,same.course()).orElseThrow());
+        var changed=new RoutePlan(plan.startLat(),plan.startLng(),4,plan.radius(),plan.title(),plan.places());
+        var stale=repository.saveWithPreviewResult(owner,first.course().courseId(),changed,null);
+        assertFalse(stale.previewStored());assertTrue(repository.findPreview(owner,stale.course()).isEmpty());
+        var fresh=repository.saveWithPreviewResult(owner,null,plan,null);
+        assertFalse(fresh.previewStored());assertTrue(repository.findPreview(owner,fresh.course()).isEmpty());
+    }
+
+    @Test void savingSharesThePublicIdentityRulesWithCandidateSearch() throws Exception {
+        var a=new Place(100,"shared","첫 장소","MEAL",35.157,129.06,com.datecourse.model.PriceEstimate.exact(5000),0,
+                new com.datecourse.model.PlaceDetails("","","","","","","","",Map.of("public","source-a")));
+        var b=new Place(101,"shared","첫 장소","MEAL",35.157,129.06,com.datecourse.model.PriceEstimate.exact(5000),0,
+                new com.datecourse.model.PlaceDetails("","","","","","","","",Map.of("public","source-b")));
+        var alias=new Place(102,"other","수정된 이름","MEAL",35.1571,129.06,com.datecourse.model.PriceEstimate.exact(5000),0,a.details());
+        repository.save(owner,new RoutePlan(35.157,129.06,2,1000,"서로 다른 공공 장소",List.of(a,b)));
+        assertThrows(IllegalArgumentException.class,()->repository.save(owner,
+                new RoutePlan(35.157,129.06,2,1000,"같은 공공 장소",List.of(a,alias))));
     }
 
     @AfterEach
@@ -299,12 +324,15 @@ class SavedCourseRepositoryTest {
     void unknownRangeFreeAndPublicProvenanceRoundTripWithoutZeroDefaults() throws Exception {
         var details = new com.datecourse.model.PlaceDetails("공개 원본 주소", "카페", "051-000-0000", "https://example.test/branch",
                 "https://example.test/source", "2026-09-30", "2026-11-13", "https://example.test/verify", Map.of("public", "source:one"));
+        java.util.function.Function<String,com.datecourse.model.PlaceDetails> differentIdentity=id -> new com.datecourse.model.PlaceDetails(
+                details.address(),details.subcategory(),details.phone(),details.website(),details.sourceUrl(),details.sourceDate(),
+                details.identityCheckedAt(),details.verificationUrl(),Map.of("public",id));
         Place unknown = new Place(101, "DCA:unknown", "가격 미확인", "CAFE", 35.158, 129.059,
                 com.datecourse.model.PriceEstimate.unknown(), 0, details);
         Place range = new Place(102, "DCA:range", "설명용 범위", "MEAL", 35.1581, 129.059,
-                new com.datecourse.model.PriceEstimate(8000, 12000, com.datecourse.model.PriceEstimate.Unit.PER_PERSON, "설명용"), 0, details);
+                new com.datecourse.model.PriceEstimate(8000, 12000, com.datecourse.model.PriceEstimate.Unit.PER_PERSON, "설명용"), 0, differentIdentity.apply("source:range"));
         Place free = new Place(103, "DCA:free", "근거 있는 무료", "CULTURE", 35.1582, 129.059,
-                new com.datecourse.model.PriceEstimate(0, 0, com.datecourse.model.PriceEstimate.Unit.ADULT_TICKET, "무료 관람"), 0, details);
+                new com.datecourse.model.PriceEstimate(0, 0, com.datecourse.model.PriceEstimate.Unit.ADULT_TICKET, "무료 관람"), 0, differentIdentity.apply("source:free"));
         RoutePlan plan = new RoutePlan(35.1579, 129.059, 2, 1000, "범위·미확인", List.of(unknown, range, free));
         SavedCourse saved = repository.save(owner, plan);
         assertEquals(plan, storedPlan(saved.courseId()));

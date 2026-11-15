@@ -34,10 +34,13 @@ import java.util.function.Consumer;
  */
 public class MembershipApp {
     private volatile MemberRepository repository;
+    private volatile ConditionController plannerController;
+    private boolean closePending;
     private UserSession userSession;
     private Timer screenTransition;
     private JPanel authenticationContent;
     private final JFrame home = new JFrame("로그인 / 회원가입");
+    private Runnable exitApplication=()->{home.dispose();System.exit(0);};
     private final JTextField email = new UiTheme.TextField(24), name = new UiTheme.TextField(24), phone = new UiTheme.TextField(24);
     private final JPasswordField password = new UiTheme.PasswordField(24), confirm = new UiTheme.PasswordField(24);
     private final JButton signup = new JButton("회원가입"), login = new JButton("로그인");
@@ -70,9 +73,33 @@ public class MembershipApp {
         });
     }
 
+    void installCloseHandling() {
+        home.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        home.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override public void windowClosing(java.awt.event.WindowEvent event) { requestWindowClose(); }
+        });
+    }
+
+    private void requestWindowClose() {
+        if(closePending)return;
+        ConditionController controller=plannerController;
+        if(controller==null){exitApplication.run();return;}
+        closePending=true;
+        Platform.runLater(()->{
+            boolean decision;
+            try {decision=controller.confirmWindowClose();}
+            catch(RuntimeException failure){decision=false;}
+            final boolean allowed=decision;
+            SwingUtilities.invokeLater(()->{
+                closePending=false;
+                if(allowed && plannerController==controller)exitApplication.run();
+            });
+        });
+    }
+
     /** 입력 단계 구성 → 화면 전환/버튼 이벤트 연결 → 창 표시 → DB 초기화 순서로 준비합니다. */
     private void show() {
-        home.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        installCloseHandling();
         JPanel content = new JPanel(new BorderLayout(15,15));
         content.setBorder(BorderFactory.createEmptyBorder(36,36,28,36));
         JPanel form = new SignupForm();
@@ -243,6 +270,7 @@ public class MembershipApp {
                 Parent root = loader.load();
 
                 ConditionController controller = loader.getController();
+                plannerController = controller;
                 controller.setUserSession(userSession);
                 controller.setSavedCourseRepository(repository.savedCourses());
                 controller.setAccountActions(repository, () -> SwingUtilities.invokeLater(() -> logout(panel)));
@@ -296,6 +324,7 @@ public class MembershipApp {
     }
 
     private void logout(JFXPanel panel) {
+        plannerController = null;
         userSession = null;
         if (screenTransition != null) screenTransition.stop();
         Platform.runLater(() -> panel.setScene(null));

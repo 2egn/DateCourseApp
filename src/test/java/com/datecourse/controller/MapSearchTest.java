@@ -2237,6 +2237,40 @@ class MapSearchTest {
         } finally {fx(()->{engine.executeScript("window.endCourseCapture()");return null;});}
     }
 
+    @Test void closingTheWindowChecksUnsavedChangesAndBlocksAnActiveSave() throws Exception {
+        fx(()->{
+            var loader=new FXMLLoader(getClass().getResource("/condition-view.fxml"));Parent root=loader.load();new Scene(root,1200,800);
+            ConditionController main=loader.getController();stubPlannerMap(main,"mapView");stubPlannerMap(field(main,"routeEditorController"),"editMapView");
+            assertTrue(main.confirmWindowClose());
+            var plan=new com.datecourse.model.RoutePlan(35.1578,129.06,2,1000,"미저장 코스",java.util.List.of(
+                    new com.datecourse.model.Place(1,"first","장소","MEAL",35.1578,129.06,9000,4)));
+            callWith(main,"presentPlan",com.datecourse.model.RoutePlan.class,plan);
+            var asked=new java.util.concurrent.atomic.AtomicInteger();
+            setField(main,"closeConfirmation",(java.util.function.BooleanSupplier)()->{asked.incrementAndGet();return false;});
+            assertFalse(main.confirmWindowClose());assertEquals(plan,field(main,"appliedPlan"));assertEquals(1,asked.get());
+            setField(main,"closeConfirmation",(java.util.function.BooleanSupplier)()->true);
+            assertTrue(main.confirmWindowClose());
+            setField(main,"saving",true);assertFalse(main.confirmWindowClose());setField(main,"saving",false);
+            setField(main,"lastSavedPlan",plan);assertTrue(main.confirmWindowClose());
+            return null;
+        });
+    }
+
+    @Test void mapPinsKeepDifferentPublicPlacesDistinctEvenWithASharedProviderId() throws Exception {
+        WebEngine engine=loadMap();
+        fx(()->{
+            engine.executeScript("""
+                    window.presentRoute({startLat:35.157,startLng:129.06,radius:1000,places:[
+                        {recordId:100,placeId:'shared',identityKey:'source-a',name:'같은 이름',category:'MEAL',lat:35.157,lng:129.06,priceText:'5,000원/인'},
+                        {recordId:101,placeId:'shared',identityKey:'source-b',name:'같은 이름',category:'MEAL',lat:35.157,lng:129.06,priceText:'5,000원/인'}
+                    ]},null,500,true,false,[]);
+                    window.openRoutePlace(101);
+                    """);
+            assertEquals("true",engine.executeScript("document.querySelector('[data-visit-id=\"source-b:1\"]').getAttribute('aria-expanded')"));
+            return null;
+        });
+    }
+
     private WebEngine loadMap() throws Exception {
         return loadMap(420, 500);
     }

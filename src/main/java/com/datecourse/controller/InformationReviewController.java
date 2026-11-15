@@ -12,8 +12,16 @@ public final class InformationReviewController extends BasePageController {
     @FXML private TextField correctedValue;
     @FXML private TextArea reviewNote;
     @FXML private Button approveButton,rejectButton;
+    @FXML private ComboBox<kr.ac.university.localdb.db.InformationReportRepository.ReportFilter> filterBox;
+    @FXML private Button previousButton,nextButton,refreshButton;
+    private final java.util.List<Long> pageCursors=new java.util.ArrayList<>(java.util.Collections.singletonList(null));
+    private int pageIndex;
+    private Long nextCursor;
     private MemberRepository.AdminSession session;
     @FXML private void initialize() {
+        filterBox.getItems().setAll(kr.ac.university.localdb.db.InformationReportRepository.ReportFilter.values());
+        filterBox.setValue(kr.ac.university.localdb.db.InformationReportRepository.ReportFilter.PENDING);
+        filterBox.valueProperty().addListener((o,a,b)->reload());
         reports.setPlaceholder(new Label("접수된 제보가 없어요."));
         reports.setCellFactory(v->new ListCell<>() {
             @Override protected void updateItem(InformationReport r,boolean empty) {
@@ -28,10 +36,21 @@ public final class InformationReviewController extends BasePageController {
         loadingProperty().addListener((o,a,b)->buttons());buttons();
     }
     public void configure(MemberRepository.AdminSession session) { this.session=java.util.Objects.requireNonNull(session);buttons();reload(); }
-    @FXML private void reload() {
+    @FXML private void reload() {loadPage(null,0,true);}
+    @FXML private void previousPage() {if(pageIndex>0)loadPage(pageCursors.get(pageIndex-1),pageIndex-1,false);}
+    @FXML private void nextPage() {if(nextCursor!=null)loadPage(nextCursor,pageIndex+1,false);}
+    private void loadPage(Long beforeId,int index,boolean reset) {
         if(session==null||isLoading())return;
-        runWork("제보 조회 중",session::informationReports,rows->{reports.getItems().setAll(rows);status.setText(rows.size()+"건 · 최근 300건");},
-            e->status.setText("제보 목록을 불러오지 못했어요. 다시 시도해 주세요."));
+        var filter=filterBox.getValue();
+        runWork("제보 조회 중",()->session.informationReports(filter,beforeId),page->{
+            if(reset){pageCursors.clear();pageCursors.add(null);}
+            if(index==pageCursors.size())pageCursors.add(beforeId);
+            else pageCursors.set(index,beforeId);
+            pageIndex=index;nextCursor=page.nextBeforeId();
+            reports.getItems().setAll(page.items());
+            if(!page.items().isEmpty())reports.getSelectionModel().selectFirst();
+            status.setText(filter+" · "+page.items().size()+"건 · "+(pageIndex+1)+"페이지");buttons();
+        },e->status.setText("제보 목록을 불러오지 못했어요. 다시 시도해 주세요."));
     }
     @FXML private void approve() { review(true); }
     @FXML private void reject() { review(false); }
@@ -46,6 +65,9 @@ public final class InformationReviewController extends BasePageController {
     private void buttons() {
         var r=reports.getSelectionModel().getSelectedItem();boolean blocked=session==null||isLoading()||r==null||!"PENDING".equals(r.status());
         approveButton.setDisable(blocked);rejectButton.setDisable(blocked);
+        previousButton.setDisable(session==null||isLoading()||pageIndex==0);
+        nextButton.setDisable(session==null||isLoading()||nextCursor==null);
+        refreshButton.setDisable(session==null||isLoading());filterBox.setDisable(session==null||isLoading());
     }
     private static String state(String s) {return switch(s){case "PENDING"->"검토 대기";case "APPROVED"->"승인";default->"반려";};}
 }

@@ -39,6 +39,7 @@ class PlacePresenterTest {
         var place=facility("P:A",FactState.AVAILABLE);var json=new ObjectMapper();
         var payload=new PlaceMapPayload(json,presenter);
         assertTrue(payload.place(place).has("presentation"));
+        assertEquals(place.stableKey(),payload.place(place).path("identityKey").asText());
         assertFalse(json.valueToTree(place).has("presentation"));
         assertEquals(place,json.readValue(json.writeValueAsBytes(place),Place.class));
         assertEquals("예약 가능",payload.plan(new RoutePlan(35.1578,129.06,2,500,"",List.of(place))).path("places").get(0)

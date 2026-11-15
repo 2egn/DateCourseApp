@@ -18,6 +18,7 @@ public final class PlaceMapPayload {
     public ObjectNode place(Place place) {
         if(place==null)return null;
         ObjectNode value=json.valueToTree(place);
+        value.put("identityKey",place.stableKey());
         value.set("presentation",json.valueToTree(presenter.present(place)));
         return value;
     }

@@ -645,9 +645,13 @@
         });
         pin.setMap(null);
     }
+    function samePlace(a,b) {
+        if(a.identityKey && b.identityKey)return a.identityKey===b.identityKey;
+        return a.placeId ? a.placeId===b.placeId : a.recordId===b.recordId;
+    }
     function createResultPin(item, index, visits, connectRoute, panelManaged) {
             const point = new kakao.maps.LatLng(item.lat, item.lng);
-            const courseIndex = plannerCourse.findIndex(function (p) { return p.placeId ? p.placeId === item.placeId : p.recordId === item.recordId; });
+            const courseIndex = plannerCourse.findIndex(function (p) { return samePlace(p,item); });
             const nearby = (panelManaged || routePresentation) && !connectRoute && courseIndex < 0;
             const candidateRank = routeCandidates.findIndex(function (p) { return p.recordId === item.recordId; }) + 1;
             const label = nearby ? (routePresentation ? candidateRank : '·') : panelManaged && !connectRoute ? courseIndex + 1 : index + 1;
@@ -693,7 +697,7 @@
         currentPanelManaged = !!panelManaged; currentCourseTab = !!connectRoute;
         const visits = routePresentation ? itinerary.setStandaloneItems(items) : itinerary.setItems(connectRoute || panelManaged ? items : []);
         items.forEach(function (item, index) {
-            if (!panelManaged || connectRoute || plannerCourse.some(function (p) { return p.placeId ? p.placeId === item.placeId : p.recordId === item.recordId; }))
+            if (!panelManaged || connectRoute || plannerCourse.some(function (p) { return samePlace(p,item); }))
                 createResultPin(item, index, visits, connectRoute, panelManaged);
         });
         renderingResults = false;
