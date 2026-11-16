@@ -24,7 +24,7 @@ public final class PlacePresenter {
         List<Badge> badges=PRIORITY.stream().filter(details::hasTag).map(tag->badge(details,tag)).toList();
         var lines=new ArrayList<DetailLine>();
         line(lines,"주소",details.address(),details.evidenceFor(PlaceField.ADDRESS));
-        line(lines,"세부 분류",details.subcategory().replace("전국박물관미술관정보표준데이터","박물관·미술관"),details.evidenceFor(PlaceField.SUBCATEGORY));
+        line(lines,"세부 분류",details.subcategory().isBlank()?"":PlaceFacets.detailType(place),details.evidenceFor(PlaceField.SUBCATEGORY));
         line(lines,"연락처",details.phone(),details.evidenceFor(PlaceField.PHONE));
         String priceLabel=price.estimated()?"추정 가격":price.finite()?"참고 가격":"가격";
         String priceSummary=price.usablePerPerson()?price.explanation()+"이에요.":"가격은 아직 확인되지 않았어요.";

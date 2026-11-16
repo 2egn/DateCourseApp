@@ -52,6 +52,19 @@ class PlacePresenterTest {
         assertTrue(new NextPlaceService().candidates(List.of(current),List.of(old),35.1578,129.06,500,"식사",10000,2,500).isEmpty());
         assertFalse(old.sameIdentityAs(facility("PUBLIC:B",FactState.AVAILABLE)));
     }
+    @Test void publicFacilityNamesUseTheSameReadableTypeInCandidatesAndMapCards() throws Exception {
+        var labels=Map.of("전국도시공원정보표준데이터","도시공원","전국박물관미술관정보표준데이터","박물관·미술관","전국관광지정보표준데이터","관광지");
+        for(var entry:labels.entrySet()) {
+            var details=new PlaceDetails("주소",entry.getKey(),"","","https://example.test","2026-11-16","","",Map.of("public","CULTURE:TEST"));
+            var place=new Place(1,"CULTURE:TEST","시설","CULTURE",35,129,PriceEstimate.unknown(),0,details);
+            assertTrue(presenter.candidateType(place).endsWith(entry.getValue()));
+            var line=presenter.present(place).lines().stream().filter(l->l.label().equals("세부 분류")).findFirst().orElseThrow();
+            assertEquals(entry.getValue(),line.value());
+            var payload=new PlaceMapPayload(new ObjectMapper(),presenter).place(place);
+            assertTrue(payload.path("presentation").path("lines").toString().contains(entry.getValue()));
+            assertEquals(entry.getKey(),place.details().subcategory());
+        }
+    }
     @Test void unknownPriceNeverBecomesFreeOrAProviderVerificationClaim() {
         var place=new Place(1,"unknown","장소","CULTURE",35,129,PriceEstimate.unknown(),0,PlaceDetails.EMPTY);
         var view=presenter.present(place);

@@ -11,6 +11,7 @@ public final class PlaceFacets {
         return switch(value) {
             case "전국도시공원정보표준데이터" -> "도시공원";
             case "전국박물관미술관정보표준데이터" -> "박물관·미술관";
+            case "전국관광지정보표준데이터" -> "관광지";
             case "" -> subtype(p);
             default -> value;
         };
