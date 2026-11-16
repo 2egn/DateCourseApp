@@ -1,0 +1,93 @@
+{
+  "checkpoint": "checkpoint-2026-11-17",
+  "date": "2026-11-17",
+  "applicationVersion": "1.0-SNAPSHOT",
+  "sourceCommit": "2d9a9ce98401326fb7e4e3ed280780c3606b0d45",
+  "changes": {
+    "dataset": "9fe645bfc5c269fa13f069a0a913a3b5b75162b0",
+    "facilityLabels": "10ae15264b3384a1a63cd7d025e5363585a729e6",
+    "kakaoRoutes": "dbca5f22c4f62f8c8a10a38a56ca84bba36600bc",
+    "checkoutReproducibility": "2d9a9ce98401326fb7e4e3ed280780c3606b0d45"
+  },
+  "artifacts": {
+    "data/places/demo/seomyeon-public-estimates.json": {
+      "sha256": "9d752bd7aecb0ad6a551cdb22a4f3018ff2c37c621664cd127e92a7b65ada6c0"
+    },
+    "data/places/appeal/busan-2026-11-14/demo_appeal_facts.json": {
+      "sha256": "ac479487853c83996f86e7adf3621736b7f1d4b5d31af0d3db8369cf500006a1"
+    },
+    "data/places/expansion/suyeong-2026-11-16/places.json": {
+      "sha256": "b113902b854c924198fa0cd8afb2e9e610e89f908054c564db4363f838e803c3"
+    },
+    "data/places/expansion/suyeong-2026-11-16/appeal/demo_appeal_facts.json": {
+      "sha256": "7cc09edf5b322fc63ee27b0ef27d35be74b0cb9bcd37a1988f6d9091f49737f4"
+    },
+    "data/places/expansion/suyeong-policy.json": {
+      "sha256": "d7c243fbf29318841f65c46be147dfe76ba90c5673d9333eb46904a682f5c43a"
+    },
+    "data/places/public/busan/manifest.json": {
+      "sha256": "8e7e191714d86fe80924e3dad2bd7812acb4a40bf05badbcb8d86f5681e38cbc"
+    },
+    "data/sql/10_place_catalog.sql": {
+      "sha256": "e6a114363e51b7badc3c994b882e756007228355150018bc5737bf8d51cea789"
+    },
+    "data/sql/11_saved_course_previews.sql": {
+      "sha256": "59a6c7b25999c42d80fd74678c166018fcfd9da30c61f2750ab6d4f64a5d201d"
+    },
+    "data/sql/12_saved_course_transport.sql": {
+      "sha256": "d1889dd0fb010d7b127fc18fe97ccfa52568a9da756a6d4f86a893a34641d9b1"
+    }
+  },
+  "catalog": {
+    "bundledDemoPlaces": 386,
+    "operationalPlaces": 866,
+    "databaseReadOnlyCheck": {
+      "sourceKey": "busan-public-places",
+      "checkedDate": "2026-11-17",
+      "fingerprint": "20cec115c5f0179e14ba97334cd6cb1dca1f9880cd60f05a157d7ba4a53025d4",
+      "activeSourceRows": 866,
+      "payloadMismatches": 0,
+      "transportSchemaPresent": false,
+      "readOnly": true,
+      "generatedAt": "2026-11-16T04:44:29.771320Z"
+    }
+  },
+  "worker": {
+    "versionId": "7266c63e-75db-4b39-9653-dae443a00352",
+    "deployedAt": "2026-11-16T10:53:24.477211Z",
+    "trafficPercent": 100,
+    "optionalSecretName": "KAKAO_REST_API_KEY",
+    "changedDuringCheckpoint": false
+  },
+  "verification": {
+    "java": {
+      "commit": "dbca5f22c4f62f8c8a10a38a56ca84bba36600bc",
+      "tests": 336,
+      "failures": 0,
+      "jarBuilt": true
+    },
+    "pythonTools": {
+      "commit": "2d9a9ce98401326fb7e4e3ed280780c3606b0d45",
+      "tests": 18,
+      "failures": 0
+    },
+    "pythonPilot": {
+      "commit": "dbca5f22c4f62f8c8a10a38a56ca84bba36600bc",
+      "tests": 51,
+      "failures": 0
+    },
+    "worker": {
+      "commit": "dbca5f22c4f62f8c8a10a38a56ca84bba36600bc",
+      "tests": 55,
+      "failures": 0
+    },
+    "source": "independently extracted git archives",
+    "liveRouteCallsDuringCheckpoint": 0,
+    "transportDatabaseSaveRoundTripVerified": false
+  },
+  "externalChanges": {
+    "gitPushed": false,
+    "databaseWritten": false,
+    "workerDeployed": false
+  }
+}

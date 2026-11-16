@@ -1,5 +1,7 @@
 # DateCourseApp 팀원 전용 문서 사이트
 
+2026-11-17 버전 기준과 실제 Worker 배포 상태는 [체크포인트](../releases/checkpoint-2026-11-17.md)에 기록했다. 현재 Worker 테스트는 55개이며 아래 54개는 11월 16일 문서·보드 갱신 당시 수치다. 이번 버전 정리에서는 재배포하지 않았다.
+
 문서 변환은 Quartz 5.1.0, 호스팅·인증 관문은 Cloudflare Workers를 사용합니다. GitHub 로그인 연결과 소유자 로그인을 확인했습니다.
 
 주소: https://datecourseapp-team-docs.ate-ourse-pp.workers.dev
@@ -166,3 +168,10 @@ npx wrangler secret put SESSION_KEY
 - [GitHub OAuth 앱 인증](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)
 - [Cloudflare 인증 후 정적 파일 제공](https://developers.cloudflare.com/workers/static-assets/routing/worker-script/)
 - [Workers Free 한도](https://developers.cloudflare.com/workers/platform/pricing/)
+
+
+### 카카오 REST 경로 키
+
+앱용 `/api/app/keys`는 기존 공통 접속 키 인증을 거친 요청에만 `kakaoRest`를 추가로 제공한다.
+`KAKAO_REST_API_KEY`는 Worker secret이며 `wrangler.jsonc`의 vars나 공개 자산에 넣지 않는다. 이전 클라이언트와 REST secret이 없는 이전 서버 형식도 유지된다.
+2026-11-16에 실제 부산 자동차·대중교통 호출과 공통 접속 키 경로를 검증했다. 상세 구현은 [카카오 경로 연결](../kakao-routing-2026-11-16.md)을 참고한다.
