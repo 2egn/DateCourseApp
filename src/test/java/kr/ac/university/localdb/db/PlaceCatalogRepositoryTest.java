@@ -69,6 +69,18 @@ class PlaceCatalogRepositoryTest {
         assertEquals(snapshot,saved.findAll(session).getFirst().plan());
         assertEquals(2,count("place_catalog_revisions"));
     }
+    @Test void regionalFragmentCannotDeactivateExistingPlacesInExpansionMode() throws Exception {
+        var a=place("PUBLIC:A","서면 가게",5000);var b=place("PUBLIC:B","수영구 가게",6000);
+        catalog.synchronize(batch(0,a));
+        var old=catalog.findAll();
+        assertThrows(IllegalArgumentException.class,()->catalog.synchronize(batch(1,b),PlaceCatalogRepository.ImportMode.EXPANSION));
+        assertEquals(old,catalog.findAll());
+        assertEquals(1,count("place_catalog_imports"));assertEquals(1,count("place_catalog_revisions"));
+        var expanded=catalog.synchronize(batch(1,a,b),PlaceCatalogRepository.ImportMode.EXPANSION);
+        assertEquals(1,expanded.inserted());assertEquals(1,expanded.unchanged());assertEquals(0,expanded.deactivated());
+        assertEquals(old.getFirst().recordId(),catalog.findAll().getFirst().recordId());
+        assertEquals(2,catalog.synchronize(batch(1,a,b),PlaceCatalogRepository.ImportMode.EXPANSION).unchanged());
+    }
     @Test void missingPlacesDeactivateAndReappearWithSameRecordNumber() throws Exception {
         catalog.synchronize(batch(0,place("PUBLIC:A","가게",5000),place("PUBLIC:B","다른 가게",6000)));
         long id=catalog.findAll().get(1).recordId();
@@ -149,6 +161,24 @@ class PlaceCatalogRepositoryTest {
         assertTrue(places.stream().allMatch(p->p.placeId().equals(p.details().externalIds().get("public"))));
         var original=new PublicDemoPlaceRepository().findAll();
         assertEquals(original.getFirst().priceEstimate(),places.stream().filter(p->p.placeId().equals(original.getFirst().details().externalIds().get("public"))).findFirst().orElseThrow().priceEstimate());
+    }
+    @Test void stagedDistrictExpansionLoadsThroughProductionModelAndRetainsExistingCatalog() throws Exception {
+        var staged=PublicPlaceImport.batch(Path.of("data/places/expansion/suyeong-2026-11-16/places.json"),
+                Path.of("data/places/expansion/suyeong-2026-11-16/appeal/demo_appeal_facts.json"));
+        // A bundled baseline may be regenerated later; seed the prior version explicitly.
+        var original=new PlaceCatalogRepository.Batch(staged.sourceKey(),staged.generatedAt().minusSeconds(1),PublicPlaceImport.batch().places());
+        catalog.synchronize(original);
+        var old=catalog.findAll();
+        var result=catalog.synchronize(staged,PlaceCatalogRepository.ImportMode.EXPANSION);
+        assertEquals(480,result.inserted());assertEquals(386,result.unchanged());assertEquals(0,result.deactivated());
+        var all=catalog.findAll();assertEquals(866,all.size());
+        for(var before:old)assertEquals(before,all.stream().filter(p->p.stableKey().equals(before.stableKey())).findFirst().orElseThrow());
+        var condition=new NextPlaceCondition("식사",20000,2000,true,Set.of(),Set.of(),30);
+        var service=new com.datecourse.service.NextPlaceService();
+        var candidates=service.candidates(all,List.of(),35.1532,129.1189,2,2000,condition);
+        assertEquals(30,candidates.size());
+        assertTrue(candidates.stream().allMatch(p->p.place().details().address().contains("수영구")));
+        assertEquals(866,catalog.synchronize(staged,PlaceCatalogRepository.ImportMode.EXPANSION).unchanged());
     }
     @Test void sourceFingerprintIgnoresInputOrderAndDemoRecordNumber() throws Exception {
         var a=place("PUBLIC:A","가게",5000);var b=place("PUBLIC:B","다른 가게",6000);

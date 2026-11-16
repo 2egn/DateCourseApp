@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "district": "부산진구",
+      "path": "raw/busanjin_model_restaurants_cp949.csv",
+      "identifier": "15055847",
+      "referenceDate": "2025-11-17"
+    }
+  ]
+}

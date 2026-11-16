@@ -1,0 +1,330 @@
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "부산광역시_부산진구_모범음식점",
+    "alternateName": "부산광역시_부산진구_모범음식점_20251117",
+    "description": "부산진구에서는 지역 내 식당의 위생환경, 서비스 품질, 그리고 좋은 식단 이행 여부 등을 종합적으로 평가하여 우수한 음식점을 지정하고 있습니다. 본 데이터는 부산진구 내 지정된 우수 음식점들의 업종명, 업소명, 소재지 주소, 그리고 연락 가능한 전화번호 등의 기본 정보를 포함하고 있습니다. 이 데이터는 음식점의 위생 상태와 서비스 수준이 우수함을 증명하는 자료로서, 신뢰할 수 있는 음식점을 쉽게 확인할 수 있습니다. 모범음식점 데이터는 정기적으로 최신 정보로 갱신되며, 구에서는 이를 바탕으로 지속적으로 음식점 위생 점검과 서비스 향상을 지원하고 있습니다.",
+    "url": "https://www.data.go.kr/data/15055847/fileData.do",
+    "identifier": "15055847",
+    "inLanguage": "ko",
+    "keywords": "식당,착한식당,지역업체,좋은식단,음식점,모범",
+    "license": {
+      "name": "이용허락범위 제한 없음",
+      "url": "https://www.data.go.kr/ugs/selectPortalPolicyView.do",
+      "@type": "CreativeWork"
+    },
+    "isAccessibleForFree": true,
+    "dateCreated": "2025-11-17",
+    "dateModified": "2025-11-17",
+    "datePublished": "2025-11-17",
+    "creator": {
+      "name": "부산광역시 부산진구",
+      "contactPoint": {
+        "contactType": "시민건강국 보건위생과",
+        "telephone": "+82-51-888-3371",
+        "@type": "ContactPoint"
+      },
+      "@type": "Organization"
+    },
+    "encodingFormat": "CSV",
+    "includedInDataCatalog": {
+      "name": "공공데이터포털",
+      "url": "https://www.data.go.kr",
+      "@id": "https://www.data.go.kr/#datacatalog",
+      "@type": "DataCatalog"
+    },
+    "variableMeasured": [
+      {
+        "name": "연번",
+        "description": "연번",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "업소명",
+        "description": "업소명",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "동별",
+        "description": "동별",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "소재지(도로명)",
+        "description": "소재지(도로명)",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "음식의유형",
+        "description": "음식의유형",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "주된음식",
+        "description": "주된음식",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "면적(제곱미터)",
+        "description": "면적(제곱미터)",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "전화번호",
+        "description": "전화번호",
+        "@type": "PropertyValue"
+      }
+    ],
+    "additionalProperty": [
+      {
+        "name": "분류체계",
+        "value": "지역개발 - 지역및도시",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "업데이트 주기",
+        "value": "연간",
+        "@type": "PropertyValue"
+      }
+    ],
+    "download_url": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000003527243&fileDetailSn=1",
+    "downloaded_sha256": "08bd230f7eb751fa8bb3c75db2eb3bb4c93dfc7237883df7f7dc68c99db0b678",
+    "downloaded_bytes": 3848,
+    "retrieved_date": "2026-11-14"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "국토교통부_전국 버스정류장 위치정보",
+    "alternateName": "국토교통부_전국 버스정류장 위치정보_20261109",
+    "description": "지자체 버스정보시스템(BIS)이 구축된 지자체 중 국가대중교통정보센터(TAGO)와 연계된 지자체의 특정일에 수집된 버스정류장 위치정보의 파일 데이터입니다. 정류장번호, 정류장명, 위도, 경도, 정보수집일, 지자체 및 관리 지자체 등을 제공하고 있습니다. 해당 정보는 직접 생성한 데이터가 아닌 각 지자체BIS로 부터 정보를 연계 받아 형태 등의 표준화를 통해 통합 제공 하고있습니다. 정보를 수집한 일자(연1회)의 정보를 제공하고 있으며, 그 이후의 변동에 대해서는 반영되지 않은 데이터 입니다.",
+    "url": "https://www.data.go.kr/data/15067528/fileData.do",
+    "identifier": "15067528",
+    "inLanguage": "ko",
+    "keywords": "버스정류장,위치정보,버스정보시스템,전국 버스정류장 위치,정류장위경도,버스정류장 명칭",
+    "license": {
+      "name": "이용허락범위 제한 없음",
+      "url": "https://www.data.go.kr/ugs/selectPortalPolicyView.do",
+      "@type": "CreativeWork"
+    },
+    "isAccessibleForFree": true,
+    "dateCreated": "2026-11-01",
+    "dateModified": "2026-11-09",
+    "datePublished": "2026-11-01",
+    "creator": {
+      "name": "국토교통부",
+      "contactPoint": {
+        "contactType": "모빌리티총괄과",
+        "telephone": "+82-54-459-7906",
+        "@type": "ContactPoint"
+      },
+      "@type": "Organization"
+    },
+    "encodingFormat": "CSV",
+    "includedInDataCatalog": {
+      "name": "공공데이터포털",
+      "url": "https://www.data.go.kr",
+      "@id": "https://www.data.go.kr/#datacatalog",
+      "@type": "DataCatalog"
+    },
+    "variableMeasured": [
+      {
+        "name": "정류장번호",
+        "description": "정류장 ID",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "정류장명",
+        "description": "정류장 명칭",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "위도",
+        "description": "GPS 위도(WGS84 위경도)",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "경도",
+        "description": "GPS 경도(WGS84 위경도)",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "정보수집일",
+        "description": "정보수집일",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "모바일단축번호",
+        "description": "모바일(ARS)/단축 ID",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "도시코드",
+        "description": "도시코드",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "도시명",
+        "description": "도시명",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "관리도시명",
+        "description": "관리도시명",
+        "@type": "PropertyValue"
+      }
+    ],
+    "additionalProperty": [
+      {
+        "name": "분류체계",
+        "value": "교통및물류 - 도로",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "업데이트 주기",
+        "value": "연간",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "보유근거",
+        "value": "국가통합교통체계효율화법 제90조제4항",
+        "@type": "PropertyValue"
+      }
+    ],
+    "download_url": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000007759750&fileDetailSn=1",
+    "downloaded_sha256": "ed0d652469aa0983241a2fff73237b1aa4893955bbfe09511b8f1399d1d8f5ba",
+    "downloaded_bytes": 22328212,
+    "retrieved_date": "2026-11-14"
+  },
+  {
+    "name": "전국도시철도역사정보표준데이터",
+    "url": "https://www.data.go.kr/data/15013205/standard.do",
+    "provider_url": "https://data.kric.go.kr/rips/M_01_01/detail.do?id=32",
+    "download_url": "https://data.kric.go.kr/rips/dataset/download.file?type=filedata&id=32&operation=1",
+    "retrieved_date": "2026-11-14",
+    "downloaded_bytes": 313132,
+    "downloaded_sha256": "cdf1d84a7e5c898b2aacd622783ba8ba9af35c40bee0561dc97d55ce8e063f94",
+    "national_rows": 1099,
+    "license": "공공데이터포털 메타데이터: 이용허락범위 제한 없음",
+    "selection": "역사도로명주소에 부산 포함; 좌표 유효. 부산 전체 역사·출입구의 완전한 목록을 보장하지 않음."
+  },
+  {
+    "reused_from": "data/places/public/busan/manifest.json",
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "행정안전부_착한가격업소 현황",
+    "alternateName": "행정안전부_착한가격업소 현황_20260930",
+    "description": "행정안전부, 지방자치단체가 지정 및 운영하는 착한가격업소 현황에 대한 데이터로 지역, 업종, 업소명, 주소, 착한가격메뉴 등의 항목을 제공합니다. 이 자료는 2026.9.30. 기준 착한가격업소 현황으로 2026년 3분기 현황을 기준으로 전국 지자체에서 현행화하여 정리한 자료로 시도별 , 업종별(외식업(한식, 일식, 중식, 양식, 기타 요식업 등)과 개인서비스업(이미용업, 숙박업, 목욕업, 기타 비요식업 등), 구체적인 주소, 착한가격 메뉴와 그에 대한 가격 등에 대해 정리한 현황을 나타내는 자료입니다.",
+    "url": "https://www.data.go.kr/data/3045247/fileData.do",
+    "identifier": "3045247",
+    "inLanguage": "ko",
+    "keywords": "착한,가격,업소,현황,자료",
+    "license": {
+      "name": "이용허락범위 제한 없음",
+      "url": "https://www.data.go.kr/ugs/selectPortalPolicyView.do",
+      "@type": "CreativeWork"
+    },
+    "isAccessibleForFree": true,
+    "dateCreated": "2026-10-15",
+    "dateModified": "2026-10-16",
+    "datePublished": "2026-10-15",
+    "creator": {
+      "name": "행정안전부",
+      "contactPoint": {
+        "contactType": "지역경제과",
+        "telephone": "+82-44-205-3924",
+        "@type": "ContactPoint"
+      },
+      "@type": "Organization"
+    },
+    "encodingFormat": "CSV",
+    "includedInDataCatalog": {
+      "name": "공공데이터포털",
+      "url": "https://www.data.go.kr",
+      "@id": "https://www.data.go.kr/#datacatalog",
+      "@type": "DataCatalog"
+    },
+    "variableMeasured": [
+      {
+        "name": "시도",
+        "description": "착한가격업소의 주소의 지역단위(광역)",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "시군",
+        "description": "착한가격업소의 주소의 지역단위(기초)",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "업종",
+        "description": "착한가격업소의 업종",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "업소명",
+        "description": "착한가격업소의 이름",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "주소",
+        "description": "착한가격업소의 도로명 주소",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "메뉴1",
+        "description": "착한가격업소의 메뉴1",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "가격1",
+        "description": "착한가격업소의 메뉴1의 가격",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "메뉴2",
+        "description": "착한가격업소의 메뉴2",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "가격2",
+        "description": "착한가격업소의 메뉴2의 가격",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "메뉴3",
+        "description": "착한가격업소의 메뉴3",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "가격3",
+        "description": "착한가격업소의 메뉴3의 가격",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "메뉴4",
+        "description": "착한가격업소의 메뉴4",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "가격4",
+        "description": "착한가격업소의 메뉴4의 가",
+        "@type": "PropertyValue"
+      }
+    ],
+    "additionalProperty": [
+      {
+        "name": "분류체계",
+        "value": "일반공공행정 - 일반행정",
+        "@type": "PropertyValue"
+      },
+      {
+        "name": "업데이트 주기",
+        "value": "분기",
+        "@type": "PropertyValue"
+      }
+    ],
+    "download_url": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000007728892&fileDetailSn=1",
+    "reference_date": "09/30/2026"
+  }
+]

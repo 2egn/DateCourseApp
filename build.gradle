@@ -173,3 +173,14 @@ tasks.register('resetAdminPassword', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'kr.ac.university.localdb.db.AdminPasswordReset'
 }
+
+// Staged district expansion uses an explicit dataset/fact pair; bundled demo remains unchanged.
+['previewPlaceImport', 'importPublicPlaces'].each { taskName ->
+    tasks.named(taskName) {
+        if (project.hasProperty('placeDataset') || project.hasProperty('placeFacts')) {
+            if (!project.hasProperty('placeDataset') || !project.hasProperty('placeFacts'))
+                throw new GradleException('placeDataset와 placeFacts를 함께 지정하세요.')
+            args '--dataset', project.property('placeDataset'), '--facts', project.property('placeFacts')
+        }
+    }
+}

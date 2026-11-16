@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "district": "수영구",
+  "center": { "lat": 35.1532, "lng": 129.1189 },
+  "radiusMeters": 2000,
+  "categoryLimits": { "MEAL": 540, "CAFE": 270, "CULTURE": 100 },
+  "preferredPerCuisine": 35,
+  "preferredDesignated": 40,
+  "earliestReferenceDate": "2024-01-01",
+  "pricePolicy": {
+    "minimumSamples": 20,
+    "allowedSubtypes": ["카페", "백반/한정식", "국/탕/찌개류", "국수/칼국수", "냉면/밀면", "중국집"]
+  }
+}

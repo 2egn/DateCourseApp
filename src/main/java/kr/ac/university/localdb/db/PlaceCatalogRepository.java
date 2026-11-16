@@ -23,6 +23,7 @@ public final class PlaceCatalogRepository implements PlaceSource {
             if (places.isEmpty()) throw new IllegalArgumentException("빈 전체 스냅샷은 적재하지 않습니다.");
         }
     }
+    public enum ImportMode { FULL_SNAPSHOT, EXPANSION }
     public record ImportResult(long importId, int inserted, int updated, int reactivated, int deactivated, int unchanged) {}
     public record PreparedBatch(String fingerprint, SortedMap<String, String> payloads) {
         public PreparedBatch { payloads = Collections.unmodifiableSortedMap(new TreeMap<>(payloads)); }
@@ -71,6 +72,12 @@ public final class PlaceCatalogRepository implements PlaceSource {
     }
 
     public ImportResult synchronize(Batch batch) throws SQLException, IOException {
+        return synchronize(batch, ImportMode.FULL_SNAPSHOT);
+    }
+
+    /** Expansion requires a complete retained snapshot; regional fragments cannot retire other regions. */
+    public ImportResult synchronize(Batch batch, ImportMode mode) throws SQLException, IOException {
+        Objects.requireNonNull(mode);
         var prepared = prepare(batch); // Reject malformed data before schema or row writes.
         initialize();
         try (var connection = pool.getConnection()) {
@@ -80,8 +87,12 @@ public final class PlaceCatalogRepository implements PlaceSource {
                     if (!ignored.next()) throw new SQLException("자료 갱신 잠금을 얻지 못했습니다.");
                 }
                 checkVersion(connection, batch, prepared.fingerprint());
-                long run = newRun(connection, batch, prepared.fingerprint());
                 var existing = existing(connection);
+                if (mode == ImportMode.EXPANSION && existing.entrySet().stream().anyMatch(row ->
+                        row.getValue().active() && row.getValue().sourceKey().equals(batch.sourceKey())
+                                && !prepared.payloads().containsKey(row.getKey())))
+                    throw new IllegalArgumentException("확대 자료에 기존 장소가 빠졌습니다. 기존 전체 목록과 합친 뒤 다시 검증해 주세요.");
+                long run = newRun(connection, batch, prepared.fingerprint());
                 int inserted=0, updated=0, reactivated=0, unchanged=0, deactivated=0;
                 long category = category(connection);
                 for (var row : prepared.payloads().entrySet()) {

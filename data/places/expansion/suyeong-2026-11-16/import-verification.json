@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-16",
+  "sourceKey": "busan-public-places",
+  "generatedAt": "2026-11-16T04:44:29.771320+00:00",
+  "payloadFingerprint": "20cec115c5f0179e14ba97334cd6cb1dca1f9880cd60f05a157d7ba4a53025d4",
+  "mode": "EXPANSION",
+  "before": 386,
+  "activeAfter": 866,
+  "effectiveAfter": 866,
+  "result": {
+    "inserted": 480,
+    "updated": 0,
+    "reactivated": 0,
+    "deactivated": 0,
+    "unchanged": 386
+  },
+  "existingRecordIdsPreserved": true,
+  "payloadMismatches": 0,
+  "unchangedTables": [
+    "saved_courses",
+    "saved_course_places",
+    "saved_course_previews",
+    "place_information_overrides",
+    "place_information_reports"
+  ],
+  "repeat": {
+    "inserted": 0,
+    "updated": 0,
+    "reactivated": 0,
+    "deactivated": 0,
+    "unchanged": 866
+  },
+  "applyAndVerificationDurationSeconds": 297,
+  "durationScope": "Gradle invocation including preflight, apply, protected-data/payload verification and repeated import; not insert-only time",
+  "transitParity": {
+    "places": 866,
+    "comparisons": 1732,
+    "mismatches": 0
+  },
+  "providerChecks": "No new paid API calls or live venue identity verification"
+}

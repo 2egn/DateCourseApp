@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "facts": [
+    {
+      "kind": "FREE_ADMISSION",
+      "label": "무료 관람",
+      "basis": "운영기관 관람 안내에서 관람료 무료 확인",
+      "sourceUrl": "https://bsmuseum.ksd.or.kr/contents.do?menuno=262",
+      "sourceExcerpt": "관람료 무료",
+      "checkedAt": "2026-11-14",
+      "publicPlaceId": "STD:15017323:dd37d113291f15027d6931df"
+    },
+    {
+      "kind": "FREE_AUDIO_GUIDE",
+      "label": "오디오가이드 무료 대여",
+      "basis": "운영기관 관람 안내에 무료 대여 명시",
+      "conditions": "관람 당일 신분증 보관 및 신청서 작성; 만 14세 이하는 보호자 동반",
+      "sourceUrl": "https://bsmuseum.ksd.or.kr/contents.do?menuno=262",
+      "sourceExcerpt": "대여료 무료",
+      "checkedAt": "2026-11-14",
+      "publicPlaceId": "STD:15017323:dd37d113291f15027d6931df"
+    }
+  ]
+}

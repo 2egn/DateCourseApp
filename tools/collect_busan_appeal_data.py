@@ -181,8 +181,75 @@ def load_inputs(offline):
     return sources,rail_source,buses,stations,csv_rows(CACHE/'model.csv'),len(bus_all)
 
 
-def collect(offline=False):
-    demo_path = ROOT / 'data/places/demo/seomyeon-public-estimates.json'
+SOURCE_PACK=OUT
+
+
+class NearestTransitIndex:
+    """Small geographic grid; exact haversine comparison, exhaustive fallback outside the local window."""
+    def __init__(self, rows, lat_field, lng_field):
+        self.rows=rows; self.lat_field=lat_field; self.lng_field=lng_field
+        self.cells=defaultdict(list)
+        self.order={id(row):index for index,row in enumerate(rows)}
+        for row in rows:
+            self.cells[(math.floor(float(row[lat_field])*100),math.floor(float(row[lng_field])*100))].append(row)
+
+    def nearest(self, lat, lng):
+        lat,lng=float(lat),float(lng); radius=2000
+        dy=radius/111000
+        dx=radius/(111000*math.cos(math.radians(abs(lat)+dy)))
+        candidates=[]
+        for y in range(math.floor((lat-dy)*100),math.floor((lat+dy)*100)+1):
+            for x in range(math.floor((lng-dx)*100),math.floor((lng+dx)*100)+1):
+                candidates.extend(self.cells.get((y,x),()))
+        measure=lambda r:distance(lat,lng,r[self.lat_field],r[self.lng_field])
+        if candidates:
+            nearest=min(candidates,key=lambda row:(measure(row),self.order[id(row)]))
+            if measure(nearest)<=radius:return nearest
+        return min(self.rows,key=lambda row:(measure(row),self.order[id(row)]))
+
+
+def match_designations(places, model_sets):
+    links,review=[],[]
+    for dataset in model_sets:
+        lookup=defaultdict(list)
+        for row in places:
+            if row['category']=='MEAL' and row['district']==dataset['district'] and road_key(row['road_address']):
+                lookup[(name_key(row['name']),road_key(row['road_address']))].append(row)
+        for number,row in enumerate(dataset['rows'],1):
+            candidates=lookup[(name_key(row['업소명']),road_key(row['소재지(도로명)']))]
+            if len(candidates)!=1:
+                review.append({'district':dataset['district'],'source_row':number,'name':row['업소명'],
+                    'address':row['소재지(도로명)'],'candidate_ids':[p['place_id'] for p in candidates],
+                    'reason':'no_unique_exact_name_and_road_building_match'})
+                continue
+            p=candidates[0]
+            links.append({'public_place_id':p['place_id'],'place_name':p['name'],'tag':'MODEL_RESTAURANT',
+                'source_name':row['업소명'],'source_address':row['소재지(도로명)'],'source_row':number,
+                'basis':dataset['district']+' 모범음식점 지정 목록 · 상호와 도로명 건물번호가 유일하게 일치',
+                'sourceUrl':dataset['sourceUrl'],'sourceDate':dataset['referenceDate'],'checkedAt':DATE})
+    return links,review
+
+
+def manual_facilities(demos, facts):
+    by_id={p['details']['externalIds']['public']:p for p in demos}
+    result=[]
+    for fact in facts:
+        place=by_id.get(fact['publicPlaceId'])
+        if place is None:continue
+        value={k:v for k,v in fact.items() if k!='publicPlaceId'}
+        datetime.strptime(value['checkedAt'],'%Y-%m-%d')
+        result.append(dict(value,placeId=place['placeId'],name=place['name']))
+    return result
+
+
+def collect(offline=False, demo_path=None, output=OUT):
+    demo_path = Path(demo_path) if demo_path else ROOT / 'data/places/demo/seomyeon-public-estimates.json'
+    source_pack=SOURCE_PACK
+    OUT=Path(output)
+    demo_path=demo_path.resolve()
+    OUT=OUT.resolve()
+    if not offline and OUT!=source_pack.resolve():
+        raise ValueError('Acquire sources in the original pack first; use --offline for a separate output')
     demo_bytes = read_lf_bytes(demo_path)
     (OUT / 'raw').mkdir(parents=True, exist_ok=True)
     sources,rail_source,buses,stations,models,national_bus_rows=load_inputs(offline)
@@ -199,23 +266,14 @@ def collect(offline=False):
 
     places = csv_rows(PUBLIC / 'busan_places.csv')
     by_id = {row['place_id']: row for row in places}
-    lookup = defaultdict(list)
-    for row in places:
-        if row['category'] == 'MEAL' and row['district'] == '부산진구' and road_key(row['road_address']):
-            lookup[(name_key(row['name']), road_key(row['road_address']))].append(row)
-    links, review = [], []
-    for number, row in enumerate(models, 1):
-        candidates = lookup[(name_key(row['업소명']), road_key(row['소재지(도로명)']))]
-        if len(candidates) != 1:
-            review.append({'source_row': number, 'name': row['업소명'], 'address': row['소재지(도로명)'],
-                           'candidate_ids': [p['place_id'] for p in candidates],
-                           'reason': 'no_unique_exact_name_and_road_building_match'})
-            continue
-        p = candidates[0]
-        links.append({'public_place_id': p['place_id'], 'place_name': p['name'], 'tag': 'MODEL_RESTAURANT',
-                      'source_name': row['업소명'], 'source_address': row['소재지(도로명)'], 'source_row': number,
-                      'basis': '부산진구 모범음식점 지정 목록 · 상호와 도로명 건물번호가 유일하게 일치',
-                      'sourceUrl': sources[0]['url'], 'sourceDate': '2025-11-17', 'checkedAt': DATE})
+    designation_path=ROOT/'data/places/appeal/designation-sources.json'
+    model_sets=[]
+    for definition in read_json(designation_path)['sources']:
+        if definition['path'] not in read_json(source_pack/'checksums.json')['outputs']:
+            raise ValueError('Designation input must belong to the verified source pack')
+        source=next(item for item in sources if item.get('identifier')==definition['identifier'])
+        model_sets.append(dict(definition,rows=csv_rows(source_pack/definition['path']),sourceUrl=source['url']))
+    links,review=match_designations(places,model_sets)
     # Reuse existing strict designation matches; never promote unmatched or similar-name records.
     old_manifest = read_json(PUBLIC / 'manifest.json')
     good_source = next(s for s in old_manifest['sources'] if s['identifier'] == '3045247')
@@ -234,6 +292,8 @@ def collect(offline=False):
     demos = read_json(demo_path)['places']
     model_by_id = {r['public_place_id']: r for r in links if r['tag'] == 'MODEL_RESTAURANT'}
     facts, nearest = [], []
+    station_index=NearestTransitIndex(stations,'역위도','역경도')
+    bus_index=NearestTransitIndex(buses,'위도','경도')
     for place in demos:
         pid = place['details']['externalIds']['public']
         tags = [dict(tag) for tag in place['details']['tags']]
@@ -241,8 +301,8 @@ def collect(offline=False):
             r = model_by_id[pid]
             tags.append({'tag': 'MODEL_RESTAURANT', 'basis': r['basis'], 'sourceUrl': r['sourceUrl'],
                          'checkedAt': r['sourceDate'], 'matchCheckedAt': DATE})
-        station = min(stations, key=lambda r: distance(place['lat'],place['lng'],r['역위도'],r['역경도']))
-        stop = min(buses, key=lambda r: distance(place['lat'],place['lng'],r['위도'],r['경도']))
+        station = station_index.nearest(place['lat'],place['lng'])
+        stop = bus_index.nearest(place['lat'],place['lng'])
         sd = distance(place['lat'],place['lng'],station['역위도'],station['역경도'])
         bd = distance(place['lat'],place['lng'],stop['위도'],stop['경도'])
         nearest.append({'place_id': place['placeId'], 'name': place['name'], 'nearest_station': station['역사명'],
@@ -287,14 +347,8 @@ def collect(offline=False):
                                        'basis':'원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치',
                                        'sourceUrl':f'https://www.data.go.kr/data/{dataset}/standard.do',
                                        'sourceDate':latest,'checkedAt':DATE})
-    museum = next(p for p in demos if p['name']=='증권박물관(부산관)')
-    facilities.extend([
-        {'placeId':museum['placeId'],'name':museum['name'],'kind':'FREE_ADMISSION','label':'무료 관람',
-         'basis':'운영기관 관람 안내에서 관람료 무료 확인','sourceUrl':'https://bsmuseum.ksd.or.kr/contents.do?menuno=262',
-         'sourceExcerpt':'관람료 무료','checkedAt':DATE},
-        {'placeId':museum['placeId'],'name':museum['name'],'kind':'FREE_AUDIO_GUIDE','label':'오디오가이드 무료 대여',
-         'basis':'운영기관 관람 안내에 무료 대여 명시', 'conditions':'관람 당일 신분증 보관 및 신청서 작성; 만 14세 이하는 보호자 동반',
-         'sourceUrl':'https://bsmuseum.ksd.or.kr/contents.do?menuno=262','sourceExcerpt':'대여료 무료','checkedAt':DATE}])
+    manual_path=ROOT/'data/places/appeal/manual-facility-facts.json'
+    facilities.extend(manual_facilities(demos,read_json(manual_path)['facts']))
     write_json(OUT / 'additional_facility_facts.json', {'note':'현행 PlaceTag에 자동 적용하지 않는 별도 확인 자료', 'facts':facilities})
     write_json(OUT / 'sources.json', sources)
     summary = {'demo_places': len(facts), 'busan_bus_stops': len(buses), 'national_bus_rows': national_bus_rows,
@@ -303,12 +357,16 @@ def collect(offline=False):
                'model_review_needed': len(review), 'tag_counts': dict(Counter(t['tag'] for p in facts for t in p['tags'])),
                'source_date_counts_rail': dict(Counter(r['데이터기준일자'] for r in stations)),
                'additional_facility_fact_count': len(facilities),
-               'ui_or_database_changed': False, 'input_mode': 'offline_reuse' if offline else 'public_download', 'calculated_at': DATE}
+               'ui_or_database_changed': False, 'input_mode': 'offline_reuse' if offline else 'public_download', 'calculated_at': DATE,
+               'designation_coverage': [dict(district=d['district'], referenceDate=d['referenceDate']) for d in model_sets],
+               'missing_designation_coverage_means': 'unknown, not undesignated'}
     write_json(OUT / 'summary.json', summary)
     tracked_inputs = [demo_path, PUBLIC/'busan_good_price_shops.csv', PUBLIC/'busan_places.csv',
-                      PUBLIC/'raw/busan_standard_sources.json']
+                      PUBLIC/'raw/busan_standard_sources.json',designation_path,manual_path,
+                      source_pack/'raw/busan_bus_stops.csv',source_pack/'raw/busan_railway_stations.csv']
+    tracked_inputs.extend(source_pack/d['path'] for d in read_json(designation_path)['sources'])
     write_json(OUT / 'checksums.json', {
-        'inputs': {p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in tracked_inputs},
+        'inputs': {(p.relative_to(ROOT).as_posix() if p.is_relative_to(ROOT) else p.as_posix()):hashlib.sha256(p.read_bytes()).hexdigest() for p in tracked_inputs},
         'outputs': {p.relative_to(OUT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
                     for p in sorted(OUT.rglob('*')) if p.is_file() and p.name not in ('checksums.json','README.md','.gitattributes')}})
     print(json.dumps(summary, ensure_ascii=False, indent=2))
@@ -317,4 +375,6 @@ def collect(offline=False):
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--offline',action='store_true',help='Reuse checksum-verified published public inputs; no downloads')
-    args=parser.parse_args();collect(args.offline)
+    parser.add_argument('--dataset',type=Path,help='Staged complete place snapshot')
+    parser.add_argument('--output',type=Path,default=OUT,help='Separate output fact-pack directory')
+    args=parser.parse_args();collect(args.offline,args.dataset,args.output)

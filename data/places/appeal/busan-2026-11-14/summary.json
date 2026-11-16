@@ -21,5 +21,12 @@
   "additional_facility_fact_count": 7,
   "ui_or_database_changed": false,
   "input_mode": "offline_reuse",
-  "calculated_at": "2026-11-16"
+  "calculated_at": "2026-11-16",
+  "designation_coverage": [
+    {
+      "district": "부산진구",
+      "referenceDate": "2025-11-17"
+    }
+  ],
+  "missing_designation_coverage_means": "unknown, not undesignated"
 }

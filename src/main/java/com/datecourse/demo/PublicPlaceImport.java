@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.ac.university.localdb.db.MemberRepository;
 import kr.ac.university.localdb.db.PlaceCatalogRepository;
 import java.time.Instant;
-import java.util.Arrays;
+import java.io.ByteArrayInputStream;
+import java.nio.file.*;
+import com.datecourse.service.PublicPlaceFacts;
 
 /** Preview is offline. Apply uses existing DB settings and only additive source-owned catalog writes. */
 public final class PublicPlaceImport {
@@ -16,20 +18,36 @@ public final class PublicPlaceImport {
             return new PlaceCatalogRepository.Batch("busan-public-places", generated, new PublicDemoPlaceRepository().findAll());
         }
     }
-    public static void main(String[] args) {
-        if (args.length > 1 || args.length == 1 && !args[0].equals("--apply")) {
-            System.err.println("사용법: PublicPlaceImport [--apply]"); System.exit(2);
+    public static PlaceCatalogRepository.Batch batch(Path dataset, Path facts) throws Exception {
+        byte[] bytes = Files.readAllBytes(dataset);
+        byte[] factBytes = Files.readAllBytes(facts);
+        Instant generated = Instant.parse(new ObjectMapper().readTree(factBytes).path("generatedAt").asText());
+        try (var input = new ByteArrayInputStream(factBytes)) {
+            return new PlaceCatalogRepository.Batch("busan-public-places", generated, PublicPlaceFacts.read(bytes, input));
         }
+    }
+    public static void main(String[] args) {
         try {
-            var batch = batch();
+            Path dataset = null, facts = null;
+            boolean apply = false;
+            for (int i = 0; i < args.length; i++) {
+                switch (args[i]) {
+                    case "--apply" -> apply = true;
+                    case "--dataset" -> { if (dataset != null || ++i == args.length) throw new IllegalArgumentException(); dataset = Path.of(args[i]); }
+                    case "--facts" -> { if (facts != null || ++i == args.length) throw new IllegalArgumentException(); facts = Path.of(args[i]); }
+                    default -> throw new IllegalArgumentException("사용법: PublicPlaceImport [--dataset 파일 --facts 파일] [--apply]");
+                }
+            }
+            if ((dataset == null) != (facts == null)) throw new IllegalArgumentException("장소와 속성 파일을 함께 지정해 주세요.");
+            var batch = dataset == null ? batch() : batch(dataset, facts);
             var prepared = PlaceCatalogRepository.prepare(batch);
             System.out.println("공공 장소 자료: " + batch.places().size() + "곳 · 생성 시각 " + batch.generatedAt());
             System.out.println("자료 지문: " + prepared.fingerprint());
-            if (!Arrays.asList(args).contains("--apply")) {
+            if (!apply) {
                 System.out.println("검증 완료. DB 연결과 쓰기를 수행하지 않았습니다."); return;
             }
             try (var members = new MemberRepository()) {
-                var result = members.placeCatalog().synchronize(batch);
+                var result = members.placeCatalog().synchronize(batch, PlaceCatalogRepository.ImportMode.EXPANSION);
                 var places = members.places().findAll();
                 var effective = members.informationReports().apply(places);
                 System.out.println("적재 완료: 신규 " + result.inserted() + ", 갱신 " + result.updated()

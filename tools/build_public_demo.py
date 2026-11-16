@@ -10,6 +10,7 @@ import csv
 import json
 import math
 import statistics
+import hashlib
 from collections import defaultdict, Counter, deque
 from pathlib import Path
 
@@ -50,6 +51,12 @@ def load_policy(path):
         raise ValueError('Positive category limits are required')
     for name in ['preferredPerCuisine','preferredDesignated']:
         if type(policy.get(name))!=int or policy[name]<0:raise ValueError('Invalid preference count')
+    if 'district' in policy and (not isinstance(policy['district'],str) or not policy['district'].strip()):
+        raise ValueError('A district must be a nonempty name')
+    if 'pricePolicy' in policy:
+        price=policy['pricePolicy']
+        if type(price.get('minimumSamples'))!=int or price['minimumSamples']<1 or not isinstance(price.get('allowedSubtypes'),list) or not all(isinstance(v,str) and v for v in price['allowedSubtypes']):
+            raise ValueError('Invalid price cohort policy')
     return policy
 
 
@@ -85,11 +92,15 @@ def select_places(near,previous_ids,checked_ids,blocked,good,group,policy):
     return list(chosen.values())
 
 
-def build(policy_path=POLICY,target=DEMO/'seomyeon-public-estimates.json'):
+def build(policy_path=POLICY,target=DEMO/'seomyeon-public-estimates.json',excluded_ids=()):
     policy=load_policy(policy_path);center=(policy['center']['lat'],policy['center']['lng'])
     previous=json.loads(target.read_text(encoding='utf-8'))['places'] if target.exists() else []
     previous_by_id={p['details']['externalIds']['public']:p for p in previous}
 
+    manifest=json.loads((DATA/'manifest.json').read_text(encoding='utf-8'))
+    for name in ['busan_places.csv','busan_good_price_shops.csv','busan_menu_prices.csv']:
+        if hashlib.sha256((DATA/name).read_bytes()).hexdigest()!=manifest['sha256'][name]:
+            raise ValueError('Public input checksum mismatch: '+name)
     places=read('busan_places.csv');shops=read('busan_good_price_shops.csv');menus=read('busan_menu_prices.csv')
     byid={p['place_id']:p for p in places}
     checked_snapshot=json.loads((ROOT/'data/places/demo/seomyeon-jeonpo-demo.json').read_text(encoding='utf-8'))
@@ -126,19 +137,23 @@ def build(policy_path=POLICY,target=DEMO/'seomyeon-public-estimates.json'):
             # Each unique venue contributes once regardless of menu count.
             amount=int(round(statistics.mean(statistics.median(v) for v in rows.values())/100)*100)
             estimates[kind]=(amount,len(rows))
-    near=[p for p in places if valid_point(p) and p['category'] in policy['categoryLimits'] and dist(p,center)<=policy['radiusMeters']]
+    near=[p for p in places if valid_point(p) and p['category'] in policy['categoryLimits']
+          and (p['place_id'] in previous_by_id or (p['district']==policy['district'] if policy.get('district') else dist(p,center)<=policy['radiusMeters']))]
     near.sort(key=lambda p:(dist(p,center),p['place_id']))
     selected=select_places(near,list(previous_by_id),list(checked),
-        {pid for pid,row in checks.items() if row['decision']=='REVIEW_NEEDED'},good,group,policy)
+        {pid for pid,row in checks.items() if row['decision']=='REVIEW_NEEDED'} | set(excluded_ids),good,group,policy)
     category_counts=Counter(p['category'] for p in selected)
     next_record_id=max((p['recordId'] for p in previous),default=2000000)+1
     out=[]
     for p in selected:
+        if p['place_id'] in previous_by_id:
+            out.append(previous_by_id[p['place_id']]);continue
         record_id=previous_by_id.get(p['place_id'],{}).get('recordId')
         if record_id is None:record_id=next_record_id;next_record_id+=1
         price=dict(minimum=None,maximum=None,unit='UNKNOWN',basis='확인 가능한 단위별 표본 부족',evidence='UNKNOWN',sourceUrl='',checkedAt='')
         g=group(p)
-        if g in estimates:
+        pricing=policy.get('pricePolicy')
+        if g in estimates and (not pricing or (estimates[g][1]>=pricing['minimumSamples'] and p['industry_name'] in pricing['allowedSubtypes'])):
             amount,n=estimates[g]
             price=dict(minimum=amount,maximum=amount,unit='PER_DRINK' if g=='카페' else 'PER_PERSON',
                 evidence='SIMILAR_ESTIMATE',sourceUrl='https://www.data.go.kr/data/3045247/fileData.do',checkedAt='2026-09-30',
@@ -157,10 +172,12 @@ def build(policy_path=POLICY,target=DEMO/'seomyeon-public-estimates.json'):
             identity=dict(identity,identityCheckedAt=verification['checkedAt'])
         out.append(dict(recordId=record_id,placeId='DCA-DEMO-PUBLIC-'+p['place_id'],name=p['name']+(' '+p['branch'] if p['branch'] else ''),category=p['category'],lat=float(p['lat']),lng=float(p['lon']),priceEstimate=price,rating=0,
             details=dict(address=p['road_address'] or p['lot_address'],subcategory=p['industry_name'],phone=p['phone'],website=p['website'],sourceUrl=p['source_url'],sourceDate=p['source_reference_date'],identityCheckedAt=identity.get('identityCheckedAt',''),verificationUrl=identity.get('verificationUrl',''),externalIds=external_ids,tags=tags)))
-    doc=dict(schemaVersion=1,title='서면 공공자료 · 추정 가격',startLat=center[0],startLng=center[1],
+    doc=dict(schemaVersion=1,title=(policy['district']+' 확대 공공자료 · 추정 가격') if policy.get('district') else '서면 공공자료 · 추정 가격',startLat=center[0],startLng=center[1],
         note='Real public-source place records. Only marked places have recorded identity checks; review-needed places are held out. Costs are not Google-verified. Similar-place estimates assume per-person portions; inexpensive-shop sample is biased. Original nine-place dataset is unchanged.',places=out)
     target.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps({'places':len(out),'categories':dict(category_counts),'estimate_samples':estimates,'estimated':sum(p['priceEstimate']['evidence']=='SIMILAR_ESTIMATE' for p in out),'unknown':sum(p['priceEstimate']['minimum'] is None for p in out)},ensure_ascii=False))
+    return {'cohorts':{kind:{'amount':amount,'sampleSize':n,'aggregation':'mean_of_per_place_menu_medians','source':'busan_good_price_shops','bias':'inexpensive_designated_shops','unit':'PER_DRINK' if kind=='카페' else 'PER_PERSON'} for kind,(amount,n) in estimates.items()},'places':len(out)}
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--policy',type=Path,default=POLICY)
