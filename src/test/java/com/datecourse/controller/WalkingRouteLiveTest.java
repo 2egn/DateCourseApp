@@ -61,9 +61,9 @@ class WalkingRouteLiveTest {
             fx(()->{
                 try {
                     var field=RouteEditorController.class.getDeclaredField("walkingRoute");field.setAccessible(true);
-                    var route=(com.datecourse.model.WalkingRoute)field.get(editor.get());
+                    var route=(com.datecourse.model.TravelRoute)field.get(editor.get());
                     assertTrue(route.totalTime()>0);assertEquals(route.legs().stream().mapToLong(l->l.time()).sum(),route.totalTime());
-                    assertTrue(((javafx.scene.control.Label)context.root().lookup("#walkingTimeLabel")).getText().contains(com.datecourse.model.WalkingRoute.durationText(route.totalTime())));
+                    assertTrue(((javafx.scene.control.Label)context.root().lookup("#walkingTimeLabel")).getText().contains(com.datecourse.model.TravelRoute.durationText(route.totalTime())));
                     ((javafx.scene.control.TitledPane)context.root().lookup("#coursePane")).setExpanded(true);
                     return null;
                 }catch(Exception e){throw new RuntimeException(e);}
@@ -82,7 +82,7 @@ class WalkingRouteLiveTest {
         while(System.nanoTime()<end) {
             if(fx(()->{
                 try{var field=RouteEditorController.class.getDeclaredField("walkingRoute");field.setAccessible(true);
-                    var route=(com.datecourse.model.WalkingRoute)field.get(editor);return route!=null&&route.legs().size()==legs;}
+                    var route=(com.datecourse.model.TravelRoute)field.get(editor);return route!=null&&route.legs().size()==legs;}
                 catch(Exception e){throw new RuntimeException(e);}
             }))return;
             Thread.sleep(100);

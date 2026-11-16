@@ -11,7 +11,7 @@
  stylesheets="@style.css" styleClass="condition-screen,route-editor-screen" prefWidth="1440" prefHeight="960" minHeight="0">
  <top><HBox alignment="CENTER_LEFT" spacing="20" styleClass="planner-header,editor-heading-bar">
  <VBox spacing="5"><Label text="02 · 장소를 하나씩 골라요" styleClass="planner-heading"/><Label fx:id="commonLabel" styleClass="planner-caption"/></VBox>
- <Region HBox.hgrow="ALWAYS"/><Button fx:id="walkingSettingsButton" text="도보 설정" onAction="#onTmapSettings" styleClass="drawer-toggle"/>
+ <Region HBox.hgrow="ALWAYS"/><Label text="이동 방법" styleClass="field-label"/><ComboBox fx:id="travelModeBox" accessibleText="코스 이동 방법" prefWidth="130"/><Button fx:id="walkingSettingsButton" text="도보 설정" onAction="#onTmapSettings" styleClass="drawer-toggle"/>
  </HBox></top>
  <center><GridPane hgap="0" minHeight="0"><columnConstraints><ColumnConstraints percentWidth="55"/><ColumnConstraints percentWidth="45"/></columnConstraints>
  <rowConstraints><RowConstraints minHeight="0" percentHeight="100" vgrow="ALWAYS"/></rowConstraints>

@@ -25,5 +25,11 @@ export async function appKeys(request, env, respond) {
   const keys={tmap:env.TMAP_APP_KEY,kakaoJavascript:env.KAKAO_MAP_JAVASCRIPT_KEY,googlePlaces:env.GOOGLE_PLACES_API_KEY};
   if(Object.values(keys).some(value => typeof value !== 'string' || !/^[A-Za-z0-9_-]{1,256}$/.test(value)))
     return json({error:'service_unavailable'},503);
+  // Optional addition: older deployments and three-key clients remain compatible.
+  if (env.KAKAO_REST_API_KEY !== undefined && env.KAKAO_REST_API_KEY !== '') {
+    if (typeof env.KAKAO_REST_API_KEY !== 'string' || !/^[A-Za-z0-9_-]{16,256}$/.test(env.KAKAO_REST_API_KEY))
+      return json({error:'service_unavailable'},503);
+    keys.kakaoRest=env.KAKAO_REST_API_KEY;
+  }
   return json({version:1,keys},200);
 }

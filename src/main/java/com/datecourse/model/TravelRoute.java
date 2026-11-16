@@ -1,0 +1,51 @@
+package com.datecourse.model;
+
+import java.util.List;
+
+/** Provider-neutral transient route; WGS84 geometry, meters and seconds. Never a persisted provider snapshot. */
+public record TravelRoute(List<Leg> legs, long totalDistance, long totalTime, TravelMode mode, String provider) {
+    public TravelRoute(List<Leg> legs,long totalDistance,long totalTime) {this(legs,totalDistance,totalTime,TravelMode.WALKING,"TMAP");}
+    public TravelRoute(List<Leg> legs,long totalDistance,long totalTime,TravelMode mode) {this(legs,totalDistance,totalTime,mode,"");}
+    public TravelRoute {
+        legs = List.copyOf(legs);mode=mode==null?TravelMode.WALKING:mode;provider=provider==null?"":provider;
+        if(totalDistance<0||totalTime<0)throw new IllegalArgumentException("경로 거리·시간이 올바르지 않습니다.");
+    }
+    public static String durationText(long seconds) {
+        if(seconds<0)throw new IllegalArgumentException("이동 시간은 0 이상이어야 합니다.");
+        return (seconds==0?"0":"약 "+(seconds/60+(seconds%60==0?0:1)))+"분";
+    }
+
+    public record Coordinate(double lat, double lng) {
+        public Coordinate {
+            if (!Double.isFinite(lat) || !Double.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180)
+                throw new IllegalArgumentException("유효한 위도·경도가 필요합니다.");
+        }
+    }
+
+    public record Stop(double lat, double lng, String name) {
+        public Stop {
+            new Coordinate(lat, lng);
+            name = name == null || name.isBlank() ? "선택 위치" : name;
+        }
+    }
+
+    public record Step(String description, Coordinate position) {}
+
+    public record TransitStage(String type,String guidance,long distance,long time,List<Coordinate> path) {
+        public TransitStage {path=List.copyOf(path);if(distance<0||time<0)throw new IllegalArgumentException("대중교통 단계가 올바르지 않습니다.");}
+    }
+
+    public record Leg(Stop from, Stop to, long distance, long time,
+                      List<List<Coordinate>> paths, List<Step> steps, List<TransitStage> transitStages,
+                      Integer fare, Integer transfers) {
+        public Leg(Stop from,Stop to,long distance,long time,List<List<Coordinate>> paths,List<Step> steps) {
+            this(from,to,distance,time,paths,steps,List.of(),null,null);
+        }
+        public Leg {
+            paths = paths.stream().map(List::copyOf).toList();
+            steps = List.copyOf(steps);transitStages=List.copyOf(transitStages);
+            if(distance<0||time<0||fare!=null&&fare<0||transfers!=null&&transfers<0)
+                throw new IllegalArgumentException("구간 거리·시간·요금이 올바르지 않습니다.");
+        }
+    }
+}

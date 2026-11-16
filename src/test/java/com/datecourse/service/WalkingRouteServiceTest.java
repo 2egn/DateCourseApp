@@ -1,7 +1,7 @@
 package com.datecourse.service;
 
-import com.datecourse.model.WalkingRoute;
-import com.datecourse.model.WalkingRoute.Stop;
+import com.datecourse.model.TravelRoute;
+import com.datecourse.model.TravelRoute.Stop;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpServer;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class WalkingRouteServiceTest {
         try {
             WalkingRouteService service = new WalkingRouteService(HttpClient.newHttpClient(),
                     URI.create("http://localhost:" + server.getAddress().getPort() + "/pedestrian?version=1"));
-            WalkingRoute route = service.route(List.of(START, END), SETTINGS);
+            TravelRoute route = service.route(List.of(START, END), SETTINGS);
             assertEquals(619, route.totalDistance());
             assertEquals(514, route.totalTime());
             assertEquals(2, route.legs().get(0).paths().size());
@@ -60,7 +60,7 @@ class WalkingRouteServiceTest {
             assertEquals("POST", method.get());
             assertEquals(route, service.route(List.of(START, END), SETTINGS));
             assertEquals(1, calls.get());
-            WalkingRoute multi = service.route(List.of(START, END, new Stop(35.182, 129.08, "다음")), SETTINGS);
+            TravelRoute multi = service.route(List.of(START, END, new Stop(35.182, 129.08, "다음")), SETTINGS);
             assertEquals(1238, multi.totalDistance());
             assertEquals(1028, multi.totalTime());
             assertEquals(2, calls.get());

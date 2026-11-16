@@ -58,3 +58,18 @@ test('missing or invalid database configuration fails closed without breaking AP
   assert.equal((await handle(request('Bearer '+env.APP_ACCESS_KEY),{...dbEnv,...change})).status,200);
  }
 });
+
+
+test('optional Kakao REST secret is separate from the JavaScript key and remains private',async()=>{
+ const rest='rest-test-key-0123456789';
+ const response=await handle(request('Bearer '+env.APP_ACCESS_KEY),{...env,KAKAO_REST_API_KEY:rest});
+ assert.equal(response.status,200);
+ const body=await response.json();
+ assert.equal(body.keys.kakaoRest,rest);
+ assert.equal(body.keys.kakaoJavascript,env.KAKAO_MAP_JAVASCRIPT_KEY);
+ assert.equal(response.headers.get('Cache-Control'),'private, no-store');
+ const denied=await handle(request('Bearer '+ '00'.repeat(32)),{...env,KAKAO_REST_API_KEY:rest});
+ assert.equal(denied.status,401);assert.equal((await denied.text()).includes(rest),false);
+ const invalid=await handle(request('Bearer '+env.APP_ACCESS_KEY),{...env,KAKAO_REST_API_KEY:'bad\nkey'});
+ assert.equal(invalid.status,503);assert.deepEqual(await invalid.json(),{error:'service_unavailable'});
+});

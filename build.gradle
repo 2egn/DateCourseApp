@@ -46,7 +46,7 @@ test {
 processResources {
     doFirst { delete layout.buildDirectory.file('resources/main/db.properties').get().asFile }
     exclude 'map/kakao-config.js', 'db.properties'
-    from('data/sql') { include '10_place_catalog.sql', '11_saved_course_previews.sql'; into 'db' }
+    from('data/sql') { include '10_place_catalog.sql', '11_saved_course_previews.sql', '12_saved_course_transport.sql'; into 'db' }
     from('data/places/demo') {
         include 'seomyeon-jeonpo-demo.json', 'seomyeon-public-estimates.json'
         into 'datasets'
@@ -183,4 +183,12 @@ tasks.register('resetAdminPassword', JavaExec) {
             args '--dataset', project.property('placeDataset'), '--facts', project.property('placeFacts')
         }
     }
+}
+
+// Explicit live check: public Busan test coordinates only, no response files or DB writes.
+tasks.register('verifyKakaoRoutes', JavaExec) {
+    group = 'verification'
+    description = 'Verify live Kakao driving/transit route permissions and response geometry'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.demo.KakaoRouteProbe'
 }

@@ -30,6 +30,7 @@ public final class SavedCourseRepository {
     private final DataSource dataSource;
     private final com.datecourse.service.CoursePreviewRenderer previewRenderer;
     private volatile boolean previewSchemaReady;
+    private volatile boolean transportSchemaReady;
     private final RouteRangeValidator rangeValidator = new RouteRangeValidator();
     private static final ObjectMapper JSON = new ObjectMapper();
 
@@ -46,11 +47,7 @@ public final class SavedCourseRepository {
     public List<SavedCourse> findAll(UserSession session) throws SQLException {
         requireSession(session);
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("""
-                     SELECT c.course_id AS saved_id,c.title,c.start_lat,c.start_lng,c.people,c.radius_m,c.updated_at,p.* FROM saved_courses c
-                     LEFT JOIN saved_course_places p ON p.course_id=c.course_id
-                     WHERE c.member_id=? ORDER BY c.updated_at DESC,c.course_id DESC,p.visit_order
-                     """)) {
+             PreparedStatement statement = connection.prepareStatement(courseQuery(connection))) {
             statement.setLong(1, session.memberId());
             try (ResultSet rows = statement.executeQuery()) {
                 List<SavedCourse> result = new ArrayList<>();
@@ -66,7 +63,7 @@ public final class SavedCourseRepository {
                         current = id;
                         updatedAt = rows.getTimestamp("updated_at").toInstant();
                         header = new RoutePlan(rows.getDouble("start_lat"), rows.getDouble("start_lng"),
-                                rows.getInt("people"), rows.getInt("radius_m"), rows.getString("title"), List.of());
+                                rows.getInt("people"), rows.getInt("radius_m"), rows.getString("title"), List.of()).withTravelMode(com.datecourse.model.TravelMode.valueOf(rows.getString("travel_mode")));
                         places = new ArrayList<>();
                         radii = new LinkedHashMap<>();
                     }
@@ -88,7 +85,7 @@ public final class SavedCourseRepository {
     private SavedCourse restored(long id, UserSession session, RoutePlan header,
                                  List<Place> places, Map<Long, Integer> radii, java.time.Instant updatedAt) {
         return new SavedCourse(id, session.memberId(), new RoutePlan(header.startLat(), header.startLng(),
-                header.people(), header.radius(), header.title(), places, radii), updatedAt);
+                header.people(), header.radius(), header.title(), places, radii,header.travelMode()), updatedAt);
     }
 
     public void rename(UserSession session, long courseId, String title) throws SQLException {
@@ -159,6 +156,7 @@ public final class SavedCourseRepository {
     private SaveResult persist(UserSession session, Long existingCourseId, RoutePlan plan,
                                 com.datecourse.service.CoursePreviewRenderer renderer) throws SQLException {
         validate(session, plan);
+        initializeTransport();
         byte[] preview = null;
         boolean previewStorage = false;
         try {
@@ -179,6 +177,7 @@ public final class SavedCourseRepository {
                         ? insertCourse(connection, session.memberId(), plan)
                         : updateCourse(connection, existingCourseId, session.memberId(), plan);
                 replacePlaces(connection, courseId, plan);
+                replaceTransport(connection,courseId,plan.travelMode());
                 boolean previewStored = false;
                 if (previewStorage) {
                     var point = connection.setSavepoint();
@@ -208,6 +207,42 @@ public final class SavedCourseRepository {
     }
 
     /** Additive setup, invoked on save or by the explicit setup command, never on list reads. */
+    private boolean transportTableExists(Connection connection)throws SQLException {
+        for(String name:List.of("saved_course_transport","SAVED_COURSE_TRANSPORT"))
+            try(var rows=connection.getMetaData().getTables(connection.getCatalog(),null,name,new String[]{"TABLE"})) {
+                while(rows.next())if("saved_course_transport".equalsIgnoreCase(rows.getString("TABLE_NAME")))return true;
+            }
+        return false;
+    }
+    private String courseQuery(Connection connection)throws SQLException {
+        boolean modes=transportTableExists(connection);
+        return "SELECT c.course_id AS saved_id,c.title,c.start_lat,c.start_lng,c.people,c.radius_m,c.updated_at,"
+                +(modes?"COALESCE(t.travel_mode,'WALKING')":"'WALKING'")+" AS travel_mode,p.* FROM saved_courses c "
+                +(modes?"LEFT JOIN saved_course_transport t ON t.course_id=c.course_id ":"")
+                +"LEFT JOIN saved_course_places p ON p.course_id=c.course_id WHERE c.member_id=? ORDER BY c.updated_at DESC,c.course_id DESC,p.visit_order";
+    }
+    public synchronized void initializeTransport()throws SQLException {
+        if(transportSchemaReady)return;
+        try(var input=getClass().getResourceAsStream("/db/12_saved_course_transport.sql")) {
+            if(input==null)throw new SQLException("교통수단 저장 스키마가 없습니다.");
+            String sql=new String(input.readAllBytes(),java.nio.charset.StandardCharsets.UTF_8).replaceAll("(?m)^--.*$","");
+            try(var c=dataSource.getConnection();var statement=c.createStatement()){statement.executeUpdate(sql);}
+            transportSchemaReady=true;
+        }catch(IOException failure){throw new SQLException("교통수단 저장 구조를 준비하지 못했어요.");}
+    }
+    private void replaceTransport(Connection c,long id,com.datecourse.model.TravelMode mode)throws SQLException {
+        try(var remove=c.prepareStatement("DELETE FROM saved_course_transport WHERE course_id=?")){remove.setLong(1,id);remove.executeUpdate();}
+        try(var insert=c.prepareStatement("INSERT INTO saved_course_transport(course_id,travel_mode) VALUES(?,?)")){
+            insert.setLong(1,id);insert.setString(2,mode.name());insert.executeUpdate();
+        }
+    }
+    private com.datecourse.model.TravelMode readTransport(Connection c,long id)throws SQLException {
+        if(!transportTableExists(c))return com.datecourse.model.TravelMode.WALKING;
+        try(var q=c.prepareStatement("SELECT travel_mode FROM saved_course_transport WHERE course_id=?")) {
+            q.setLong(1,id);try(var row=q.executeQuery()){return row.next()?com.datecourse.model.TravelMode.valueOf(row.getString(1)):com.datecourse.model.TravelMode.WALKING;}
+        }
+    }
+
     public synchronized void initializePreviews() throws SQLException, IOException {
         if (previewSchemaReady) return;
         try (var input = getClass().getResourceAsStream("/db/11_saved_course_previews.sql")) {
@@ -260,6 +295,7 @@ public final class SavedCourseRepository {
                                 row.getInt("radius_m"),row.getString("title"),List.of());
                     }
                 }
+                header=header.withTravelMode(readTransport(connection,expected.courseId()));
                 var places=new ArrayList<Place>();var radii=new LinkedHashMap<Long,Integer>();
                 try(var query=connection.prepareStatement("SELECT * FROM saved_course_places WHERE course_id=? ORDER BY visit_order")) {
                     query.setLong(1,expected.courseId());
@@ -271,7 +307,7 @@ public final class SavedCourseRepository {
                         }
                     }
                 }
-                var current=new RoutePlan(header.startLat(),header.startLng(),header.people(),header.radius(),header.title(),places,radii);
+                var current=new RoutePlan(header.startLat(),header.startLng(),header.people(),header.radius(),header.title(),places,radii,header.travelMode());
                 if(!com.datecourse.service.CoursePreviewImage.fingerprint(current).equals(
                         com.datecourse.service.CoursePreviewImage.fingerprint(expected.plan())))
                     throw new IllegalStateException("코스가 변경됐어요. 목록을 새로고침한 뒤 다시 시도해 주세요.");

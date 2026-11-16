@@ -45,6 +45,21 @@ class SavedCourseRepositoryTest {
         repository = new SavedCourseRepository(pool);
     }
 
+    @Test void transportChoiceRoundTripsAndOldCoursesDefaultToWalking() throws Exception {
+        var plan=example().withTravelMode(com.datecourse.model.TravelMode.DRIVING);
+        var saved=repository.save(owner,plan);
+        assertEquals(plan,repository.findAll(owner).getFirst().plan());
+        var transit=plan.withTravelMode(com.datecourse.model.TravelMode.TRANSIT);
+        repository.save(owner,saved.courseId(),transit);
+        assertEquals(transit,repository.findAll(owner).getFirst().plan());
+        repository.rename(owner,saved.courseId(),"수단 유지");
+        assertEquals(com.datecourse.model.TravelMode.TRANSIT,repository.findAll(owner).getFirst().plan().travelMode());
+        execute("DELETE FROM saved_course_transport");
+        assertEquals(com.datecourse.model.TravelMode.WALKING,repository.findAll(owner).getFirst().plan().travelMode());
+        execute("DROP TABLE saved_course_transport");
+        assertEquals(com.datecourse.model.TravelMode.WALKING,repository.findAll(owner).getFirst().plan().travelMode());
+    }
+
     @Test
     void previewPngRoundTripsAndOwnershipIsChecked() throws Exception {
         var saved = repository.save(owner, example());

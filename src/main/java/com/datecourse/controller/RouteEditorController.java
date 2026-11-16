@@ -69,7 +69,10 @@ public final class RouteEditorController extends BasePageController {
     @FXML private Slider radiusSlider;
     @FXML private Label radiusLabel, summaryLabel, editorError, commonLabel;
     @FXML private Label walkingTimeLabel;
-    private com.datecourse.model.WalkingRoute walkingRoute;
+    @FXML private ComboBox<com.datecourse.model.TravelMode> travelModeBox;
+    private boolean restoringTravelMode;
+    private com.datecourse.model.TravelMode travelMode(){return original==null?com.datecourse.model.TravelMode.WALKING:original.travelMode();}
+    private com.datecourse.model.TravelRoute walkingRoute;
     private String walkingMessage="";
     @FXML private Label rangeWarning;
     @FXML private Slider selectedRadiusSlider;
@@ -119,6 +122,13 @@ public final class RouteEditorController extends BasePageController {
         tagField.managedProperty().bind(tagField.visibleProperty());
         map = new PlannerMap(editMapView, (lat, lng) -> {}, editorError::setText);
         map.setAutomaticWalking(true);
+        travelModeBox.getItems().setAll(com.datecourse.model.TravelMode.values());
+        travelModeBox.setValue(com.datecourse.model.TravelMode.WALKING);
+        travelModeBox.valueProperty().addListener((o,a,b)->{
+            if(restoringTravelMode||original==null||b==null)return;
+            original=original.withTravelMode(b);walkingRoute=null;
+            refreshSummary();refreshMap(false);
+        });
         map.setOnReport(place->onReport.accept(place));
         map.setWalkingResultListener((route,message)->{
             walkingRoute=route;walkingMessage=message;refreshWalkingSummary();placeList.refresh();
@@ -276,6 +286,7 @@ public final class RouteEditorController extends BasePageController {
         boolean changed = original.startLat() != context.startLat() || original.startLng() != context.startLng()
                 || original.people() != context.people() || original.radius() != context.radius();
         original = context;
+        restoringTravelMode=true;travelModeBox.setValue(context.travelMode());restoringTravelMode=false;
         allPlaces = List.copyOf(places);
         refreshFacets();
         commonLabel.setText(String.format("%d명 · 출발지 중심 %dm 범위", context.people(), context.radius()));
@@ -303,6 +314,7 @@ public final class RouteEditorController extends BasePageController {
 
     public void begin(RoutePlan snapshot, List<Place> places, Consumer<RoutePlan> complete, Runnable cancel) {
         original = snapshot;
+        restoringTravelMode=true;travelModeBox.setValue(snapshot.travelMode());restoringTravelMode=false;
         allPlaces = List.copyOf(places);
         refreshFacets();
         onComplete = complete;
@@ -324,7 +336,7 @@ public final class RouteEditorController extends BasePageController {
 
     private RoutePlan draft() {
         return new RoutePlan(original.startLat(), original.startLng(), original.people(), original.radius(),
-                original.title(), draftPlaces, arrivalRadii);
+                original.title(), draftPlaces, arrivalRadii,original.travelMode());
     }
 
     private int radius() { return (int) Math.round(radiusSlider.getValue() / 100) * 100; }
@@ -454,26 +466,26 @@ public final class RouteEditorController extends BasePageController {
         radiusLabel.setText("직선 반경 · " + radius() + "m (최대 " + (int) radiusSlider.getMax() + "m)");
     }
     private static String minutes(long seconds) {
-        return com.datecourse.model.WalkingRoute.durationText(seconds);
+        return com.datecourse.model.TravelRoute.durationText(seconds);
     }
     private String walkingDescription(int index) {
         if(index<0||index>=draftPlaces.size())return "";
-        if(walkingRoute==null||walkingRoute.legs().size()!=draftPlaces.size())return "\n도보 시간 미확인";
+        if(walkingRoute==null||walkingRoute.legs().size()!=draftPlaces.size())return "\n"+travelMode().label()+" 시간 미확인";
         long total=0;for(int i=0;i<=index;i++)total=Math.addExact(total,walkingRoute.legs().get(i).time());
-        return "\n도보 "+minutes(walkingRoute.legs().get(index).time())+" · 누적 "+minutes(total);
+        return "\n"+travelMode().label()+" "+minutes(walkingRoute.legs().get(index).time())+" · 누적 "+minutes(total);
     }
     private void refreshWalkingSummary() {
-        if(draftPlaces.isEmpty()){walkingTimeLabel.setText("장소를 추가하면 도보 시간을 계산해요.");return;}
+        if(draftPlaces.isEmpty()){walkingTimeLabel.setText("장소를 추가하면 "+travelMode().label()+" 시간을 계산해요.");return;}
         if(walkingRoute!=null&&walkingRoute.legs().size()==draftPlaces.size()) {
             long last=walkingRoute.legs().getLast().time();
-            walkingTimeLabel.setText("최근 이동 "+minutes(last)+" · 누적 도보 "+minutes(walkingRoute.totalTime())+" · 체류시간 제외");
+            walkingTimeLabel.setText("최근 이동 "+minutes(last)+" · 누적 "+travelMode().label()+" "+minutes(walkingRoute.totalTime())+" · "+travelMode().timeNote()+(walkingRoute.provider().isBlank()?"":" · 경로 "+walkingRoute.provider()));
         } else walkingTimeLabel.setText(walkingMessage.contains("중")||walkingMessage.contains("준비")
-            ? "도보 이동시간 조회 중…" : "도보 시간 미확인 · 지도 새로고침으로 다시 시도해 주세요.");
+            ? travelMode().label()+" 이동시간 조회 중…" : travelMode().label()+" 시간 미확인"+(walkingMessage.isBlank()?"":" · "+walkingMessage));
     }
 
     private void updateButtons() {
         boolean hasPlaces=!draftPlaces.isEmpty();
-        coursePane.setVisible(hasPlaces);fitRouteButton.setVisible(hasPlaces);walkingSettingsButton.setVisible(hasPlaces);
+        coursePane.setVisible(hasPlaces);fitRouteButton.setVisible(hasPlaces);walkingSettingsButton.setVisible(hasPlaces&&travelMode()==com.datecourse.model.TravelMode.WALKING);
         int index = placeList.getSelectionModel().getSelectedIndex();
         upButton.setDisable(index <= 0);
         downButton.setDisable(index < 0 || index >= draftPlaces.size() - 1);

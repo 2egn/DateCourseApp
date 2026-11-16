@@ -2,7 +2,7 @@ package com.datecourse.controller;
 
 import com.datecourse.model.Place;
 import com.datecourse.model.RoutePlan;
-import com.datecourse.model.WalkingRoute;
+import com.datecourse.model.TravelRoute;
 import com.sun.net.httpserver.HttpServer;
 import javafx.application.Platform;
 import javafx.scene.web.WebView;
@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WalkingRouteUiTest {
     @Test void automaticTimeCalculationDoesNotDependOnMapSdkReadiness() throws Exception {
-        var complete=new CountDownLatch(1);var route=new AtomicReference<WalkingRoute>();
+        var complete=new CountDownLatch(1);var route=new AtomicReference<TravelRoute>();
         PlannerMap map=fx(()->{
             PlannerMap m=new PlannerMap(new WebView(),(lat,lng)->{},e->fail(e));
-            m.setAutomaticWalking(true);m.setWalkingRouter(stops->new WalkingRoute(List.of(),300,122));
+            m.setAutomaticWalking(true);m.setWalkingRouter(stops->new TravelRoute(List.of(),300,122));
             m.setWalkingResultListener((r,message)->{if(r!=null){route.set(r);complete.countDown();}});
             m.present(plan("saved",35.18),null,500,true,false);return m;
         });
@@ -39,7 +39,7 @@ class WalkingRouteUiTest {
             m.setAutomaticWalking(true);
             m.setWalkingRouter(stops->{calls.incrementAndGet();boolean old=stops.getLast().name().equals("old");
                 if(old){started.countDown();while(release.getCount()>0){try{release.await(50,TimeUnit.MILLISECONDS);}catch(InterruptedException ignored){}}returned.countDown();}
-                return new WalkingRoute(List.of(),old?100:200,60);
+                return new TravelRoute(List.of(),old?100:200,60);
             });
             view.get().getEngine().loadContent("<html><script>window.presentRoute=function(){};window.showWalkingRoute=function(r,m,f){window.walking=r;};</script></html>");return m;
         });
@@ -73,7 +73,7 @@ class WalkingRouteUiTest {
                         () -> URI.create("http://localhost/not-used"));
                 result.setWalkingRouter(stops -> {
                     calls.incrementAndGet();
-                    return new WalkingRoute(List.of(),300,100);
+                    return new TravelRoute(List.of(),300,100);
                 });
                 view.get().getEngine().loadContent("""
                     <html><script>
@@ -149,7 +149,7 @@ class WalkingRouteUiTest {
                         }
                         oldReturned.countDown();
                     }
-                    return new WalkingRoute(List.of(), old ? 100 : 200, 60);
+                    return new TravelRoute(List.of(), old ? 100 : 200, 60);
                 });
                 result.load();
                 return result;

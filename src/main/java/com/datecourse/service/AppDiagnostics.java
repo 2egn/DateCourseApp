@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 /** Safe one-line diagnostics: never formats exception messages, payloads, paths or user data. */
 public final class AppDiagnostics {
-    public enum Operation { PAGE_TASK, SCREEN_LOAD, ACCOUNT_TASK, COURSE_SAVE, PREVIEW_REBUILD, PREVIEW_READ, PREVIEW_STORAGE, MAP_LOAD, WALKING_ROUTE, PLACE_LOAD }
+    public enum Operation { PAGE_TASK, SCREEN_LOAD, ACCOUNT_TASK, COURSE_SAVE, PREVIEW_REBUILD, PREVIEW_READ, PREVIEW_STORAGE, MAP_LOAD, WALKING_ROUTE, TRAVEL_ROUTE, PLACE_LOAD }
     public enum Stage { START, MAP_PREPARE, MAP_CAPTURE, IMAGE_ENCODE, DATABASE_READ, DATABASE_WRITE, PROVIDER_REQUEST, RUN, COMPLETE }
     public enum Outcome { SUCCESS, FAILED, PARTIAL, CANCELLED }
     private static final System.Logger LOG=System.getLogger("datecourse.diagnostics");

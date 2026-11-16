@@ -55,6 +55,7 @@ public final class TeamApiKeys {
             cachedAccess = access;
         }
         String key = cachedKeys.get(provider);
+        if (key == null && provider.equals("kakaoRest")) return "";
         if (key == null) throw new IllegalArgumentException("지원하지 않는 API 종류입니다.");
         return key;
     }
@@ -136,6 +137,11 @@ public final class TeamApiKeys {
                 if (!value.isTextual() || !value.textValue().matches("[A-Za-z0-9_-]{1,256}"))
                     throw new IllegalArgumentException();
                 result.put(provider, value.textValue());
+            }
+            JsonNode rest=json.path("keys").path("kakaoRest");
+            if(!rest.isMissingNode()&&!rest.isNull()) {
+                if(!rest.isTextual())throw new IllegalArgumentException();
+                result.put("kakaoRest",new KakaoRouteSettings(rest.asText()).restApiKey());
             }
             return Map.copyOf(result);
         } catch (IOException | RuntimeException failure) {

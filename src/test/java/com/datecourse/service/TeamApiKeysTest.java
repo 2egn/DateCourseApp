@@ -38,6 +38,15 @@ class TeamApiKeysTest {
         }
     }
 
+    @Test void optionalRestCredentialDoesNotReplaceTheJavascriptKeyOrBreakOlderServers() throws Exception {
+        String rest="rest-test-key-0123456789";
+        var mapper=new com.fasterxml.jackson.databind.ObjectMapper();var value=mapper.readTree(JSON);
+        ((com.fasterxml.jackson.databind.node.ObjectNode)value.path("keys")).put("kakaoRest",rest);
+        var decoded=TeamApiKeys.decode(input(mapper.writeValueAsString(value)));
+        assertEquals(rest,decoded.get("kakaoRest"));assertEquals("kakao-test",decoded.get("kakaoJavascript"));
+        assertFalse(TeamApiKeys.decode(input(JSON)).containsKey("kakaoRest"));
+    }
+
     @Test void sendsBearerInPostHeaderAndNeverWritesProviderKeysToDisk() throws Exception {
         AtomicReference<String> authorization = new AtomicReference<>();
         AtomicReference<String> method = new AtomicReference<>();

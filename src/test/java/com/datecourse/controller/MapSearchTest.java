@@ -878,7 +878,7 @@ class MapSearchTest {
             ((TextField)field(main,"peopleField")).setText("3");assertFalse(reset.isDisabled());
             invoke(main,"resetCourse");assertTrue(reset.isDisabled());
             PlannerMap map=(PlannerMap)field(main,"map");
-            map.setWalkingRouter(stops -> { requested.countDown();return new com.datecourse.model.WalkingRoute(java.util.List.of(),100,60); });
+            map.setWalkingRouter(stops -> { requested.countDown();return new com.datecourse.model.TravelRoute(java.util.List.of(),100,60); });
             var p=new com.datecourse.model.Place(1,"a","식당","MEAL",35.158,129.059,1000,0);
             var plan=new com.datecourse.model.RoutePlan(35.1579,129.059,2,1000,"저장 코스",java.util.List.of(p));
             callWith(main,"restoreSavedCourse",com.datecourse.model.SavedCourse.class,new com.datecourse.model.SavedCourse(1,7,plan));
@@ -1377,12 +1377,12 @@ class MapSearchTest {
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();
             RouteEditorController e=loader.getController();stubPlannerMap(e,"editMapView");
             ((PlannerMap)field(e,"map")).setWalkingRouter(stops->{
-                calls.incrementAndGet();var legs=new java.util.ArrayList<com.datecourse.model.WalkingRoute.Leg>();
+                calls.incrementAndGet();var legs=new java.util.ArrayList<com.datecourse.model.TravelRoute.Leg>();
                 for(int i=1;i<stops.size();i++){
                     assertFalse(stops.get(i).name().contains("후보"));
-                    legs.add(new com.datecourse.model.WalkingRoute.Leg(stops.get(i-1),stops.get(i),100,61,java.util.List.of(),java.util.List.of()));
+                    legs.add(new com.datecourse.model.TravelRoute.Leg(stops.get(i-1),stops.get(i),100,61,java.util.List.of(),java.util.List.of()));
                 }
-                return new com.datecourse.model.WalkingRoute(legs,legs.size()*100L,legs.size()*61L);
+                return new com.datecourse.model.TravelRoute(legs,legs.size()*100L,legs.size()*61L);
             });
             var a=new com.datecourse.model.Place(1,"a","식당 A","MEAL",35.1579,129.06,7000,0);
             var b=new com.datecourse.model.Place(2,"b","식당 B","MEAL",35.158,129.06,7000,0);
@@ -1403,6 +1403,41 @@ class MapSearchTest {
         fx(()->{assertNull(field(editor,"walkingRoute"));editor.resetDraft();
             assertTrue(((javafx.scene.control.Label)field(editor,"walkingTimeLabel")).getText().contains("장소를 추가"));return null;});
     }
+    @Test void changingTransportRejectsLateOldModeAndKeepsDraftMode() throws Exception {
+        var drivingStarted=new CountDownLatch(1);var releaseDriving=new CountDownLatch(1);
+        var requested=new java.util.concurrent.CopyOnWriteArrayList<com.datecourse.model.TravelMode>();
+        RouteEditorController editor=fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();
+            RouteEditorController e=loader.getController();stubPlannerMap(e,"editMapView");
+            ((PlannerMap)field(e,"map")).setRouteRouter((stops,mode)->{
+                requested.add(mode);
+                if(mode==com.datecourse.model.TravelMode.DRIVING){
+                    drivingStarted.countDown();
+                    try{releaseDriving.await(5,TimeUnit.SECONDS);}catch(InterruptedException ignored){}
+                }
+                var leg=new com.datecourse.model.TravelRoute.Leg(stops.get(0),stops.get(1),100,60,java.util.List.of(),java.util.List.of());
+                return new com.datecourse.model.TravelRoute(java.util.List.of(leg),100,60,mode);
+            });
+            var place=new com.datecourse.model.Place(1,"a","장소","MEAL",35.1579,129.06,7000,0);
+            e.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,1000,"",java.util.List.of(place)),java.util.List.of(place),p->{},()->{});
+            return e;
+        });
+        try {
+            awaitEditorTime(editor,"누적 도보");
+            fx(()->{((javafx.scene.control.ComboBox<com.datecourse.model.TravelMode>)field(editor,"travelModeBox")).setValue(com.datecourse.model.TravelMode.DRIVING);return null;});
+            assertTrue(drivingStarted.await(5,TimeUnit.SECONDS));
+            fx(()->{((javafx.scene.control.ComboBox<com.datecourse.model.TravelMode>)field(editor,"travelModeBox")).setValue(com.datecourse.model.TravelMode.TRANSIT);return null;});
+            awaitEditorTime(editor,"누적 대중교통");releaseDriving.countDown();
+            fx(()->{
+                assertEquals(com.datecourse.model.TravelMode.TRANSIT,editor.draftSnapshot().travelMode());
+                assertEquals(com.datecourse.model.TravelMode.TRANSIT,((com.datecourse.model.TravelRoute)field(editor,"walkingRoute")).mode());
+                assertFalse(((javafx.scene.control.Button)field(editor,"walkingSettingsButton")).isVisible());
+                editor.dispose();return null;
+            });
+            assertTrue(requested.containsAll(java.util.List.of(com.datecourse.model.TravelMode.WALKING,com.datecourse.model.TravelMode.DRIVING,com.datecourse.model.TravelMode.TRANSIT)));
+        }finally {releaseDriving.countDown();}
+    }
+
     private static void awaitEditorTime(RouteEditorController editor,String text) throws Exception {
         long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(5);
         while(System.nanoTime()<end) {
@@ -1706,7 +1741,7 @@ class MapSearchTest {
         view.getEngine().getLoadWorker().cancel();
         view.getEngine().executeScript("window.presentCalls=[];window.fitCalls=[];window.fitLegCalls=[];window.fitRouteLeg=function(index){fitLegCalls.push(index);};window.detailCalls=[];window.ensureCalls=0;window.ensureRouteRangesVisible=function(){ensureCalls++;};window.openRoutePlace=function(id){detailCalls.push(id);};window.presentRoute=function(plan,candidate,radius,locked,fit){presentCalls.push([plan,candidate,radius,locked,fit]);};window.fitRouteView=function(whole){fitCalls.push(whole);};");
         Object map = field(controller, "map");
-        ((PlannerMap) map).setWalkingRouter(stops -> new com.datecourse.model.WalkingRoute(java.util.List.of(), 0, 0));
+        ((PlannerMap) map).setWalkingRouter(stops -> new com.datecourse.model.TravelRoute(java.util.List.of(), 0, 0));
         setField(map, "ready", true);
         setField(map, "loaded", true);
     }

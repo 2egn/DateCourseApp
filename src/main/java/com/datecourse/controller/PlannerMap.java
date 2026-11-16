@@ -1,8 +1,8 @@
 package com.datecourse.controller;
 
 import com.datecourse.model.Place;
-import com.datecourse.model.WalkingRoute;
-import com.datecourse.model.WalkingRoute.Stop;
+import com.datecourse.model.TravelRoute;
+import com.datecourse.model.TravelRoute.Stop;
 import com.datecourse.service.WalkingRouteService;
 import com.datecourse.service.TmapSettings;
 import javafx.concurrent.Task;
@@ -30,19 +30,22 @@ final class PlannerMap {
 
     @FunctionalInterface
     interface WalkingRouter {
-        WalkingRoute route(List<Stop> stops) throws Exception;
+        TravelRoute route(List<Stop> stops) throws Exception;
     }
-    private static final WalkingRouteService WALKING_SERVICE = new WalkingRouteService();
-    private WalkingRouter walkingRouter = stops -> WALKING_SERVICE.route(stops, TmapSettings.load());
+    @FunctionalInterface interface RouteRouter {TravelRoute route(List<Stop> stops,com.datecourse.model.TravelMode mode)throws Exception;}
+    private static final com.datecourse.service.TravelRouteService ROUTE_SERVICE=new com.datecourse.service.TravelRouteService();
+    private RouteRouter routeRouter=ROUTE_SERVICE::route;
+    private com.datecourse.model.TravelMode routedMode=com.datecourse.model.TravelMode.WALKING;
+    private com.datecourse.model.TravelMode mode(){return plan==null?com.datecourse.model.TravelMode.WALKING:plan.travelMode();}
     private List<Stop> walkingStops = List.of();
-    private WalkingRoute walkingRoute;
-    private Task<WalkingRoute> walkingTask;
+    private TravelRoute walkingRoute;
+    private Task<TravelRoute> walkingTask;
     private java.util.function.Function<String, Runnable> loadingUi = text -> () -> {};
     void setLoadingUi(java.util.function.Function<String, Runnable> ui) { loadingUi = ui; }
     private long walkingVersion;
     private boolean walkingRequested;
     private boolean automaticWalking;
-    private BiConsumer<WalkingRoute,String> walkingResult = (route,message) -> {};
+    private BiConsumer<TravelRoute,String> walkingResult = (route,message) -> {};
     private Consumer<Place> reportPlace = place -> {};
     private Consumer<Long> addCandidate = id -> {};
     private boolean candidateActionsEnabled=true;
@@ -53,7 +56,7 @@ final class PlannerMap {
     }
     void setOnReport(Consumer<Place> listener) { reportPlace=listener; }
     void setAutomaticWalking(boolean enabled) { automaticWalking=enabled; }
-    void setWalkingResultListener(BiConsumer<WalkingRoute,String> listener) { walkingResult=listener; }
+    void setWalkingResultListener(BiConsumer<TravelRoute,String> listener) { walkingResult=listener; }
     private void publishWalking() { walkingResult.accept(walkingRoute,walkingMessage); }
     private String walkingMessage = "";
     @FunctionalInterface
@@ -348,14 +351,15 @@ final class PlannerMap {
 
     private boolean synchronizeWalkingRoute() {
         List<Stop> current = currentWalkingStops();
-        if (current.equals(walkingStops)) return false;
+        if (current.equals(walkingStops) && routedMode==mode()) return false;
+        routedMode=mode();
         walkingStops = current;
         walkingVersion++;
         walkingPending = false;
         if (walkingTask != null) walkingTask.cancel();
         walkingTask=null;
         walkingRoute = null;
-        walkingMessage = walkingRequested ? "코스가 바뀌었어요. 도보 경로 조회를 눌러 다시 확인하세요." : "";
+        walkingMessage = walkingRequested ? "코스가 바뀌었어요. 이동 경로를 다시 확인해 주세요." : "";
         publishWalking();
         return true;
     }
@@ -366,7 +370,7 @@ final class PlannerMap {
 
     void requestWalkingRouteWhenReady() {
         if (currentWalkingStops().size() < 2) return;
-        if (!ready && !automaticWalking) { walkingPending = true;walkingMessage="지도 준비 후 도보 시간을 조회해요.";publishWalking();return; }
+        if (!ready && !automaticWalking) { walkingPending = true;walkingMessage="지도 준비 후 "+mode().label()+" 시간을 조회해요.";publishWalking();return; }
         requestWalkingRoute(false);
     }
 
@@ -374,7 +378,7 @@ final class PlannerMap {
         synchronizeWalkingRoute();
         walkingRequested = true;
         if (!ready && !automaticWalking) {
-            error.accept("지도를 불러온 뒤 도보 경로를 조회해 주세요.");
+            error.accept("지도를 불러온 뒤 이동 경로를 조회해 주세요.");
             return;
         }
         walkingPending = false;
@@ -387,15 +391,16 @@ final class PlannerMap {
         if (walkingTask != null) walkingTask.cancel();
         long version = ++walkingVersion;
         List<Stop> stops = walkingStops;
+        var requestedMode=mode();
         walkingRoute = null;
-        walkingMessage = "도보 이동시간을 확인하는 중… (" + (stops.size() - 1) + "구간)";
+        walkingMessage = mode().label()+" 이동시간을 확인하는 중… (" + (stops.size() - 1) + "구간)";
         publishWalking();
         renderWalkingRoute(false);
-        Task<WalkingRoute> task = new Task<>() {
-            @Override protected WalkingRoute call() throws Exception { return walkingRouter.route(stops); }
+        Task<TravelRoute> task = new Task<>() {
+            @Override protected TravelRoute call() throws Exception { return routeRouter.route(stops,requestedMode); }
         };
         walkingTask = task;
-        Runnable finishLoading = fitResult ? loadingUi.apply("도보 경로를 조회하고 있어요") : () -> {};
+        Runnable finishLoading = fitResult ? loadingUi.apply(mode().label()+" 경로를 조회하고 있어요") : () -> {};
         task.setOnCancelled(event -> finishLoading.run());
         task.setOnSucceeded(event -> {
             finishLoading.run();
@@ -409,13 +414,13 @@ final class PlannerMap {
         task.setOnFailed(event -> {
             finishLoading.run();
             if (walkingVersion != version || walkingTask != task) return;
-            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.WALKING_ROUTE,
+            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.TRAVEL_ROUTE,
                     com.datecourse.service.AppDiagnostics.Stage.PROVIDER_REQUEST,task.getException());
             walkingRoute = null;
             walkingTask=null;
             walkingMessage = task.getException() instanceof java.io.IOException
                     || task.getException() instanceof IllegalArgumentException ? task.getException().getMessage()
-                    : "도보 경로를 불러오지 못했어요. 다시 조회해 주세요.";
+                    : mode().label()+" 경로를 불러오지 못했어요. 다시 조회해 주세요.";
             publishWalking();
             renderWalkingRoute(false);
             error.accept(walkingMessage);
@@ -431,10 +436,11 @@ final class PlannerMap {
             ObjectMapper mapper = new ObjectMapper();
             view.getEngine().executeScript("if (typeof window.showWalkingRoute === 'function') window.showWalkingRoute("
                     + mapper.writeValueAsString(walkingRoute) + "," + mapper.writeValueAsString(walkingMessage) + "," + fit + ")");
-        } catch (Exception failure) { error.accept("도보 경로를 지도에 표시하지 못했어요."); }
+        } catch (Exception failure) { error.accept("이동 경로를 지도에 표시하지 못했어요."); }
     }
 
-    void setWalkingRouter(WalkingRouter router) { walkingRouter = router; }
+    void setWalkingRouter(WalkingRouter router) { routeRouter = (stops,mode)->router.route(stops); }
+    void setRouteRouter(RouteRouter router){routeRouter=router;}
 
     void refreshWalkingPreferences() {
         if (ready && currentWalkingStops().size() >= 2) requestWalkingRoute();

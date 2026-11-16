@@ -22,7 +22,7 @@ public final class SavedCoursePresenter {
         int reference=cost.placeCount()-cost.unknownPlaces()-cost.estimatedPlaces();
         String details="코스 구성 · "+plan.places().size()+"곳 · "+plan.people()+"명"
                 +(types.isEmpty()?"":"\n"+types)
-                +"\n전체 범위 · 출발지 중심 "+plan.radius()+"m (직선)"
+                +"\n이동 방법 · "+plan.travelMode().label()+"\n전체 범위 · 출발지 중심 "+plan.radius()+"m (직선)"
                 +"\n가격 상태 · 참고 "+reference+" · 추정 "+cost.estimatedPlaces()+" · 미확인 "+cost.unknownPlaces()+"곳"
                 +"\n최근 수정 · "+updated+" (한국 시간)";
         var features=plan.places().stream().flatMap(p->placePresenter.present(p).badges().stream())

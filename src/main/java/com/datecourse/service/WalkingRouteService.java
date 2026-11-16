@@ -1,7 +1,7 @@
 package com.datecourse.service;
 
-import com.datecourse.model.WalkingRoute;
-import com.datecourse.model.WalkingRoute.*;
+import com.datecourse.model.TravelRoute;
+import com.datecourse.model.TravelRoute.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -35,7 +35,7 @@ public final class WalkingRouteService {
 
     WalkingRouteService(HttpClient client, URI endpoint) { this.client = client; this.endpoint = endpoint; }
 
-    public WalkingRoute route(List<Stop> stops, TmapSettings settings) throws IOException, InterruptedException {
+    public TravelRoute route(List<Stop> stops, TmapSettings settings) throws IOException, InterruptedException {
         stops = List.copyOf(stops);
         if (stops.size() < 2) throw new IllegalArgumentException("출발 위치와 방문할 장소를 선택해 주세요.");
         if (settings.appKey().isEmpty()) throw new IOException("도보 경로 서비스가 설정되지 않았어요. 앱 제공자에게 문의해 주세요.");
@@ -50,7 +50,7 @@ public final class WalkingRouteService {
             distance = Math.addExact(distance, leg.distance());
             time = Math.addExact(time, leg.time());
         }
-        return new WalkingRoute(legs, distance, time);
+        return new TravelRoute(legs, distance, time);
     }
 
     private Leg leg(Stop from, Stop to, TmapSettings settings) throws IOException, InterruptedException {

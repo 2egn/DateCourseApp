@@ -995,7 +995,8 @@
             summary.textContent = message || '도보 경로를 계산해 주세요.';
             return;
         }
-        // Draw only the actual TMAP walking geometry on the Kakao map.
+        // Preserve actual provider paths, including separate transit stages; never join gaps with straight lines.
+        const travelLabel = ({WALKING:'도보', DRIVING:'자동차', TRANSIT:'대중교통'})[route.mode] || '도보';
         const boundsPoints = [];
         let points = 0;
         function meters(value) { return value >= 1000 ? (value / 1000).toFixed(2) + 'km' : value + 'm'; }
@@ -1023,7 +1024,7 @@
         const popupSteps = document.createElement('ol');
         popupSteps.className = 'walking-tooltip-steps';
         popupSteps.tabIndex = 0;
-        popupSteps.setAttribute('aria-label','이 구간의 도보 안내');
+        popupSteps.setAttribute('aria-label','이 구간의 '+travelLabel+' 안내');
         popupBody.appendChild(popupTitle);
         popupBody.appendChild(popupFacts);
         popupBody.appendChild(popupHint);
@@ -1054,7 +1055,9 @@
             if (popupIndex !== index) {
                 popupIndex = index;
                 popupTitle.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
-                popupFacts.textContent = meters(leg.distance) + ' · ' + duration(leg.time);
+                popupFacts.textContent = (route.provider?route.provider+' · ':'')+travelLabel+' · '+meters(leg.distance) + ' · ' + duration(leg.time)
+                    +(Number.isInteger(leg.transfers)?' · 환승 '+leg.transfers+'회':'')
+                    +(Number.isInteger(leg.fare)?' · 참고 요금 '+leg.fare.toLocaleString('ko-KR')+'원/인':'');
                 popupSteps.textContent = '';
                 (leg.steps || []).forEach(function(step) {
                     if(!step.description)return;

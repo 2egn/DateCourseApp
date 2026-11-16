@@ -29,6 +29,9 @@ public class ConditionController extends BasePageController {
     @FXML private Parent routeEditor;
     @FXML private RouteEditorController routeEditorController;
     @FXML private TextField peopleField;
+    @FXML private ComboBox<com.datecourse.model.TravelMode> travelModeBox;
+    private boolean restoringTravelMode;
+    private com.datecourse.model.TravelMode travelMode(){return travelModeBox.getValue()==null?com.datecourse.model.TravelMode.WALKING:travelModeBox.getValue();}
     @FXML private Button peopleUp, peopleDown, recommendButton;
     @FXML private Label errorLabel, resultLabel, hintLabel, radiusLabel;
     @FXML private Label walkingSummaryLabel, completedStopsLabel, originHintLabel;
@@ -36,7 +39,7 @@ public class ConditionController extends BasePageController {
     @FXML private TitledPane commonConditionsPane;
     @FXML private ScrollPane mainSidebar;
     @FXML private Button reloadMapButton;
-    private com.datecourse.model.WalkingRoute overviewWalking;
+    private com.datecourse.model.TravelRoute overviewWalking;
     @FXML private Slider radiusSlider;
     @FXML private ComboBox<String> sourceBox;
     @FXML private Label sourceStatusLabel;
@@ -97,6 +100,15 @@ public class ConditionController extends BasePageController {
         reloadMapButton.setVisible(false);
         errorLabel.textProperty().addListener((o,a,b)->reloadMapButton.setVisible(b!=null && (b.contains("지도")||b.contains("8080"))));
         NumberStepper.install(peopleField, peopleUp, peopleDown, 1, 20, 2);
+        travelModeBox.getItems().setAll(com.datecourse.model.TravelMode.values());
+        travelModeBox.setValue(com.datecourse.model.TravelMode.WALKING);
+        travelModeBox.valueProperty().addListener((o,a,b)->{
+            if(restoringTravelMode||b==null)return;
+            commonSettingsChanged=true;
+            if(appliedPlan!=null){appliedPlan=appliedPlan.withTravelMode(b);overviewWalking=null;}
+            updateRange();updateCourseOverview();updateResetButton();
+            if(appliedPlan!=null&&!appliedPlan.places().isEmpty())map.requestWalkingRouteWhenReady();
+        });
         errorLabel.managedProperty().bind(errorLabel.textProperty().isNotEmpty());
         errorLabel.visibleProperty().bind(errorLabel.managedProperty());
         map = new PlannerMap(mapView, this::onLocationSelected, errorLabel::setText);
@@ -105,8 +117,8 @@ public class ConditionController extends BasePageController {
             overviewWalking=route;
             updateCourseOverview();
             boolean hasPlaces=appliedPlan!=null&&!appliedPlan.places().isEmpty();
-            walkingSummaryLabel.setText(!hasPlaces?"":route==null?"도보 이동시간 미확인"
-                :"누적 도보 "+com.datecourse.model.WalkingRoute.durationText(route.totalTime())+" · 체류시간 제외");
+            walkingSummaryLabel.setText(!hasPlaces?"":route==null?travelMode().label()+" 이동시간 미확인"
+                :"누적 "+route.mode().label()+" "+com.datecourse.model.TravelRoute.durationText(route.totalTime())+" · "+route.mode().timeNote()+(route.provider().isBlank()?"":" · 경로 "+route.provider()));
         });
         map.setLoadingUi(this::beginLoading);
         map.setOnOriginChangeBlocked(this::noticeOriginLocked);
@@ -330,7 +342,7 @@ public class ConditionController extends BasePageController {
         try {
             snapshot = new RoutePlan(selectedLatitude, selectedLongitude,
                     NumberStepper.read(peopleField, 1, 20, "인원"), radius(), title,
-                    appliedPlan.places(), appliedPlan.arrivalRadii());
+                    appliedPlan.places(), appliedPlan.arrivalRadii(),travelMode());
         } catch (IllegalArgumentException invalid) { saveStatusLabel.setText(invalid.getMessage()); return; }
         Long id = savedCourseId;
         var context = ensureUserContext();
@@ -488,6 +500,7 @@ public class ConditionController extends BasePageController {
         selectedLatitude = null;
         selectedLongitude = null;
         peopleField.setText("2");
+        restoringTravelMode=true;travelModeBox.setValue(com.datecourse.model.TravelMode.WALKING);restoringTravelMode=false;
         radiusSlider.setValue(500);
         map.reset();
         errorLabel.setText("");
@@ -596,7 +609,7 @@ public class ConditionController extends BasePageController {
     private void updateOriginProtection() { map.setOriginLocked(hasCoursePlaces()); }
     private void updateResetButton() {
         boolean hasPlaces=appliedPlan!=null&&!appliedPlan.places().isEmpty();
-        saveCourseButton.setVisible(hasPlaces);walkingToolbar.setVisible(hasPlaces);
+        saveCourseButton.setVisible(hasPlaces);walkingToolbar.setVisible(hasPlaces&&travelMode()==com.datecourse.model.TravelMode.WALKING);
         courseOverview.setVisible(hasPlaces);courseOverview.setManaged(hasPlaces);
         if(!hasPlaces)commonConditionsPane.setExpanded(true);
         updateCourseOverview();
@@ -616,7 +629,7 @@ public class ConditionController extends BasePageController {
         if (selectedLatitude != null) {
             RoutePlan preview = new RoutePlan(selectedLatitude, selectedLongitude, 1, radius(), "",
                     appliedPlan == null ? List.of() : appliedPlan.places(),
-                    appliedPlan == null ? java.util.Map.of() : appliedPlan.arrivalRadii());
+                    appliedPlan == null ? java.util.Map.of() : appliedPlan.arrivalRadii(),travelMode());
             map.present(preview, null, radius(), false, true);
         }
     }
@@ -633,7 +646,7 @@ public class ConditionController extends BasePageController {
             if (selectedLatitude == null) throw new IllegalArgumentException("지도에서 출발 위치를 선택해 주세요.");
             RoutePlan snapshot = new RoutePlan(selectedLatitude, selectedLongitude, people, radius(),
                     appliedPlan == null ? "" : appliedPlan.title(), appliedPlan == null ? List.of() : appliedPlan.places(),
-                    appliedPlan == null ? java.util.Map.of() : appliedPlan.arrivalRadii());
+                    appliedPlan == null ? java.util.Map.of() : appliedPlan.arrivalRadii(),travelMode());
             openEditor(snapshot);
         } catch (IllegalArgumentException invalid) { errorLabel.setText(invalid.getMessage()); }
     }
@@ -657,6 +670,7 @@ public class ConditionController extends BasePageController {
 
     private void presentPlan(RoutePlan edited) {
         appliedPlan = edited;
+        restoringTravelMode=true;travelModeBox.setValue(edited.travelMode());restoringTravelMode=false;
         commonConditionsPane.setExpanded(edited.places().isEmpty());
         updateCourseOverview();
         updateOriginProtection();
@@ -675,7 +689,7 @@ public class ConditionController extends BasePageController {
         if(appliedPlan==null){completedStopsLabel.setText("");return;}
         try {
             int people=NumberStepper.read(peopleField,1,20,"인원");
-            var preview=new RoutePlan(appliedPlan.startLat(),appliedPlan.startLng(),people,radius(),appliedPlan.title(),appliedPlan.places(),appliedPlan.arrivalRadii());
+            var preview=new RoutePlan(appliedPlan.startLat(),appliedPlan.startLng(),people,radius(),appliedPlan.title(),appliedPlan.places(),appliedPlan.arrivalRadii(),travelMode());
             resultLabel.setText(String.format("%s · %d곳 · %d명 · %s",preview.title().isBlank()?"내 코스":preview.title(),
                     preview.places().size(),people,preview.costEstimate().display()));
         } catch(IllegalArgumentException invalid) {resultLabel.setText("인원 수정 중 · 1~20명을 입력해 주세요.");}
@@ -683,7 +697,7 @@ public class ConditionController extends BasePageController {
         for(int i=0;i<appliedPlan.places().size();i++) {
             Place place=appliedPlan.places().get(i);
             String time=overviewWalking!=null && overviewWalking.legs().size()==appliedPlan.places().size()
-                    ? " · 이동 "+com.datecourse.model.WalkingRoute.durationText(overviewWalking.legs().get(i).time()) : "";
+                    ? " · 이동 "+com.datecourse.model.TravelRoute.durationText(overviewWalking.legs().get(i).time()) : "";
             lines.add((i+1)+". "+place.name()+" · "+com.datecourse.service.PlaceSearchService.categoryName(place.category())
                     +"\n"+place.priceText()+time);
         }
