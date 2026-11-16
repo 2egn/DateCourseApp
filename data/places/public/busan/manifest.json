@@ -335,14 +335,14 @@
     }
   ],
   "sha256": {
-    "busan_good_price_shops.csv": "e9144bff3b59ce2ac5a41aec2c36789561d274c510d30b9bdf381985a62ce74f",
-    "busan_menu_prices.csv": "9dc3cbec3f1f6a6876a74a56c49a9ee697f0685330f9e6b673f5f96061a557f8",
-    "busan_places.csv": "90d7333db15e72e3b024978be7382974de27bc0ab1c228942959668084b33480",
+    "busan_good_price_shops.csv": "03f12ee5f4b94474ce0bcef32cf67d781a642707e7ee24dbdfcf42578b5b00e1",
+    "busan_menu_prices.csv": "4181b429823c3dc4e91950e9b8a7d0522e73b169d21edc125d0c23773d2271fa",
+    "busan_places.csv": "7e04410a6cdf57065a7b064407b9b4e992b29bb3cf3f43edf7de52cdad17c1f2",
     "import_busan_public.sql": "4625fee124965c9190e446cc754f1c7ef45d328529ed5c231472bd05d8e7beeb",
-    "possible_duplicate_places.json": "1e719a6287b4436851839741ac632acc86450e1654e2e1bfa40d51c9faf0a825",
-    "raw\\busan_good_price_source.json": "f8b8377f4772fee895b9dc2dba7cca286c6b96e45ff71a5998371d2cca8f2c3c",
-    "raw\\busan_libraries_source.csv": "bfcc8c1af2cbac08996ea4889e51b4d175fafdd4c9a65f9c7b7435a43da1d775",
-    "raw\\busan_standard_sources.json": "824f3f23e5e57421080322ef8fbe25d08c89fee7ba92cdbc72cc9f688a745375",
-    "raw\\busan_stores_source.csv": "4319984f14e6d97d3ad588ceee070199eeaf528d934ced9293fcc53de67230fd"
+    "possible_duplicate_places.json": "c960d885d471fa5665e614887ffd4cbcc2ec4f8d28e1fba70696551cd5e169d4",
+    "raw\\busan_good_price_source.json": "5ad284f35ff2e1e46d180759aad9a791a5128503e8038ddc372adb136d07eca3",
+    "raw\\busan_libraries_source.csv": "374790f4f981000f65b9a970809be5257870ee56ab4f5072c0ef79ac39c9810a",
+    "raw\\busan_standard_sources.json": "b0191185be7562ebebda56c94ae39fa8d5cc99d71a67cde3bb44178aa0e9f9f4",
+    "raw\\busan_stores_source.csv": "3638e6795961a6f23b2c41cb7139322b18ad6356caa560b9bc40d54840779fab"
   }
 }
