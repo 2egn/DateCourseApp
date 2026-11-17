@@ -12,10 +12,8 @@ repositories {
 }
 
 dependencies {
-    // MySQL JDBC 드라이버
     implementation 'com.mysql:mysql-connector-j:8.3.0'
 
-    // JSON 파싱 (공공데이터 및 카카오 API 응답 처리용)
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
@@ -24,11 +22,10 @@ dependencies {
 
 javafx {
     version = "21"
-    // FXML 디자인 및 WebView(카카오 지도) 모듈 포함
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]
 }
 
 application {
-    mainClass = 'com.datecourse.MainApp'
+    mainClass = 'com.datecourse.AppLauncher'
 }
 
