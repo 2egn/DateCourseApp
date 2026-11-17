@@ -426,8 +426,8 @@ public final class SavedCourseRepository {
         if (plan == null) throw new IllegalArgumentException("저장할 코스가 필요합니다.");
         text(plan.title(), 20, false, "코스 이름");
         coordinates(plan.startLat(), plan.startLng());
-        if (plan.people() < 1 || plan.people() > 20 || plan.radius() < 200 || plan.radius() > 2000)
-            throw new IllegalArgumentException("인원은 1~20명, 전체 반경은 200~2000m여야 합니다.");
+        if (plan.people() < 1 || plan.people() > 20 || plan.radius() < com.datecourse.model.TravelMode.MIN_RADIUS || plan.radius() > com.datecourse.model.TravelMode.MAX_RADIUS)
+            throw new IllegalArgumentException("인원은 1~20명이며 전체 반경은 지원 범위 안이어야 합니다.");
         Set<Long> records = new HashSet<>();
         List<Place> identities = new ArrayList<>();
         for (Place place : plan.places()) {

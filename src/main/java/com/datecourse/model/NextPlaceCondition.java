@@ -18,7 +18,7 @@ public record NextPlaceCondition(String activity, int maxPrice, int radius, bool
         priceFilter=priceFilter==null?PlacePriceFilter.ANY:priceFilter;
         subtypes = subtypes == null ? Set.of() : Set.copyOf(subtypes);
         tags = tags == null ? Set.of() : Set.copyOf(tags);
-        if (activity == null || !Set.of("식사", "카페", "문화").contains(activity) || maxPrice < 0 || radius < 200 || radius > 2000
+        if (activity == null || !Set.of("식사", "카페", "문화").contains(activity) || maxPrice < 0 || radius < TravelMode.MIN_RADIUS || radius > TravelMode.MAX_LEG_RADIUS
                 || !DISPLAY_LIMITS.contains(displayLimit))
             throw new IllegalArgumentException("활동·가격·반경·표시 수를 확인해 주세요.");
     }

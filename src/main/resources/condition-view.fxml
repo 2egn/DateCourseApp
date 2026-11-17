@@ -41,7 +41,7 @@
  <VBox spacing="6"><Label text="이동 방법" styleClass="field-label"/><ComboBox fx:id="travelModeBox" accessibleText="코스 이동 방법" maxWidth="Infinity"/></VBox>
  <VBox spacing="10"><Label text="출발지 주변 전체 범위" styleClass="field-label"/><Label fx:id="radiusLabel" text="출발지 중심 · 500m" styleClass="planner-caption"/>
  <Slider fx:id="radiusSlider" min="200" max="2000" value="500" blockIncrement="100" majorTickUnit="100" minorTickCount="0" snapToTicks="true"/>
- <HBox><Label text="200m" styleClass="planner-caption"/><Region HBox.hgrow="ALWAYS"/><Label text="2km" styleClass="planner-caption"/></HBox></VBox>
+ <HBox><Label text="200m" styleClass="planner-caption"/><Region HBox.hgrow="ALWAYS"/><Label fx:id="radiusMaximumLabel" text="2km" styleClass="planner-caption"/></HBox></VBox>
  <Label fx:id="originHintLabel" text="지도에서 출발 위치를 선택해 주세요." minHeight="-Infinity" wrapText="true" styleClass="planner-caption"/>
 
 

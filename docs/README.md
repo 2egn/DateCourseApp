@@ -1,5 +1,7 @@
 # 문서와 팀 사이트
 
+후속 변경: [혼합 이동과 범위 확대](transport-walking-and-ranges-2026-11-17.md). 운영 DB의 범위 CHECK도 사용자 승인 후 전체 30km·구간 60km로 확장했다.
+
 현재 버전 기준은 [2026-11-17 체크포인트](releases/checkpoint-2026-11-17.md)다. 코드·자료 해시·운영 DB·Worker 상태와 재현 명령을 함께 기록했다.
 
 현재 구조와 다음 정리 순서는 [2026-11-16 구조 검토](architecture-review-2026-11-16.md)를 참고한다.

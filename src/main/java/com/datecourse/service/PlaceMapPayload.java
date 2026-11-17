@@ -26,6 +26,9 @@ public final class PlaceMapPayload {
         ArrayNode array=json.createArrayNode();places.forEach(p->array.add(place(p)));return array;
     }
     public ObjectNode plan(RoutePlan plan) {
-        ObjectNode value=json.valueToTree(plan);value.set("places",places(plan.places()));return value;
+        ObjectNode value=json.valueToTree(plan);value.set("places",places(plan.places()));
+        value.put("maximumRadius",com.datecourse.model.TravelMode.MAX_RADIUS);
+        value.put("maximumLegRadius",com.datecourse.model.TravelMode.MAX_LEG_RADIUS);
+        return value;
     }
 }

@@ -7,10 +7,15 @@ public final class NextPlaceRadius {
     private NextPlaceRadius() {}
 
     public static int maximum(RoutePlan plan) {
-        var previous = plan.places().isEmpty() ? null : plan.places().getLast();
+        return maximum(plan,plan.places().size());
+    }
+
+    public static int maximum(RoutePlan plan,int nextIndex) {
+        if(nextIndex<0||nextIndex>plan.places().size())throw new IllegalArgumentException("구간 순서를 확인해 주세요.");
+        var previous = nextIndex==0 ? null : plan.places().get(nextIndex-1);
         double offset = previous == null ? 0 : new PlaceCalculationService().calculateDistance(
                 plan.startLat(), plan.startLng(), previous.lat(), previous.lng());
-        // Round up so the final 100m step includes the far edge. Keep the model's 2km limit.
-        return Math.max(200, Math.min(2000, (int) Math.ceil((plan.radius() + offset) / 100) * 100));
+        // Include the far edge without expanding beyond the selected mode's useful limit.
+        return Math.max(com.datecourse.model.TravelMode.MIN_RADIUS, Math.min(plan.travelMode().maximumLegRadius(), (int) Math.ceil((plan.radius() + offset) / 100) * 100));
     }
 }

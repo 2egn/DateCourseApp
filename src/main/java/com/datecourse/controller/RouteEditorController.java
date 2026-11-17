@@ -460,7 +460,7 @@ public final class RouteEditorController extends BasePageController {
         radiusSlider.setValue(Math.min(radiusSlider.getValue(), maximum));
         radiusSlider.setDisable(maximum == (int) radiusSlider.getMin());
         updateRadiusLabel();
-        radiusSlider.setTooltip(new Tooltip("직전 장소(첫 장소는 출발지) 기준 직선 반경이에요.\n전체 범위를 덮는 반경까지, 최대 2,000m로 조절해요."));
+        radiusSlider.setTooltip(new Tooltip("직전 장소(첫 장소는 출발지) 기준 직선 반경이에요.\n전체 범위를 덮는 반경까지, 현재 이동 방법과 전체 범위에 맞춰 조절해요."));
     }
     private void updateRadiusLabel() {
         radiusLabel.setText("직선 반경 · " + radius() + "m (최대 " + (int) radiusSlider.getMax() + "m)");
@@ -472,7 +472,9 @@ public final class RouteEditorController extends BasePageController {
         if(index<0||index>=draftPlaces.size())return "";
         if(walkingRoute==null||walkingRoute.legs().size()!=draftPlaces.size())return "\n"+travelMode().label()+" 시간 미확인";
         long total=0;for(int i=0;i<=index;i++)total=Math.addExact(total,walkingRoute.legs().get(i).time());
-        return "\n"+travelMode().label()+" "+minutes(walkingRoute.legs().get(index).time())+" · 누적 "+minutes(total);
+        var leg=walkingRoute.legs().get(index);
+        String movement=leg.movementSummary();
+        return "\n"+(movement.isBlank()?travelMode().label()+" "+minutes(leg.time()):movement+" · 합계 "+minutes(leg.time()))+" · 누적 "+minutes(total);
     }
     private void refreshWalkingSummary() {
         if(draftPlaces.isEmpty()){walkingTimeLabel.setText("장소를 추가하면 "+travelMode().label()+" 시간을 계산해요.");return;}
@@ -515,7 +517,9 @@ public final class RouteEditorController extends BasePageController {
             selectedRadiusSlider.setDisable(!selected);
             selectedRadiusSlider.setVisible(selected);
             RouteRangeValidator.Leg leg = selected ? legs.get(index) : null;
-            selectedRadiusSlider.setValue(leg == null || leg.radius() == null ? 500 : leg.radius());
+            int maximum=selected?com.datecourse.service.NextPlaceRadius.maximum(draft(),index):travelMode().maximumLegRadius();
+            selectedRadiusSlider.setMax(Math.max(maximum,leg==null||leg.radius()==null?0:leg.radius()));
+            selectedRadiusSlider.setValue(leg == null || leg.radius() == null ? Math.min(500,maximum) : leg.radius());
             boolean missing = leg != null && leg.radius() == null;
             recordRadiusButton.setVisible(missing);
             recordRadiusButton.setManaged(missing);

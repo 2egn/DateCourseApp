@@ -36,7 +36,7 @@ public final class NextPlaceService {
         int radius = condition.radius();
         String category = condition.activity();
         boolean includeUncertainPrice = condition.includeUnknown();
-        if (people < 1 || people > 20 || routeRadius < 200 || routeRadius > 2000 || maxPricePerPerson < 0)
+        if (people < 1 || people > 20 || routeRadius < com.datecourse.model.TravelMode.MIN_RADIUS || routeRadius > com.datecourse.model.TravelMode.MAX_RADIUS || maxPricePerPerson < 0)
             throw new IllegalArgumentException("가격·인원·전체 반경을 확인해 주세요.");
         Place last = confirmed.isEmpty() ? null : confirmed.get(confirmed.size() - 1);
         double lat = last == null ? startLat : last.lat();

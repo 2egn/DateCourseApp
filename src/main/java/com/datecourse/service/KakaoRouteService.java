@@ -91,8 +91,15 @@ public final class KakaoRouteService {
         }catch(IllegalArgumentException|ArithmeticException error){throw malformed();}
     }
 
+    static final class NoTransitRouteException extends IOException {
+        NoTransitRouteException(){super("선택 위치 사이의 대중교통 경로가 없어요.");}
+    }
+
     Leg transit(JsonNode body,Stop from,Stop to)throws IOException {
-        if(!"OK".equals(body.path("status").asText()))throw new IOException("선택 위치 사이의 대중교통 경로가 없어요. 도보·자동차 또는 다른 위치를 선택해 주세요.");
+        String status=body.path("status").asText();
+        if(Set.of("NO_RESULTS","STARTNODES_NULL","ENDNODES_NULL","EQUAL_POINTS").contains(status))
+            throw new NoTransitRouteException();
+        if(!"OK".equals(status))throw malformed();
         try {
             JsonNode selected=null;long fastest=Long.MAX_VALUE;
             for(var route:array(body.path("routes"))) {

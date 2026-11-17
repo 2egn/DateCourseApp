@@ -41,6 +41,7 @@ public class ConditionController extends BasePageController {
     @FXML private Button reloadMapButton;
     private com.datecourse.model.TravelRoute overviewWalking;
     @FXML private Slider radiusSlider;
+    @FXML private Label radiusMaximumLabel;
     @FXML private ComboBox<String> sourceBox;
     @FXML private Label sourceStatusLabel;
     @FXML private WebView mapView;
@@ -104,6 +105,7 @@ public class ConditionController extends BasePageController {
         travelModeBox.setValue(com.datecourse.model.TravelMode.WALKING);
         travelModeBox.valueProperty().addListener((o,a,b)->{
             if(restoringTravelMode||b==null)return;
+            configureRadiusMaximum(b.maximumRadius());
             commonSettingsChanged=true;
             if(appliedPlan!=null){appliedPlan=appliedPlan.withTravelMode(b);overviewWalking=null;}
             updateRange();updateCourseOverview();updateResetButton();
@@ -501,6 +503,7 @@ public class ConditionController extends BasePageController {
         selectedLongitude = null;
         peopleField.setText("2");
         restoringTravelMode=true;travelModeBox.setValue(com.datecourse.model.TravelMode.WALKING);restoringTravelMode=false;
+        configureRadiusMaximum(travelMode().maximumRadius());
         radiusSlider.setValue(500);
         map.reset();
         errorLabel.setText("");
@@ -595,6 +598,11 @@ public class ConditionController extends BasePageController {
         updateResetButton();
     }
 
+    private void configureRadiusMaximum(int maximum) {
+        radiusSlider.setMax(maximum);
+        radiusMaximumLabel.setText((maximum/1000)+"km");
+        radiusSlider.setTooltip(new javafx.scene.control.Tooltip(travelMode().label()+" · 출발지 중심 최대 "+(maximum/1000)+"km의 직선 범위예요."));
+    }
     private int radius() { return (int) Math.round(radiusSlider.getValue() / 100) * 100; }
 
     private boolean hasCoursePlaces() {
@@ -676,6 +684,7 @@ public class ConditionController extends BasePageController {
         updateOriginProtection();
         selectedLatitude = edited.startLat();
         selectedLongitude = edited.startLng();
+        configureRadiusMaximum(Math.max(edited.travelMode().maximumRadius(),edited.radius()));
         radiusSlider.setValue(edited.radius());
         peopleField.setText(Integer.toString(edited.people()));
         resultLabel.setText(String.format("%s · %d곳 · %d명 · %s",

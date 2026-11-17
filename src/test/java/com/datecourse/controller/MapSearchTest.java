@@ -1724,6 +1724,66 @@ class MapSearchTest {
         assertEquals("연결 실패", script(engine, "document.getElementById('walking-summary').textContent"));
     }
 
+    @Test void commonRangeMaximumTracksTransportAndResetRestoresWalkingDefaults() throws Exception {
+        fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/condition-view.fxml"));loader.load();
+            ConditionController main=loader.getController();stubPlannerMap(main,"mapView");
+            stubPlannerMap(field(main,"routeEditorController"),"editMapView");
+            var modes=(javafx.scene.control.ComboBox<com.datecourse.model.TravelMode>)field(main,"travelModeBox");
+            var range=(javafx.scene.control.Slider)field(main,"radiusSlider");
+            modes.setValue(com.datecourse.model.TravelMode.DRIVING);assertEquals(30000,range.getMax());range.setValue(30000);
+            modes.setValue(com.datecourse.model.TravelMode.TRANSIT);assertEquals(20000,range.getMax());assertEquals(20000,range.getValue());
+            assertEquals("20km",((javafx.scene.control.Label)field(main,"radiusMaximumLabel")).getText());
+            invoke(main,"onNewCourse");assertEquals(2000,range.getMax());assertEquals(500,range.getValue());
+            assertEquals(com.datecourse.model.TravelMode.WALKING,modes.getValue());return null;
+        });
+    }
+
+    @Test void extendedRangesReachMapAndEditorWithoutTwoKilometerClamping() throws Exception {
+        WebEngine engine=loadMap();
+        script(engine,"""
+            window.presentRoute({startLat:35.15,startLng:129.11,radius:30000,maximumRadius:30000,maximumLegRadius:60000,people:2,places:[]},null,30000,true,false,[]);
+            window.setMapRadius(30000);
+            """);
+        assertEquals(true,script(engine,"pins.some(p=>p.attached&&p.radius===30000)"));
+        fx(()->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));loader.load();
+            RouteEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
+            var plan=new com.datecourse.model.RoutePlan(35.15,129.11,2,30000,"",java.util.List.of()).withTravelMode(com.datecourse.model.TravelMode.DRIVING);
+            editor.begin(plan,java.util.List.of(),p->{},()->{});
+            assertEquals(30000,((javafx.scene.control.Slider)field(editor,"radiusSlider")).getMax());
+            editor.dispose();return null;
+        });
+    }
+
+    @Test void transitWalkingStagesHaveDistinctLinesAndKeepRouteInteraction() throws Exception {
+        WebEngine engine=loadMap();
+        script(engine,"""
+            window.showWalkingRoute({mode:'TRANSIT',provider:'TMAP·카카오',totalDistance:1000,totalTime:600,legs:[{
+              from:{name:'출발'},to:{name:'도착'},distance:1000,time:600,fare:1550,transfers:0,
+              movementSummary:'도보 약 2분 → 버스 약 8분',
+              paths:[[{lat:35.15,lng:129.11},{lat:35.151,lng:129.111}], [{lat:35.152,lng:129.112},{lat:35.16,lng:129.12}]],
+              transitStages:[{type:'WALKING',path:[{lat:35.15,lng:129.11},{lat:35.151,lng:129.111}]},
+                {type:'BUS',path:[{lat:35.152,lng:129.112},{lat:35.16,lng:129.12}]}],steps:[{description:'정류장까지 도보'}]
+            }]},'',false);
+            """);
+        assertEquals(true,script(engine,"routeLines.filter(l=>l.attached&&l.options.zIndex===4).map(l=>l.options.strokeStyle).join(',')==='shortdash,solid'"));
+        assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.includes('대중교통 + 도보')"));
+        script(engine,"routeLines[1].onmouseover({});routeLines[1].onclick({});window.mixedTooltip=routeOverlays[0].options.content;");
+        assertEquals(true,script(engine,"mixedTooltip.textContent.includes('도보 약 2분 → 버스 약 8분')"));
+        assertEquals(true,script(engine,"mixedTooltip.textContent.includes('1,550원')"));
+        assertEquals(true,script(engine,"mixedTooltip.classList.contains('is-detailed')"));
+        script(engine,"""
+            window.showWalkingRoute({mode:'TRANSIT',provider:'TMAP',totalDistance:100,totalTime:120,legs:[{
+              from:{name:'출발'},to:{name:'근처'},distance:100,time:120,fare:0,transfers:0,
+              movementSummary:'도보 약 2분',transitStages:[{type:'WALKING',path:[]}],
+              paths:[[{lat:35.15,lng:129.11},{lat:35.151,lng:129.111}]],steps:[{description:'횡단보도 이용'}]
+            }]},'',false);
+            """);
+        assertEquals(true,script(engine,"routeLines.filter(l=>l.attached&&l.options.strokeColor!=='#ffffff').every(l=>l.options.strokeStyle==='shortdash')"));
+        assertEquals(2,((Number)script(engine,"routeLines.filter(l=>l.attached).length")).intValue());
+    }
+
     private static Object field(Object target, String name) throws Exception {
         var member = target.getClass().getDeclaredField(name);
         member.setAccessible(true);

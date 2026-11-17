@@ -45,6 +45,16 @@ class SavedCourseRepositoryTest {
         repository = new SavedCourseRepository(pool);
     }
 
+    @Test void expandedCourseAndArrivalRangesRoundTripWithoutTruncation() throws Exception {
+        var base=example();
+        var plan=new RoutePlan(base.startLat(),base.startLng(),base.people(),30000,base.title(),base.places(),
+                Map.of(base.places().getFirst().recordId(),60000),com.datecourse.model.TravelMode.DRIVING);
+        repository.save(owner,plan);
+        assertEquals(plan,repository.findAll(owner).getFirst().plan());
+        var invalid=new RoutePlan(base.startLat(),base.startLng(),base.people(),30100,base.title(),base.places());
+        assertThrows(IllegalArgumentException.class,()->repository.save(owner,invalid));
+    }
+
     @Test void transportChoiceRoundTripsAndOldCoursesDefaultToWalking() throws Exception {
         var plan=example().withTravelMode(com.datecourse.model.TravelMode.DRIVING);
         var saved=repository.save(owner,plan);

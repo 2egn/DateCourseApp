@@ -41,6 +41,12 @@ public record TravelRoute(List<Leg> legs, long totalDistance, long totalTime, Tr
         public Leg(Stop from,Stop to,long distance,long time,List<List<Coordinate>> paths,List<Step> steps) {
             this(from,to,distance,time,paths,steps,List.of(),null,null);
         }
+        @com.fasterxml.jackson.annotation.JsonProperty("movementSummary")
+        public String movementSummary() {
+            return transitStages.stream().map(stage->switch(stage.type()) {
+                case "WALKING"->"도보";case "BUS"->"버스";case "SUBWAY"->"지하철";default->"이동";
+            }+" "+durationText(stage.time())).collect(java.util.stream.Collectors.joining(" → "));
+        }
         public Leg {
             paths = paths.stream().map(List::copyOf).toList();
             steps = List.copyOf(steps);transitStages=List.copyOf(transitStages);

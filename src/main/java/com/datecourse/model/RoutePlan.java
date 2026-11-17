@@ -19,8 +19,8 @@ public record RoutePlan(double startLat, double startLng, int people, int radius
         travelMode=travelMode==null?TravelMode.WALKING:travelMode;
         places = List.copyOf(places);
         arrivalRadii = Map.copyOf(arrivalRadii);
-        if (arrivalRadii.values().stream().anyMatch(value -> value < 200 || value > 2000))
-            throw new IllegalArgumentException("장소별 이동 반경은 200~2000m여야 합니다.");
+        if (arrivalRadii.values().stream().anyMatch(value -> value < TravelMode.MIN_RADIUS || value > TravelMode.MAX_LEG_RADIUS))
+            throw new IllegalArgumentException("장소별 이동 반경이 지원 범위를 벗어났습니다.");
     }
 
     public CostEstimate costEstimate() { return CostEstimate.of(places, people); }

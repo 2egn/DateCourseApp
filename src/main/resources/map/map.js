@@ -284,7 +284,7 @@
     };
 
     window.setMapRadius = function (value) {
-        if (!Number.isFinite(value) || value < 200 || value > 2000) return;
+        if (!Number.isFinite(value) || value < 200 || value > (routePresentation && routePresentation.maximumRadius || Infinity)) return;
         radiusMeter = value;
         if (circle) circle.setRadius(value);
         if (circleOutline) circleOutline.setRadius(value);
@@ -808,7 +808,7 @@
         const nextLegend = document.getElementById('next-range-legend');
         nextLegend.hidden = !locked;
         if (locked) {
-            nextRadiusMeter = Number.isFinite(radius) ? Math.max(200, Math.min(2000, radius)) : 500;
+            nextRadiusMeter = Number.isFinite(radius) ? Math.max(200, Math.min(plan.maximumLegRadius || Infinity, radius)) : 500;
             const last = plan.places.length ? plan.places[plan.places.length - 1] : {lat:plan.startLat, lng:plan.startLng};
             const nextCenter = new kakao.maps.LatLng(last.lat, last.lng);
             displayedNextRange = {lat:last.lat, lng:last.lng, radius:nextRadiusMeter};
@@ -996,7 +996,7 @@
             return;
         }
         // Preserve actual provider paths, including separate transit stages; never join gaps with straight lines.
-        const travelLabel = ({WALKING:'도보', DRIVING:'자동차', TRANSIT:'대중교통'})[route.mode] || '도보';
+        const travelLabel = ({WALKING:'도보', DRIVING:'자동차', TRANSIT:'대중교통 + 도보'})[route.mode] || '도보';
         const boundsPoints = [];
         let points = 0;
         function meters(value) { return value >= 1000 ? (value / 1000).toFixed(2) + 'km' : value + 'm'; }
@@ -1056,7 +1056,8 @@
                 popupIndex = index;
                 popupTitle.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
                 popupFacts.textContent = (route.provider?route.provider+' · ':'')+travelLabel+' · '+meters(leg.distance) + ' · ' + duration(leg.time)
-                    +(Number.isInteger(leg.transfers)?' · 환승 '+leg.transfers+'회':'')
+                    +(leg.movementSummary?' · '+leg.movementSummary:'')
+                    +(Number.isInteger(leg.transfers)&&leg.transfers>0?' · 환승 '+leg.transfers+'회':'')
                     +(Number.isInteger(leg.fare)?' · 참고 요금 '+leg.fare.toLocaleString('ko-KR')+'원/인':'');
                 popupSteps.textContent = '';
                 (leg.steps || []).forEach(function(step) {
@@ -1127,7 +1128,8 @@
             emphasize(index);
             const leg = route.legs[index];
             summary.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name
-                + ' · ' + meters(leg.distance) + ' · ' + duration(leg.time);
+                + ' · ' + meters(leg.distance) + ' · ' + duration(leg.time) + ' · ' + travelLabel
+                + (leg.movementSummary ? ' · ' + leg.movementSummary : '');
             Array.from(directions.children).forEach(function (item, number) {
                 item.hidden = number !== index;
             });
@@ -1138,7 +1140,7 @@
             }
             return true;
         }
-        summary.textContent = 'TMAP 도보 · ' + meters(route.totalDistance) + ' · ' + duration(route.totalTime)
+        summary.textContent = (route.provider?route.provider+' · ':'')+travelLabel+' · ' + meters(route.totalDistance) + ' · ' + duration(route.totalTime)
             + ' · ' + route.legs.length + '구간';
         route.legs.forEach(function (leg, index) {
             const color = colors[index % colors.length];
@@ -1158,7 +1160,14 @@
             const group = {lines:[], outlines:[], button:button};
             groups.push(group);
             let badgePosition = null;
-            leg.paths.forEach(function (coordinates) {
+            const stages = leg.transitStages || [];
+            const stagedPaths = stages.filter(function(stage){return stage.path && stage.path.length > 1;});
+            const walkingOnly = stages.length > 0 && stages.every(function(stage){return stage.type === 'WALKING';});
+            const segments = stagedPaths.length ? stagedPaths.map(function(stage){
+                return {coordinates:stage.path, walking:stage.type === 'WALKING'};
+            }) : leg.paths.map(function(path){return {coordinates:path, walking:walkingOnly};});
+            segments.forEach(function (segment) {
+                const coordinates = segment.coordinates;
                 const path = coordinates.map(function (point) {
                     const position = new kakao.maps.LatLng(point.lat, point.lng);
                     boundsPoints.push(position); points++;
@@ -1169,7 +1178,7 @@
                 const outline = new kakao.maps.Polyline({path:path, strokeWeight:7, strokeColor:'#ffffff',
                     strokeOpacity:0.95, strokeStyle:'solid', zIndex:3});
                 const line = new kakao.maps.Polyline({path:path, strokeWeight:4, strokeColor:color,
-                    strokeOpacity:0.95, strokeStyle:'solid', zIndex:4});
+                    strokeOpacity:0.95, strokeStyle:segment.walking?'shortdash':'solid', zIndex:4});
                 outline.setMap(map); line.setMap(map);
                 walkingShapes.push(outline, line);
                 group.lines.push(line);

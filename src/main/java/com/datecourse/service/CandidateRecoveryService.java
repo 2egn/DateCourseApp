@@ -13,7 +13,7 @@ public final class CandidateRecoveryService {
     private final NextPlaceService search=new NextPlaceService();
     public Advice analyze(List<Place> places, RoutePlan route, NextPlaceCondition condition, int maximumRadius) {
         if (!matches(places,route,condition).isEmpty()) return new Advice("",List.of());
-        int radius=Math.max(condition.radius(),Math.min(2000,maximumRadius));
+        int radius=Math.max(condition.radius(),Math.min(NextPlaceRadius.maximum(route),maximumRadius));
         var suggestions=new ArrayList<Suggestion>();
         if(!condition.includeUnknown()) offer(suggestions,Change.INCLUDE_UNKNOWN,places,route,
                 copy(condition,condition.maxPrice(),condition.radius(),true,condition.subtypes(),condition.tags()));

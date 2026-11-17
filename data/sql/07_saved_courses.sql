@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS saved_courses (
     CONSTRAINT ck_saved_courses_lat CHECK (start_lat BETWEEN -90 AND 90),
     CONSTRAINT ck_saved_courses_lng CHECK (start_lng BETWEEN -180 AND 180),
     CONSTRAINT ck_saved_courses_people CHECK (people BETWEEN 1 AND 20),
-    CONSTRAINT ck_saved_courses_radius CHECK (radius_m BETWEEN 200 AND 2000)
+    CONSTRAINT ck_saved_courses_radius CHECK (radius_m BETWEEN 200 AND 30000)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS saved_course_places (
@@ -47,5 +47,5 @@ CREATE TABLE IF NOT EXISTS saved_course_places (
     CONSTRAINT ck_saved_course_places_price CHECK (unit_price_snapshot >= 0),
     CONSTRAINT ck_saved_course_places_rating CHECK (rating_snapshot BETWEEN 0 AND 5),
     CONSTRAINT ck_saved_course_places_arrival CHECK
-        (arrival_radius_m IS NULL OR arrival_radius_m BETWEEN 200 AND 2000)
+        (arrival_radius_m IS NULL OR arrival_radius_m BETWEEN 200 AND 60000)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
