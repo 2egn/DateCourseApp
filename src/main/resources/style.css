@@ -95,6 +95,45 @@
     -fx-border-radius: 10;
 }
 .list-cell { -fx-padding: 8 10; -fx-background-color: transparent; }
+.saved-course-list .list-cell:filled {
+    -fx-border-color: transparent transparent #e2e7ed transparent;
+    -fx-border-width: 0 0 1 0;
+}
+.saved-course-title { -fx-font-weight: bold; }
+.saved-course-summary { -fx-font-size: 13px; }
+.list-cell .saved-course-updated { -fx-font-size: 12px; -fx-text-fill: #7b8490; }
+.saved-course-place-table, .saved-course-summary-table {
+    -fx-background-color: white;
+    -fx-border-color: #d8dee6;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-table-cell-border-color: transparent;
+}
+.saved-course-place-table .column-header-background, .saved-course-summary-table .column-header-background { -fx-background-color: white; }
+.saved-course-place-table .column-header .label, .saved-course-summary-table .column-header .label { -fx-font-weight: bold; -fx-text-fill: #303844; }
+.saved-course-place-table .table-row-cell, .saved-course-summary-table .table-row-cell,
+.saved-course-place-table .table-row-cell:odd, .saved-course-summary-table .table-row-cell:odd {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-border-color: transparent;
+}
+.saved-course-place-table .table-row-cell:empty, .saved-course-summary-table .table-row-cell:empty {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+.saved-course-place-table .table-row-cell:empty .table-cell, .saved-course-summary-table .table-row-cell:empty .table-cell {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+}
+.saved-course-place-table .table-cell, .saved-course-summary-table .table-cell {
+    -fx-padding: 6 6;
+    -fx-alignment: TOP_LEFT;
+    -fx-background-color: #d8dee6, white;
+    -fx-background-insets: 0, 0 1 1 0;
+    -fx-border-color: transparent;
+}
 .list-cell:filled:hover { -fx-background-color: #f2f4f6; }
 .list-cell:filled:selected,
 .list-cell:filled:selected:focused {
@@ -102,6 +141,8 @@
     -fx-text-fill: -app-text;
 }
 .list-cell:filled:selected .label { -fx-text-fill: -app-text; }
+.list-cell:filled:selected .saved-course-updated,
+.list-cell:filled:selected:focused .saved-course-updated { -fx-text-fill: #191f28; }
 
 /* 드롭다운은 선택·포커스·펼친 목록 모두 중립 회색으로 표시한다. */
 .combo-box { -fx-background-color: #f2f4f6; }
@@ -218,6 +259,7 @@
 .condition-screen .condition-title { -fx-font-size: 20px; -fx-font-weight: bold; }
 .condition-screen .planner-caption { -fx-font-size: 12px; -fx-text-fill: #6b7684; }
 .condition-screen .field-label { -fx-font-size: 13px; -fx-text-fill: #6b7684; }
+.condition-screen .common-condition-label { -fx-font-size: 14px; -fx-text-fill: #191f28; -fx-font-weight: bold; }
 .condition-screen .text-field {
     -fx-background-color: #f2f4f6;
     -fx-background-radius: 10;

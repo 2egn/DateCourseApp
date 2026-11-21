@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 /** 두 WebView는 같은 지도 페이지를 사용하지만 브리지와 상태를 각각 소유한다. */
 final class PlannerMap {
     private static final java.time.Duration CAPTURE_TIMEOUT = java.time.Duration.ofSeconds(20);
+    private static final ObjectMapper JSON = new ObjectMapper();
     private final com.datecourse.service.PlaceMapPayload placePayload = new com.datecourse.service.PlaceMapPayload(
             new ObjectMapper(), new com.datecourse.service.PlacePresenter());
 
@@ -69,6 +70,8 @@ final class PlannerMap {
     private final Consumer<String> error;
     private final MapBridge bridge;
     private boolean ready;
+    private String uiStatus;
+    private Runnable onReady = () -> {};
     private boolean capturing;
     private java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> pendingCapture;
     private Runnable cancelCapture=()->{};
@@ -105,6 +108,8 @@ final class PlannerMap {
         bridge = new MapBridge(() -> {
             ready = true;
             render(true);
+            applyUiStatus();
+            onReady.run();
             if (walkingPending) requestWalkingRoute(false);
             else if(walkingRequested && walkingRoute==null && walkingTask==null)requestWalkingRouteWhenReady();
         }, selected, message -> {
@@ -169,6 +174,9 @@ final class PlannerMap {
     boolean canCapturePreview() {
         return ready && !capturing && view.isVisible() && view.getWidth()>0 && view.getHeight()>0;
     }
+
+    boolean isReady() { return ready; }
+    void setOnReady(Runnable listener) { onReady = listener == null ? () -> {} : listener; }
 
     /** FX-thread only. Preserve the complete SDK attribution and restore the original viewport. */
     enum CaptureStage { PREPARING, CAPTURING }
@@ -330,6 +338,11 @@ final class PlannerMap {
     void setOnOriginChangeBlocked(Runnable listener) { originChangeBlocked = listener; }
 
     void setOriginLocked(boolean value) { originLocked = value; if (ready) sendOriginLock(); }
+    void setStatus(String message) { uiStatus = message; applyUiStatus(); }
+    private void applyUiStatus() {
+        if (ready && uiStatus != null) view.getEngine().executeScript("if(window.setPlannerStatus)window.setPlannerStatus(" +
+                JSON.valueToTree(uiStatus).toString() + ")");
+    }
     private void sendOriginLock() {
         view.getEngine().executeScript("if (typeof window.setOriginLocked === 'function') window.setOriginLocked(" + originLocked + ")");
     }

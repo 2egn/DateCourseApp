@@ -5,50 +5,291 @@
     <title>데이트 코스 지도</title>
     <link rel="stylesheet" href="./itinerary-rail.css">
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
+
         body.course-capture #place-search, body.course-capture #map-status,
         body.course-capture #map-legend, body.course-capture #place-detail,
         body.course-capture #itinerary-rail, body.course-capture #walking-panel,
-        body.course-capture .walking-route-tooltip, body.course-capture .place-pin-preview { display:none !important; }
-        body.course-capture #map-surface { flex:1; }
-        .course-capture-pin { display:inline-block; width:max-content; max-width:240px; padding:5px 10px 5px 5px;
-            background:#fff; border:1px solid #e4d4db; border-radius:22px; box-shadow:0 2px 7px #15233b26;
-            color:#253244; font:600 15px/28px "Malgun Gothic",sans-serif; white-space:nowrap; }
-        .course-capture-pin b { display:inline-block; vertical-align:middle; width:28px; height:28px; text-align:center; border-radius:50%; background:#ed5675; color:white; }
-        .course-capture-pin span { display:inline-block; vertical-align:middle; margin-left:6px; max-width:180px; overflow:hidden; text-overflow:ellipsis; }
-        .course-capture-pin.is-origin b { background:#3476bd; }
-        html, body { width: 100%; height: 100%; margin: 0; }
-        body { display: flex; flex-direction: column; font: 13px "Malgun Gothic", sans-serif; color: #191f28; background: white; }
-        #place-search { position: relative; z-index: 30; flex: 0 0 auto; min-width: 0; border-bottom: 1px solid #eef0f3; }
-        #search-popup { position: absolute; top: calc(100% - 5px); left: 16px; right: 16px; background: rgba(255,255,255,.98); border: 1px solid #e5e9ef; border-radius: 12px; box-shadow: 0 8px 24px #18294b26; overflow: hidden; }
-        #search-form { padding: 14px 16px; }
-        .search-row { display: flex; gap: 8px; }
-        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); }
-        #place-query { flex: 1; min-width: 0; height: 36px; padding: 6px 12px; border: 1px solid transparent; border-radius: 8px; font: inherit; background: #f2f4f6; color: #191f28; }
-        #place-query::placeholder { color: #6b7684; }
-        #place-query:focus { outline: 2px solid #ffe3e8; border-color: #ff6b81; }
-        button { font: inherit; cursor: pointer; }
-        #search-submit { height: 36px; border: 1px solid transparent; border-radius: 8px; padding: 6px 12px; background: #ff6b81; color: #191f28; font-weight: bold; }
-        #search-submit:hover { background: #ff8294; }
-        #search-submit:disabled { opacity: 0.5; cursor: default; }
-        #search-close { height: 36px; border: 1px solid #dce1e8; border-radius: 8px; background: #f2f4f6; color: #334155; padding: 6px 12px; }
-        [hidden] { display: none !important; }
-        #search-message { margin: 0; padding: 10px 14px; color: #6b7684; font-size: 12px; line-height: 1.5; }
-        #search-message:empty { display: none; }
-        #search-results { position: relative; list-style: none; margin: 0; padding: 0 12px; max-height: 48vh; overflow-y: auto; overscroll-behavior: contain; }
-        #search-results button { width: 100%; padding: 10px 4px; border: 0; border-top: 1px solid #eef0f3; background: white; text-align: left; }
-        #search-results button:hover, #search-results button:focus, #search-results button[aria-selected="true"] { background: #fff2f5; }
-        #search-results button[aria-selected="true"] { box-shadow: inset 3px 0 #ff6b81; outline: none; }
-        .place-name, .place-address { display: block; overflow-wrap: anywhere; }
-        .place-name { font-weight: bold; }
-        .place-address { margin-top: 3px; color: #667085; font-size: 12px; }
-        #map { flex: 1 1 0; min-height: 0; width: 100%; position: relative; }
-        #map-status { flex: 0 0 auto; margin: 0; padding: 10px 16px; border-top: 1px solid #eef0f3; color: #6b7684; font-size: 12px; line-height: 1.5; }
-        #map-legend { position: absolute; bottom: 68px; right: 12px; z-index: 10; display: flex; flex-wrap: wrap; max-width: calc(100% - 24px); gap: 8px 14px; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.95); box-shadow: 0 2px 8px #0002; font-size: 12px; color: #4b5563; pointer-events: none; }
-        #map-legend span { display: flex; align-items: center; gap: 6px; }
-        .origin-symbol { width: 12px; height: 12px; border: 3px solid #2563eb; border-radius: 50%; }
-        .next-range-symbol { width: 14px; height: 14px; border: 2px dashed #15803d; border-radius: 50%; }
-        .course-symbol { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 20px; border-radius: 9px 9px 9px 0; background: #e54870; color: white; font-style: normal; font-weight: bold; }
+        body.course-capture .walking-route-tooltip, body.course-capture .place-pin-preview {
+            display: none !important;
+        }
+
+        body.course-capture #map-surface {
+            flex: 1;
+        }
+
+        .course-capture-pin {
+            display: inline-block;
+            width: max-content;
+            max-width: 240px;
+            padding: 5px 10px 5px 5px;
+            background: #fff;
+            border: 1px solid #e4d4db;
+            border-radius: 22px;
+            box-shadow: 0 2px 7px #15233b26;
+            color: #253244;
+            font: 600 15px/28px "Malgun Gothic", sans-serif;
+            white-space: nowrap;
+        }
+
+        .course-capture-pin b {
+            display: inline-block;
+            vertical-align: middle;
+            width: 28px;
+            height: 28px;
+            text-align: center;
+            border-radius: 50%;
+            background: #ed5675;
+            color: white;
+        }
+
+        .course-capture-pin span {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 6px;
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .course-capture-pin.is-origin b {
+            background: #3476bd;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            font: 13px "Malgun Gothic", sans-serif;
+            color: #191f28;
+            background: white;
+        }
+
+        #place-search {
+            position: relative;
+            z-index: 30;
+            flex: 0 0 auto;
+            min-width: 0;
+            border-bottom: 1px solid #eef0f3;
+        }
+
+        #search-popup {
+            position: absolute;
+            top: calc(100% - 5px);
+            left: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, .98);
+            border: 1px solid #e5e9ef;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px #18294b26;
+            overflow: hidden;
+        }
+
+        #search-form {
+            padding: 8px 16px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        #place-query {
+            flex: 1;
+            min-width: 0;
+            height: 36px;
+            padding: 6px 12px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font: inherit;
+            background: #f2f4f6;
+            color: #191f28;
+        }
+
+        #place-query::placeholder {
+            color: #6b7684;
+        }
+
+        #place-query:focus {
+            outline: 2px solid #ffe3e8;
+            border-color: #ff6b81;
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+        }
+
+        #search-submit {
+            height: 36px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 6px 12px;
+            background: #ff6b81;
+            color: #191f28;
+            font-weight: bold;
+        }
+
+        #search-submit:hover {
+            background: #ff8294;
+        }
+
+        #search-submit:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        #search-close {
+            height: 36px;
+            border: 1px solid #dce1e8;
+            border-radius: 8px;
+            background: #f2f4f6;
+            color: #334155;
+            padding: 6px 12px;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        #search-message {
+            margin: 0;
+            padding: 10px 14px;
+            color: #6b7684;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        #search-message:empty {
+            display: none;
+        }
+
+        #search-results {
+            position: relative;
+            list-style: none;
+            margin: 0;
+            padding: 0 12px;
+            max-height: 48vh;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+
+        #search-results button {
+            width: 100%;
+            padding: 10px 4px;
+            border: 0;
+            border-top: 1px solid #eef0f3;
+            background: white;
+            text-align: left;
+        }
+
+        #search-results button:hover, #search-results button:focus, #search-results button[aria-selected="true"] {
+            background: #fff2f5;
+        }
+
+        #search-results button[aria-selected="true"] {
+            box-shadow: inset 3px 0 #ff6b81;
+            outline: none;
+        }
+
+        .place-name, .place-address {
+            display: block;
+            overflow-wrap: anywhere;
+        }
+
+        .place-name {
+            font-weight: bold;
+        }
+
+        .place-address {
+            margin-top: 3px;
+            color: #667085;
+            font-size: 12px;
+        }
+
+        #map {
+            flex: 1 1 0;
+            min-height: 0;
+            width: 100%;
+            position: relative;
+        }
+
+        #map-status {
+            flex: 0 0 auto;
+            margin: 0;
+            padding: 10px 16px;
+            border-top: 1px solid #eef0f3;
+            color: #6b7684;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        #map-legend {
+            position: absolute;
+            bottom: 68px;
+            right: 12px;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            max-width: calc(100% - 24px);
+            gap: 8px 14px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 8px #0002;
+            font-size: 12px;
+            color: #4b5563;
+            pointer-events: none;
+        }
+
+        #map-legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .origin-symbol {
+            width: 12px;
+            height: 12px;
+            border: 3px solid #2563eb;
+            border-radius: 50%;
+        }
+
+        .next-range-symbol {
+            width: 14px;
+            height: 14px;
+            border: 2px dashed #15803d;
+            border-radius: 50%;
+        }
+
+        .course-symbol {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 20px;
+            border-radius: 9px 9px 9px 0;
+            background: #e54870;
+            color: white;
+            font-style: normal;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -70,61 +311,243 @@
     </div>
 </section>
 <div id="map-surface">
-<div id="map"></div>
-<div id="map-legend" aria-label="지도 범위와 마커 안내"><span><i class="origin-symbol"></i><span id="route-range-label">출발지 중심 전체 범위</span></span><span id="next-range-legend" hidden><i class="next-range-symbol"></i><span id="next-range-label">이전 장소 기준 범위</span></span><span><i class="course-symbol">1</i>장소 · 코스 순서</span></div>
-<section id="itinerary-rail" class="itinerary-rail" aria-label="코스와 주변 장소 탐색" hidden>
-    <div class="planner-tabs" role="tablist" aria-label="장소 목록">
-        <button id="course-tab" role="tab" aria-selected="true" aria-controls="itinerary-viewport" type="button">추천 코스</button>
-        <button id="nearby-tab" role="tab" aria-selected="false" aria-controls="itinerary-viewport" type="button">주변 장소</button>
-    </div>
-    <header class="itinerary-heading"><strong><span id="itinerary-title">오늘의 코스</span> <span id="itinerary-count"></span></strong><small id="itinerary-hint">스크롤로 탐색 · 선택된 카드를 눌러 상세</small></header>
-    <div id="itinerary-empty" class="itinerary-empty" hidden></div>
-    <div id="itinerary-viewport" class="itinerary-viewport" role="listbox" aria-label="방문 순서" aria-orientation="vertical">
-        <ol id="itinerary-list" class="itinerary-list" role="presentation"></ol>
-    </div>
-</section>
-<section id="place-detail" class="place-detail" role="region" aria-labelledby="detail-title" aria-hidden="true" hidden>
-    <button id="detail-close" class="detail-close" type="button" aria-label="장소 상세 닫기" tabindex="-1">×</button>
-    <div id="detail-category" class="detail-topline"></div>
-    <h2 id="detail-title"></h2>
-    <dl id="detail-facts" class="detail-facts"></dl>
-    <div id="detail-extra" class="detail-extra"></div>
-    <div class="detail-actions"><button id="detail-add" class="detail-add" type="button" hidden tabindex="-1">코스에 추가</button>
-    <a id="detail-map-link" class="detail-map-link" target="_blank" rel="noopener noreferrer" tabindex="-1">카카오맵에서 보기 ↗</a></div>
-    <a id="detail-report" class="detail-report" href="#report-information" tabindex="-1">정보 정정 제보</a>
-    <p class="detail-note">가격·평점은 참고 정보예요.</p>
-</section>
-<style>
-    #walking-panel { position: absolute; top: 12px; left: 12px; right: 12px; z-index: 8; padding: 10px 12px; border: 1px solid #dbe2eb; border-radius: 10px; background: rgba(255,255,255,.97); box-shadow: 0 3px 10px #1e293b15; font-size: 12px; color: #1e3a5f; }
-    #walking-summary { font-weight: 600; }
-    #walking-leg-list { display: flex; gap: 6px; overflow-x: auto; margin-top: 8px; padding-bottom: 3px; }
-    .walking-leg-button { flex: 0 0 auto; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: 1px solid #d9e0e8; border-left-width: 4px; border-radius: 6px; padding: 6px 8px; background: #fff; color: #334155; font-size: 12px; }
-    .walking-leg-button[aria-pressed="true"] { background: #edf2f7; font-weight: bold; }
-    .walking-route-tooltip { box-sizing: border-box; display: flex; flex-direction: column; width: 360px; white-space: normal; word-break: keep-all; overflow-wrap: break-word; background: #fff; color: #253244; padding: 14px 16px; border: 1px solid #dce2ea; border-radius: 12px; box-shadow: 0 6px 20px #18294b26; font: 13px/1.7 "Malgun Gothic", sans-serif; pointer-events: auto; overflow: auto; }
-    .walking-tooltip-title { flex: 0 0 auto; min-width: 0; white-space: normal; overflow-wrap: break-word; color: #191f28; font-size: 14px; font-weight: bold; line-height: 1.6; }
-    .walking-tooltip-steps { flex: 0 1 auto; min-height: 0; margin: 12px 0 0; padding: 0 8px 0 26px; max-height: 260px; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; border-top: 1px solid #eef0f3; white-space: normal; }
-    .walking-tooltip-steps li { padding: 9px 0 9px 3px; margin: 0; border-bottom: 1px solid #eef0f3; white-space: normal; overflow-wrap: break-word; color: #253244; }
-    .walking-tooltip-steps li:last-child { border-bottom: 0; }
-    .walking-tooltip-steps:focus-visible { outline: 2px solid #99b8e0; outline-offset: 2px; border-radius: 4px; }
-    .walking-tooltip-facts { flex: 0 0 auto; margin-top: 5px; color: #526174; font-size: 13px; white-space: normal; }
-    .walking-route-tooltip.is-detailed { position: relative; }
-    .walking-route-tooltip.is-detailed .walking-tooltip-title { padding-right: 26px; }
-    .walking-tooltip-hint { margin-top: 6px; color: #64748b; font-size: 12px; }
-    .walking-tooltip-close { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 6px; background: #f2f4f6; color: #526174; font-size: 20px; line-height: 28px; }
-    .walking-route-tooltip::-webkit-scrollbar, .walking-tooltip-steps::-webkit-scrollbar { width: 6px; height: 6px; }
-    .walking-route-tooltip::-webkit-scrollbar-thumb, .walking-tooltip-steps::-webkit-scrollbar-thumb { background: #b9c4d1; border-radius: 6px; }
-    .walking-route-tooltip::-webkit-scrollbar-track, .walking-tooltip-steps::-webkit-scrollbar-track { background: transparent; }
-    .walking-leg-badge { border: 2px solid white; border-radius: 14px; min-width: 26px; height: 26px; padding: 0 5px; color: #fff; font-size: 12px; font-weight: bold; box-shadow: 0 1px 4px #0003; }
-    #walking-panel details { margin-top: 6px; }
-    #walking-panel summary { cursor: pointer; }
-    #walking-directions { max-height: 130px; overflow-y: auto; margin: 6px 0 0; padding-left: 0; list-style: none; }
-    #walking-directions li { margin: 4px 0; line-height: 1.5; }
-</style>
-<section id="walking-panel" hidden aria-label="TMAP 도보 경로 안내">
-    <div id="walking-summary" role="status" aria-live="polite"></div>
-    <div id="walking-leg-list" role="group" aria-label="도보 구간 선택"></div>
-    <details id="walking-details" open hidden><summary>선택 구간 안내</summary><ol id="walking-directions"></ol></details>
-</section>
+    <div id="map"></div>
+    <div id="map-legend" aria-label="지도 범위와 마커 안내"><span><i class="origin-symbol"></i><span id="route-range-label">출발지 중심 전체 범위</span></span><span
+            id="next-range-legend" hidden><i class="next-range-symbol"></i><span
+            id="next-range-label">이전 장소 기준 범위</span></span><span><i class="course-symbol">1</i>장소 · 코스 순서</span></div>
+    <section id="itinerary-rail" class="itinerary-rail" aria-label="코스와 주변 장소 탐색" hidden>
+        <div class="planner-tabs" role="tablist" aria-label="장소 목록">
+            <button id="course-tab" role="tab" aria-selected="true" aria-controls="itinerary-viewport" type="button">추천
+                코스
+            </button>
+            <button id="nearby-tab" role="tab" aria-selected="false" aria-controls="itinerary-viewport" type="button">주변
+                장소
+            </button>
+        </div>
+        <header class="itinerary-heading"><strong><span id="itinerary-title">오늘의 코스</span> <span
+                id="itinerary-count"></span></strong><small id="itinerary-hint">스크롤로 탐색 · 선택된 카드를 눌러 상세</small></header>
+        <div id="itinerary-empty" class="itinerary-empty" hidden></div>
+        <div id="itinerary-viewport" class="itinerary-viewport" role="listbox" aria-label="방문 순서"
+             aria-orientation="vertical">
+            <ol id="itinerary-list" class="itinerary-list" role="presentation"></ol>
+        </div>
+    </section>
+    <section id="place-detail" class="place-detail" role="region" aria-labelledby="detail-title" aria-hidden="true"
+             hidden>
+        <button id="detail-close" class="detail-close" type="button" aria-label="장소 상세 닫기" tabindex="-1">×</button>
+        <div id="detail-category" class="detail-topline"></div>
+        <h2 id="detail-title"></h2>
+        <dl id="detail-facts" class="detail-facts"></dl>
+        <div id="detail-extra" class="detail-extra"></div>
+        <div class="detail-actions">
+            <button id="detail-add" class="detail-add" type="button" hidden tabindex="-1">코스에 추가</button>
+            <a id="detail-map-link" class="detail-map-link" target="_blank" rel="noopener noreferrer" tabindex="-1">카카오맵에서
+                보기 ↗</a></div>
+        <a id="detail-report" class="detail-report" href="#report-information" tabindex="-1">정보 정정 제보</a>
+        <p class="detail-note">가격·평점은 참고 정보예요.</p>
+    </section>
+    <style>
+        #walking-panel {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            z-index: 8;
+            padding: 10px 12px;
+            border: 1px solid #dbe2eb;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .97);
+            box-shadow: 0 3px 10px #1e293b15;
+            font-size: 12px;
+            color: #1e3a5f;
+        }
+
+        #walking-summary {
+            font-weight: 600;
+        }
+
+        #walking-leg-list {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            margin-top: 8px;
+            padding-bottom: 3px;
+        }
+
+        .walking-leg-button {
+            flex: 0 0 auto;
+            max-width: 260px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            border: 1px solid #d9e0e8;
+            border-left-width: 4px;
+            border-radius: 6px;
+            padding: 6px 8px;
+            background: #fff;
+            color: #334155;
+            font-size: 12px;
+        }
+
+        .walking-leg-button[aria-pressed="true"] {
+            background: #edf2f7;
+            font-weight: bold;
+        }
+
+        .walking-route-tooltip {
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            width: 360px;
+            white-space: normal;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            background: #fff;
+            color: #253244;
+            padding: 14px 16px;
+            border: 1px solid #dce2ea;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px #18294b26;
+            font: 13px/1.7 "Malgun Gothic", sans-serif;
+            pointer-events: auto;
+            overflow: auto;
+        }
+
+        .walking-tooltip-title {
+            flex: 0 0 auto;
+            min-width: 0;
+            white-space: normal;
+            overflow-wrap: break-word;
+            color: #191f28;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+
+        .walking-tooltip-steps {
+            flex: 0 1 auto;
+            min-height: 0;
+            margin: 12px 0 0;
+            padding: 0 8px 0 26px;
+            max-height: 260px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            border-top: 1px solid #eef0f3;
+            white-space: normal;
+        }
+
+        .walking-tooltip-steps li {
+            padding: 9px 0 9px 3px;
+            margin: 0;
+            border-bottom: 1px solid #eef0f3;
+            white-space: normal;
+            overflow-wrap: break-word;
+            color: #253244;
+        }
+
+        .walking-tooltip-steps li:last-child {
+            border-bottom: 0;
+        }
+
+        .walking-tooltip-steps:focus-visible {
+            outline: 2px solid #99b8e0;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .walking-tooltip-facts {
+            flex: 0 0 auto;
+            margin-top: 5px;
+            color: #526174;
+            font-size: 13px;
+            white-space: normal;
+        }
+
+        .walking-route-tooltip.is-detailed {
+            position: relative;
+        }
+
+        .walking-route-tooltip.is-detailed .walking-tooltip-title {
+            padding-right: 26px;
+        }
+
+        .walking-tooltip-hint {
+            margin-top: 6px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .walking-tooltip-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border: 0;
+            border-radius: 6px;
+            background: #f2f4f6;
+            color: #526174;
+            font-size: 20px;
+            line-height: 28px;
+        }
+
+        .walking-route-tooltip::-webkit-scrollbar, .walking-tooltip-steps::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .walking-route-tooltip::-webkit-scrollbar-thumb, .walking-tooltip-steps::-webkit-scrollbar-thumb {
+            background: #b9c4d1;
+            border-radius: 6px;
+        }
+
+        .walking-route-tooltip::-webkit-scrollbar-track, .walking-tooltip-steps::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .walking-leg-badge {
+            border: 2px solid white;
+            border-radius: 14px;
+            min-width: 26px;
+            height: 26px;
+            padding: 0 5px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 1px 4px #0003;
+        }
+
+        #walking-panel details {
+            margin-top: 6px;
+        }
+
+        #walking-panel summary {
+            cursor: pointer;
+        }
+
+        #walking-directions {
+            max-height: 130px;
+            overflow-y: auto;
+            margin: 6px 0 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        #walking-directions li {
+            margin: 4px 0;
+            line-height: 1.5;
+        }
+    </style>
+    <section id="walking-panel" hidden aria-label="TMAP 도보 경로 안내">
+        <div id="walking-summary" role="status" aria-live="polite"></div>
+        <div id="walking-leg-list" role="group" aria-label="도보 구간 선택"></div>
+        <details id="walking-details" open hidden>
+            <summary>선택 구간 안내</summary>
+            <ol id="walking-directions"></ol>
+        </details>
+    </section>
 </div>
 <div id="map-status" role="status" aria-live="polite">지도를 불러오고 있어요…</div>
 <script src="./kakao-config.js"></script>

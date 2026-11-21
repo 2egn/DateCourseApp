@@ -18,33 +18,58 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
+
 import java.util.List;
 
-/** 공통 조건과 확정본을 소유한다. 편집 화면은 별도의 복사본만 변경한다. */
+/**
+ * 공통 조건과 확정본을 소유한다. 편집 화면은 별도의 복사본만 변경한다.
+ */
 public class ConditionController extends BasePageController {
     private final com.datecourse.service.PlacePresenter placePresenter = new com.datecourse.service.PlacePresenter();
 
-    @FXML private StackPane plannerRoot;
-    @FXML private BorderPane mainPage;
-    @FXML private Parent routeEditor;
-    @FXML private RouteEditorController routeEditorController;
-    @FXML private TextField peopleField;
-    @FXML private ComboBox<com.datecourse.model.TravelMode> travelModeBox;
+    @FXML
+    private StackPane plannerRoot;
+    @FXML
+    private BorderPane mainPage;
+    @FXML
+    private Parent routeEditor;
+    @FXML
+    private RouteEditorController routeEditorController;
+    @FXML
+    private TextField peopleField;
+    @FXML
+    private ComboBox<com.datecourse.model.TravelMode> travelModeBox;
     private boolean restoringTravelMode;
-    private com.datecourse.model.TravelMode travelMode(){return travelModeBox.getValue()==null?com.datecourse.model.TravelMode.WALKING:travelModeBox.getValue();}
-    @FXML private Button peopleUp, peopleDown, recommendButton;
-    @FXML private Label errorLabel, resultLabel, hintLabel, radiusLabel;
-    @FXML private Label walkingSummaryLabel, completedStopsLabel, originHintLabel;
-    @FXML private VBox courseOverview;
-    @FXML private TitledPane commonConditionsPane;
-    @FXML private ScrollPane mainSidebar;
-    @FXML private Button reloadMapButton;
+
+    private com.datecourse.model.TravelMode travelMode() {
+        return travelModeBox.getValue() == null ? com.datecourse.model.TravelMode.WALKING : travelModeBox.getValue();
+    }
+
+    @FXML
+    private Button peopleUp, peopleDown, recommendButton;
+    @FXML
+    private Label errorLabel, resultLabel, radiusLabel;
+    @FXML
+    private Label walkingSummaryLabel, completedStopsLabel;
+    @FXML
+    private VBox courseOverview;
+    @FXML
+    private TitledPane commonConditionsPane;
+    @FXML
+    private ScrollPane mainSidebar;
+    @FXML
+    private Button reloadMapButton;
     private com.datecourse.model.TravelRoute overviewWalking;
-    @FXML private Slider radiusSlider;
-    @FXML private Label radiusMaximumLabel;
-    @FXML private ComboBox<String> sourceBox;
-    @FXML private Label sourceStatusLabel;
-    @FXML private WebView mapView;
+    @FXML
+    private Slider radiusSlider;
+    @FXML
+    private Label radiusMaximumLabel;
+    @FXML
+    private ComboBox<String> sourceBox;
+    @FXML
+    private Label sourceStatusLabel;
+    @FXML
+    private WebView mapView;
     private PlannerMap map;
     private PlaceRepository placeRepository;
     private List<Place> allPlaces = List.of();
@@ -56,7 +81,7 @@ public class ConditionController extends BasePageController {
     private UserSession userSession;
     private com.datecourse.service.UserContext userContext;
     private static final String EXISTING = "운영 장소 목록", PILOT = "서면·전포 시연 목록";
-    private static final String PUBLIC_DEMO="서면 공공자료 · 추정 가격";
+    private static final String PUBLIC_DEMO = "서면 공공자료 · 추정 가격";
     private kr.ac.university.localdb.db.InformationReportRepository informationReports;
     private Task<List<Place>> placeLoadTask;
     private long placeLoadVersion;
@@ -65,17 +90,25 @@ public class ConditionController extends BasePageController {
     private Long savedCourseId;
     private RoutePlan lastSavedPlan;
     private boolean saving;
-    @FXML private Button saveCourseButton, savedCoursesButton, newCourseButton;
-    @FXML private Label saveStatusLabel;
-    @FXML private MenuButton userLabel;
-    @FXML private HBox headerBar;
-    @FXML private HBox walkingToolbar;
-    @FXML private StackPane savedPageHost;
-    @FXML private StackPane myPageHost;
+    @FXML
+    private Button saveCourseButton, savedCoursesButton, newCourseButton;
+    @FXML
+    private Label saveStatusLabel;
+    @FXML
+    private MenuButton userLabel;
+    @FXML
+    private HBox headerBar;
+    @FXML
+    private HBox walkingToolbar;
+    @FXML
+    private StackPane savedPageHost;
+    @FXML
+    private StackPane myPageHost;
     private MyPageController myPageController;
     private kr.ac.university.localdb.db.MemberRepository accountRepository;
     private Runnable logoutHandler;
-    @FXML private Button homeButton;
+    @FXML
+    private Button homeButton;
     private boolean editorPaused;
     private boolean editorOpen;
     private boolean commonSettingsChanged;
@@ -99,28 +132,33 @@ public class ConditionController extends BasePageController {
         mainSidebar.prefWidthProperty().bind(mainPage.widthProperty().multiply(.45));
         reloadMapButton.managedProperty().bind(reloadMapButton.visibleProperty());
         reloadMapButton.setVisible(false);
-        errorLabel.textProperty().addListener((o,a,b)->reloadMapButton.setVisible(b!=null && (b.contains("지도")||b.contains("8080"))));
+        errorLabel.textProperty().addListener((o, a, b) -> reloadMapButton.setVisible(b != null && (b.contains("지도") || b.contains("8080"))));
         NumberStepper.install(peopleField, peopleUp, peopleDown, 1, 20, 2);
         travelModeBox.getItems().setAll(com.datecourse.model.TravelMode.values());
         travelModeBox.setValue(com.datecourse.model.TravelMode.WALKING);
-        travelModeBox.valueProperty().addListener((o,a,b)->{
-            if(restoringTravelMode||b==null)return;
+        travelModeBox.valueProperty().addListener((o, a, b) -> {
+            if (restoringTravelMode || b == null) return;
             configureRadiusMaximum(b.maximumRadius());
-            commonSettingsChanged=true;
-            if(appliedPlan!=null){appliedPlan=appliedPlan.withTravelMode(b);overviewWalking=null;}
-            updateRange();updateCourseOverview();updateResetButton();
-            if(appliedPlan!=null&&!appliedPlan.places().isEmpty())map.requestWalkingRouteWhenReady();
+            commonSettingsChanged = true;
+            if (appliedPlan != null) {
+                appliedPlan = appliedPlan.withTravelMode(b);
+                overviewWalking = null;
+            }
+            updateRange();
+            updateCourseOverview();
+            updateResetButton();
+            if (appliedPlan != null && !appliedPlan.places().isEmpty()) map.requestWalkingRouteWhenReady();
         });
         errorLabel.managedProperty().bind(errorLabel.textProperty().isNotEmpty());
         errorLabel.visibleProperty().bind(errorLabel.managedProperty());
         map = new PlannerMap(mapView, this::onLocationSelected, errorLabel::setText);
         map.setOnReport(this::reportInformation);
-        map.setWalkingResultListener((route,message)->{
-            overviewWalking=route;
+        map.setWalkingResultListener((route, message) -> {
+            overviewWalking = route;
             updateCourseOverview();
-            boolean hasPlaces=appliedPlan!=null&&!appliedPlan.places().isEmpty();
-            walkingSummaryLabel.setText(!hasPlaces?"":route==null?travelMode().label()+" 이동시간 미확인"
-                :"누적 "+route.mode().label()+" "+com.datecourse.model.TravelRoute.durationText(route.totalTime())+" · "+route.mode().timeNote()+(route.provider().isBlank()?"":" · 경로 "+route.provider()));
+            boolean hasPlaces = appliedPlan != null && !appliedPlan.places().isEmpty();
+            walkingSummaryLabel.setText(!hasPlaces ? "" : route == null ? travelMode().label() + " 이동시간 미확인"
+                    : "누적 " + route.mode().label() + " " + com.datecourse.model.TravelRoute.durationText(route.totalTime()) + " · " + route.mode().timeNote() + (route.provider().isBlank() ? "" : " · 경로 " + route.provider()));
         });
         map.setLoadingUi(this::beginLoading);
         map.setOnOriginChangeBlocked(this::noticeOriginLocked);
@@ -128,10 +166,18 @@ public class ConditionController extends BasePageController {
         clip.widthProperty().bind(plannerRoot.widthProperty());
         clip.heightProperty().bind(plannerRoot.heightProperty());
         plannerRoot.setClip(clip);
-        radiusSlider.valueProperty().addListener((obs, old, value) -> updateRange());
-        radiusSlider.valueChangingProperty().addListener((obs, old, adjusting) -> {if(!adjusting) updateRange();});
-        peopleField.textProperty().addListener((o, old, value) -> { commonSettingsChanged = true; updateResetButton(); });
-        radiusSlider.valueProperty().addListener((o, old, value) -> { commonSettingsChanged = true; updateResetButton(); });
+        radiusSlider.valueProperty().addListener((obs, old, value) -> {
+            updateRange();
+            commonSettingsChanged = true;
+            updateResetButton();
+        });
+        radiusSlider.valueChangingProperty().addListener((obs, old, adjusting) -> {
+            if (!adjusting) updateRange();
+        });
+        peopleField.textProperty().addListener((o, old, value) -> {
+            commonSettingsChanged = true;
+            updateResetButton();
+        });
         map.load();
         sourceBox.getItems().setAll(EXISTING, PILOT, PUBLIC_DEMO);
         sourceBox.setValue(EXISTING);
@@ -140,7 +186,9 @@ public class ConditionController extends BasePageController {
         updateResetButton();
     }
 
-    public void usePilotPlaces() { sourceBox.setValue(PILOT); }
+    public void usePilotPlaces() {
+        sourceBox.setValue(PILOT);
+    }
 
     private void changeSource(String old, String selected) {
         if (restoringSource) return;
@@ -166,7 +214,6 @@ public class ConditionController extends BasePageController {
         if (PILOT.equals(selected) || PUBLIC_DEMO.equals(selected)) {
             radiusSlider.setValue(2000);
             onLocationSelected(PilotPlaceRepository.START_LAT, PilotPlaceRepository.START_LNG);
-            hintLabel.setText("서면역 주변 시연 목록이에요. 출발 위치·범위를 조정할 수 있어요.");
         }
         if (selectedLatitude != null) map.present(new RoutePlan(selectedLatitude, selectedLongitude, 1,
                 radius(), "", List.of()), null, radius(), false, true);
@@ -181,30 +228,37 @@ public class ConditionController extends BasePageController {
         userLabel.setText(session == null ? "시연 모드" : session.name() + "님");
         userLabel.setDisable(session == null);
     }
+
     public void setAccountActions(kr.ac.university.localdb.db.MemberRepository repository, Runnable logout) {
         if (accountRepository != repository) clearUserContext();
         accountRepository = repository;
         logoutHandler = logout;
-        informationReports=repository==null?null:repository.informationReports();
-        routeEditorController.setPlaceRefresh(informationReports==null?null:informationReports::apply);
+        informationReports = repository == null ? null : repository.informationReports();
+        routeEditorController.setPlaceRefresh(informationReports == null ? null : informationReports::apply);
         routeEditorController.setOnReport(this::reportInformation);
     }
+
     private void reportInformation(Place place) {
-        if(userSession==null||informationReports==null){notifyUser(PageFeedback.Kind.INFO,"로그인 후 제보할 수 있어요.");return;}
-        InformationReportDialog.show(plannerRoot.getScene().getWindow(),place).ifPresent(form->{
-            var session=userSession;
-            runWork("제보를 접수하고 있어요",()->informationReports.submit(session,place,form.field(),form.value(),form.reason(),form.source()),
-                id->notifyUser(PageFeedback.Kind.SUCCESS,"제보 #"+id+" 접수 · 관리자 검토 후 반영돼요."),
-                failure->notifyUser(PageFeedback.Kind.ERROR,failure instanceof IllegalArgumentException?failure.getMessage():"제보를 접수하지 못했어요. 다시 시도해 주세요."));
+        if (userSession == null || informationReports == null) {
+            notifyUser(PageFeedback.Kind.INFO, "로그인 후 제보할 수 있어요.");
+            return;
+        }
+        InformationReportDialog.show(plannerRoot.getScene().getWindow(), place).ifPresent(form -> {
+            var session = userSession;
+            runWork("제보를 접수하고 있어요", () -> informationReports.submit(session, place, form.field(), form.value(), form.reason(), form.source()),
+                    id -> notifyUser(PageFeedback.Kind.SUCCESS, "제보 #" + id + " 접수 · 관리자 검토 후 반영돼요."),
+                    failure -> notifyUser(PageFeedback.Kind.ERROR, failure instanceof IllegalArgumentException ? failure.getMessage() : "제보를 접수하지 못했어요. 다시 시도해 주세요."));
         });
     }
 
-    @FXML private void onMyPage() {
+    @FXML
+    private void onMyPage() {
         if (saving || feedback.isBusy() || userSession == null || accountRepository == null) return;
         try {
             pauseForNavigation();
             mainPage.setVisible(false);
-            savedPageHost.setVisible(false); savedPageHost.setManaged(false);
+            savedPageHost.setVisible(false);
+            savedPageHost.setManaged(false);
             if (myPageController == null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/my-page-view.fxml"));
                 Parent page = loader.load();
@@ -212,7 +266,8 @@ public class ConditionController extends BasePageController {
                 myPageController.useFeedback(feedback);
                 myPageHost.getChildren().setAll(page);
             }
-            myPageHost.setVisible(true); myPageHost.setManaged(true);
+            myPageHost.setVisible(true);
+            myPageHost.setManaged(true);
             selectNavigation(null);
             myPageController.configure(ensureUserContext(), this::onSavedCourses, this::onHome);
         } catch (java.io.IOException failure) {
@@ -223,24 +278,27 @@ public class ConditionController extends BasePageController {
 
     private java.util.function.BooleanSupplier closeConfirmation = this::confirmUnsavedClose;
 
-    /** Called on the JavaFX thread by the native Swing close handler. */
+    /**
+     * Called on the JavaFX thread by the native Swing close handler.
+     */
     public boolean confirmWindowClose() {
-        if(saving || isLoading() || feedback != null && feedback.isBusy()) {
-            notifyUser(PageFeedback.Kind.INFO,"진행 중인 작업이 끝난 뒤 종료해 주세요.");
+        if (saving || isLoading() || feedback != null && feedback.isBusy()) {
+            notifyUser(PageFeedback.Kind.INFO, "진행 중인 작업이 끝난 뒤 종료해 주세요.");
             return false;
         }
         return !hasUnsavedChanges() || closeConfirmation.getAsBoolean();
     }
 
     private boolean confirmUnsavedClose() {
-        Alert confirm=new Alert(Alert.AlertType.CONFIRMATION,
-                "종료하면 저장하지 않은 코스와 편집 초안이 사라져요. 종료할까요?",ButtonType.OK,ButtonType.CANCEL);
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "종료하면 저장하지 않은 코스와 편집 초안이 사라져요. 종료할까요?", ButtonType.OK, ButtonType.CANCEL);
         confirm.initOwner(plannerRoot.getScene().getWindow());
         com.datecourse.ui.DialogTheme.apply(confirm);
-        return confirm.showAndWait().orElse(ButtonType.CANCEL)==ButtonType.OK;
+        return confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
     }
 
-    @FXML private void onLogout() {
+    @FXML
+    private void onLogout() {
         if (saving || feedback.isBusy() || userSession == null || logoutHandler == null) return;
         if (hasUnsavedChanges()) {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
@@ -260,15 +318,23 @@ public class ConditionController extends BasePageController {
         routeEditorController.dispose();
         feedback.dispose();
         setUserSession(null);
-        appliedPlan = null; lastSavedPlan = null; savedCourseId = null;
-        editorPaused = false; editorOpen = false; allPlaces = List.of();
-        accountRepository = null; savedCourseRepository = null; placeRepository = null;
-        informationReports=null;routeEditorController.setPlaceRefresh(null);
-        routeEditorController.setOnReport(p->notifyUser(PageFeedback.Kind.INFO,"로그인 후 제보할 수 있어요."));
+        appliedPlan = null;
+        lastSavedPlan = null;
+        savedCourseId = null;
+        editorPaused = false;
+        editorOpen = false;
+        allPlaces = List.of();
+        accountRepository = null;
+        savedCourseRepository = null;
+        placeRepository = null;
+        informationReports = null;
+        routeEditorController.setPlaceRefresh(null);
+        routeEditorController.setOnReport(p -> notifyUser(PageFeedback.Kind.INFO, "로그인 후 제보할 수 있어요."));
         Runnable logout = logoutHandler;
         logoutHandler = null;
         if (logout != null) logout.run();
     }
+
     public void setSavedCourseRepository(SavedCourseRepository repository) {
         if (savedCourseRepository != repository) clearUserContext();
         savedCourseRepository = repository;
@@ -293,13 +359,18 @@ public class ConditionController extends BasePageController {
         return userContext;
     }
 
-    /** Precreate the secondary form; wait only for the initial local/DB list, not external map services. */
+    /**
+     * Precreate the secondary form; wait only for the initial local/DB list, not external map services.
+     */
     public void prepareStartup(Runnable ready) {
         var context = ensureUserContext();
         if (context != null) context.preload();
         routeEditorController.prepareMap();
-        try { prepareSavedPage(); }
-        catch (java.io.IOException failure) { errorLabel.setText("저장 목록 화면을 준비하지 못했어요. 탭에서 다시 시도할 수 있어요."); }
+        try {
+            prepareSavedPage();
+        } catch (java.io.IOException failure) {
+            errorLabel.setText("저장 목록 화면을 준비하지 못했어요. 탭에서 다시 시도할 수 있어요.");
+        }
         if (placesLoading) startupReady = ready;
         else ready.run();
     }
@@ -322,7 +393,8 @@ public class ConditionController extends BasePageController {
         return dialog.showAndWait();
     }
 
-    @FXML private void onSaveCourse() {
+    @FXML
+    private void onSaveCourse() {
         if (saving || !hasStorage()) return;
         if (editorOpen || editorPaused) {
             notifyUser(PageFeedback.Kind.INFO, "편집 완료 후 저장해 주세요.");
@@ -344,39 +416,23 @@ public class ConditionController extends BasePageController {
         try {
             snapshot = new RoutePlan(selectedLatitude, selectedLongitude,
                     NumberStepper.read(peopleField, 1, 20, "인원"), radius(), title,
-                    appliedPlan.places(), appliedPlan.arrivalRadii(),travelMode());
-        } catch (IllegalArgumentException invalid) { saveStatusLabel.setText(invalid.getMessage()); return; }
+                    appliedPlan.places(), appliedPlan.arrivalRadii(), travelMode());
+        } catch (IllegalArgumentException invalid) {
+            saveStatusLabel.setText(invalid.getMessage());
+            return;
+        }
         Long id = savedCourseId;
         var context = ensureUserContext();
         saving = true;
         headerBar.setDisable(true);
         mainPage.setDisable(true);
-        saveStatusLabel.setText("지도를 준비하고 있어요…");
-        var diagnostic=com.datecourse.service.AppDiagnostics.begin(com.datecourse.service.AppDiagnostics.Operation.COURSE_SAVE);
-        var preview = map.capturePreview(snapshot,stage->{
-            if(stage==PlannerMap.CaptureStage.CAPTURING) {
-                saveStatusLabel.setText("미리보기를 만들고 있어요…");updateLoading(saveStatusLabel.getText());
-            }
-        }).handle((image, failure) -> {
-            if(failure!=null)diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.MAP_CAPTURE,
-                    com.datecourse.service.AppDiagnostics.Outcome.PARTIAL,failure);
-            return image;
-        });
-        runWork("지도를 준비하고 있어요…", () -> {
-            byte[] png = null;
-            var image = preview.get();
-            if (image != null) try {
-                png = new com.datecourse.service.CoursePreviewImage().renderWithMap(snapshot, image);
-            } catch (java.io.IOException failure) {
-                diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.IMAGE_ENCODE,
-                        com.datecourse.service.AppDiagnostics.Outcome.PARTIAL,failure);
-            }
-            javafx.application.Platform.runLater(()->{
-                if(context==userContext && saving){saveStatusLabel.setText("코스를 저장하고 있어요…");updateLoading(saveStatusLabel.getText());}
-            });
-            return savedCourseRepository.saveWithPreviewResult(context.session(), id, snapshot, png);
+        saveStatusLabel.setText("코스를 저장하고 있어요…");
+        var diagnostic = com.datecourse.service.AppDiagnostics.begin(com.datecourse.service.AppDiagnostics.Operation.COURSE_SAVE);
+        updateLoading(saveStatusLabel.getText());
+        runWork("코스를 저장하고 있어요…", () -> {
+            return savedCourseRepository.saveWithoutPreview(context.session(), id, snapshot);
         }, result -> {
-            var saved = result.course();
+            var saved = result;
             saving = false;
             headerBar.setDisable(false);
             mainPage.setDisable(false);
@@ -385,11 +441,10 @@ public class ConditionController extends BasePageController {
             context.invalidateCourses();
             context.courses(); // Refresh once after a successful write, without blocking the form.
             presentPlan(saved.plan());
-            saveStatusLabel.setText(result.previewStored() ? "코스를 저장했어요."
-                    : "코스는 저장됐어요. 미리보기는 ‘저장한 코스’에서 다시 만들 수 있어요.");
-            diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.COMPLETE,result.previewStored()
-                    ?com.datecourse.service.AppDiagnostics.Outcome.SUCCESS:com.datecourse.service.AppDiagnostics.Outcome.PARTIAL,null);
-            notifyUser(result.previewStored()?PageFeedback.Kind.SUCCESS:PageFeedback.Kind.INFO, saveStatusLabel.getText());
+            saveStatusLabel.setText("코스를 저장했어요.");
+            diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.COMPLETE,
+                    com.datecourse.service.AppDiagnostics.Outcome.SUCCESS, null);
+            notifyUser(PageFeedback.Kind.SUCCESS, saveStatusLabel.getText());
         }, failure -> {
             saving = false;
             headerBar.setDisable(false);
@@ -406,11 +461,13 @@ public class ConditionController extends BasePageController {
         return false;
     }
 
-    @FXML private void onSavedCourses() {
+    @FXML
+    private void onSavedCourses() {
         if (saving || !hasStorage()) return;
         try {
             pauseForNavigation();
-            myPageHost.setVisible(false); myPageHost.setManaged(false);
+            myPageHost.setVisible(false);
+            myPageHost.setManaged(false);
             prepareSavedPage();
             mainPage.setVisible(false);
             saveCourseButton.setDisable(true);
@@ -422,7 +479,9 @@ public class ConditionController extends BasePageController {
                 restoreSavedCourse(saved);
                 onHome();
             });
-        } catch (java.io.IOException failure) { saveStatusLabel.setText("저장 목록 화면을 열지 못했어요."); }
+        } catch (java.io.IOException failure) {
+            saveStatusLabel.setText("저장 목록 화면을 열지 못했어요.");
+        }
     }
 
     private void prepareSavedPage() throws java.io.IOException {
@@ -434,10 +493,12 @@ public class ConditionController extends BasePageController {
         savedPageHost.getChildren().setAll(savedPage);
     }
 
-    @FXML private void onHome() {
+    @FXML
+    private void onHome() {
         if (saving) return;
         pauseForNavigation();
-        myPageHost.setVisible(false); myPageHost.setManaged(false);
+        myPageHost.setVisible(false);
+        myPageHost.setManaged(false);
         savedPageHost.setVisible(false);
         savedPageHost.setManaged(false);
         mainPage.setVisible(true);
@@ -447,7 +508,8 @@ public class ConditionController extends BasePageController {
 
     private void selectNavigation(Button selected) {
         var active = javafx.css.PseudoClass.getPseudoClass("active");
-        for (Button button : List.of(homeButton, savedCoursesButton)) button.pseudoClassStateChanged(active, button == selected);
+        for (Button button : List.of(homeButton, savedCoursesButton))
+            button.pseudoClassStateChanged(active, button == selected);
     }
 
     private void restoreSavedCourse(SavedCourse saved) {
@@ -456,7 +518,7 @@ public class ConditionController extends BasePageController {
         lastSavedPlan = saved.plan();
         // Match the candidate source without clearing the restored course.
         String source = saved.plan().places().stream().anyMatch(p -> p.placeId().startsWith("DCA-DEMO-PUBLIC-")) ? PUBLIC_DEMO
-            : saved.plan().places().stream().anyMatch(p -> p.placeId().startsWith("DCA-DEMO-")) ? PILOT : EXISTING;
+                : saved.plan().places().stream().anyMatch(p -> p.placeId().startsWith("DCA-DEMO-")) ? PILOT : EXISTING;
         if (!source.equals(sourceBox.getValue())) {
             restoringSource = true;
             sourceBox.setValue(source);
@@ -487,7 +549,8 @@ public class ConditionController extends BasePageController {
                 || !peopleField.getText().trim().equals(Integer.toString(appliedPlan.people())));
     }
 
-    @FXML private void onNewCourse() {
+    @FXML
+    private void onNewCourse() {
         if (saving || !confirmReplace()) return;
         resetCourse();
     }
@@ -502,13 +565,15 @@ public class ConditionController extends BasePageController {
         selectedLatitude = null;
         selectedLongitude = null;
         peopleField.setText("2");
-        restoringTravelMode=true;travelModeBox.setValue(com.datecourse.model.TravelMode.WALKING);restoringTravelMode=false;
+        restoringTravelMode = true;
+        travelModeBox.setValue(com.datecourse.model.TravelMode.WALKING);
+        restoringTravelMode = false;
         configureRadiusMaximum(travelMode().maximumRadius());
         radiusSlider.setValue(500);
         map.reset();
         errorLabel.setText("");
         walkingSummaryLabel.setText("");
-        hintLabel.setText("부산의 출발 장소를 검색하거나 지도를 클릭해 주세요.");
+        map.setStatus("부산의 출발 장소를 검색하거나 지도를 클릭해 주세요.");
         resultLabel.setText("아직 확정된 코스가 없어요.");
         saveStatusLabel.setText("코스를 초기화했어요.");
         recommendButton.setText("코스 만들기 →");
@@ -516,21 +581,36 @@ public class ConditionController extends BasePageController {
         commonSettingsChanged = false;
         updateResetButton();
     }
-    @FXML private void onWalkingRoute() { map.requestWalkingRoute(); }
-    @FXML private void onWalkingExplanation() { map.toggleWalkingExplanation(); }
-    @FXML private void onTmapSettings() {
+
+    @FXML
+    private void onWalkingRoute() {
+        map.requestWalkingRoute();
+    }
+
+    @FXML
+    private void onWalkingExplanation() {
+        map.toggleWalkingExplanation();
+    }
+
+    @FXML
+    private void onTmapSettings() {
         if (TmapSettingsDialog.show(mapView.getScene().getWindow())) map.refreshWalkingPreferences();
     }
-    public void setPlaceRepository(PlaceRepository repository) { placeRepository = repository; loadPlaces(); }
 
-    @FXML private void onReloadMap() {
+    public void setPlaceRepository(PlaceRepository repository) {
+        placeRepository = repository;
+        loadPlaces();
+    }
+
+    @FXML
+    private void onReloadMap() {
         errorLabel.setText("");
         map.reload();
     }
 
     private void loadPlaces() {
         PlaceSource source = PUBLIC_DEMO.equals(sourceBox.getValue()) ? new com.datecourse.service.PublicDemoPlaceRepository()
-            : PILOT.equals(sourceBox.getValue()) ? new PilotPlaceRepository() : placeRepository;
+                : PILOT.equals(sourceBox.getValue()) ? new PilotPlaceRepository() : placeRepository;
         if (placeLoadTask != null) placeLoadTask.cancel();
         long version = ++placeLoadVersion;
         placesLoaded = false;
@@ -548,9 +628,10 @@ public class ConditionController extends BasePageController {
         recommendButton.setDisable(true);
         recommendButton.setText("장소 불러오는 중…");
         Task<List<Place>> task = new Task<>() {
-            @Override protected List<Place> call() throws Exception {
-                List<Place> places=source.findAll();
-                return informationReports==null?places:informationReports.apply(places);
+            @Override
+            protected List<Place> call() throws Exception {
+                List<Place> places = source.findAll();
+                return informationReports == null ? places : informationReports.apply(places);
             }
         };
         Runnable finishLoading = beginLoading("장소 목록을 불러오고 있어요");
@@ -562,7 +643,7 @@ public class ConditionController extends BasePageController {
             allPlaces = List.copyOf(task.getValue());
             placesLoaded = true;
             placesLoading = false;
-            sourceStatusLabel.setText(allPlaces.size()+"곳의 장소를 불러왔어요.");
+            sourceStatusLabel.setText(allPlaces.size() + "곳의 장소를 불러왔어요.");
             sourceStatusLabel.setTooltip(new Tooltip(placePresenter.datasetSummary(allPlaces)));
             recommendButton.setDisable(false);
             recommendButton.setText(appliedPlan == null || appliedPlan.places().isEmpty() ? "코스 만들기 →" : "코스 편집 →");
@@ -592,7 +673,7 @@ public class ConditionController extends BasePageController {
         selectedLatitude = lat;
         commonSettingsChanged = true;
         selectedLongitude = lng;
-        hintLabel.setText("출발 위치를 선택했어요. 공통 조건을 정하고 장소를 골라 주세요.");
+        map.setStatus("출발 위치를 선택했어요. 공통 조건을 정하고 코스를 만들어 주세요.");
         errorLabel.setText("");
         updateRange();
         updateResetButton();
@@ -600,10 +681,13 @@ public class ConditionController extends BasePageController {
 
     private void configureRadiusMaximum(int maximum) {
         radiusSlider.setMax(maximum);
-        radiusMaximumLabel.setText((maximum/1000)+"km");
-        radiusSlider.setTooltip(new javafx.scene.control.Tooltip(travelMode().label()+" · 출발지 중심 최대 "+(maximum/1000)+"km의 직선 범위예요."));
+        radiusMaximumLabel.setText((maximum / 1000) + "km");
+        radiusSlider.setTooltip(new javafx.scene.control.Tooltip(travelMode().label() + " · 출발지 중심 최대 " + (maximum / 1000) + "km의 직선 범위예요."));
     }
-    private int radius() { return (int) Math.round(radiusSlider.getValue() / 100) * 100; }
+
+    private int radius() {
+        return (int) Math.round(radiusSlider.getValue() / 100) * 100;
+    }
 
     private boolean hasCoursePlaces() {
         return appliedPlan != null && !appliedPlan.places().isEmpty()
@@ -614,19 +698,26 @@ public class ConditionController extends BasePageController {
         notifyUser(PageFeedback.Kind.INFO, "출발지를 변경하려면 현재 코스를 초기화해 주세요.");
     }
 
-    private void updateOriginProtection() { map.setOriginLocked(hasCoursePlaces()); }
+    private void updateOriginProtection() {
+        map.setOriginLocked(hasCoursePlaces());
+    }
+
     private void updateResetButton() {
-        boolean hasPlaces=appliedPlan!=null&&!appliedPlan.places().isEmpty();
-        saveCourseButton.setVisible(hasPlaces);walkingToolbar.setVisible(hasPlaces&&travelMode()==com.datecourse.model.TravelMode.WALKING);
-        courseOverview.setVisible(hasPlaces);courseOverview.setManaged(hasPlaces);
-        if(!hasPlaces)commonConditionsPane.setExpanded(true);
+        boolean hasPlaces = appliedPlan != null && !appliedPlan.places().isEmpty();
+        saveCourseButton.setVisible(hasPlaces);
+        walkingToolbar.setVisible(hasPlaces && travelMode() == com.datecourse.model.TravelMode.WALKING);
+        courseOverview.setVisible(hasPlaces);
+        courseOverview.setManaged(hasPlaces);
+        if (!hasPlaces) commonConditionsPane.setExpanded(true);
         updateCourseOverview();
-        recommendButton.getStyleClass().removeAll("planner-primary","drawer-toggle");
-        recommendButton.getStyleClass().add(hasPlaces?"drawer-toggle":"planner-primary");
-        originHintLabel.setText(selectedLatitude==null ? "지도에서 출발 위치를 선택해 주세요."
-                :hasCoursePlaces()?"코스의 출발지는 고정돼 있어요. 장소별 조건은 코스 편집에서 바꿀 수 있어요."
-                :"출발지를 선택했어요. 지도에서 바꾸거나 아래에서 코스 만들기를 눌러 주세요.");
-        if(hasPlaces)hintLabel.setText(editorPaused?"편집 중인 초안이 있어요. 이어서 편집해 주세요.":"코스 순서와 이동 시간을 확인하고 저장해 주세요.");
+        recommendButton.getStyleClass().removeAll("planner-primary", "drawer-toggle");
+        recommendButton.getStyleClass().add(hasPlaces ? "drawer-toggle" : "planner-primary");
+        map.setStatus(hasPlaces
+                ? editorPaused ? "편집 중인 초안이 있어요. 이어서 편집해 주세요."
+                : "코스 순서와 이동 시간을 확인하고 저장해 주세요."
+                : selectedLatitude == null ? "부산의 출발 장소를 검색하거나 지도를 클릭해 주세요."
+                : hasCoursePlaces() ? "코스의 출발지는 고정돼 있어요. 장소별 조건은 코스 편집에서 바꿀 수 있어요."
+                : "출발 위치를 선택했어요. 공통 조건을 정하고 코스를 만들어 주세요.");
         newCourseButton.setDisable(!commonSettingsChanged && appliedPlan == null && savedCourseId == null && !editorPaused && !editorOpen);
     }
 
@@ -637,7 +728,7 @@ public class ConditionController extends BasePageController {
         if (selectedLatitude != null) {
             RoutePlan preview = new RoutePlan(selectedLatitude, selectedLongitude, 1, radius(), "",
                     appliedPlan == null ? List.of() : appliedPlan.places(),
-                    appliedPlan == null ? java.util.Map.of() : appliedPlan.arrivalRadii(),travelMode());
+                    appliedPlan == null ? java.util.Map.of() : appliedPlan.arrivalRadii(), travelMode());
             map.present(preview, null, radius(), false, true);
         }
     }
@@ -645,18 +736,21 @@ public class ConditionController extends BasePageController {
     @FXML
     private void onRecommendClick() {
         if (!placesLoaded) {
-            if (placeRepository == null && EXISTING.equals(sourceBox.getValue())) errorLabel.setText("로그인하거나 서면·전포 시연 목록을 선택해 주세요.");
+            if (placeRepository == null && EXISTING.equals(sourceBox.getValue()))
+                errorLabel.setText("로그인하거나 서면·전포 시연 목록을 선택해 주세요.");
             else loadPlaces();
             return;
         }
         try {
             int people = NumberStepper.read(peopleField, 1, 20, "인원");
-            if (selectedLatitude == null) throw new IllegalArgumentException("지도에서 출발 위치를 선택해 주세요.");
+            if (selectedLatitude == null) throw new IllegalArgumentException("부산의 출발 장소를 검색하거나 지도를 클릭해 주세요.");
             RoutePlan snapshot = new RoutePlan(selectedLatitude, selectedLongitude, people, radius(),
                     appliedPlan == null ? "" : appliedPlan.title(), appliedPlan == null ? List.of() : appliedPlan.places(),
-                    appliedPlan == null ? java.util.Map.of() : appliedPlan.arrivalRadii(),travelMode());
+                    appliedPlan == null ? java.util.Map.of() : appliedPlan.arrivalRadii(), travelMode());
             openEditor(snapshot);
-        } catch (IllegalArgumentException invalid) { errorLabel.setText(invalid.getMessage()); }
+        } catch (IllegalArgumentException invalid) {
+            errorLabel.setText(invalid.getMessage());
+        }
     }
 
     private void openEditor(RoutePlan snapshot) {
@@ -678,13 +772,15 @@ public class ConditionController extends BasePageController {
 
     private void presentPlan(RoutePlan edited) {
         appliedPlan = edited;
-        restoringTravelMode=true;travelModeBox.setValue(edited.travelMode());restoringTravelMode=false;
+        restoringTravelMode = true;
+        travelModeBox.setValue(edited.travelMode());
+        restoringTravelMode = false;
         commonConditionsPane.setExpanded(edited.places().isEmpty());
         updateCourseOverview();
         updateOriginProtection();
         selectedLatitude = edited.startLat();
         selectedLongitude = edited.startLng();
-        configureRadiusMaximum(Math.max(edited.travelMode().maximumRadius(),edited.radius()));
+        configureRadiusMaximum(Math.max(edited.travelMode().maximumRadius(), edited.radius()));
         radiusSlider.setValue(edited.radius());
         peopleField.setText(Integer.toString(edited.people()));
         resultLabel.setText(String.format("%s · %d곳 · %d명 · %s",
@@ -695,22 +791,27 @@ public class ConditionController extends BasePageController {
     }
 
     private void updateCourseOverview() {
-        if(appliedPlan==null){completedStopsLabel.setText("");return;}
-        try {
-            int people=NumberStepper.read(peopleField,1,20,"인원");
-            var preview=new RoutePlan(appliedPlan.startLat(),appliedPlan.startLng(),people,radius(),appliedPlan.title(),appliedPlan.places(),appliedPlan.arrivalRadii(),travelMode());
-            resultLabel.setText(String.format("%s · %d곳 · %d명 · %s",preview.title().isBlank()?"내 코스":preview.title(),
-                    preview.places().size(),people,preview.costEstimate().display()));
-        } catch(IllegalArgumentException invalid) {resultLabel.setText("인원 수정 중 · 1~20명을 입력해 주세요.");}
-        var lines=new java.util.ArrayList<String>();
-        for(int i=0;i<appliedPlan.places().size();i++) {
-            Place place=appliedPlan.places().get(i);
-            String time=overviewWalking!=null && overviewWalking.legs().size()==appliedPlan.places().size()
-                    ? " · 이동 "+com.datecourse.model.TravelRoute.durationText(overviewWalking.legs().get(i).time()) : "";
-            lines.add((i+1)+". "+place.name()+" · "+com.datecourse.service.PlaceSearchService.categoryName(place.category())
-                    +"\n"+place.priceText()+time);
+        if (appliedPlan == null) {
+            completedStopsLabel.setText("");
+            return;
         }
-        completedStopsLabel.setText(String.join("\n\n",lines));
+        try {
+            int people = NumberStepper.read(peopleField, 1, 20, "인원");
+            var preview = new RoutePlan(appliedPlan.startLat(), appliedPlan.startLng(), people, radius(), appliedPlan.title(), appliedPlan.places(), appliedPlan.arrivalRadii(), travelMode());
+            resultLabel.setText(String.format("%s · %d곳 · %d명 · %s", preview.title().isBlank() ? "내 코스" : preview.title(),
+                    preview.places().size(), people, preview.costEstimate().display()));
+        } catch (IllegalArgumentException invalid) {
+            resultLabel.setText("인원 수정 중 · 1~20명을 입력해 주세요.");
+        }
+        var lines = new java.util.ArrayList<String>();
+        for (int i = 0; i < appliedPlan.places().size(); i++) {
+            Place place = appliedPlan.places().get(i);
+            String time = overviewWalking != null && overviewWalking.legs().size() == appliedPlan.places().size()
+                    ? " · 이동 " + com.datecourse.model.TravelRoute.durationText(overviewWalking.legs().get(i).time()) : "";
+            lines.add((i + 1) + ". " + place.name() + " · " + com.datecourse.service.PlaceSearchService.categoryName(place.category())
+                    + "\n" + place.priceText() + time);
+        }
+        completedStopsLabel.setText(String.join("\n\n", lines));
     }
 
     private void pauseEdits() {

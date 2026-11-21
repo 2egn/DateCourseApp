@@ -135,6 +135,12 @@ public final class SavedCourseRepository {
         return persist(session, courseId, plan);
     }
 
+    /** Saves course data without generating a static image; the saved-course screen renders a live map. */
+    public SavedCourse saveWithoutPreview(UserSession session, Long courseId, RoutePlan plan) throws SQLException {
+        if (courseId != null && courseId <= 0) throw new IllegalArgumentException("저장 코스 번호를 확인해 주세요.");
+        return persist(session, courseId, plan, ignored -> null, false).course();
+    }
+
     private SavedCourse persist(UserSession session, Long existingCourseId, RoutePlan plan) throws SQLException {
         return persist(session, existingCourseId, plan, previewRenderer).course();
     }
@@ -155,20 +161,27 @@ public final class SavedCourseRepository {
 
     private SaveResult persist(UserSession session, Long existingCourseId, RoutePlan plan,
                                 com.datecourse.service.CoursePreviewRenderer renderer) throws SQLException {
+        return persist(session, existingCourseId, plan, renderer, true);
+    }
+
+    private SaveResult persist(UserSession session, Long existingCourseId, RoutePlan plan,
+                                com.datecourse.service.CoursePreviewRenderer renderer, boolean generatePreview) throws SQLException {
         validate(session, plan);
         initializeTransport();
         byte[] preview = null;
         boolean previewStorage = false;
-        try {
-            initializePreviews(); // DDL must run before opening the course transaction.
-            previewStorage = true;
-            preview = renderer.render(plan);
-            if (preview == null || preview.length == 0 || preview.length > com.datecourse.service.CoursePreviewImage.MAX_PNG_BYTES)
-                throw new IOException("미리보기 이미지 크기를 확인해 주세요.");
-        } catch (IOException | SQLException | RuntimeException failure) {
-            preview = null;
-            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.PREVIEW_STORAGE,
-                    com.datecourse.service.AppDiagnostics.Stage.IMAGE_ENCODE,failure);
+        if (generatePreview) {
+            try {
+                initializePreviews(); // DDL must run before opening the course transaction.
+                previewStorage = true;
+                preview = renderer.render(plan);
+                if (preview == null || preview.length == 0 || preview.length > com.datecourse.service.CoursePreviewImage.MAX_PNG_BYTES)
+                    throw new IOException("미리보기 이미지 크기를 확인해 주세요.");
+            } catch (IOException | SQLException | RuntimeException failure) {
+                preview = null;
+                com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.PREVIEW_STORAGE,
+                        com.datecourse.service.AppDiagnostics.Stage.IMAGE_ENCODE,failure);
+            }
         }
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);

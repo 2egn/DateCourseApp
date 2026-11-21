@@ -34,11 +34,15 @@ public record CostEstimate(long minimum, Long maximum, int unknownPlaces, int pl
     public String display() {
         if (placeCount == 0) return "선택한 장소 없음";
         if (unknownPlaces == placeCount) return "가격 미확인 " + unknownPlaces + "곳";
-        String amount = maximum == null ? won(minimum) + " 이상"
-                : minimum == maximum ? won(minimum) : won(minimum) + "~" + won(maximum);
+        String amount = amountDisplay();
         return (unknownPlaces == 0 ? "예상 총비용 " : estimatedPlaces > 0 ? "계산 가능한 예상 비용 " : "확인된 비용 ") + amount
                 + (unknownPlaces == 0 ? "" : " + 가격 미확인 " + unknownPlaces + "곳")
                 + (estimatedPlaces == 0 ? "" : " · 추정 " + estimatedPlaces + "곳 포함");
+    }
+
+    public String amountDisplay() {
+        return maximum == null ? won(minimum) + " 이상"
+                : minimum == maximum ? won(minimum) : won(minimum) + "~" + won(maximum);
     }
 
     private static String won(long amount) { return String.format(Locale.KOREA, "%,d원", amount); }
