@@ -36,6 +36,7 @@
     -fx-padding: 2 6 2 6;
     -fx-cursor: hand;
 }
+
 .combo-box:hover, .combo-box:focused, .combo-box:showing {
     -fx-border-color: #7A263A;
 }
@@ -58,12 +59,14 @@
     -fx-border-radius: 8;
     -fx-background-radius: 8;
 }
+
 .combo-box-popup .list-cell {
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #4A1827;
     -fx-font-weight: normal;
     -fx-padding: 8 12 8 12;
 }
+
 .combo-box-popup .list-cell:hover, .combo-box-popup .list-cell:selected {
     -fx-background-color: #E9DFD2;
     -fx-text-fill: #4A1827;
@@ -82,10 +85,12 @@
     -fx-background-radius: 10;
     -fx-border-radius: 10;
 }
+
 .text-area .content {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10;
 }
+
 .text-field:focused, .text-area:focused {
     -fx-border-color: #7A263A;
 }
@@ -101,6 +106,7 @@
     -fx-background-radius: 10;
     -fx-cursor: hand;
 }
+
 .button:hover {
     -fx-background-color: #dfd2c0;
 }
@@ -115,6 +121,7 @@
     -fx-background-radius: 10;
     -fx-cursor: hand;
 }
+
 .primary-button:hover, .planner-primary:hover, .button:default:hover {
     -fx-background-color: #4A1827;
 }
@@ -125,16 +132,19 @@
     -fx-font-weight: bold;
     -fx-text-fill: #4A1827;
 }
+
 .dialog-sub-title {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #7A263A;
 }
+
 .confirm-title {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-text-fill: #4A1827;
 }
+
 .error {
     -fx-text-fill: #B91C1C;
     -fx-font-weight: bold;
@@ -170,11 +180,13 @@
     -fx-border-color: transparent;
     -fx-cursor: hand;
 }
+
 .app-header .button:hover, .shell-header .button:hover, .top-bar .button:hover, .nav-bar .button:hover, .planner-top-bar .button:hover,
 .app-header .toggle-button:hover, .shell-header .toggle-button:hover, .top-bar .toggle-button:hover, .nav-bar .toggle-button:hover, .planner-top-bar .toggle-button:hover,
 .nav-button:hover, .shell-nav:hover {
     -fx-background-color: #E9DFD2;
 }
+
 .app-header .toggle-button:selected, .shell-header .toggle-button:selected, .top-bar .toggle-button:selected, .nav-bar .toggle-button:selected, .planner-top-bar .toggle-button:selected,
 .nav-button:selected, .shell-nav:selected {
     -fx-background-color: #F8F5EF;
@@ -193,14 +205,17 @@
     -fx-padding: 4 12 4 12;
     -fx-cursor: hand;
 }
+
 .menu-button:hover, .account-menu:hover, .user-menu:hover {
     -fx-background-color: #dfd2c0;
 }
+
 .menu-button .label, .account-menu .label, .user-menu .label {
     -fx-text-fill: #4A1827;
     -fx-font-weight: bold;
     -fx-font-size: 13px;
 }
+
 .menu-button .arrow, .account-menu .arrow, .user-menu .arrow {
     -fx-background-color: #7A263A;
 }
@@ -217,6 +232,7 @@
     -fx-padding: 10 26 10 26;
     -fx-effect: dropshadow(gaussian, rgba(122, 38, 58, 0.25), 10, 0, 0, 4);
 }
+
 .profile-avatar-icon {
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 18px;
@@ -228,6 +244,7 @@
     -fx-font-weight: bold;
     -fx-text-fill: #4A1827;
 }
+
 .planner-caption {
     -fx-font-size: 12px;
     -fx-font-weight: normal;
@@ -243,11 +260,13 @@
     -fx-padding: 6 24 6 24;
     -fx-effect: dropshadow(gaussian, rgba(74, 24, 39, 0.08), 16, 0, 0, 6);
 }
+
 .profile-row {
     -fx-padding: 18 0 18 0;
     -fx-border-color: transparent transparent #E9DFD2 transparent;
     -fx-border-width: 1;
 }
+
 .profile-row-last {
     -fx-padding: 18 0 18 0;
 }
@@ -257,6 +276,7 @@
     -fx-font-weight: bold;
     -fx-text-fill: #7A263A;
 }
+
 .profile-value {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
@@ -273,6 +293,7 @@
     -fx-border-color: transparent;
     -fx-cursor: hand;
 }
+
 .header-save:hover {
     -fx-background-color: #4A1827;
 }
@@ -287,6 +308,7 @@
     -fx-border-color: transparent;
     -fx-cursor: hand;
 }
+
 .header-secondary:hover {
     -fx-background-color: #dfd2c0;
 }
@@ -303,6 +325,7 @@
     -fx-border-radius: 12;
     -fx-cursor: hand;
 }
+
 .header-bg-btn:hover {
     -fx-background-color: #E9DFD2;
 }
@@ -321,9 +344,11 @@
     -fx-border-color: transparent;
     -fx-cursor: hand;
 }
+
 .filter-entry:hover {
     -fx-background-color: #dfd2c0;
 }
+
 .filter-entry-icon {
     -fx-stroke: #7A263A;
     -fx-stroke-width: 1.8;
@@ -351,9 +376,11 @@
     -fx-border-radius: 16;
     -fx-cursor: hand;
 }
+
 .filter-category:hover {
     -fx-background-color: #E9DFD2;
 }
+
 .filter-category:selected {
     -fx-background-color: #7A263A;
     -fx-border-color: #7A263A;
@@ -370,6 +397,7 @@
     -fx-border-color: transparent;
     -fx-cursor: hand;
 }
+
 .filter-chip:hover {
     -fx-background-color: #dfd2c0;
 }
@@ -382,6 +410,7 @@
     -fx-underline: false;
     -fx-cursor: hand;
 }
+
 .filter-pane .hyperlink:hover {
     -fx-text-fill: #4A1827;
     -fx-underline: true;
@@ -396,6 +425,7 @@
 .editor-heading-bar {
     -fx-padding: 14 28 10 28;
 }
+
 .editor-main-grid {
     -fx-padding: 0 28 12 28;
 }
@@ -403,6 +433,7 @@
 .editor-summary-bar {
     -fx-padding: 0 0 4 0;
 }
+
 .editor-summary-card {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #E9DFD2;
@@ -418,11 +449,13 @@
     -fx-font-weight: normal;
     -fx-text-fill: #8C7379;
 }
+
 .metric-value {
     -fx-font-size: 17px;
     -fx-font-weight: bold;
     -fx-text-fill: #4A1827;
 }
+
 .metric-value-accent, #priceWonLabel {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
@@ -439,9 +472,10 @@
     -fx-pref-height: 18;
     -fx-alignment: CENTER;
 }
+
 .place-count-arrow:hover,
 .place-count-arrow:pressed {
-    -fx-background-color: transparent;   /* 전역 .button:hover의 베이지 방지 */
+    -fx-background-color: transparent; /* 전역 .button:hover의 베이지 방지 */
 }
 
 .place-count-chevron {
@@ -449,11 +483,13 @@
     -fx-stroke: #7A263A;
     -fx-stroke-width: 1.8;
 }
+
 .place-count-arrow:hover .place-count-chevron {
-    -fx-stroke: #4A1827;                 /* 더 진한 색 */
+    -fx-stroke: #4A1827; /* 더 진한 색 */
 }
+
 .place-count-arrow:pressed .place-count-chevron {
-    -fx-stroke: #B91C1C;                 /* 누르는 동안 */
+    -fx-stroke: #B91C1C; /* 누르는 동안 */
 }
 
 .place-count-chevron {
@@ -472,6 +508,7 @@
     -fx-border-color: transparent;
     -fx-cursor: hand;
 }
+
 .drawer-toggle:hover {
     -fx-background-color: #dfd2c0;
 }
@@ -483,6 +520,7 @@
     -fx-font-weight: bold;
     -fx-text-fill: #4A1827;
 }
+
 .compact-pane > .content {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #E9DFD2;
@@ -534,6 +572,7 @@
 .feedback-info, .feedback-success {
     -fx-border-color: #7A263A;
 }
+
 .feedback-error {
     -fx-border-color: #B91C1C;
 }
@@ -562,6 +601,7 @@
     -fx-border-color: transparent;
     -fx-cursor: hand;
 }
+
 .feedback-close:hover {
     -fx-background-color: #E9DFD2;
 }
@@ -572,16 +612,19 @@
     -fx-pref-height: 5;
     -fx-max-height: 5;
 }
+
 .feedback-countdown > .track {
     -fx-background-color: #E9DFD2;
     -fx-background-radius: 3;
     -fx-border-color: transparent;
 }
+
 .feedback-countdown > .bar {
     -fx-background-color: #7A263A;
     -fx-background-radius: 3;
     -fx-background-insets: 0;
 }
+
 .feedback-error .feedback-countdown > .bar {
     -fx-background-color: #B91C1C;
 }
@@ -590,6 +633,7 @@
 .loading-shade {
     -fx-background-color: rgba(74, 24, 39, 0.18);
 }
+
 .loading-card {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #E9DFD2;
@@ -599,6 +643,7 @@
     -fx-padding: 20;
     -fx-effect: dropshadow(gaussian, rgba(74, 24, 39, 0.16), 16, 0, 0, 6);
 }
+
 .loading-card .progress-indicator {
     -fx-progress-color: #7A263A;
 }
@@ -611,11 +656,13 @@
     -fx-font-weight: bold;
     -fx-text-fill: #4A1827;
 }
+
 .subtitle {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #7A263A;
 }
+
 .muted {
     -fx-font-size: 12px;
     -fx-font-weight: normal;
@@ -624,14 +671,30 @@
 
 /* --- 레이아웃(여백/간격) : FXML의 Insets, spacing을 옮긴 것 --- */
 .saved-course-header {
-    -fx-pref-height: 40;       /* 선과 선 사이 높이, 숫자는 조절 */
+    -fx-pref-height: 40; /* 선과 선 사이 높이, 숫자는 조절 */
     -fx-alignment: center-left; /* 세로는 가운데, 가로는 왼쪽 (원래 위치 유지) */
-    -fx-padding: 10 0 0 30;     /* 위아래는 0, 왼쪽만 간격 */
+    -fx-padding: 10 0 0 30; /* 위아래는 0, 왼쪽만 간격 */
 }
-.saved-course-list-pane { -fx-padding: 10 10 20 20; -fx-spacing: 10; }
-.saved-course-detail { -fx-padding: 6 16 12 8; -fx-spacing: 6; }
-.saved-course-bottom { -fx-spacing: 10; -fx-alignment: TOP_LEFT; }
-.saved-course-actions { -fx-hgap: 8; -fx-vgap: 6; }
+
+.saved-course-list-pane {
+    -fx-padding: 10 10 20 20;
+    -fx-spacing: 10;
+}
+
+.saved-course-detail {
+    -fx-padding: 6 16 12 8;
+    -fx-spacing: 6;
+}
+
+.saved-course-bottom {
+    -fx-spacing: 10;
+    -fx-alignment: TOP_LEFT;
+}
+
+.saved-course-actions {
+    -fx-hgap: 8;
+    -fx-vgap: 6;
+}
 
 /* 지도 위 안내 박스 */
 .map-notice {
@@ -654,6 +717,7 @@
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+
 /* 내부 노드가 네모난 배경을 그리지 않도록 */
 .saved-course-list .virtual-flow,
 .saved-course-list .clipped-container,
@@ -662,19 +726,23 @@
     -fx-background-color: transparent;
     -fx-background-insets: 0;
 }
+
 .saved-course-list .list-cell {
-    -fx-background-color: transparent;     /* 빈 칸/선택 안 된 칸은 투명 → 바탕 흰색이 보임 */
+    -fx-background-color: transparent; /* 빈 칸/선택 안 된 칸은 투명 → 바탕 흰색이 보임 */
     -fx-background-radius: 8;
     -fx-background-insets: 0;
     -fx-padding: 10 12 10 12;
 }
+
 .saved-course-list .list-cell:filled:hover {
     -fx-background-color: #F8F5EF;
 }
+
 .saved-course-list .list-cell:filled:selected,
 .saved-course-list .list-cell:filled:selected:hover {
     -fx-background-color: #E9DFD2;
 }
+
 .saved-course-list .list-cell:filled:selected .label {
     -fx-text-fill: #4A1827;
 }
@@ -686,15 +754,17 @@
     -fx-border-width: 1.5;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-padding: 1;                       /* 안쪽 내용이 테두리 곡선에 덜 삐져나오게 */
+    -fx-padding: 1; /* 안쪽 내용이 테두리 곡선에 덜 삐져나오게 */
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
+
 /* 헤더 줄 전체 배경: 위쪽만 둥글게 */
 .saved-course-table .column-header-background {
     -fx-background-color: #E9DFD2;
     -fx-background-radius: 9 9 0 0;
 }
+
 /* 개별 헤더 칸은 투명 (배경이 두 겹으로 겹치지 않게) */
 .saved-course-table .column-header,
 .saved-course-table .filler {
@@ -702,29 +772,36 @@
     -fx-size: 36;
     -fx-border-color: transparent;
 }
+
 .saved-course-table .column-header .label {
     -fx-text-fill: #4A1827;
     -fx-font-weight: bold;
     -fx-font-size: 13px;
     -fx-alignment: CENTER;
 }
+
 .saved-course-table .column-header .label {
     -fx-max-width: infinity;
     -fx-text-alignment: CENTER;
 }
+
 .saved-course-table .table-row-cell {
     -fx-background-color: transparent;
     -fx-table-cell-border-color: #F1EAE0;
 }
+
 .saved-course-table .table-row-cell:filled:odd {
     -fx-background-color: #FBF9F5;
 }
+
 .saved-course-table .table-row-cell:filled:even {
     -fx-background-color: #FFFFFF;
 }
+
 .saved-course-table .table-row-cell:filled:selected {
     -fx-background-color: #E9DFD2;
 }
+
 .saved-course-table .table-cell {
     -fx-text-fill: #4A1827;
     -fx-font-weight: normal;
@@ -732,6 +809,7 @@
     -fx-alignment: CENTER_LEFT;
     -fx-padding: 6 10 6 10;
 }
+
 .saved-course-table .table-row-cell:selected .table-cell {
     -fx-text-fill: #4A1827;
     -fx-font-weight: bold;
@@ -751,6 +829,7 @@
     -fx-min-height: 0;
     -fx-max-height: 0;
 }
+
 .saved-course-table .scroll-bar .increment-button,
 .saved-course-table .scroll-bar .decrement-button,
 .saved-course-list .scroll-bar .increment-button,
@@ -763,13 +842,19 @@
     -fx-background-color: #7A263A;
     -fx-text-fill: #FFFFFF;
 }
-.primary:hover { -fx-background-color: #4A1827; }
+
+.primary:hover {
+    -fx-background-color: #4A1827;
+}
 
 .secondary {
     -fx-background-color: #E9DFD2;
     -fx-text-fill: #4A1827;
 }
-.secondary:hover { -fx-background-color: #dfd2c0; }
+
+.secondary:hover {
+    -fx-background-color: #dfd2c0;
+}
 
 .danger {
     -fx-background-color: #FFFFFF;
@@ -778,13 +863,17 @@
     -fx-border-radius: 10;
     -fx-text-fill: #B91C1C;
 }
-.danger:hover { -fx-background-color: #FDECEC; }
+
+.danger:hover {
+    -fx-background-color: #FDECEC;
+}
 
 /* 데이터 없는 빈 행: 배경, 줄무늬, 칸 사이 세로선 모두 제거 */
 .saved-course-table .table-row-cell:empty {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
+
 .saved-course-table .table-row-cell:empty .table-cell {
     -fx-border-color: transparent;
     -fx-background-color: transparent;
@@ -798,6 +887,7 @@
     -fx-pref-height: 6;
     -fx-opacity: 1;
 }
+
 .slider .thumb {
     -fx-background-color: #7A263A;
     -fx-background-insets: 0;
@@ -807,10 +897,12 @@
     -fx-effect: dropshadow(gaussian, rgba(122, 38, 58, 0.30), 6, 0, 0, 2);
     -fx-cursor: hand;
 }
+
 .slider:hover .thumb,
 .slider .thumb:pressed {
     -fx-background-color: #4A1827;
 }
+
 .slider:focused .thumb {
     -fx-background-color: #7A263A;
     -fx-border-color: #E9DFD2;
@@ -831,22 +923,42 @@
     -fx-spacing: 10;
     -fx-padding: 24 24 18 24;
 }
-.course-overview { -fx-spacing: 12; }
-.result-summary-text { -fx-spacing: 6; }
+
+.course-overview {
+    -fx-spacing: 12;
+}
+
+.result-summary-text {
+    -fx-spacing: 6;
+}
 
 /* "기본 조건" 섹션 안쪽 간격 */
-.condition-section { -fx-spacing: 10; }
-.condition-group { -fx-spacing: 6; }
-.condition-group-wide { -fx-spacing: 12; }
-.condition-field { -fx-spacing: 6; }
-.condition-field-tight { -fx-spacing: 4; }
+.condition-section {
+    -fx-spacing: 10;
+}
+
+.condition-group {
+    -fx-spacing: 6;
+}
+
+.condition-group-wide {
+    -fx-spacing: 12;
+}
+
+.condition-field {
+    -fx-spacing: 6;
+}
+
+.condition-field-tight {
+    -fx-spacing: 4;
+}
 
 .place-count-buttons {
     -fx-pref-width: 30;
     -fx-max-width: 30;
-    -fx-max-height: infinity;      /* 40 → 입력칸 높이만큼 꽉 채움 */
+    -fx-max-height: infinity; /* 40 → 입력칸 높이만큼 꽉 채움 */
     -fx-alignment: CENTER;
-    -fx-padding: 4 0 4 0;          /* 위아래 여백으로 두 화살표를 가운데로 모음 */
+    -fx-padding: 4 0 4 0; /* 위아래 여백으로 두 화살표를 가운데로 모음 */
 }
 
 /* 지도 쪽 영역 */
@@ -854,6 +966,7 @@
     -fx-spacing: 12;
     -fx-padding: 8 20 20 20;
 }
+
 .map-toolbar {
     -fx-alignment: CENTER_RIGHT;
     -fx-spacing: 8;
@@ -871,9 +984,119 @@
     -fx-border-color: transparent;
     -fx-border-width: 0;
 }
+
 .condition-form-scroll .corner {
     -fx-background-color: transparent;
 }
+
 .condition-form {
     -fx-background-color: #F8F5EF;
+}
+
+
+/* ================= 15. 탭 (회원 관리 / 장소 정보 제보) ================= */
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: #E9DFD2;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 6 18 6 18;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:hover {
+    -fx-background-color: #dfd2c0;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: #7A263A;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.tab-pane > .tab-content-area {
+    -fx-background-color: transparent;
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent;
+}
+
+/* ================= 16. 좌우 분할(SplitPane) ================= */
+.split-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: #E9DFD2;
+    -fx-background-insets: 0;
+    -fx-padding: 0 1 0 1;
+}
+
+.split-pane > .split-pane-divider > * {
+    -fx-background-color: transparent;
+}
+
+/* ================= 17. 목록/상세 영역 보강 ================= */
+/* 목록: 글자색 지정 (선택돼도 흰색으로 안 바뀌게) */
+.saved-course-list .list-cell {
+    -fx-text-fill: #4A1827;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.saved-course-list .list-cell:filled:selected,
+.saved-course-list .list-cell:filled:selected:hover {
+    -fx-text-fill: #4A1827;
+}
+
+/* 상세 정보 카드 */
+.detail-scroll {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+    -fx-padding: 1;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.detail-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.detail-text {
+    -fx-font-weight: normal;
+    -fx-font-size: 14px;
+    -fx-line-spacing: 3;
+    -fx-padding: 12 14 12 14;
+}
+
+/* TextArea 안쪽 ScrollPane이 만드는 모서리 조각 제거 */
+.text-area > .scroll-pane,
+.text-area > .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ================= 18. 작은 버튼 (반드시 파일 맨 아래!) ================= */
+.compact {
+    -fx-padding: 6 14 6 14;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
 }

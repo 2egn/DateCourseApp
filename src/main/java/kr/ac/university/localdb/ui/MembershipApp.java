@@ -40,7 +40,7 @@ public class MembershipApp {
     private Timer screenTransition;
     private JPanel authenticationContent;
     private final JFrame home = new JFrame("로그인 / 회원가입");
-    private Runnable exitApplication=()->{home.dispose();System.exit(0);};
+    private final Runnable exitApplication=()->{home.dispose();System.exit(0);};
     private final JTextField email = new LoginUI.TextField(24), name = new LoginUI.TextField(24), phone = new LoginUI.TextField(24);
     private final JPasswordField password = new LoginUI.PasswordField(24), confirm = new LoginUI.PasswordField(24);
     private final JButton signup = new JButton("회원가입"), login = new JButton("로그인");
@@ -156,11 +156,6 @@ public class MembershipApp {
         home.setSize(Math.min(580,usable.width),Math.min(900,usable.height));
         home.setLocationRelativeTo(null); home.setVisible(true);
         startup.start();
-    }
-
-    /** 관리자 편집 영역에 라벨과 입력 요소를 한 쌍으로 배치합니다. */
-    private static void field(JPanel form,String label,JComponent component) {
-        form.add(new JLabel(label)); form.add(component);
     }
 
     /** 가입 화면 진입/복귀 시 입력값과 펼침 상태를 모두 시작 전 상태로 되돌립니다. */
@@ -379,7 +374,7 @@ public class MembershipApp {
         var members=new MemberAdminPanel(session);
         var reviewBusy=new java.util.concurrent.atomic.AtomicBoolean();
         var reviewController=new java.util.concurrent.atomic.AtomicReference<com.datecourse.controller.InformationReviewController>();
-        var tabs=new JTabbedPane();tabs.addTab("회원 관리",members);
+        var tabs=new JTabbedPane();AdminStyle.tabs(tabs);tabs.setBorder(BorderFactory.createEmptyBorder(0,20,0,0));tabs.addTab("회원 관리",members);
         var reportPanel=new JFXPanel();tabs.addTab("장소 정보 제보",reportPanel);
         var logoutButton=new JButton("로그아웃");
         LoginUI.button(logoutButton,false);
