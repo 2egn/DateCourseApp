@@ -1,5 +1,20 @@
 #map-surface { flex: 1 1 0; min-height: 0; position: relative; overflow: hidden; }
 #map-surface #map { position: absolute; inset: 0; height: 100%; }
+#route-controls { position: absolute; z-index: 70; top: 12px; right: 16px; width: max-content; max-width: calc(100% - 32px); overflow: visible; padding: 5px; border: 1px solid #e3e7ed; border-radius: 12px; background: rgba(255,255,255,.97); box-shadow: 0 3px 12px #18294b18; }
+#route-controls[hidden] { display: none; }
+#route-view-toolbar { display: flex; align-items: center; }
+.route-view-buttons { display: flex; gap: 3px; padding: 2px; border-radius: 8px; background: #edf0f4; }
+.route-view-buttons button { border: 0; border-radius: 6px; padding: 6px 8px; background: transparent; color: #526174; font-size: 11px; font-weight: 700; white-space: nowrap; cursor: pointer; }
+.route-view-buttons button[aria-pressed="true"] { background: #fff; color: #a52950; box-shadow: 0 1px 4px #24324a18; }
+.route-view-buttons button:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+#route-image-overlay { position: absolute; inset: 0; z-index: 60; display: grid; place-items: center; overflow: hidden; background: #fff; }
+#route-image-overlay[hidden] { display: none; }
+#route-image-overlay img { width: 100%; height: 100%; object-fit: contain; }
+#route-image-overlay img[role="button"] { cursor: zoom-in; }
+#route-image-zoom { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; overflow: hidden; padding: 0; background: rgba(15,23,42,.9); cursor: zoom-out; }
+#route-image-zoom[hidden] { display: none; }
+#route-image-zoom img { width: 96vw; height: 94vh; max-width: none; max-height: none; object-fit: contain; transform: scale(1.25); transform-origin: center; box-shadow: 0 12px 42px #0007; }
+#route-image-zoom-close { position: fixed; top: 14px; right: 18px; width: 42px; height: 42px; border: 0; border-radius: 50%; background: #fff; color: #253244; font-size: 28px; line-height: 1; cursor: pointer; }
 .itinerary-rail, .place-detail { position: absolute; z-index: 20; border: 1px solid rgba(255,255,255,.65); border-radius: 16px; background: rgba(250,251,253,.76); box-shadow: 0 8px 28px #26334d24; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 .itinerary-rail { width: 204px; height: 340px; max-height: calc(100% - 92px); right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; }
 .itinerary-heading { padding: 13px 14px 9px; flex: 0 0 auto; }
@@ -49,6 +64,8 @@
 .detail-add:disabled { opacity: .5; cursor: default; }
 #map-surface #map-legend { left: 12px; right: auto; bottom: 34px; flex-wrap: wrap; max-width: calc(100% - 244px); font-size: 10px; gap: 6px 12px; }
 @media (max-width: 760px) {
+    #route-controls { top: 8px; right: 8px; max-width: calc(100% - 16px); padding: 4px; }
+    .route-view-buttons button { padding: 7px 6px; font-size: 10px; }
     .itinerary-rail { width: 166px; right: 12px; top: 12px; transform: none; height: 45%; max-height: 260px; min-height: 130px; }
     .itinerary-heading { padding: 9px 10px 6px; }
     .itinerary-heading small { font-size: 9px; }

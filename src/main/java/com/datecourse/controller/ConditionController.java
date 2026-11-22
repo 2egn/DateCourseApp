@@ -101,6 +101,8 @@ public class ConditionController extends BasePageController {
     @FXML
     private HBox walkingToolbar;
     @FXML
+    private Button walkingSettingsButton;
+    @FXML
     private StackPane savedPageHost;
     @FXML
     private StackPane myPageHost;
@@ -127,6 +129,7 @@ public class ConditionController extends BasePageController {
         newCourseButton.visibleProperty().bind(newCourseButton.disableProperty().not());
         newCourseButton.managedProperty().bind(newCourseButton.visibleProperty());
         walkingToolbar.managedProperty().bind(walkingToolbar.visibleProperty());
+        walkingSettingsButton.managedProperty().bind(walkingSettingsButton.visibleProperty());
         watchNotice(errorLabel, PageFeedback.Kind.ERROR);
         watchNotice(saveStatusLabel, PageFeedback.Kind.INFO);
         mainSidebar.prefWidthProperty().bind(mainPage.widthProperty().multiply(.45));
@@ -478,7 +481,7 @@ public class ConditionController extends BasePageController {
                 if (!confirmReplace()) return;
                 restoreSavedCourse(saved);
                 onHome();
-            });
+            }, this::onNewCourse);
         } catch (java.io.IOException failure) {
             saveStatusLabel.setText("저장 목록 화면을 열지 못했어요.");
         }
@@ -705,7 +708,8 @@ public class ConditionController extends BasePageController {
     private void updateResetButton() {
         boolean hasPlaces = appliedPlan != null && !appliedPlan.places().isEmpty();
         saveCourseButton.setVisible(hasPlaces);
-        walkingToolbar.setVisible(hasPlaces && travelMode() == com.datecourse.model.TravelMode.WALKING);
+        walkingToolbar.setVisible(hasPlaces);
+        walkingSettingsButton.setVisible(hasPlaces && travelMode() == com.datecourse.model.TravelMode.WALKING);
         courseOverview.setVisible(hasPlaces);
         courseOverview.setManaged(hasPlaces);
         if (!hasPlaces) commonConditionsPane.setExpanded(true);

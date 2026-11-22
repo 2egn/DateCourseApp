@@ -430,11 +430,36 @@
 }
 
 .place-count-arrow {
-    -fx-padding: 0;
-    -fx-min-height: 18;
-    -fx-pref-height: 18;
+    -fx-background-color: transparent;
     -fx-background-radius: 6;
+    -fx-border-color: transparent;
     -fx-border-radius: 6;
+    -fx-padding: 0;
+    -fx-min-height: 14;
+    -fx-pref-height: 18;
+    -fx-alignment: CENTER;
+}
+.place-count-arrow:hover,
+.place-count-arrow:pressed {
+    -fx-background-color: transparent;   /* 전역 .button:hover의 베이지 방지 */
+}
+
+.place-count-chevron {
+    -fx-fill: transparent;
+    -fx-stroke: #7A263A;
+    -fx-stroke-width: 1.8;
+}
+.place-count-arrow:hover .place-count-chevron {
+    -fx-stroke: #4A1827;                 /* 더 진한 색 */
+}
+.place-count-arrow:pressed .place-count-chevron {
+    -fx-stroke: #B91C1C;                 /* 누르는 동안 */
+}
+
+.place-count-chevron {
+    -fx-fill: transparent;
+    -fx-stroke: #7A263A;
+    -fx-stroke-width: 1.8;
 }
 
 .drawer-toggle {
@@ -493,8 +518,6 @@
     -fx-background-radius: 5;
     -fx-background-insets: 0;
 }
-
-
 
 /* 오른쪽 상단 알림 팝업 카드만 작게 배경색 & 그림자 적용 */
 .feedback-toast {
@@ -578,4 +601,279 @@
 }
 .loading-card .progress-indicator {
     -fx-progress-color: #7A263A;
+}
+
+/* ================= 11. 저장한 코스 화면 ================= */
+
+/* --- 텍스트 --- */
+.label.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A1827;
+}
+.subtitle {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7A263A;
+}
+.muted {
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #8C7379;
+}
+
+/* --- 레이아웃(여백/간격) : FXML의 Insets, spacing을 옮긴 것 --- */
+.saved-course-header {
+    -fx-pref-height: 40;       /* 선과 선 사이 높이, 숫자는 조절 */
+    -fx-alignment: center-left; /* 세로는 가운데, 가로는 왼쪽 (원래 위치 유지) */
+    -fx-padding: 10 0 0 30;     /* 위아래는 0, 왼쪽만 간격 */
+}
+.saved-course-list-pane { -fx-padding: 10 10 20 20; -fx-spacing: 10; }
+.saved-course-detail { -fx-padding: 6 16 12 8; -fx-spacing: 6; }
+.saved-course-bottom { -fx-spacing: 10; -fx-alignment: TOP_LEFT; }
+.saved-course-actions { -fx-hgap: 8; -fx-vgap: 6; }
+
+/* 지도 위 안내 박스 */
+.map-notice {
+    -fx-alignment: CENTER;
+    -fx-spacing: 8;
+    -fx-background-color: rgba(248, 245, 239, 0.95);
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+}
+
+/* --- 코스 목록 --- */
+.saved-course-list {
+    -fx-background-color: #FFFFFF;
+    -fx-background-insets: 0;
+    -fx-background-radius: 12;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 12;
+    -fx-padding: 8;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+/* 내부 노드가 네모난 배경을 그리지 않도록 */
+.saved-course-list .virtual-flow,
+.saved-course-list .clipped-container,
+.saved-course-list .sheet,
+.saved-course-list .viewport {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+.saved-course-list .list-cell {
+    -fx-background-color: transparent;     /* 빈 칸/선택 안 된 칸은 투명 → 바탕 흰색이 보임 */
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-padding: 10 12 10 12;
+}
+.saved-course-list .list-cell:filled:hover {
+    -fx-background-color: #F8F5EF;
+}
+.saved-course-list .list-cell:filled:selected,
+.saved-course-list .list-cell:filled:selected:hover {
+    -fx-background-color: #E9DFD2;
+}
+.saved-course-list .list-cell:filled:selected .label {
+    -fx-text-fill: #4A1827;
+}
+
+/* --- 표 공통 (summaryTable, placeTable) --- */
+.saved-course-table {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 1;                       /* 안쪽 내용이 테두리 곡선에 덜 삐져나오게 */
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+/* 헤더 줄 전체 배경: 위쪽만 둥글게 */
+.saved-course-table .column-header-background {
+    -fx-background-color: #E9DFD2;
+    -fx-background-radius: 9 9 0 0;
+}
+/* 개별 헤더 칸은 투명 (배경이 두 겹으로 겹치지 않게) */
+.saved-course-table .column-header,
+.saved-course-table .filler {
+    -fx-background-color: transparent;
+    -fx-size: 36;
+    -fx-border-color: transparent;
+}
+.saved-course-table .column-header .label {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+}
+.saved-course-table .column-header .label {
+    -fx-max-width: infinity;
+    -fx-text-alignment: CENTER;
+}
+.saved-course-table .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: #F1EAE0;
+}
+.saved-course-table .table-row-cell:filled:odd {
+    -fx-background-color: #FBF9F5;
+}
+.saved-course-table .table-row-cell:filled:even {
+    -fx-background-color: #FFFFFF;
+}
+.saved-course-table .table-row-cell:filled:selected {
+    -fx-background-color: #E9DFD2;
+}
+.saved-course-table .table-cell {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: normal;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 6 10 6 10;
+}
+.saved-course-table .table-row-cell:selected .table-cell {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+}
+
+/* --- 스크롤바 숨기기 (마우스 휠/터치패드 스크롤은 그대로 동작) --- */
+.saved-course-table .scroll-bar:vertical,
+.saved-course-table .scroll-bar:horizontal,
+.saved-course-list .scroll-bar:vertical,
+.saved-course-list .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-padding: 0;
+    -fx-pref-width: 0;
+    -fx-min-width: 0;
+    -fx-max-width: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+}
+.saved-course-table .scroll-bar .increment-button,
+.saved-course-table .scroll-bar .decrement-button,
+.saved-course-list .scroll-bar .increment-button,
+.saved-course-list .scroll-bar .decrement-button {
+    -fx-padding: 0;
+}
+
+/* --- 버튼 3종 (기본 .button의 패딩/둥근 모서리/폰트는 그대로 물려받고 색만 덮어씀) --- */
+.primary {
+    -fx-background-color: #7A263A;
+    -fx-text-fill: #FFFFFF;
+}
+.primary:hover { -fx-background-color: #4A1827; }
+
+.secondary {
+    -fx-background-color: #E9DFD2;
+    -fx-text-fill: #4A1827;
+}
+.secondary:hover { -fx-background-color: #dfd2c0; }
+
+.danger {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #B91C1C;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+    -fx-text-fill: #B91C1C;
+}
+.danger:hover { -fx-background-color: #FDECEC; }
+
+/* 데이터 없는 빈 행: 배경, 줄무늬, 칸 사이 세로선 모두 제거 */
+.saved-course-table .table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.saved-course-table .table-row-cell:empty .table-cell {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+/* ================= 12. 슬라이더 (전체 범위) ================= */
+.slider .track {
+    -fx-background-color: #E9DFD2;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4;
+    -fx-pref-height: 6;
+    -fx-opacity: 1;
+}
+.slider .thumb {
+    -fx-background-color: #7A263A;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+    -fx-pref-width: 20;
+    -fx-pref-height: 20;
+    -fx-effect: dropshadow(gaussian, rgba(122, 38, 58, 0.30), 6, 0, 0, 2);
+    -fx-cursor: hand;
+}
+.slider:hover .thumb,
+.slider .thumb:pressed {
+    -fx-background-color: #4A1827;
+}
+.slider:focused .thumb {
+    -fx-background-color: #7A263A;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+}
+
+/* ================= 13. 조건 입력 화면 레이아웃 (FXML의 spacing/alignment/Insets를 옮긴 것) ================= */
+
+/* 상단 헤더: 세로 가운데 정렬 + 버튼 간격 */
+.app-header {
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 8;
+}
+
+/* 오른쪽 조건 입력 사이드바 */
+.condition-form {
+    -fx-spacing: 10;
+    -fx-padding: 24 24 18 24;
+}
+.course-overview { -fx-spacing: 12; }
+.result-summary-text { -fx-spacing: 6; }
+
+/* "기본 조건" 섹션 안쪽 간격 */
+.condition-section { -fx-spacing: 10; }
+.condition-group { -fx-spacing: 6; }
+.condition-group-wide { -fx-spacing: 12; }
+.condition-field { -fx-spacing: 6; }
+.condition-field-tight { -fx-spacing: 4; }
+
+.place-count-buttons {
+    -fx-pref-width: 30;
+    -fx-max-width: 30;
+    -fx-max-height: infinity;      /* 40 → 입력칸 높이만큼 꽉 채움 */
+    -fx-alignment: CENTER;
+    -fx-padding: 4 0 4 0;          /* 위아래 여백으로 두 화살표를 가운데로 모음 */
+}
+
+/* 지도 쪽 영역 */
+.map-column {
+    -fx-spacing: 12;
+    -fx-padding: 8 20 20 20;
+}
+.map-toolbar {
+    -fx-alignment: CENTER_RIGHT;
+    -fx-spacing: 8;
+}
+
+/* ================= 14. 조건 화면 사이드바 배경 + 포커스 테두리 제거 ================= */
+.condition-form-scroll,
+.condition-form-scroll:focused,
+.condition-form-scroll > .viewport {
+    -fx-background-color: #F8F5EF;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+.condition-form-scroll .corner {
+    -fx-background-color: transparent;
+}
+.condition-form {
+    -fx-background-color: #F8F5EF;
 }

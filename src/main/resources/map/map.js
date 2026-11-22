@@ -587,6 +587,8 @@
         onOpen: function (place, detailBounds, railBounds) {
             placePinPreview.hide();
             if (!ready) return;
+            // In a confirmed course, preserve the whole-route framing when a place detail opens.
+            if (routePresentation) return;
             const bounds = document.getElementById('map').getBoundingClientRect();
             const narrow = window.matchMedia('(max-width: 760px)').matches;
             // The Swing/JavaFX option panel lies outside this map viewport already.
@@ -651,20 +653,21 @@
 
     // One preview owns its overlay and lifecycle; hovering never selects a place or route.
     const placePinPreview = (function () {
-        let overlay = null, body = null, activePin = null, leaveTimer = null, pointer = null;
+        let overlay = null, body = null, activePin = null, pinnedPin = null, leaveTimer = null, pointer = null;
         const gesture = new window.PinPointerGesture(PIN_INPUT);
 
         function hide(pin) {
             if (pin && pin !== activePin) return;
             clearTimeout(leaveTimer);
             leaveTimer = null;
+            if (!pin || pin === pinnedPin) pinnedPin = null;
             activePin = null;
             if (overlay) overlay.setMap(null);
         }
 
         function scheduleLeave(pin) {
             if (!pin || pin !== activePin || leaveTimer !== null
-                || gesture.heldPin === pin) return;
+                || gesture.heldPin === pin || pinnedPin === pin) return;
             leaveTimer = setTimeout(function () {
                 hide(pin);
             }, PIN_INPUT.leaveDelay);
@@ -705,7 +708,15 @@
         function reconcilePointer() {
             if (gesture.heldPin) return;
             const pin = hitTest(pointer);
-            if (pin) show(pin, pin.previewPlace, pin.previewLabel); else scheduleLeave(activePin);
+            if (pin) {
+                if (pinnedPin && pinnedPin !== pin) pinnedPin = null;
+                show(pin, pin.previewPlace, pin.previewLabel);
+            } else {
+                const rect = document.getElementById('map').getBoundingClientRect();
+                if (pointer && pointer.x >= rect.left && pointer.x <= rect.right
+                        && pointer.y >= rect.top && pointer.y <= rect.bottom) pinnedPin = null;
+                scheduleLeave(activePin);
+            }
         }
 
         function pointerFrom(event) {
@@ -725,6 +736,16 @@
 
         function leave(pin) {
             if (pointer) reconcilePointer(); else scheduleLeave(pin);
+        }
+
+        function showForPlace(recordId) {
+            const pin = resultMarkers.find(function (item) {
+                return item.coursePin && item.previewPlace && String(item.previewPlace.recordId) === String(recordId);
+            });
+            if (!pin) return false;
+            pinnedPin = pin;
+            show(pin, pin.previewPlace, pin.previewLabel);
+            return true;
         }
 
         // Capture real pointer coordinates before SDK child elements synthesize enter/exit events.
@@ -830,7 +851,8 @@
             body.style.transform = 'translate(' + shiftX + 'px,' + shiftY + 'px)';
         }
 
-        return {enter: enter, hide: hide, leave: leave, shouldIgnoreClick: pin => gesture.blocksSdkClick(pin)};
+        return {enter: enter, hide: hide, leave: leave, showForPlace: showForPlace,
+            shouldIgnoreClick: pin => gesture.blocksSdkClick(pin)};
     }());
 
     function removeResultPin(pin) {
@@ -924,6 +946,21 @@
     window.focusResultPlace = function (lat, lng) {
         if (ready) camera.request({intent: 'FOCUS', center: new kakao.maps.LatLng(lat, lng)});
     };
+    window.focusCoursePlace = function (recordId, lat, lng) {
+        if (!ready) return;
+        itinerary.dismissDetail();
+        placePinPreview.hide();
+        camera.request({intent: 'FOCUS', center: new kakao.maps.LatLng(lat, lng)});
+        function showAfterFocus() {
+            const motion = window.inspectMapCamera();
+            if (motion && (motion.moving || motion.pending)) {
+                requestAnimationFrame(showAfterFocus);
+                return;
+            }
+            placePinPreview.showForPlace(recordId);
+        }
+        requestAnimationFrame(showAfterFocus);
+    };
 
     // 메인 지도와 편집 지도는 각 WebView 안에 이 상태를 별도로 보관한다.
     // A temporary presentation of this same SDK map; never downloads or stitches tiles.
@@ -971,6 +1008,7 @@
         stops.forEach(function (stop, i) {
             const label = document.createElement('div');
             label.className = 'course-capture-pin';
+            label.title = stop.name;
             const number = document.createElement('b');
             number.textContent = i === 0 ? 'S' : String(i);
             if (i === 0) label.classList.add('is-origin');
@@ -981,7 +1019,8 @@
             const overlay = new kakao.maps.CustomOverlay({
                 position: path[i],
                 content: label,
-                yAnchor: i === 0 ? -.25 : 1.25,
+                xAnchor: .5,
+                yAnchor: i === 0 || i % 2 === 0 ? -.25 : 1.25,
                 zIndex: 20 + i
             });
             overlay.setMap(map);
@@ -997,7 +1036,10 @@
                 if (courseCapture !== state) return;
                 if (typeof map.jump === 'function') map.jump(map.getCenter(), map.getLevel(), {animate: false});
                 map.relayout();
-                map.setBounds(bounds, 85, 155, 85, 155);
+                const mapNode = document.getElementById('map');
+                const padX = Math.min(150, Math.max(42, Math.round(mapNode.clientWidth * .07)));
+                const padY = Math.min(110, Math.max(42, Math.round(mapNode.clientHeight * .11)));
+                map.setBounds(bounds, padY, padX, padY, padX);
                 if (map.getLevel() < 2) map.setLevel(2, {animate: false});
                 state.fitted = performance.now();
             });
@@ -1050,7 +1092,7 @@
         map.setCenter(state.center);
     };
 
-    window.presentRoute = function (plan, candidate, radius, locked, fit, candidates) {
+    window.presentRoute = function (plan, candidate, radius, locked, fit, candidates, fitWholeCourse) {
         if (!ready) return;
         const originChanged = routePresentation && (routePresentation.startLat !== plan.startLat || routePresentation.startLng !== plan.startLng);
         routePresentation = plan;
@@ -1112,9 +1154,12 @@
         window.showResultPlaces(plan.places.concat(rankedCandidates), false, false, plan.places);
         if (candidate) itinerary.activatePlace(candidate.recordId);
         document.getElementById('itinerary-rail').hidden = true;
-        status.textContent = locked ? '분홍 번호는 코스 순서입니다. 경로에 마우스를 올리면 구간 안내를 볼 수 있어요.'
+        status.textContent = locked ? '분홍 번호는 코스 순서예요. 번호를 누르면 장소 상세를 볼 수 있어요.'
             : '확정한 코스 · 경로에 마우스를 올리면 구간 안내를 볼 수 있어요.';
-        if (fit) window.fitRouteView(false, originChanged ? 'FOCUS' : null);
+        if (fit) {
+            if (fitWholeCourse) window.fitConfirmedCourseView();
+            else window.fitRouteView(false, originChanged ? 'FOCUS' : null);
+        }
     };
 
     window.focusRouteLeg = function (index, radius) {
@@ -1224,6 +1269,20 @@
             })) : rangePoints();
         camera.request({intent: intent || (rangeAdjusting ? 'RANGE_DRAG' : 'FIT'), points: points});
     };
+    window.fitConfirmedCourseView = function () {
+        if (!ready || !routePresentation || !routePresentation.places.length) return;
+        if (window.resetMapZoom) window.resetMapZoom();
+        const points = [new kakao.maps.LatLng(routePresentation.startLat, routePresentation.startLng)]
+            .concat(routePresentation.places.map(function (place) {
+                return new kakao.maps.LatLng(place.lat, place.lng);
+            }));
+        (displayedWalkingRoute && displayedWalkingRoute.legs || []).forEach(function (leg) {
+            (leg.paths || []).forEach(function (path) {
+                path.forEach(function (point) { points.push(new kakao.maps.LatLng(point.lat, point.lng)); });
+            });
+        });
+        camera.request({intent: 'FIT', points: points});
+    };
 
     let walkingShapes = [];
     let walkingListeners = [];
@@ -1278,7 +1337,7 @@
     };
     window.toggleWalkingExplanation = function () {
         walkingExplanationOpen = !walkingExplanationOpen;
-        document.getElementById('walking-panel').hidden = !walkingExplanationOpen;
+        document.getElementById('walking-panel').hidden = !walkingExplanationOpen || !displayedWalkingRoute;
     };
     window.showWalkingRoute = function (route, message, fit) {
         displayedWalkingRoute = route;
@@ -1296,13 +1355,16 @@
         walkingShapes = [];
         const panel = document.getElementById('walking-panel');
         const summary = document.getElementById('walking-summary');
+        const detailHeading = document.getElementById('walking-detail-heading');
+        const detailFacts = document.getElementById('walking-detail-facts');
         const details = document.getElementById('walking-details');
         const directions = document.getElementById('walking-directions');
         const legList = document.getElementById('walking-leg-list');
         directions.textContent = '';
         legList.textContent = '';
-        panel.hidden = !walkingExplanationOpen;
-        details.hidden = !route;
+        panel.hidden = !route || !route.legs || !route.legs.length;
+        details.hidden = true;
+        details.open = false;
         if (!route || !ready) {
             walkingSelection = 0;
             walkingPinnedSelection = -1;
@@ -1367,51 +1429,7 @@
             return visible;
         };
 
-        function showPopup(index, position) {
-            clearTimeout(walkingPopupHide);
-            const detailed = walkingPinnedSelection >= 0;
-            if (detailed && index !== walkingPinnedSelection) return;
-            popupBody.classList.toggle('is-detailed', detailed);
-            popupBody.setAttribute('aria-label', detailed ? '구간 상세 이동 안내' : '구간 요약');
-            popupSteps.hidden = !detailed;
-            popupClose.hidden = !detailed;
-            popupHint.hidden = detailed;
-            const leg = route.legs[index];
-            if (popupIndex !== index) {
-                popupIndex = index;
-                popupTitle.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
-                popupFacts.textContent = (route.provider ? route.provider + ' · ' : '') + travelLabel + ' · ' + meters(leg.distance) + ' · ' + duration(leg.time)
-                    + (leg.movementSummary ? ' · ' + leg.movementSummary : '')
-                    + (Number.isInteger(leg.transfers) && leg.transfers > 0 ? ' · 환승 ' + leg.transfers + '회' : '')
-                    + (Number.isInteger(leg.fare) ? ' · 참고 요금 ' + leg.fare.toLocaleString('ko-KR') + '원/인' : '');
-                popupSteps.textContent = '';
-                (leg.steps || []).forEach(function (step) {
-                    if (!step.description) return;
-                    const item = document.createElement('li');
-                    item.textContent = step.description;
-                    popupSteps.appendChild(item);
-                });
-                if (!popupSteps.children.length) {
-                    const item = document.createElement('li');
-                    item.textContent = '상세 안내가 없어요.';
-                    popupSteps.appendChild(item);
-                }
-                popupSteps.scrollTop = 0;
-                popupBody.scrollTop = 0;
-            }
-            const surface = document.getElementById('map');
-            const width = Math.max(1, Math.min(detailed ? 360 : 280, surface.clientWidth - 24));
-            popupBody.style.width = width + 'px';
-            popupBody.style.maxHeight = Math.max(1, Math.min(420, surface.clientHeight - 24)) + 'px';
-            popup.setMap(map);
-            popupVisible = true;
-            const projection = map.getProjection();
-            const point = projection.containerPointFromCoords(position || groups[index].anchor);
-            const height = popupBody.offsetHeight || 80;
-            popup.setPosition(projection.coordsFromContainerPoint(new kakao.maps.Point(
-                Math.max(width / 2 + 12, Math.min(surface.clientWidth - width / 2 - 12, point.x)),
-                Math.max(height + 12, Math.min(surface.clientHeight - 12, point.y - 12)))));
-        }
+        function showPopup() { /* Route guidance is shown in the numbered panel. */ }
 
         function restorePopup() {
             clearTimeout(walkingPopupHide);
@@ -1484,9 +1502,14 @@
             walkingSelection = index;
             emphasize(index);
             const leg = route.legs[index];
-            summary.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name
-                + ' · ' + meters(leg.distance) + ' · ' + duration(leg.time) + ' · ' + travelLabel
+            detailHeading.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
+            detailFacts.textContent = (route.provider ? route.provider + ' · ' : '') + travelLabel + ' · ' + meters(leg.distance) + ' · ' + duration(leg.time)
                 + (leg.movementSummary ? ' · ' + leg.movementSummary : '');
+            if (Number.isInteger(leg.transfers) && leg.transfers > 0)
+                detailFacts.textContent += ' · 환승 ' + leg.transfers + '회';
+            if (Number.isInteger(leg.fare))
+                detailFacts.textContent += ' · 참고 요금 ' + leg.fare.toLocaleString('ko-KR') + '원/인';
+            summary.textContent = detailHeading.textContent + ' · ' + detailFacts.textContent;
             Array.from(directions.children).forEach(function (item, number) {
                 item.hidden = number !== index;
             });
@@ -1508,11 +1531,18 @@
             button.type = 'button';
             button.className = 'walking-leg-button';
             button.style.borderLeftColor = color;
-            button.textContent = (index + 1) + ' · ' + leg.to.name + ' · ' + facts;
+            button.textContent = String(index + 1);
             button.title = caption + ' · ' + facts;
             button.setAttribute('aria-label', button.title);
             button.addEventListener('click', function () {
-                choose(index);
+                if (!details.hidden && details.open && selected === index) {
+                    details.open = false;
+                    details.hidden = true;
+                    return;
+                }
+                choose(index, null, false);
+                details.hidden = false;
+                details.open = true;
             });
             button.addEventListener('mouseenter', function () {
                 emphasize(index);

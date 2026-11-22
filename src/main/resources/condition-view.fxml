@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import com.datecourse.ui.FormScrollPane?>
 <?import javafx.scene.layout.*?>
@@ -14,14 +13,11 @@
     <BorderPane>
         <!-- 헤더(상단 바) -->
         <top>
-            <HBox fx:id="headerBar" alignment="CENTER_LEFT" spacing="8" styleClass="app-header">
+            <HBox fx:id="headerBar" styleClass="app-header">
                 <Label text="DateCourse" styleClass="app-brand" minWidth="-Infinity"/>
                 <Button fx:id="homeButton" text="코스 만들기" onAction="#onHome" styleClass="header-tab"
                         minWidth="-Infinity"/>
                 <Button fx:id="savedCoursesButton" text="저장한 코스" onAction="#onSavedCourses" styleClass="header-tab"
-                        minWidth="-Infinity"/>
-                <!-- 커뮤니티 만들건가요..? -->
-                <Button text="커뮤니티 · 준비 중" disable="true" visible="false" managed="false" styleClass="header-tab"
                         minWidth="-Infinity"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <MenuButton fx:id="userLabel" text="시연 모드" disable="true" popupSide="BOTTOM" styleClass="account-menu"
@@ -45,14 +41,12 @@
                                         fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER"
                                         styleClass="condition-form-scroll">
                             <content>
-                                <VBox minWidth="0" spacing="10" styleClass="condition-form">
-                                    <padding>
-                                        <Insets top="24" right="24" bottom="18" left="24"/>
-                                    </padding>
-                                    <VBox fx:id="courseOverview" spacing="12" visible="false" managed="false">
+                                <VBox minWidth="0" styleClass="condition-form">
+                                    <!-- 코스 검토 -->
+                                    <VBox fx:id="courseOverview" styleClass="course-overview" visible="false" managed="false">
                                         <Label text="코스 검토" styleClass="condition-title"/>
                                         <HBox fx:id="resultSummary" styleClass="result-summary">
-                                            <VBox spacing="6" minWidth="0" HBox.hgrow="ALWAYS">
+                                            <VBox styleClass="result-summary-text" minWidth="0" HBox.hgrow="ALWAYS">
                                                 <Label fx:id="resultLabel" text="아직 확정된 코스가 없어요." wrapText="true"
                                                        maxWidth="Infinity"/>
                                                 <Label fx:id="walkingSummaryLabel" styleClass="planner-caption"
@@ -68,40 +62,35 @@
                                     <TitledPane fx:id="commonConditionsPane" text="01 기본 조건" expanded="true"
                                                 animated="false" styleClass="compact-pane">
                                         <content>
-                                            <VBox spacing="10">
-                                                <VBox spacing="7">
-                                                    <Label text="기본 조건" styleClass="condition-title"/>
-                                                </VBox>
-                                                <!-- 장소목록은 나중에 없애겠죠? -->
-                                                <VBox spacing="6">
-                                                    <VBox spacing="4">
+                                            <VBox styleClass="condition-section">
+                                                <Label text="기본 조건" styleClass="condition-title"/>
+                                                <!-- 장소 선택 -->
+                                                <VBox styleClass="condition-group">
+                                                    <VBox styleClass="condition-field-tight">
                                                         <Label text="장소 선택"
                                                                styleClass="field-label,common-condition-label"/>
-                                                        <Label fx:id="sourceStatusLabel"
-                                                               text="장소를 불러오고 있어요."
-                                                               minHeight="-Infinity"
-                                                               wrapText="true"
+                                                        <Label fx:id="sourceStatusLabel" text="장소를 불러오고 있어요."
+                                                               minHeight="-Infinity" wrapText="true"
                                                                styleClass="planner-caption"/>
                                                     </VBox>
-                                                    <TitledPane fx:id="sourceSettings"
-                                                                styleClass="compact-pane" text="추가 설정 · 장소 목록"
-                                                                expanded="false" animated="false">
-                                                        <VBox spacing="6">
+                                                    <TitledPane fx:id="sourceSettings" styleClass="compact-pane"
+                                                                text="추가 설정 · 장소 목록" expanded="false" animated="false">
+                                                        <VBox styleClass="condition-field">
                                                             <Label text="사용할 장소 목록" styleClass="field-label"/>
                                                             <ComboBox fx:id="sourceBox" maxWidth="Infinity"/>
                                                         </VBox>
                                                     </TitledPane>
                                                 </VBox>
-                                                <!-- 인원 입력 -->
-                                                <VBox spacing="12">
-                                                    <VBox spacing="6">
+                                                <!-- 인원 / 이동 방법 / 전체 범위 -->
+                                                <VBox styleClass="condition-group-wide">
+                                                    <!-- 인원 입력 -->
+                                                    <VBox styleClass="condition-field">
                                                         <Label text="인원(명)"
                                                                styleClass="field-label,common-condition-label"/>
                                                         <StackPane styleClass="place-count-stepper" minWidth="0">
                                                             <TextField fx:id="peopleField" text="2" accessibleText="인원"
                                                                        styleClass="place-count-editor" minWidth="0"/>
-                                                            <VBox StackPane.alignment="CENTER_RIGHT" prefWidth="30"
-                                                                  maxWidth="30" maxHeight="40"
+                                                            <VBox StackPane.alignment="CENTER_RIGHT"
                                                                   styleClass="place-count-buttons">
                                                                 <Button fx:id="peopleUp" accessibleText="인원 늘리기"
                                                                         maxWidth="Infinity" VBox.vgrow="ALWAYS"
@@ -123,21 +112,21 @@
                                                         </StackPane>
                                                     </VBox>
                                                     <!-- 이동 방법 -->
-                                                    <VBox spacing="6">
+                                                    <VBox styleClass="condition-field">
                                                         <Label text="이동 방법"
                                                                styleClass="field-label,common-condition-label"/>
                                                         <ComboBox fx:id="travelModeBox" accessibleText="코스 이동 방법"
                                                                   maxWidth="Infinity"/>
                                                     </VBox>
                                                     <!-- 전체 범위 -->
-                                                    <VBox spacing="6">
+                                                    <VBox styleClass="condition-field">
                                                         <Label text="전체 범위"
                                                                styleClass="field-label,common-condition-label"/>
                                                         <Label fx:id="radiusLabel" text="출발지 중심 · 500m"
                                                                styleClass="planner-caption"/>
-                                                        <Slider fx:id="radiusSlider" min="200" max="2000"
-                                                                value="500" blockIncrement="100" majorTickUnit="100"
-                                                                minorTickCount="0" snapToTicks="true"/>
+                                                        <Slider fx:id="radiusSlider" styleClass="radius-slider"
+                                                                min="200" max="2000" value="500" blockIncrement="100"
+                                                                majorTickUnit="100" minorTickCount="0" snapToTicks="true"/>
                                                         <HBox>
                                                             <Label text="200m" styleClass="planner-caption"/>
                                                             <Region HBox.hgrow="ALWAYS"/>
@@ -146,7 +135,6 @@
                                                         </HBox>
                                                     </VBox>
                                                 </VBox>
-
                                             </VBox>
                                         </content>
                                     </TitledPane>
@@ -165,14 +153,14 @@
 
                     <!-- 가운데: 지도 영역 -->
                     <center>
-                        <VBox spacing="12">
-                            <padding>
-                                <Insets top="8" right="20" bottom="20" left="20"/>
-                            </padding>
-                            <HBox fx:id="walkingToolbar" spacing="8" alignment="CENTER_RIGHT">
-                                <Button text="도보 설정" onAction="#onTmapSettings" styleClass="drawer-toggle"/>
+                        <VBox styleClass="map-column">
+                            <HBox fx:id="walkingToolbar" styleClass="map-toolbar">
+                                <Button text="이동 경로 조회" onAction="#onWalkingRoute" styleClass="planner-primary"
+                                        minHeight="38" prefHeight="38"/>
+                                <Button fx:id="walkingSettingsButton" text="도보 설정" onAction="#onTmapSettings"
+                                        styleClass="drawer-toggle"/>
                             </HBox>
-                            <HBox alignment="CENTER_RIGHT" spacing="12">
+                            <HBox styleClass="map-toolbar">
                                 <Button fx:id="reloadMapButton" text="지도 다시 불러오기" onAction="#onReloadMap"
                                         styleClass="drawer-toggle" minWidth="-Infinity"/>
                             </HBox>

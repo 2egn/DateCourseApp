@@ -48,6 +48,15 @@ public final class CoursePreviewImage implements CoursePreviewRenderer {
         }
     }
 
+    /** Encode only the captured map viewport for display in the live map area. */
+    public byte[] renderMapOnly(BufferedImage map) throws IOException {
+        if (map == null) throw new IllegalArgumentException("지도 이미지가 필요합니다.");
+        try (var bytes = new ByteArrayOutputStream()) {
+            if (!ImageIO.write(map, "png", bytes)) throw new IOException("PNG 인코더가 없습니다.");
+            return bytes.toByteArray();
+        }
+    }
+
     @Override public byte[] render(RoutePlan plan) throws IOException {
         var image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();

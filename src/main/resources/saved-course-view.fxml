@@ -1,60 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
+<!-- JavaFX 클래스들 -->
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
+
 <BorderPane fx:id="savedCourseRoot" xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            stylesheets="@style.css"
             fx:controller="com.datecourse.controller.SavedCourseController"
             prefWidth="920" prefHeight="620">
 
+    <!-- 화면 제목 -->
     <top>
-        <Label text="저장한 코스" styleClass="title">
-            <padding>
-                <Insets top="20" right="20" bottom="10" left="20"/>
-            </padding>
-        </Label>
+        <Label text="저장한 코스" styleClass="title,saved-course-header"/>
     </top>
 
+    <!-- 저장한 코스 목록 영역 -->
     <left>
-        <VBox fx:id="courseListPane" spacing="10" prefWidth="380" minWidth="240" maxWidth="420">
-            <padding>
-                <Insets top="10" right="10" bottom="20" left="20"/>
-            </padding>
+        <VBox fx:id="courseListPane" styleClass="saved-course-list-pane"
+              prefWidth="380" minWidth="240" maxWidth="420">
             <ListView fx:id="courseList" VBox.vgrow="ALWAYS" styleClass="saved-course-list"/>
             <Label fx:id="emptyLabel" text="저장한 코스가 없어요." visible="false"/>
+            <Button fx:id="newCourseButton" text="새 코스" onAction="#onNewCourseClick"
+                    styleClass="primary" maxWidth="Infinity"/>
         </VBox>
     </left>
 
+    <!-- 코스 상세 정보 영역 -->
     <center>
-        <VBox spacing="6">
-            <padding>
-                <Insets top="6" right="16" bottom="12" left="8"/>
-            </padding>
+        <VBox styleClass="saved-course-detail">
             <Label fx:id="detailTitle" text="코스를 선택해주세요" styleClass="subtitle"/>
+
+            <!-- 지도 영역 -->
             <StackPane fx:id="mapPane" minHeight="180" prefHeight="420" maxHeight="Infinity" VBox.vgrow="ALWAYS">
                 <WebView fx:id="previewMap" accessibleText="저장한 코스의 실시간 지도"/>
-                <VBox fx:id="mapNotice" alignment="CENTER" spacing="8" maxWidth="440">
+                <VBox fx:id="mapNotice" styleClass="map-notice" maxWidth="440">
                     <Label fx:id="mapStatus" text="실시간 지도를 불러오고 있어요…" wrapText="true"/>
-                    <Button fx:id="mapRetry" text="지도 다시 불러오기" onAction="#onMapRetry" visible="false"
-                            managed="false"/>
+                    <Button fx:id="mapRetry" text="지도 다시 불러오기" onAction="#onMapRetry"
+                            visible="false" managed="false"/>
                 </VBox>
             </StackPane>
-            <HBox fx:id="bottomInfo" alignment="TOP_LEFT" spacing="10" minHeight="170" prefHeight="210" maxHeight="260">
-                <TableView fx:id="summaryTable" minWidth="230" prefWidth="310" prefHeight="210" minHeight="120"
-                           maxHeight="Infinity" HBox.hgrow="NEVER"
-                           styleClass="saved-course-summary-table">
+
+            <!-- 하단 정보 표 -->
+            <HBox fx:id="bottomInfo" styleClass="saved-course-bottom"
+                  minHeight="170" prefHeight="210" maxHeight="260">
+                <!-- 왼쪽: 장소 정보 표 -->
+                <TableView fx:id="summaryTable" styleClass="saved-course-table,saved-course-summary-table"
+                           minWidth="230" prefWidth="310" minHeight="120" prefHeight="210"
+                           maxHeight="Infinity" HBox.hgrow="NEVER">
                     <columns>
-                        <TableColumn fx:id="summaryLabelColumn" text="장소 정보" prefWidth="96" minWidth="82"
-                                     maxWidth="120"/>
+                        <TableColumn fx:id="summaryLabelColumn" text="장소 정보" prefWidth="96" minWidth="82" maxWidth="120"/>
                         <TableColumn fx:id="summaryValueColumn" text="내용" prefWidth="200" minWidth="130"/>
                     </columns>
                 </TableView>
-                <TableView fx:id="placeTable" minWidth="360" prefWidth="500" prefHeight="210" minHeight="120"
-                           maxHeight="Infinity" HBox.hgrow="ALWAYS"
-                           styleClass="saved-course-place-table">
+                <!-- 오른쪽: 코스에 포함된 장소 표 -->
+                <TableView fx:id="placeTable" styleClass="saved-course-table,saved-course-place-table"
+                           minWidth="360" prefWidth="500" minHeight="120" prefHeight="210"
+                           maxHeight="Infinity" HBox.hgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="placeOrderColumn" text="순서" prefWidth="52" minWidth="46" maxWidth="60"/>
                         <TableColumn fx:id="placeNameColumn" text="장소" prefWidth="140" minWidth="90"/>
@@ -63,8 +64,11 @@
                     </columns>
                 </TableView>
             </HBox>
+
             <Label fx:id="messageLabel" styleClass="muted"/>
-            <FlowPane hgap="8" vgap="6">
+
+            <!-- 버튼 영역 -->
+            <FlowPane styleClass="saved-course-actions">
                 <Button fx:id="openButton" text="이 코스 불러오기" onAction="#onOpenClick" styleClass="primary"/>
                 <Button fx:id="refreshButton" text="새로고침" onAction="#onRefreshClick" styleClass="secondary"/>
                 <Button fx:id="renameButton" text="이름 변경" onAction="#onRenameClick" styleClass="secondary"/>

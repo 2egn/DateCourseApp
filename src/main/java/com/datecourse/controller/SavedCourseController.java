@@ -31,7 +31,9 @@ public class SavedCourseController extends BasePageController {
     private UserContext userContext;
     private long viewVersion;
     private Consumer<SavedCourse> onOpen;
+    private Runnable onNewCourse;
     private boolean busy;
+    private long previewVersion;
 
     private record CourseDetailRow(String label, String value) {}
     private record PlaceInfoRow(String order, String name, String price, String address) {}
@@ -82,8 +84,42 @@ public class SavedCourseController extends BasePageController {
             column.setReorderable(false);
             setWrappingCellFactory(column);
         }
+        placeTable.setRowFactory(table -> {
+            TableRow<PlaceInfoRow> row = new TableRow<>();
+            row.setCursor(javafx.scene.Cursor.HAND);
+            row.setOnMouseClicked(event -> {
+                if (row.isEmpty()) return;
+                SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
+                int index = row.getIndex();
+                if (selected == null || index < 0 || index >= selected.plan().places().size()) return;
+                previewVersion++;
+                map.focusPlace(selected.plan().places().get(index));
+            });
+            return row;
+        });
         watchNotice(messageLabel, PageFeedback.Kind.ERROR);
         courseList.setCellFactory(list -> new ListCell<>() {
+            // 셀마다 한 번만 만들어서 재사용 (updateItem이 불릴 때마다 새로 만들지 않음)
+            private final Label titleLabel = new Label();
+            private final Label summaryLabel = new Label();
+            private final Label updatedLabel = new Label();
+            private final javafx.scene.layout.VBox box =
+                    new javafx.scene.layout.VBox(3, titleLabel, summaryLabel, updatedLabel);
+
+            {   // 초기화 블록: 셀이 만들어질 때 한 번 실행됨
+                titleLabel.getStyleClass().add("saved-course-title");
+                summaryLabel.getStyleClass().add("saved-course-summary");
+                updatedLabel.getStyleClass().add("saved-course-updated");
+                for (Label label : java.util.List.of(titleLabel, summaryLabel, updatedLabel)) {
+                    label.setWrapText(true);                 // 길면 줄바꿈
+                    label.setMaxWidth(Double.MAX_VALUE);
+                }
+                setPrefWidth(0);   // 셀이 내용 때문에 목록보다 넓어지지 않게 함
+                // 안쪽 박스 폭을 셀 폭에 묶음 (좌우 padding 12*2 만큼 뺌)
+                box.prefWidthProperty().bind(widthProperty().subtract(24));
+                box.maxWidthProperty().bind(widthProperty().subtract(24));
+            }
+
             @Override protected void updateItem(SavedCourse course, boolean empty) {
                 super.updateItem(course, empty);
                 if (empty || course == null) {
@@ -91,16 +127,11 @@ public class SavedCourseController extends BasePageController {
                     setGraphic(null);
                     return;
                 }
-                Label titleLabel = new Label(title(course));
-                titleLabel.getStyleClass().add("saved-course-title");
-                titleLabel.setWrapText(true);
-                Label summaryLabel = new Label(course.plan().places().size() + "곳 · "
-                        + presenter.costSummary(course));
-                summaryLabel.getStyleClass().add("saved-course-summary");
-                Label updatedLabel = new Label("최근 수정 " + updatedText(course));
-                updatedLabel.getStyleClass().add("saved-course-updated");
+                titleLabel.setText(title(course));
+                summaryLabel.setText(course.plan().places().size() + "곳 · " + presenter.costSummary(course));
+                updatedLabel.setText("최근 수정 " + updatedText(course));
                 setText(null);
-                setGraphic(new javafx.scene.layout.VBox(3, titleLabel, summaryLabel, updatedLabel));
+                setGraphic(box);
             }
         });
         courseList.getSelectionModel().selectedItemProperty().addListener((o, old, value) -> showDetail(value));
@@ -138,11 +169,17 @@ public class SavedCourseController extends BasePageController {
         return new PlaceInfoRow(order, name, price, address);
     }
 
-    public void configure(SavedCourseRepository repository, UserContext context, Consumer<SavedCourse> onOpen) {
+    public void configure(SavedCourseRepository repository, UserContext context, Consumer<SavedCourse> onOpen,
+                         Runnable onNewCourse) {
         this.repository = repository;
         this.userContext = context;
         this.onOpen = onOpen;
+        this.onNewCourse = onNewCourse;
         loadCourses();
+    }
+
+    @FXML private void onNewCourseClick() {
+        if (!busy && onNewCourse != null) onNewCourse.run();
     }
 
     public void clear() {
@@ -152,6 +189,7 @@ public class SavedCourseController extends BasePageController {
         userContext = null;
         repository = null;
         onOpen = null;
+        onNewCourse = null;
         busy = false;
         courseList.getItems().clear();
         showDetail(null);
@@ -184,6 +222,7 @@ public class SavedCourseController extends BasePageController {
     }
 
     private void showPreview(SavedCourse course) {
+        long version = ++previewVersion;
         mapPane.setVisible(course != null);
         mapPane.setManaged(course != null);
         mapRetry.setVisible(false);
@@ -196,8 +235,13 @@ public class SavedCourseController extends BasePageController {
         mapStatus.setVisible(!map.isReady());
         map.setOriginLocked(true);
         map.setCandidateActionsEnabled(false);
-        map.present(course.plan(), null, course.plan().radius(), true, true);
+        map.presentCourse(course.plan(), true);
         map.load();
+        var fitAfterLayout = new javafx.animation.PauseTransition(javafx.util.Duration.millis(180));
+        fitAfterLayout.setOnFinished(event -> {
+            if (previewVersion == version && courseList.getSelectionModel().getSelectedItem() == course) map.fitCourse();
+        });
+        fitAfterLayout.play();
         if (map.isReady()) mapStatus.setVisible(false);
     }
 
