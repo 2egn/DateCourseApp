@@ -7,7 +7,7 @@ import com.datecourse.service.UserContext;
 
 /** Reuses the base loading and notices; account storage stays with the login application. */
 public final class MyPageController extends BasePageController {
-    @FXML private Label nameLabel, emailLabel, phoneLabel, statusLabel;
+    @FXML private Label avatarLabel, nameLabel, emailLabel, phoneLabel, statusLabel;
     private UserContext userContext;
     private long viewVersion;
     private Runnable savedCourses = () -> {}, back = () -> {};
@@ -28,6 +28,7 @@ public final class MyPageController extends BasePageController {
     public void clear() {
         viewVersion++;
         userContext = null;
+        if (avatarLabel != null) avatarLabel.setText("?");
         nameLabel.setText("—"); emailLabel.setText("—"); phoneLabel.setText("—");
         statusLabel.setText("");
     }
@@ -35,11 +36,16 @@ public final class MyPageController extends BasePageController {
     private void loadProfile() {
         UserContext context = userContext;
         long version = ++viewVersion;
+        if (avatarLabel != null) avatarLabel.setText("-");
         nameLabel.setText("—"); emailLabel.setText("—"); phoneLabel.setText("—");
         statusLabel.setText("회원 정보를 불러오는 중…");
         showFuture("회원 정보를 불러오고 있어요", context.profile(), profile -> {
             if (context != userContext || context.isClosed() || version != viewVersion) return;
-            nameLabel.setText(profile.name());
+            String name = profile.name();
+            nameLabel.setText(name);
+            if (avatarLabel != null) {
+                avatarLabel.setText(name != null && !name.isBlank() ? name.trim() + " 님" : "회원 님");
+            }
             emailLabel.setText(profile.email());
             phoneLabel.setText(profile.phone() == null || profile.phone().isBlank() ? "미등록" : profile.phone());
             statusLabel.setText("");

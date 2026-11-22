@@ -22,7 +22,7 @@ public final class MemberAdminPanel extends JPanel {
     private final MemberRepository.AdminSession session;
     private final MemberTableModel model=new MemberTableModel();
     private final JTable table=new JTable(model);
-    private final JTextField search=new UiTheme.TextField(24),person=new UiTheme.TextField(18),phone=new UiTheme.TextField(18);
+    private final JTextField search=new LoginUI.TextField(24),person=new LoginUI.TextField(18),phone=new LoginUI.TextField(18);
     private final JComboBox<Status> memberStatus=new JComboBox<>(Status.values());
     private final JButton refresh=button("검색",false),all=button("전체 보기",false),save=button("변경 저장",true),
             withdraw=button("탈퇴 처리",false),delete=button("영구 삭제",false);
@@ -49,15 +49,15 @@ public final class MemberAdminPanel extends JPanel {
         JPanel searchActions=new JPanel(new FlowLayout(FlowLayout.RIGHT,8,0));searchActions.setOpaque(false);
         searchActions.add(refresh);searchActions.add(all);searchBar.add(searchActions,BorderLayout.EAST);
         JPanel heading=new JPanel(new BorderLayout(0,12));heading.setOpaque(false);
-        var title=UiTheme.heading("회원 관리","회원을 선택한 뒤 변경 내용을 확인하고 저장하세요.");title.setOpaque(false);
+        var title= LoginUI.heading("회원 관리","회원을 선택한 뒤 변경 내용을 확인하고 저장하세요.");title.setOpaque(false);
         heading.add(title,BorderLayout.NORTH);
-        heading.add(searchBar,BorderLayout.CENTER);heading.add(count,BorderLayout.SOUTH);count.setForeground(UiTheme.MUTED);
+        heading.add(searchBar,BorderLayout.CENTER);heading.add(count,BorderLayout.SOUTH);count.setForeground(LoginUI.MUTED);
         add(heading,BorderLayout.NORTH);
         JScrollPane scroll=new JScrollPane(table);scroll.setColumnHeaderView(table.getTableHeader());scroll.setBorder(BorderFactory.createLineBorder(new Color(0xE5E8EB)));add(scroll,BorderLayout.CENTER);
         JPanel fields=new JPanel(new GridBagLayout());fields.setOpaque(false);
         addField(fields,"이름",person,0,1);addField(fields,"전화번호",phone,1,1);addField(fields,"상태",memberStatus,2,0);
         JPanel actions=new JPanel(new FlowLayout(FlowLayout.LEFT,8,0));actions.setOpaque(false);actions.add(save);actions.add(withdraw);actions.add(delete);
-        JPanel editor=new JPanel(new BorderLayout(0,10));editor.setOpaque(false);selection.setFont(UiTheme.BODY.deriveFont(Font.BOLD,15f));
+        JPanel editor=new JPanel(new BorderLayout(0,10));editor.setOpaque(false);selection.setFont(LoginUI.BODY.deriveFont(Font.BOLD,15f));
         editor.add(selection,BorderLayout.NORTH);editor.add(fields,BorderLayout.CENTER);editor.add(actions,BorderLayout.SOUTH);
         JPanel bottom=new JPanel(new BorderLayout(0,10));bottom.setOpaque(false);bottom.add(editor,BorderLayout.CENTER);bottom.add(message,BorderLayout.SOUTH);add(bottom,BorderLayout.SOUTH);
         table.getSelectionModel().addListSelectionListener(event->{if(!event.getValueIsAdjusting())selectionChanged();});
@@ -69,29 +69,30 @@ public final class MemberAdminPanel extends JPanel {
         updateControls();load(null,"회원을 선택해 주세요.");
     }
     private static JButton button(String text,boolean primary) {
-        var button=new JButton(text);UiTheme.button(button,primary);button.setFont(UiTheme.BODY.deriveFont(primary?Font.BOLD:Font.PLAIN,14f));
+        var button=new JButton(text);
+        LoginUI.button(button,primary);button.setFont(LoginUI.BODY.deriveFont(primary?Font.BOLD:Font.PLAIN,14f));
         button.setPreferredSize(new Dimension(button.getFontMetrics(button.getFont()).stringWidth(text)+32,40));
         button.setBorder(BorderFactory.createEmptyBorder(8,16,8,16));return button;
     }
     private static void addField(JPanel panel,String label,JComponent input,int column,double weight) {
         var c=new GridBagConstraints();c.gridx=column;c.gridy=0;c.weightx=weight;c.fill=GridBagConstraints.HORIZONTAL;c.anchor=GridBagConstraints.WEST;
-        c.insets=new Insets(0,0,6,column==2?0:12);var caption=new JLabel(label);caption.setForeground(UiTheme.MUTED);panel.add(caption,c);
+        c.insets=new Insets(0,0,6,column==2?0:12);var caption=new JLabel(label);caption.setForeground(LoginUI.MUTED);panel.add(caption,c);
         c.gridy=1;c.insets=new Insets(0,0,0,column==2?0:12);panel.add(input,c);
     }
     private void configureTable() {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);table.setAutoCreateRowSorter(true);table.setFillsViewportHeight(true);
         table.setRowHeight(44);table.setShowGrid(false);table.setIntercellSpacing(new Dimension(0,0));table.setBackground(Color.WHITE);
         table.getTableHeader().setReorderingAllowed(false);table.getTableHeader().setPreferredSize(new Dimension(0,40));
-        table.getTableHeader().setFont(UiTheme.BODY.deriveFont(Font.BOLD,13f));
+        table.getTableHeader().setFont(LoginUI.BODY.deriveFont(Font.BOLD,13f));
         int[] widths={150,280,160,85,175};int[] minimums={100,180,120,70,145};
         for(int i=0;i<widths.length;i++){var column=table.getColumnModel().getColumn(i);column.setPreferredWidth(widths[i]);column.setMinWidth(minimums[i]);}
         table.setDefaultRenderer(Object.class,new DefaultTableCellRenderer(){
             @Override public Component getTableCellRendererComponent(JTable grid,Object value,boolean chosen,boolean focus,int row,int column) {
                 super.getTableCellRendererComponent(grid,value,chosen,focus,row,column);
-                setBorder(BorderFactory.createEmptyBorder(0,12,0,12));setFont(UiTheme.BODY.deriveFont(column==0?Font.BOLD:Font.PLAIN,14f));
-                setBackground(chosen?UiTheme.SOFT:row%2==0?Color.WHITE:new Color(0xF7F8FA));setForeground(UiTheme.TEXT);
+                setBorder(BorderFactory.createEmptyBorder(0,12,0,12));setFont(LoginUI.BODY.deriveFont(column==0?Font.BOLD:Font.PLAIN,14f));
+                setBackground(chosen? LoginUI.SOFT:row%2==0?Color.WHITE:new Color(0xF7F8FA));setForeground(LoginUI.TEXT);
                 setHorizontalAlignment(column==3?SwingConstants.CENTER:SwingConstants.LEFT);
-                if(column==3)setForeground("정상".equals(value)?new Color(0x28764A):UiTheme.MUTED);
+                if(column==3)setForeground("정상".equals(value)?new Color(0x28764A): LoginUI.MUTED);
                 setToolTipText(value==null?null:value.toString());return this;
             }
         });
@@ -195,7 +196,7 @@ public final class MemberAdminPanel extends JPanel {
             }
         }.execute();
     }
-    private void notice(String text,boolean error){message.setText(text);message.setForeground(error?new Color(0xB4233F):UiTheme.MUTED);}
+    private void notice(String text,boolean error){message.setText(text);message.setForeground(error?new Color(0xB4233F): LoginUI.MUTED);}
     private void updateControls() {
         boolean editable=selected!=null&&!busy;
         for(JComponent control:List.of(search,refresh,all,table,table.getTableHeader()))control.setEnabled(!busy);

@@ -2,7 +2,7 @@ package kr.ac.university.localdb.db;
 
 import com.datecourse.service.AppDiagnostics;
 import kr.ac.university.localdb.PasswordHash;
-import kr.ac.university.localdb.ui.UiTheme;
+import kr.ac.university.localdb.ui.LoginUI;
 import javax.sql.DataSource;
 import javax.swing.*;
 import java.awt.GridLayout;
@@ -49,7 +49,8 @@ public final class AdminPasswordReset {
         char[] password=null;
         try {
             var entered=new AtomicReference<char[]>();
-            SwingUtilities.invokeAndWait(()->{UiTheme.install();entered.set(askPassword());});
+            SwingUtilities.invokeAndWait(()->{
+                LoginUI.install();entered.set(askPassword());});
             password=entered.get();
             if(password==null){System.out.println("관리자 비밀번호 재설정을 취소했습니다. DB는 변경하지 않았습니다.");return;}
             System.out.println("관리자 비밀번호를 변경하고 있습니다. 비밀번호는 출력하거나 파일에 저장하지 않습니다.");

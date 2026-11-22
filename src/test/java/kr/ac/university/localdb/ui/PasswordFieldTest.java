@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PasswordFieldTest {
     @Test void visibilityTogglePreservesInputCaretAndEnterActionAndResetsOnClear() throws Exception {
         SwingUtilities.invokeAndWait(() -> {
-            UiTheme.PasswordField field = new UiTheme.PasswordField(24);
+            LoginUI.PasswordField field = new LoginUI.PasswordField(24);
             JToggleButton button = (JToggleButton) field.getComponent(0);
             field.setText("sample-pass-123");
             field.setCaretPosition(4);
@@ -43,7 +43,7 @@ class PasswordFieldTest {
 
     @Test void buttonFitsInsideFieldAndFollowsDisabledState() throws Exception {
         SwingUtilities.invokeAndWait(() -> {
-            UiTheme.PasswordField field = new UiTheme.PasswordField(24);
+            LoginUI.PasswordField field = new LoginUI.PasswordField(24);
             field.setSize(320,54);
             field.doLayout();
             JToggleButton button = (JToggleButton) field.getComponent(0);
@@ -64,8 +64,8 @@ class PasswordFieldTest {
             JPanel panel = new JPanel(new GridLayout(2,1,0,12));
             panel.setBackground(Color.WHITE);
             panel.setBorder(BorderFactory.createEmptyBorder(12,12,12,12));
-            UiTheme.PasswordField masked = new UiTheme.PasswordField(24);
-            UiTheme.PasswordField visible = new UiTheme.PasswordField(24);
+            LoginUI.PasswordField masked = new LoginUI.PasswordField(24);
+            LoginUI.PasswordField visible = new LoginUI.PasswordField(24);
             masked.setText("sample-pass-123"); visible.setText("sample-pass-123");
             panel.add(masked); panel.add(visible);
             panel.setSize(380,144);panel.doLayout();masked.doLayout();visible.doLayout();

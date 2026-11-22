@@ -41,11 +41,11 @@ public class MembershipApp {
     private JPanel authenticationContent;
     private final JFrame home = new JFrame("로그인 / 회원가입");
     private Runnable exitApplication=()->{home.dispose();System.exit(0);};
-    private final JTextField email = new UiTheme.TextField(24), name = new UiTheme.TextField(24), phone = new UiTheme.TextField(24);
-    private final JPasswordField password = new UiTheme.PasswordField(24), confirm = new UiTheme.PasswordField(24);
+    private final JTextField email = new LoginUI.TextField(24), name = new LoginUI.TextField(24), phone = new LoginUI.TextField(24);
+    private final JPasswordField password = new LoginUI.PasswordField(24), confirm = new LoginUI.PasswordField(24);
     private final JButton signup = new JButton("회원가입"), login = new JButton("로그인");
-    private final JTextField loginId = new UiTheme.TextField(24);
-    private final JPasswordField loginPassword = new UiTheme.PasswordField(24);
+    private final JTextField loginId = new LoginUI.TextField(24);
+    private final JPasswordField loginPassword = new LoginUI.PasswordField(24);
     private final JCheckBox rememberId = new JCheckBox("아이디 저장");
     // 한 창에서 로그인 카드와 회원가입 카드를 전환합니다.
     private final CardLayout pages = new CardLayout();
@@ -63,7 +63,7 @@ public class MembershipApp {
     public static void main(String[] args) {
         // Swing 구성 요소의 생성과 화면 조작은 이벤트 디스패치 스레드(EDT)에서 시작합니다.
         SwingUtilities.invokeLater(() -> {
-            UiTheme.install();
+            LoginUI.install();
             MembershipApp app = new MembershipApp();
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 MemberRepository repository = app.repository;
@@ -113,8 +113,8 @@ public class MembershipApp {
         }
         JPanel signupPanel = new JPanel(new BorderLayout(12,12));
         JPanel signupHeading=new JPanel(new BorderLayout(0,20));
-        signupHeading.add(UiTheme.heading("처음이라면, 반가워요","필요한 정보만 하나씩 입력해 주세요"),BorderLayout.NORTH);
-        guidance.setFont(UiTheme.BODY.deriveFont(13f));guidance.setForeground(UiTheme.MUTED);
+        signupHeading.add(LoginUI.heading("처음이라면, 반가워요","필요한 정보만 하나씩 입력해 주세요"),BorderLayout.NORTH);
+        guidance.setFont(LoginUI.BODY.deriveFont(13f));guidance.setForeground(LoginUI.MUTED);
         signupHeading.add(guidance,BorderLayout.SOUTH);signupPanel.add(signupHeading,BorderLayout.NORTH);
         JScrollPane scroll=new JScrollPane(form); scroll.setBorder(null);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -122,7 +122,8 @@ public class MembershipApp {
         scroll.getVerticalScrollBar().setUnitIncrement(24);
         scroll.getViewport().setBackground(Color.WHITE);
         signupPanel.add(scroll,BorderLayout.CENTER);
-        UiTheme.button(next,true);UiTheme.button(back,false);
+        LoginUI.button(next,true);
+        LoginUI.button(back,false);
         JPanel signupButtons = new JPanel(new GridLayout(0,1,0,10)); signupButtons.add(next); signupButtons.add(back); signupPanel.add(signupButtons,BorderLayout.SOUTH);
         String savedId = history.savedIdentity();
         loginId.setText(savedId);
@@ -130,7 +131,7 @@ public class MembershipApp {
         rememberId.addActionListener(e -> {
             if (!rememberId.isSelected()) history.saveIdentity("");
         });
-        JPanel loginPanel=UiTheme.loginPanel(loginId,loginPassword,rememberId,login,signup);
+        JPanel loginPanel= LoginUI.loginPanel(loginId,loginPassword,rememberId,login,signup);
         StartupPanel startup = new StartupPanel(() -> {
             if (repository == null) repository = new MemberRepository();
             repository.initialize();
@@ -381,10 +382,11 @@ public class MembershipApp {
         var reviewController=new java.util.concurrent.atomic.AtomicReference<com.datecourse.controller.InformationReviewController>();
         var tabs=new JTabbedPane();tabs.addTab("회원 관리",members);
         var reportPanel=new JFXPanel();tabs.addTab("장소 정보 제보",reportPanel);
-        var logoutButton=new JButton("로그아웃");UiTheme.button(logoutButton,false);
+        var logoutButton=new JButton("로그아웃");
+        LoginUI.button(logoutButton,false);
         logoutButton.setPreferredSize(new Dimension(120,40));
         var top=new JPanel(new BorderLayout());top.setBorder(BorderFactory.createEmptyBorder(12,24,12,24));
-        var title=new JLabel("DateCourse · 관리자");title.setFont(UiTheme.BODY.deriveFont(Font.BOLD,18f));top.add(title,BorderLayout.WEST);top.add(logoutButton,BorderLayout.EAST);
+        var title=new JLabel("DateCourse · 관리자");title.setFont(LoginUI.BODY.deriveFont(Font.BOLD,18f));top.add(title,BorderLayout.WEST);top.add(logoutButton,BorderLayout.EAST);
         adminCloseCheck=()->{
             if(reviewBusy.get()){AppDialogs.showMessageDialog(home,"제보 처리 작업이 끝난 뒤 다시 시도해 주세요.");return false;}
             return members.confirmLeave();
