@@ -17,7 +17,7 @@
                 <Label text="DateCourse" styleClass="app-brand" minWidth="-Infinity"/>
                 <Button fx:id="homeButton" text="코스 만들기" onAction="#onHome"
                         minWidth="-Infinity"/>
-                <Button fx:id="savedCoursesButton" text="저장한 코스" onAction="#onSavedCourses"
+                <Button fx:id="savedCoursesButton" text=" 저장한 코스" onAction="#onSavedCourses"
                         minWidth="-Infinity"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <MenuButton fx:id="userLabel" text="시연 모드" disable="true" styleClass="account-menu"
