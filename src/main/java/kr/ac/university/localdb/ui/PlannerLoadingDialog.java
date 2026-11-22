@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /** Short, nonblocking handoff between authenticated login and the JavaFX planner. */
-final class PlannerLoadingDialog extends JDialog implements AutoCloseable {
+final class PlannerLoadingDialog extends JDialog {
     private final JFrame owner;
     private final boolean ownerWasEnabled;
 
@@ -47,7 +47,7 @@ final class PlannerLoadingDialog extends JDialog implements AutoCloseable {
         getRootPane().paintImmediately(0, 0, getWidth(), getHeight());
     }
 
-    @Override public void close() {
+    void close() {
         dispose();
         owner.setEnabled(ownerWasEnabled);
     }
