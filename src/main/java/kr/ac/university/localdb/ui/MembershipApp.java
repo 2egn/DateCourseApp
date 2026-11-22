@@ -120,7 +120,6 @@ public class MembershipApp {
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scroll.getVerticalScrollBar().setUnitIncrement(24);
-        scroll.getViewport().setBackground(Color.WHITE);
         signupPanel.add(scroll,BorderLayout.CENTER);
         LoginUI.button(next,true);
         LoginUI.button(back,false);
