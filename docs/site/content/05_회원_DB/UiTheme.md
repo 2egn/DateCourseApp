@@ -6,6 +6,8 @@ source_sha256: fe69c4e93f6167dcfb85578bcf4ac23592be89beb3d620951c7ee60f6f0ed2c3
 readability_updated: 2026-11-14
 ---
 
+> 2026-11-23 확인: `UiTheme`는 현재 코드에서 제거됐어요. Swing 공통 스타일은 `LoginUI`를 사용해요. 아래는 과거 기록이에요.
+
 # UiTheme
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.

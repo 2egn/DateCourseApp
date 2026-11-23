@@ -4,9 +4,25 @@ source: src/main/java/com/datecourse/controller/PlannerMap.java
 source_commit: ea2242b
 source_sha256: b42018476b4b1d279ad83320174d3bfb24f5a7fa804396fc9a13834e80d65f06
 readability_updated: 2026-11-14
-reviewed_commit: b69d00e
-reviewed_at: 2026-11-15
+reviewed_commit: 9e59289
+reviewed_at: 2026-11-23
 ---
+
+## 현재 구현 · 2026-11-23
+
+지도 수명주기와 코스 표시·캡처·경로 조회를 연결해요. 도보·자동차·대중교통과 도보를 지원하고, 저장 코스의 실제 경로는 명시적으로 요청할 때만 조회해요.
+
+| 주요 함수·구성 | 역할 |
+|---|---|
+| `requestWalkingRoute()` | 요청 준비와 작업 시작. 기존 walking 이름은 호환을 위해 유지해요. |
+| `applyRouteSuccess() / applyRouteFailure()` | 현재 요청만 성공·실패 처리해요. |
+| `captureRouteImage()` | 다른 코스·이전 페이지의 이미지 응답을 차단해요. |
+| `dispose()` | 요청과 지도 수명주기를 정리해요. |
+
+앱 코드 기준 `9e59289`. [[현재_구현_흐름|현재 흐름]] · [[변경_요약|변경 요약]]
+
+<details>
+<summary>이전 기준의 발췌와 학습 설명</summary>
 
 # PlannerMap
 
@@ -65,3 +81,6 @@ flowchart LR
 라이브러리가 쓰이는 구체적인 위치는 위 함수표와 원본의 해당 함수 본문에서 확인해요. 화면 작업과 DB 작업을 같은 스레드에서 섞지 않는 것이 중요해요.
 
 관련 안내: [[현재_구현_흐름|현재 전체 흐름]] · [[업데이트_내역|이번 변경]]
+
+
+</details>

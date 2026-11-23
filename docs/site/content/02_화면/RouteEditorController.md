@@ -4,9 +4,24 @@ source: src/main/java/com/datecourse/controller/RouteEditorController.java
 source_commit: ea2242b
 source_sha256: 6fb9b6cda444a93b789a07f996fdfc94cb384676546f95c324f69fe0545f9330
 readability_updated: 2026-11-14
-reviewed_commit: b69d00e
-reviewed_at: 2026-11-15
+reviewed_commit: 9e59289
+reviewed_at: 2026-11-23
 ---
+
+## 현재 구현 · 2026-11-23
+
+같은 클래스 안에서 초기화 책임을 나누고 편집 초안·조건·후보를 관리해요. 기존 메서드·FXML 연결과 이벤트 등록 순서는 유지했어요.
+
+| 주요 함수·구성 | 역할 |
+|---|---|
+| `initialize()` | 표시·필터, 지도·이동수단, 입력, 후보, 조건 이벤트, 코스 목록, 패널 전환 순서로 연결해요. |
+| `configureConditionInputs()` | 가격·후보 수 등 기본값과 바인딩을 설정해요. |
+| `refreshMap()` | 현재 선택 구간·후보·검색 범위를 반영해요. |
+
+앱 코드 기준 `9e59289`. [[현재_구현_흐름|현재 흐름]] · [[변경_요약|변경 요약]]
+
+<details>
+<summary>이전 기준의 발췌와 학습 설명</summary>
 
 # RouteEditorController
 
@@ -81,3 +96,6 @@ flowchart LR
 라이브러리가 쓰이는 구체적인 위치는 위 함수표와 원본의 해당 함수 본문에서 확인해요. 화면 작업과 DB 작업을 같은 스레드에서 섞지 않는 것이 중요해요.
 
 관련 안내: [[현재_구현_흐름|현재 전체 흐름]] · [[업데이트_내역|이번 변경]]
+
+
+</details>

@@ -4,7 +4,24 @@ source: src/main/java/com/datecourse/service/UserContext.java
 source_commit: b69d00e
 source_sha256: d18f1c35d23e2c432943016fa9ac40e813827051e4b4328705b40d1006ae9304
 readability_updated: 2026-11-15
+reviewed_commit: 9e59289
+reviewed_at: 2026-11-23
 ---
+
+## 현재 구현 · 2026-11-23
+
+사용자 프로필·저장 목록과 이미지 조회 캐시를 세션별로 관리해요. 화면 공통 부모에 DB를 상속시키지 않아요.
+
+| 주요 함수·구성 | 역할 |
+|---|---|
+| `preview()` | 코스·이미지 지문별 PNG 읽기를 캐시해요. 최대 12개를 유지해요. |
+| `invalidateCourses()` | 코스 변경 후 저장 목록 캐시를 무효화해요. |
+| `close()` | 로그아웃한 세션과 캐시를 닫아요. |
+
+앱 코드 기준 `9e59289`. [[현재_구현_흐름|현재 흐름]] · [[변경_요약|변경 요약]]
+
+<details>
+<summary>이전 기준의 발췌와 학습 설명</summary>
 
 ## 하는 일
 
@@ -24,3 +41,6 @@ readability_updated: 2026-11-15
 계정 객체는 DB 연결 풀을 소유하지 않아요. 늦게 도착한 응답을 표시할지는 각 화면에서 현재 계정·요청 버전을 비교해요.
 
 [[현재_구현_흐름|사용 흐름]] · [[최종_검토_2026_11_15|검토 범위]]
+
+
+</details>

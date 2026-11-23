@@ -4,9 +4,26 @@ source: src/main/java/com/datecourse/controller/SavedCourseController.java
 source_commit: ea2242b
 source_sha256: bb25f532492d2e91244aa3b5389ed547ff641ea08967090fed710ee6ae47098e
 readability_updated: 2026-11-14
-reviewed_commit: b69d00e
-reviewed_at: 2026-11-15
+reviewed_commit: 9e59289
+reviewed_at: 2026-11-23
 ---
+
+## 현재 구현 · 2026-11-23
+
+저장 PNG를 먼저 보여주고 없으면 지도·직선 연결, 지도 실패 시 로컬 연결도로 대체해요. 코스 선택만으로 경로 API를 호출하지 않아요.
+
+| 주요 함수·구성 | 역할 |
+|---|---|
+| `initialize()` | 목록·지도·정보 표·메시지를 기능별로 준비해요. |
+| `refreshMapNotice()` | 버튼·이미지·안내 상태를 조율해요. |
+| `updatePreviewControls()` | 현재 화면에 맞는 지도·조회 버튼을 갱신해요. |
+| `buildPreviewCaption() / buildMapNotice()` | 중첩 조건 대신 현재 필요한 문구를 골라요. |
+| `onRequestRoute()` | 사용자가 누를 때만 실제 경로를 조회해요. |
+
+앱 코드 기준 `9e59289`. [[현재_구현_흐름|현재 흐름]] · [[변경_요약|변경 요약]]
+
+<details>
+<summary>이전 기준의 발췌와 학습 설명</summary>
 
 # SavedCourseController
 
@@ -66,3 +83,6 @@ flowchart LR
 라이브러리가 쓰이는 구체적인 위치는 위 함수표와 원본의 해당 함수 본문에서 확인해요. 화면 작업과 DB 작업을 같은 스레드에서 섞지 않는 것이 중요해요.
 
 관련 안내: [[현재_구현_흐름|현재 전체 흐름]] · [[업데이트_내역|이번 변경]]
+
+
+</details>

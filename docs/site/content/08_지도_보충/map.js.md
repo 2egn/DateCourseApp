@@ -6,9 +6,24 @@ source: src/main/resources/map/map.js
 source_sha256: 41e7c36f8cbcfb39e1169501cb3968f91feb3e37952d1089702a568b37991f38
 status: 지도 보충 설명
 title: map.js
-reviewed_commit: b69d00e
-reviewed_at: 2026-11-15
+reviewed_commit: 9e59289
+reviewed_at: 2026-11-23
 ---
+
+## 현재 구현 · 2026-11-23
+
+상시 범례 대신 원 테두리에서 범위·반경을 안내해요. 장소 핀은 상세 카드, 경로선·번호는 호버 요약과 클릭 상세 안내를 사용해요.
+
+| 주요 함수·구성 | 역할 |
+|---|---|
+| `rangeTooltip` | 투영 좌표로 테두리만 판정하고 드래그·다른 팝업을 우선해요. |
+| `showWalkingRoute()` | 선택한 이동수단의 경로·구간 안내를 표시해요. |
+| `presentRoute()` | 새 코스를 반영하고 이전 코스 이미지를 무효화해요. |
+
+앱 코드 기준 `9e59289`. [[현재_구현_흐름|현재 흐름]] · [[변경_요약|변경 요약]]
+
+<details>
+<summary>이전 기준의 발췌와 학습 설명</summary>
 
 ## 최신 변경 · 2026-11-15
 
@@ -80,3 +95,6 @@ PlannerMap.render() → window.presentRoute() → 원·장소 마커·경로 표
 전체 원은 파란색, 다음 장소 원은 초록 점선이다. fit은 사용자가 요청하는 화면 맞춤이고 ensure는 반경 변경에 따른 조건부 조정이다. 별도 화면 배율 실험은 현재 비활성이다.
 
 [[02_화면/PlannerMap|PlannerMap]] · [[02_화면/MapBridge|MapBridge]] · [[전체_동작_흐름|전체_동작_흐름]]
+
+
+</details>
