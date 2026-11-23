@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
+<?import javafx.scene.image.ImageView?>
 <BorderPane fx:id="savedCourseRoot" xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             stylesheets="@style.css"
@@ -34,14 +35,19 @@
                 <Insets top="6" right="16" bottom="12" left="8"/>
             </padding>
             <Label fx:id="detailTitle" text="코스를 선택해주세요" styleClass="subtitle"/>
-            <StackPane fx:id="mapPane" minHeight="180" prefHeight="420" maxHeight="Infinity" VBox.vgrow="ALWAYS">
-                <WebView fx:id="previewMap" accessibleText="저장한 코스의 실시간 지도"/>
-                <VBox fx:id="mapNotice" alignment="CENTER" spacing="8" maxWidth="440">
-                    <Label fx:id="mapStatus" text="실시간 지도를 불러오고 있어요…" wrapText="true"/>
-                    <Button fx:id="mapRetry" text="지도 다시 불러오기" onAction="#onMapRetry" visible="false"
-                            managed="false"/>
-                </VBox>
+            <StackPane fx:id="mapPane" minWidth="0" minHeight="180" prefHeight="420" maxHeight="Infinity" VBox.vgrow="ALWAYS">
+                <WebView fx:id="previewMap" visible="false" accessibleText="저장한 코스의 지도"/>
+                <ImageView fx:id="coursePreview" preserveRatio="true" mouseTransparent="true" accessibleText="저장한 코스의 지도 또는 장소 연결도"/>
             </StackPane>
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label fx:id="previewCaption" wrapText="true" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="muted"/>
+                <Button fx:id="toggleMapButton" text="지도 보기" onAction="#onToggleMap" styleClass="secondary"/>
+                <Button fx:id="requestRouteButton" text="이동 경로 조회" onAction="#onRequestRoute" styleClass="secondary"/>
+            </HBox>
+            <HBox fx:id="mapNotice" alignment="CENTER_LEFT" spacing="8">
+                <Label fx:id="mapStatus" wrapText="true" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="muted"/>
+                <Button fx:id="mapRetry" text="지도 다시 불러오기" onAction="#onMapRetry" minWidth="-Infinity" visible="false" managed="false"/>
+            </HBox>
             <HBox fx:id="bottomInfo" alignment="TOP_LEFT" spacing="10" minHeight="170" prefHeight="210" maxHeight="260">
                 <TableView fx:id="summaryTable" minWidth="230" prefWidth="310" prefHeight="210" minHeight="120"
                            maxHeight="Infinity" HBox.hgrow="NEVER"

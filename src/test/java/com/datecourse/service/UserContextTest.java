@@ -70,4 +70,50 @@ class UserContextTest {
             assertEquals(2,next.session().memberId());
         }
     }
+    @Test void previewReadsShareCacheAndInvalidationAndLogoutStopReuse() throws Exception {
+        var plan=new com.datecourse.model.RoutePlan(35,129,2,1000,"",List.of());
+        var saved=new com.datecourse.model.SavedCourse(1,7,plan);var calls=new AtomicInteger();
+        try(var context=new UserContext(new UserSession(7,"owner"),null,List::of)) {
+            java.util.concurrent.Callable<java.util.Optional<byte[]>> loader=()->{calls.incrementAndGet();return java.util.Optional.empty();};
+            var first=context.preview(saved,loader);assertTrue(first.get(5,TimeUnit.SECONDS).isEmpty());
+            assertSame(first,context.preview(saved,loader));assertEquals(1,calls.get());
+            var renamed=new com.datecourse.model.SavedCourse(1,7,new com.datecourse.model.RoutePlan(35,129,2,1000,"새 이름",List.of()));
+            assertSame(first,context.preview(renamed,loader));
+            context.invalidateCourses();context.preview(saved,loader).get(5,TimeUnit.SECONDS);assertEquals(2,calls.get());
+            assertThrows(CompletionException.class,()->context.preview(new com.datecourse.model.SavedCourse(1,8,plan),loader).join());
+            context.close();assertThrows(CompletionException.class,()->context.preview(saved,loader).join());
+        }
+    }
+    @Test void previewErrorsCanRetryAndOldInFlightResultCannotReplaceNewSnapshot() throws Exception {
+        var plan=new com.datecourse.model.RoutePlan(35,129,2,1000,"",List.of());
+        var saved=new com.datecourse.model.SavedCourse(1,7,plan);var started=new CountDownLatch(1);var release=new CountDownLatch(1);
+        try(var context=new UserContext(new UserSession(7,"owner"),null,List::of)) {
+            var attempts=new AtomicInteger();
+            java.util.concurrent.Callable<java.util.Optional<byte[]>> loader=()->{
+                if(attempts.incrementAndGet()==1)throw new java.io.IOException("temporary failure");
+                started.countDown();release.await(5,TimeUnit.SECONDS);return java.util.Optional.of(new byte[]{1});
+            };
+            var failed=context.preview(saved,loader);
+            assertThrows(CompletionException.class,failed::join);
+            var old=context.preview(saved,loader);
+            assertTrue(started.await(5,TimeUnit.SECONDS));context.invalidateCourses();
+            var fresh=context.preview(saved,()->java.util.Optional.of(new byte[]{2}));
+            assertArrayEquals(new byte[]{2},fresh.get(5,TimeUnit.SECONDS).orElseThrow());
+            release.countDown();old.get(5,TimeUnit.SECONDS);
+            assertSame(fresh,context.preview(saved,()->{fail("must reuse fresh cache");return java.util.Optional.empty();}));
+        } finally {release.countDown();}
+    }
+    @Test void previewCacheRetainsRecentEntriesAndBoundsBlobMemory() throws Exception {
+        var plan=new com.datecourse.model.RoutePlan(35,129,2,1000,"",List.of());
+        try(var context=new UserContext(new UserSession(7,"owner"),null,List::of)) {
+            var first=new com.datecourse.model.SavedCourse(1,7,plan);
+            var kept=context.preview(first,()->java.util.Optional.of(new byte[]{1}));kept.get(5,TimeUnit.SECONDS);
+            for(long id=2;id<=12;id++)context.preview(new com.datecourse.model.SavedCourse(id,7,plan),java.util.Optional::empty).get(5,TimeUnit.SECONDS);
+            assertSame(kept,context.preview(first,()->{fail("recent entry must be retained");return java.util.Optional.empty();}));
+            context.preview(new com.datecourse.model.SavedCourse(13,7,plan),java.util.Optional::empty).get(5,TimeUnit.SECONDS);
+            var reloads=new AtomicInteger();
+            context.preview(new com.datecourse.model.SavedCourse(2,7,plan),()->{reloads.incrementAndGet();return java.util.Optional.empty();}).get(5,TimeUnit.SECONDS);
+            assertEquals(1,reloads.get());assertSame(kept,context.preview(first,java.util.Optional::empty));
+        }
+    }
 }

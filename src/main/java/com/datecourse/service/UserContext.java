@@ -14,6 +14,14 @@ public final class UserContext implements AutoCloseable {
     private final UserSession session;
     private final CachedValue<MemberRepository.Profile> profile;
     private final CachedValue<List<SavedCourse>> courses;
+    private record PreviewKey(long courseId, String fingerprint) {}
+    private static final int MAX_PREVIEW_CACHE_ENTRIES = 12;
+    private final java.util.Map<PreviewKey, CachedValue<java.util.Optional<byte[]>>> previews =
+            new java.util.LinkedHashMap<>(16, 0.75f, true) {
+                @Override protected boolean removeEldestEntry(java.util.Map.Entry<PreviewKey, CachedValue<java.util.Optional<byte[]>>> eldest) {
+                    return size() > MAX_PREVIEW_CACHE_ENTRIES;
+                }
+            };
     private volatile boolean closed;
 
     public UserContext(UserSession session, Callable<MemberRepository.Profile> profileLoader,
@@ -28,7 +36,15 @@ public final class UserContext implements AutoCloseable {
     public CompletableFuture<MemberRepository.Profile> profile() { return profile.get(); }
     public CompletableFuture<List<SavedCourse>> courses() { return courses.get(); }
     public void invalidateProfile() { profile.invalidate(); }
-    public void invalidateCourses() { courses.invalidate(); }
+    public synchronized void invalidateCourses() { courses.invalidate(); previews.clear(); }
+
+    public synchronized CompletableFuture<java.util.Optional<byte[]>> preview(
+            SavedCourse course, Callable<java.util.Optional<byte[]>> loader) {
+        if (closed || course.memberId() != session.memberId())
+            return CompletableFuture.failedFuture(new IllegalStateException("현재 회원의 미리보기만 조회할 수 있어요."));
+        var key = new PreviewKey(course.courseId(), CoursePreviewImage.fingerprint(course.plan()));
+        return previews.computeIfAbsent(key, ignored -> new CachedValue<>(loader)).get();
+    }
 
     /** Background prefetch: it does not block navigation or display a loading overlay. */
     public void preload() {
@@ -36,10 +52,11 @@ public final class UserContext implements AutoCloseable {
         if (courses.loader != null) courses();
     }
 
-    @Override public void close() {
+    @Override public synchronized void close() {
         closed = true;
         profile.invalidate();
         courses.invalidate();
+        previews.clear();
     }
 
     private final class CachedValue<T> {

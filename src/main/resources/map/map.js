@@ -1050,6 +1050,34 @@
         map.setCenter(state.center);
     };
 
+    let coursePreviewMode = false;
+    let previewConnection = null;
+    function refreshCoursePreview() {
+        if (previewConnection) previewConnection.setMap(null);
+        previewConnection = null;
+        if (!coursePreviewMode || !ready || !routePresentation) return;
+        document.getElementById('place-search').hidden = true;
+        document.getElementById('next-range-legend').hidden = true;
+        [circle, circleOutline, nextCircle, nextCircleOutline].forEach(function(shape) {
+            if (shape) shape.setMap(null);
+        });
+        if (displayedWalkingRoute) return;
+        const plan = routePresentation;
+        const path = [{lat:plan.startLat, lng:plan.startLng}].concat(plan.places).map(function(place) {
+            return new kakao.maps.LatLng(place.lat, place.lng);
+        });
+        if (path.length > 1) {
+            previewConnection = new kakao.maps.Polyline({path:path, strokeWeight:3,
+                strokeColor:'#e54870', strokeOpacity:0.7, strokeStyle:'dash', zIndex:2});
+            previewConnection.setMap(map);
+        }
+        status.textContent = '직선 장소 연결 · 실제 이동 경로는 별도로 조회할 수 있어요.';
+    }
+    window.setCoursePreviewMode = function(enabled) {
+        coursePreviewMode = !!enabled;
+        refreshCoursePreview();
+    };
+
     window.presentRoute = function (plan, candidate, radius, locked, fit, candidates) {
         if (!ready) return;
         const originChanged = routePresentation && (routePresentation.startLat !== plan.startLat || routePresentation.startLng !== plan.startLng);
@@ -1114,7 +1142,8 @@
         document.getElementById('itinerary-rail').hidden = true;
         status.textContent = locked ? '분홍 번호는 코스 순서입니다. 경로에 마우스를 올리면 구간 안내를 볼 수 있어요.'
             : '확정한 코스 · 경로에 마우스를 올리면 구간 안내를 볼 수 있어요.';
-        if (fit) window.fitRouteView(false, originChanged ? 'FOCUS' : null);
+        refreshCoursePreview();
+        if (fit) window.fitRouteView(coursePreviewMode, originChanged ? 'FOCUS' : null);
     };
 
     window.focusRouteLeg = function (index, radius) {
@@ -1282,6 +1311,7 @@
     };
     window.showWalkingRoute = function (route, message, fit) {
         displayedWalkingRoute = route;
+        refreshCoursePreview();
         clearTimeout(walkingPopupHide);
         window.selectWalkingLeg = function () {
             return false;
@@ -1552,7 +1582,7 @@
                 });
                 const line = new kakao.maps.Polyline({
                     path: path, strokeWeight: 4, strokeColor: color,
-                    strokeOpacity: 0.95, strokeStyle: 'solid', zIndex: 4
+                    strokeOpacity: 0.95, strokeStyle: segment.walking ? 'shortdash' : 'solid', zIndex: 4
                 });
                 outline.setMap(map);
                 line.setMap(map);

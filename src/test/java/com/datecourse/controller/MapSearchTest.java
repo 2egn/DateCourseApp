@@ -144,7 +144,7 @@ class MapSearchTest {
             assertTrue(((javafx.scene.control.Label)field(main,"resultLabel")).getText().contains("36,000"));
             assertEquals(2,((com.datecourse.model.RoutePlan)field(main,"appliedPlan")).people());
             ((TextField)field(main,"peopleField")).setText("2");
-            assertFalse(((javafx.scene.control.Label)field(main,"originHintLabel")).getText().contains("출발 위치를 선택"));
+            assertFalse(((String)field(field(main,"map"),"uiStatus")).contains("출발 위치를 선택"));
             new Scene(root,1100,760);root.resize(1100,760);root.applyCss();root.layout();
             var sidebar=root.lookup("#mainSidebar").localToScene(root.lookup("#mainSidebar").getBoundsInLocal());
             var map=root.lookup("#mapView").localToScene(root.lookup("#mapView").getBoundsInLocal());
@@ -777,7 +777,7 @@ class MapSearchTest {
             assertEquals(originalSource,source.getValue());
             assertTrue(((javafx.scene.control.Button)field(main,"newCourseButton")).isDisabled());
             setField(main,"placesLoaded",true);invoke(main,"onRecommendClick");
-            assertTrue(((javafx.scene.control.Label)field(main,"errorLabel")).getText().contains("출발 위치"));
+            assertTrue(((javafx.scene.control.Label)field(main,"errorLabel")).getText().contains("출발 장소"));
             return null;
         });
     }
@@ -1218,8 +1218,10 @@ class MapSearchTest {
                 assertFalse(((StackPane) field(main, "savedPageHost")).isVisible());
                 assertEquals(id, field(main, "savedCourseId"));
                 assertEquals(plan, field(main, "appliedPlan"));
-                assertTrue(((javafx.scene.control.Label) field(list, "detailOverview")).getText().contains("가격 미확인"));
-                assertTrue(((javafx.scene.control.Label) field(list, "detailSummary")).getText().contains("최근 수정"));
+                var summary=(javafx.scene.control.TableView<?>)field(list,"summaryTable");
+                assertTrue(summary.getItems().stream().anyMatch(row->row.toString().contains("미확인")));
+                assertTrue(summary.getItems().stream().anyMatch(row->row.toString().contains("최근 수정")));
+                assertEquals(plan.places().size(),((javafx.scene.control.TableView<?>)field(list,"placeTable")).getItems().size());
                 ((TextField) field(main, "peopleField")).setText("3");
                 return null;
             });
@@ -1754,6 +1756,29 @@ class MapSearchTest {
             assertEquals(30000,((javafx.scene.control.Slider)field(editor,"radiusSlider")).getMax());
             editor.dispose();return null;
         });
+    }
+
+    @Test void savedPreviewConnectionsNeverReplaceMainRoutesAndReturnAfterRouteFailure() throws Exception {
+        WebEngine engine=loadMap();
+        script(engine,"""
+            window.setCoursePreviewMode(true);
+            window.presentRoute({startLat:35.15,startLng:129.11,radius:1000,people:2,places:[
+              {recordId:1,placeId:'one',name:'도착',category:'CAFE',lat:35.16,lng:129.12}
+            ]},null,1000,true,false,[]);
+            """);
+        assertEquals(true,script(engine,"routeLines.filter(l=>l.attached).length===1 && routeLines.filter(l=>l.attached)[0].options.strokeStyle==='dash'"));
+        assertEquals(true,script(engine,"document.getElementById('next-range-legend').hidden && document.getElementById('place-search').hidden"));
+        script(engine,"""
+            window.showWalkingRoute({mode:'WALKING',totalDistance:100,totalTime:60,legs:[{
+              from:{name:'출발'},to:{name:'도착'},distance:100,time:60,
+              paths:[[{lat:35.15,lng:129.11},{lat:35.16,lng:129.12}]],steps:[]
+            }]},'',false);
+            """);
+        assertEquals(true,script(engine,"routeLines.filter(l=>l.attached).length===2 && routeLines.filter(l=>l.attached).every(l=>l.options.strokeStyle==='solid')"));
+        script(engine,"window.showWalkingRoute(null,'조회 실패',false)");
+        assertEquals(true,script(engine,"routeLines.filter(l=>l.attached).length===1 && routeLines.filter(l=>l.attached)[0].options.strokeStyle==='dash'"));
+        script(engine,"window.resetPlannerMap();window.setCoursePreviewMode(false);window.showWalkingRoute(null,'',false)");
+        assertEquals(0,((Number)script(engine,"routeLines.filter(l=>l.attached).length")).intValue());
     }
 
     @Test void transitWalkingStagesHaveDistinctLinesAndKeepRouteInteraction() throws Exception {

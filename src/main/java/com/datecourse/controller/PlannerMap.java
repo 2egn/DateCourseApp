@@ -50,6 +50,8 @@ final class PlannerMap {
     private Consumer<Place> reportPlace = place -> {};
     private Consumer<Long> addCandidate = id -> {};
     private boolean candidateActionsEnabled=true;
+    private boolean coursePreviewMode;
+    void setCoursePreviewMode(boolean enabled) { coursePreviewMode = enabled; }
     void setOnAddCandidate(Consumer<Long> listener) { addCandidate=listener; }
     void setCandidateActionsEnabled(boolean enabled) {
         candidateActionsEnabled=enabled;
@@ -68,6 +70,8 @@ final class PlannerMap {
     private final MapViewportLifecycle viewport;
     private boolean pageLoadPending;
     private final Consumer<String> error;
+    private Consumer<String> routeError;
+    void setOnRouteError(Consumer<String> listener) { routeError = listener; }
     private final MapBridge bridge;
     private boolean ready;
     private String uiStatus;
@@ -104,6 +108,7 @@ final class PlannerMap {
             if(pageLoadPending){pageLoadPending=false;view.getEngine().load(page.toString());}
         });
         this.error = error;
+        this.routeError = error;
         this.pageSource = pageSource;
         bridge = new MapBridge(() -> {
             ready = true;
@@ -280,6 +285,7 @@ final class PlannerMap {
             setRangeAdjusting(rangeAdjusting);
             sendOriginLock();
             setCandidateActionsEnabled(candidateActionsEnabled);
+            view.getEngine().executeScript("if(window.setCoursePreviewMode)window.setCoursePreviewMode(" + coursePreviewMode + ")");
             view.getEngine().executeScript("window.presentRoute(" + placePayload.plan(plan) + ","
                     + placePayload.place(candidate) + "," + radius + "," + locked + "," + fit + ","
                     + placePayload.places(candidates) + ")");
@@ -436,7 +442,7 @@ final class PlannerMap {
                     : mode().label()+" 경로를 불러오지 못했어요. 다시 조회해 주세요.";
             publishWalking();
             renderWalkingRoute(false);
-            error.accept(walkingMessage);
+            routeError.accept(walkingMessage);
         });
         Thread worker = new Thread(task, "planner-walking-route");
         worker.setDaemon(true);

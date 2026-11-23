@@ -16,12 +16,12 @@ class SavedCoursePresenterTest {
         var summary=new SavedCoursePresenter().present(course);
         assertTrue(summary.overview().contains("3곳 · 2명"));
         assertTrue(summary.overview().contains("가격 미확인 1곳"));
-        assertTrue(summary.details().contains("식사 1곳 · 카페 1곳 · 문화 1곳"));
-        assertTrue(summary.details().contains("출발지 중심 1000m (직선)"));
-        assertTrue(summary.details().contains("참고 1 · 추정 1 · 미확인 1곳"));
+        assertTrue(summary.details().contains("식사 1 + 카페 1 + 문화 1"));
+        assertTrue(summary.details().contains("전체 범위: 1000m"));
+        assertTrue(summary.details().contains("참고 1 + 추정 1 + 미확인 1"));
         assertTrue(summary.details().contains("2026.11.15 10:00"));
         assertEquals(3,summary.places().size());
-        assertTrue(summary.places().get(1).contains("2. 카페 · 카페"));
+        assertTrue(summary.places().get(1).contains("2. 카페(카페)"));
         assertTrue(summary.places().get(2).contains("가격 미확인"));
         assertFalse(summary.details().contains("소요시간"));
     }

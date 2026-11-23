@@ -24,14 +24,22 @@ public class SavedCourseController extends BasePageController {
     @FXML private javafx.scene.web.WebView previewMap;
     @FXML private javafx.scene.layout.StackPane mapPane;
     @FXML private Label mapStatus;
-    @FXML private javafx.scene.layout.VBox mapNotice;
-    @FXML private Button mapRetry;
+    @FXML private javafx.scene.layout.HBox mapNotice;
+    @FXML private Button mapRetry, toggleMapButton, requestRouteButton;
+    @FXML private javafx.scene.image.ImageView coursePreview;
+    @FXML private Label previewCaption;
     private PlannerMap map;
     private SavedCourseRepository repository;
     private UserContext userContext;
     private long viewVersion;
     private Consumer<SavedCourse> onOpen;
     private boolean busy;
+    private SavedCourse previewCourse;
+    private long previewVersion;
+    private boolean showingMap, selectedPreviewView, storedPreview, routeRequested;
+    private java.util.concurrent.CompletableFuture<PreviewImage> previewTask;
+    private record PreviewImage(javafx.scene.image.Image image, boolean stored) {}
+    private String mapFailure = "", routeFailure = "", routeMessage = "";
 
     private record CourseDetailRow(String label, String value) {}
     private record PlaceInfoRow(String order, String name, String price, String address) {}
@@ -45,19 +53,22 @@ public class SavedCourseController extends BasePageController {
         mapRetry.managedProperty().bind(mapRetry.visibleProperty());
         map = new PlannerMap(previewMap, (latitude, longitude) -> {}, this::showMapError);
         map.setCandidateActionsEnabled(false);
-        map.setAutomaticWalking(true);
+        map.setAutomaticWalking(false);
+        map.setCoursePreviewMode(true);
+        coursePreview.fitWidthProperty().bind(mapPane.widthProperty().subtract(8));
+        coursePreview.fitHeightProperty().bind(mapPane.heightProperty().subtract(8));
+        map.setOnRouteError(message -> {
+            routeFailure = message;
+            refreshMapNotice();
+        });
         map.setWalkingResultListener((route, message) -> {
-            if (route == null && message != null && !message.isBlank()) {
-                mapStatus.setText(message);
-                mapStatus.setVisible(true);
-            } else if (route != null) {
-                mapStatus.setVisible(false);
-            }
+            routeMessage = route == null && message != null ? message : "";
+            routeFailure = "";
+            refreshMapNotice();
         });
         map.setOnReady(() -> {
-            mapStatus.setVisible(false);
-            mapRetry.setVisible(false);
-            mapRetry.setDisable(false);
+            mapFailure = "";
+            refreshMapNotice();
         });
         messageLabel.managedProperty().bind(messageLabel.textProperty().isNotEmpty());
         summaryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -157,6 +168,14 @@ public class SavedCourseController extends BasePageController {
         showDetail(null);
     }
 
+    public void dispose() {
+        clear();
+        map.setOnReady(null);
+        map.setWalkingResultListener((route, message) -> {});
+        map.setOnRouteError(message -> {});
+        map.dispose();
+    }
+
     private String title(SavedCourse course) { return course.plan().title().isBlank() ? "내 코스" : course.plan().title(); }
     private String updatedText(SavedCourse course) {
         return course.updatedAt() == null ? "시각 미확인" : java.time.format.DateTimeFormatter
@@ -184,36 +203,126 @@ public class SavedCourseController extends BasePageController {
     }
 
     private void showPreview(SavedCourse course) {
+        long version = ++previewVersion;
+        previewCourse = course;
+        showingMap = selectedPreviewView = storedPreview = routeRequested = false;
+        mapFailure = routeFailure = routeMessage = "";
+        map.reset();
+        coursePreview.setImage(null);
         mapPane.setVisible(course != null);
         mapPane.setManaged(course != null);
-        mapRetry.setVisible(false);
-        if (course == null) {
-            map.reset();
-            mapStatus.setVisible(false);
-            return;
-        }
-        mapStatus.setText("실시간 지도를 불러오고 있어요…");
-        mapStatus.setVisible(!map.isReady());
+        refreshMapNotice();
+        if (course == null) return;
+        UserContext context = userContext;
+        SavedCourseRepository storage = repository;
+        var bytes = context == null || storage == null
+                ? java.util.concurrent.CompletableFuture.completedFuture(java.util.Optional.<byte[]>empty())
+                : context.preview(course, () -> storage.findPreview(context.session(), course));
+        previewTask = bytes.handleAsync((png, failure) -> {
+            if (failure != null) com.datecourse.service.AppDiagnostics.failure(
+                    com.datecourse.service.AppDiagnostics.Operation.PREVIEW_READ,
+                    com.datecourse.service.AppDiagnostics.Stage.DATABASE_READ, failure);
+            boolean stored = failure == null && png.isPresent();
+            try {
+                byte[] content = stored ? png.get() : new com.datecourse.service.CoursePreviewImage().render(course.plan());
+                var image = new javafx.scene.image.Image(new java.io.ByteArrayInputStream(content));
+                if (image.isError()) throw new java.io.IOException("Invalid preview image");
+                return new PreviewImage(image, stored);
+            } catch (Exception failureImage) {
+                com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.PREVIEW_READ,
+                        com.datecourse.service.AppDiagnostics.Stage.IMAGE_ENCODE, failureImage);
+                try {
+                    byte[] fallback = new com.datecourse.service.CoursePreviewImage().render(course.plan());
+                    return new PreviewImage(new javafx.scene.image.Image(new java.io.ByteArrayInputStream(fallback)), false);
+                } catch (java.io.IOException fallbackFailure) {
+                    throw new java.util.concurrent.CompletionException(fallbackFailure);
+                }
+            }
+        });
+        previewTask.whenComplete((preview, failure) -> javafx.application.Platform.runLater(() -> {
+            if (version != previewVersion || context != userContext || context != null && context.isClosed()) return;
+            if (failure == null) {
+                coursePreview.setImage(preview.image());
+                storedPreview = preview.stored();
+            }
+            if (!selectedPreviewView && !storedPreview) showMapPreview();
+            refreshMapNotice();
+        }));
+    }
+
+    private void showMapPreview() {
+        if (previewCourse == null) return;
+        showingMap = true;
+        mapFailure = "";
         map.setOriginLocked(true);
-        map.setCandidateActionsEnabled(false);
-        map.present(course.plan(), null, course.plan().radius(), true, true);
+        map.present(previewCourse.plan(), null, previewCourse.plan().radius(), true, true);
         map.load();
-        if (map.isReady()) mapStatus.setVisible(false);
+        refreshMapNotice();
+    }
+
+    @FXML private void onToggleMap() {
+        if (previewCourse == null) return;
+        selectedPreviewView = true;
+        if (showingMap) {
+            showingMap = routeRequested = false;
+            mapFailure = routeFailure = routeMessage = "";
+            map.reset();
+        } else showMapPreview();
+        refreshMapNotice();
+    }
+
+    @FXML private void onRequestRoute() {
+        if (previewCourse == null || !showingMap || !map.isReady() || previewCourse.plan().places().isEmpty()) return;
+        selectedPreviewView = routeRequested = true;
+        routeFailure = "";
+        map.requestWalkingRouteWhenReady();
+        refreshMapNotice();
     }
 
     private void showMapError(String message) {
+        mapFailure = message;
+        refreshMapNotice();
+    }
+
+    private void refreshMapNotice() {
+        boolean hasCourse = previewCourse != null;
+        boolean readyMap = showingMap && map.isReady() && mapFailure.isBlank();
+        previewMap.setVisible(hasCourse && showingMap);
+        coursePreview.setVisible(hasCourse && !readyMap);
+        toggleMapButton.setVisible(hasCourse);
+        toggleMapButton.setManaged(hasCourse);
+        toggleMapButton.setText(showingMap ? "이미지 보기" : "지도 보기");
+        requestRouteButton.setVisible(hasCourse && showingMap);
+        requestRouteButton.setManaged(hasCourse && showingMap);
+        boolean pendingRoute = routeRequested && !routeMessage.isBlank() && routeFailure.isBlank();
+        requestRouteButton.setDisable(!readyMap || pendingRoute || !hasCourse || previewCourse.plan().places().isEmpty());
+        requestRouteButton.setText(routeRequested && routeMessage.isBlank() ? "이동 경로 새로 조회" : "이동 경로 조회");
+        previewCaption.setText(!hasCourse ? "" : readyMap
+                ? routeRequested && routeMessage.isBlank() ? "현재 조회한 이동 경로 · 저장 시점과 다를 수 있어요"
+                : "직선 장소 연결 · 실제 이동 경로와 다를 수 있어요"
+                : storedPreview ? "저장된 미리보기 · 생성 시점의 정보예요" : "장소 연결도 · 실제 이동 경로와 다를 수 있어요");
+        String message = "";
+        if (hasCourse && !showingMap && coursePreview.getImage() == null) {
+            message = "미리보기를 불러오고 있어요…";
+        } else if (hasCourse && showingMap) {
+            if (!mapFailure.isBlank()) message = mapFailure + " · 기본 미리보기를 대신 표시해요.";
+            else if (!map.isReady()) message = "지도를 불러오고 있어요. 미리보기와 코스 정보는 계속 볼 수 있어요…";
+            else if (!routeFailure.isBlank()) message = routeFailure + " · 직선 장소 연결을 유지해요.";
+            else message = routeMessage;
+        }
         mapStatus.setText(message);
-        mapStatus.setVisible(true);
+        mapStatus.setVisible(!message.isBlank());
         mapRetry.setDisable(false);
-        mapRetry.setVisible(true);
+        mapRetry.setVisible(hasCourse && showingMap && (!mapFailure.isBlank() || !routeFailure.isBlank()));
+        mapRetry.setText(mapFailure.isBlank() && map.isReady() ? "이동 경로 다시 조회" : "지도 다시 불러오기");
     }
 
     @FXML private void onMapRetry() {
-        if (courseList.getSelectionModel().getSelectedItem() == null) return;
-        mapStatus.setText("실시간 지도를 다시 불러오고 있어요…");
-        mapStatus.setVisible(true);
-        mapRetry.setVisible(false);
-        map.reload();
+        if (previewCourse == null) return;
+        mapFailure = routeFailure = routeMessage = "";
+        if (map.isReady()) onRequestRoute();
+        else map.reload();
+        refreshMapNotice();
     }
 
     private void updateButtons() {

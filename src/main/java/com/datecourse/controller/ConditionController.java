@@ -318,6 +318,7 @@ public class ConditionController extends BasePageController {
         routeEditorController.dispose();
         feedback.dispose();
         setUserSession(null);
+        if (savedController != null) savedController.dispose();
         appliedPlan = null;
         lastSavedPlan = null;
         savedCourseId = null;
