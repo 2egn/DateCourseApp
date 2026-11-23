@@ -37,11 +37,13 @@ final class PlannerMap {
     private static final com.datecourse.service.TravelRouteService ROUTE_SERVICE=new com.datecourse.service.TravelRouteService();
     private RouteRouter routeRouter=ROUTE_SERVICE::route;
     private com.datecourse.model.TravelMode routedMode=com.datecourse.model.TravelMode.WALKING;
+    /** 현재 코스의 이동수단을 반환하며 코스가 없으면 도보를 사용한다. */
     private com.datecourse.model.TravelMode mode(){return plan==null?com.datecourse.model.TravelMode.WALKING:plan.travelMode();}
     private List<Stop> walkingStops = List.of();
     private TravelRoute walkingRoute;
     private Task<TravelRoute> walkingTask;
     private java.util.function.Function<String, Runnable> loadingUi = text -> () -> {};
+    /** 경로 조회 중 표시할 로딩 처리기를 등록한다. */
     void setLoadingUi(java.util.function.Function<String, Runnable> ui) { loadingUi = ui; }
     private long walkingVersion;
     private boolean walkingRequested;
@@ -51,15 +53,28 @@ final class PlannerMap {
     private Consumer<Long> addCandidate = id -> {};
     private boolean candidateActionsEnabled=true;
     private boolean coursePreviewMode;
+    /** 저장 코스용 직선 연결 미리보기 모드를 설정한다. */
     void setCoursePreviewMode(boolean enabled) { coursePreviewMode = enabled; }
+
+    /** 지도에서 후보를 추가할 때 실행할 동작을 등록한다. */
     void setOnAddCandidate(Consumer<Long> listener) { addCandidate=listener; }
+
+    /** 후보 추가 가능 여부를 지도 화면에 반영한다. */
     void setCandidateActionsEnabled(boolean enabled) {
         candidateActionsEnabled=enabled;
         if(ready)view.getEngine().executeScript("if(window.setCandidateActionsEnabled)window.setCandidateActionsEnabled("+enabled+")");
     }
+
+    /** 지도에서 장소 정정을 제보할 때 실행할 동작을 등록한다. */
     void setOnReport(Consumer<Place> listener) { reportPlace=listener; }
+
+    /** 코스 변경에 따른 이동 경로 자동 조회 여부를 설정한다. */
     void setAutomaticWalking(boolean enabled) { automaticWalking=enabled; }
+
+    /** 경로 결과와 상태 메시지를 받을 처리기를 등록한다. */
     void setWalkingResultListener(BiConsumer<TravelRoute,String> listener) { walkingResult=listener; }
+
+    /** 현재 경로 결과와 안내 메시지를 연결된 화면에 전달한다. */
     private void publishWalking() { walkingResult.accept(walkingRoute,walkingMessage); }
     private String walkingMessage = "";
     @FunctionalInterface
@@ -71,6 +86,7 @@ final class PlannerMap {
     private boolean pageLoadPending;
     private final Consumer<String> error;
     private Consumer<String> routeError;
+    /** 이동 경로 조회 오류를 받을 처리기를 등록한다. */
     void setOnRouteError(Consumer<String> listener) { routeError = listener; }
     private final MapBridge bridge;
     private boolean ready;
@@ -95,16 +111,19 @@ final class PlannerMap {
     private boolean rangeAdjusting;
     private Integer editingLegIndex, editingLegRadius;
 
+    /** 검색 범위를 조정 중인 구간과 반경을 기록한다. */
     void setEditingLeg(Integer index, Integer radius) {
         editingLegIndex = index;
         editingLegRadius = radius;
     }
     private Runnable originChangeBlocked = () -> {};
 
+    /** 공용 지도 페이지를 사용하는 지도 제어기를 만든다. */
     PlannerMap(WebView view, BiConsumer<Double, Double> selected, Consumer<String> error) {
         this(view, selected, error, MapPageServer::sharedPage);
     }
 
+    /** 지도 페이지 공급자와 선택·오류 콜백을 연결한다. */
     PlannerMap(WebView view, BiConsumer<Double, Double> selected, Consumer<String> error, PageSource pageSource) {
         this.view = view;
         viewport = new MapViewportLifecycle(view, () -> {
@@ -157,6 +176,7 @@ final class PlannerMap {
         });
     }
 
+    /** 현재 코스의 지도 이미지를 만들고 유효한 요청 결과만 표시한다. */
     private void captureRouteImage() {
         if (!ready || !view.isVisible() || view.getWidth() <= 0 || view.getHeight() <= 0
                 || plan == null || plan.places().isEmpty()) {
@@ -195,10 +215,12 @@ final class PlannerMap {
         });
     }
 
+    /** 이미지 요청과 코스가 현재 화면의 상태와 일치하는지 확인한다. */
     private boolean isCurrentRouteImage(long version, RoutePlan snapshot) {
         return ready && version == routeImageVersion && java.util.Objects.equals(plan, snapshot);
     }
 
+    /** 지도 페이지를 준비하고 표시 가능한 시점에 불러온다. */
     void load() {
         if (loaded) return;
         try {
@@ -213,6 +235,7 @@ final class PlannerMap {
         }
     }
 
+    /** 진행 중인 이미지 응답을 무효화하고 지도를 다시 불러온다. */
     void reload() {
         routeImageVersion++;
         pageLoadPending = false;
@@ -223,25 +246,37 @@ final class PlannerMap {
         load();
     }
 
+    /** 지도가 표시 중이며 새 이미지 캡처를 시작할 수 있는지 확인한다. */
     boolean canCapturePreview() {
         return ready && !capturing && view.isVisible() && view.getWidth()>0 && view.getHeight()>0;
     }
 
+    /** 지도와 Java 브리지가 준비되었는지 반환한다. */
     boolean isReady() { return ready; }
+
+    /** 지도 준비가 끝났을 때 실행할 동작을 등록한다. */
     void setOnReady(Runnable listener) { onReady = listener == null ? () -> {} : listener; }
 
-    /** FX-thread only. Preserve the complete SDK attribution and restore the original viewport. */
+    /** 지도 캡처 준비와 촬영 진행 단계를 구분한다. */
     enum CaptureStage { PREPARING, CAPTURING }
+
+    /** 기본 미리보기 크기로 코스를 캡처한다. */
     java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(RoutePlan snapshot) {
         return capturePreview(snapshot,stage->{});
     }
+
+    /** 기본 크기로 캡처하며 준비·촬영 진행 단계를 알린다. */
     java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(RoutePlan snapshot, Consumer<CaptureStage> progress) {
         return capturePreview(snapshot, com.datecourse.service.CoursePreviewImage.MAP_WIDTH,
                 com.datecourse.service.CoursePreviewImage.MAP_HEIGHT, progress);
     }
+
+    /** 지정한 이미지 크기로 코스를 캡처한다. */
     java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(RoutePlan snapshot, int targetWidth, int targetHeight) {
         return capturePreview(snapshot, targetWidth, targetHeight, stage->{});
     }
+
+    /** FX 스레드에서 지도를 캡처하고 원래 크기와 표시 상태를 복원한다. */
     private java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(
             RoutePlan snapshot, int targetWidth, int targetHeight, Consumer<CaptureStage> progress) {
         progress.accept(CaptureStage.PREPARING);
@@ -259,7 +294,7 @@ final class PlannerMap {
             timer.stop();
             view.resize(originalSize[0],originalSize[1]);view.setManaged(managed);
             try {view.getEngine().executeScript("if(window.endCourseCapture)window.endCourseCapture()");}
-            catch(Exception ignored) { /* Navigation may have disposed the page. */ }
+            catch(Exception ignored) { /* 화면 전환으로 이미 해제된 페이지일 수 있다. */ }
             finally {capturing=false;pendingCapture=null;cancelCapture=()->{};render(false);}
         };
         cancelCapture=()->{restore.run();result.completeExceptionally(new java.util.concurrent.CancellationException());};
@@ -274,9 +309,9 @@ final class PlannerMap {
                 if(!started[0]) {
                     if(view.getEngine().getLoadWorker().getState()==Worker.State.FAILED)
                         throw new java.io.IOException("지도 로딩 실패");
-                    // A first save may arrive before SDK/bridge readiness or the first visible layout.
+                    // 첫 저장은 지도·브리지 준비나 최초 화면 배치보다 먼저 요청될 수 있다.
                     if(!ready || !view.isVisible() || view.getWidth()<=0 || view.getHeight()<=0)return;
-                    // Let the native SDK animation finish before changing the viewport.
+                    // 지도 크기를 바꾸기 전에 SDK 카메라 이동이 끝나기를 기다린다.
                     if(!Boolean.TRUE.equals(view.getEngine().executeScript(
                             "window.inspectMapCamera && !window.inspectMapCamera().moving")))return;
                     progress.accept(CaptureStage.CAPTURING);
@@ -302,6 +337,7 @@ final class PlannerMap {
         return result;
     }
 
+    /** 이미지·경로 요청과 지도 수명주기를 정리한다. */
     void dispose() {
         routeImageVersion++;
         cancelCapture.run();
@@ -315,15 +351,18 @@ final class PlannerMap {
         view.getEngine().load(null);
     }
 
+    /** 단일 후보를 포함한 코스 표시 요청을 전달한다. */
     void present(RoutePlan plan, Place candidate, int radius, boolean locked, boolean fit) {
         presentCandidates(plan, candidate == null ? List.of() : List.of(candidate), candidate, radius, locked, fit);
     }
 
+    /** 다음 표시 시 코스 전체가 보이도록 맞춘다. */
     void presentCourse(RoutePlan plan, boolean locked) {
         fitWholeCourseOnRender = true;
         present(plan, null, plan.radius(), locked, true);
     }
 
+    /** 코스와 후보 상태를 갱신하고 지도 표시를 요청한다. */
     void presentCandidates(RoutePlan plan, List<Place> candidates, Place candidate, int radius, boolean locked, boolean fit) {
         this.plan = plan;
         this.candidates = List.copyOf(candidates);
@@ -335,6 +374,7 @@ final class PlannerMap {
         if(automaticWalking&&changed)requestWalkingRouteWhenReady();
     }
 
+    /** 준비된 지도에 코스·후보·검색 범위와 이동 경로를 반영한다. */
     private void render(boolean fit) {
         if (capturing || !ready) return;
         try {
@@ -369,6 +409,7 @@ final class PlannerMap {
         } catch (Exception failure) { error.accept("코스를 지도에 표시하지 못했어요."); }
     }
 
+    /** 선택한 위치와 코스·경로 상태를 초기화한다. */
     void reset() {
         plan = null;
         candidate = null;
@@ -386,16 +427,19 @@ final class PlannerMap {
         render(true);
     }
 
+    /** 검색 범위 또는 이동 경로가 보이도록 지도를 맞춘다. */
     void fit(boolean wholeRoute) {
         if (ready) view.getEngine().executeScript("window.fitRouteView(" + wholeRoute + ")");
     }
 
+    /** 출발지와 선택한 장소 전체가 보이도록 지도를 맞춘다. */
     void fitCourse() {
         if (ready && view.isVisible() && view.getWidth() > 0 && view.getHeight() > 0
                 && plan != null && !plan.places().isEmpty())
             view.getEngine().executeScript("if(window.fitConfirmedCourseView)window.fitConfirmedCourseView()");
     }
 
+    /** 지도가 준비되면 지정한 장소로 화면을 이동한다. */
     void focusPlace(Place place) {
         if (place == null) return;
         pendingFocus = place;
@@ -406,43 +450,61 @@ final class PlannerMap {
         }
     }
 
+    /** 선택한 구간의 이전 장소와 도착 장소가 보이도록 맞춘다. */
     void fitLeg(int index) {
         if (ready) view.getEngine().executeScript("window.fitRouteLeg("+index+")");
     }
 
+    /** 반경 조절 중인지 지도 카메라에 전달한다. */
     void setRangeAdjusting(boolean adjusting) {
         rangeAdjusting = adjusting;
         if (ready) view.getEngine().executeScript("if(window.setCameraRangeAdjusting)window.setCameraRangeAdjusting("+adjusting+")");
     }
 
+    /** 현재 조정 중인 검색 범위가 보이도록 지도를 맞춘다. */
     void ensureRangesVisible() { ensureRangesVisible(false); }
+
+    /** 현재 조정 중인 검색 범위가 보이도록 지도를 맞춘다. */
     void ensureRangesVisible(boolean adjusting) {
         if (ready) view.getEngine().executeScript("window.ensureRouteRangesVisible("+adjusting+")");
     }
 
+    /** 지도가 준비되면 지정한 장소의 상세 카드를 연다. */
     void showDetail(Place place) {
         view.requestFocus();
         pendingDetail = place;
         if (ready) render(false);
     }
 
+    /** 지도에서 장소를 선택할 때 실행할 동작을 등록한다. */
     void setOnPlaceSelected(Consumer<Long> listener) { placeSelected = listener; }
+
+    /** 출발지 변경이 제한되었을 때의 안내 동작을 등록한다. */
     void setOnOriginChangeBlocked(Runnable listener) { originChangeBlocked = listener; }
 
+    /** 출발지 변경 제한 상태를 기록하고 지도에 전달한다. */
     void setOriginLocked(boolean value) { originLocked = value; if (ready) sendOriginLock(); }
+
+    /** 화면에서 지정한 지도 안내 문구를 적용한다. */
     void setStatus(String message) { uiStatus = message; applyUiStatus(); }
+
+    /** 준비된 지도에 현재 안내 문구를 전달한다. */
     private void applyUiStatus() {
         if (ready && uiStatus != null) view.getEngine().executeScript("if(window.setPlannerStatus)window.setPlannerStatus(" +
                 JSON.valueToTree(uiStatus).toString() + ")");
     }
+
+    /** 지도에 출발지 변경 제한 여부를 전달한다. */
     private void sendOriginLock() {
         view.getEngine().executeScript("if (typeof window.setOriginLocked === 'function') window.setOriginLocked(" + originLocked + ")");
     }
 
+    /** 선택 구간의 이동 안내 표시를 전환한다. */
     void toggleWalkingExplanation() {
         if (ready) view.getEngine().executeScript("if (typeof window.toggleWalkingExplanation === 'function') window.toggleWalkingExplanation()");
     }
 
+    /** 출발지와 코스·후보에서 경로 조회에 사용할 방문 순서를 만든다. */
     private List<Stop> currentWalkingStops() {
         if (plan == null) return List.of();
         List<Stop> stops = new java.util.ArrayList<>();
@@ -454,6 +516,7 @@ final class PlannerMap {
         return List.copyOf(stops);
     }
 
+    /** 방문 순서나 이동수단이 바뀌면 이전 경로 요청과 결과를 무효화한다. */
     private boolean synchronizeWalkingRoute() {
         List<Stop> current = currentWalkingStops();
         if (current.equals(walkingStops) && routedMode==mode()) return false;
@@ -469,16 +532,19 @@ final class PlannerMap {
         return true;
     }
 
+    /** 조회 조건을 확인하고 새 이동 경로 요청을 시작한다. */
     void requestWalkingRoute() {
         requestWalkingRoute(true);
     }
 
+    /** 조회 가능한 방문 순서가 있으면 즉시 조회하거나 지도 준비를 기다린다. */
     void requestWalkingRouteWhenReady() {
         if (currentWalkingStops().size() < 2) return;
         if (!ready && !automaticWalking) { walkingPending = true;walkingMessage="지도 준비 후 "+mode().label()+" 시간을 조회해요.";publishWalking();return; }
         requestWalkingRoute(false);
     }
 
+    /** 조회 조건을 확인하고 새 이동 경로 요청을 시작한다. */
     private void requestWalkingRoute(boolean fitResult) {
         synchronizeWalkingRoute();
         walkingRequested = true;
@@ -509,32 +575,43 @@ final class PlannerMap {
         task.setOnCancelled(event -> finishLoading.run());
         task.setOnSucceeded(event -> {
             finishLoading.run();
-            if (walkingVersion != version || walkingTask != task) return;
-            walkingRoute = task.getValue();
-            walkingTask=null;
-            walkingMessage = "";
-            publishWalking();
-            renderWalkingRoute(fitResult);
+            applyRouteSuccess(task, version, fitResult);
         });
         task.setOnFailed(event -> {
             finishLoading.run();
-            if (walkingVersion != version || walkingTask != task) return;
-            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.TRAVEL_ROUTE,
-                    com.datecourse.service.AppDiagnostics.Stage.PROVIDER_REQUEST,task.getException());
-            walkingRoute = null;
-            walkingTask=null;
-            walkingMessage = task.getException() instanceof java.io.IOException
-                    || task.getException() instanceof IllegalArgumentException ? task.getException().getMessage()
-                    : mode().label()+" 경로를 불러오지 못했어요. 다시 조회해 주세요.";
-            publishWalking();
-            renderWalkingRoute(false);
-            routeError.accept(walkingMessage);
+            applyRouteFailure(task, version);
         });
         Thread worker = new Thread(task, "planner-walking-route");
         worker.setDaemon(true);
         worker.start();
     }
 
+    /** 최신 경로 요청의 성공 결과만 화면에 반영한다. */
+    private void applyRouteSuccess(Task<TravelRoute> task, long version, boolean fitResult) {
+        if (walkingVersion != version || walkingTask != task) return;
+        walkingRoute = task.getValue();
+        walkingTask=null;
+        walkingMessage = "";
+        publishWalking();
+        renderWalkingRoute(fitResult);
+    }
+
+    /** 최신 경로 요청의 실패를 기록하고 재시도 안내를 표시한다. */
+    private void applyRouteFailure(Task<TravelRoute> task, long version) {
+        if (walkingVersion != version || walkingTask != task) return;
+        com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.TRAVEL_ROUTE,
+                com.datecourse.service.AppDiagnostics.Stage.PROVIDER_REQUEST,task.getException());
+        walkingRoute = null;
+        walkingTask=null;
+        walkingMessage = task.getException() instanceof java.io.IOException
+                || task.getException() instanceof IllegalArgumentException ? task.getException().getMessage()
+                : mode().label()+" 경로를 불러오지 못했어요. 다시 조회해 주세요.";
+        publishWalking();
+        renderWalkingRoute(false);
+        routeError.accept(walkingMessage);
+    }
+
+    /** 현재 이동 경로와 안내 메시지를 지도에 표시한다. */
     private void renderWalkingRoute(boolean fit) {
         if (capturing || !ready) return;
         try {
@@ -544,9 +621,13 @@ final class PlannerMap {
         } catch (Exception failure) { error.accept("이동 경로를 지도에 표시하지 못했어요."); }
     }
 
+    /** 이동수단 구분 없이 사용할 경로 계산기를 주입한다. */
     void setWalkingRouter(WalkingRouter router) { routeRouter = (stops,mode)->router.route(stops); }
+
+    /** 이동수단별 경로 계산기를 주입한다. */
     void setRouteRouter(RouteRouter router){routeRouter=router;}
 
+    /** 경로 설정이 바뀌면 준비된 지도에서 다시 조회한다. */
     void refreshWalkingPreferences() {
         if (ready && currentWalkingStops().size() >= 2) requestWalkingRoute();
     }

@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 
 /**
  * 저장한 코스 화면 컨트롤러 (saved-course-view.fxml과 연결).
- * List and details use the same saved snapshot returned to the planner.
+ * 목록과 상세 화면은 플래너에 전달할 동일한 저장 코스를 사용한다.
  *
  * <p>구성 순서 (FXML과 동일):
  * <ol>
@@ -90,6 +90,18 @@ public class SavedCourseController extends BasePageController {
 
     /** 화면이 만들어질 때 한 번 실행됨. FXML 순서대로 각 영역을 설정한다. */
     @FXML public void initialize() {
+        configureCourseList();
+        configurePreviewMap();
+        configureDetailTables();
+        configureMessages();
+        // ----- 초기 화면 상태 -----
+        showDetail(null);                       // 아무것도 선택하지 않은 상태로 시작
+        summaryTable.setSelectionModel(null);   // 표는 줄 선택 불가 (읽기 전용)
+        placeTable.setSelectionModel(null);
+    }
+
+    /** 저장한 코스 목록의 폭과 재사용 셀, 선택 동작을 설정한다. */
+    private void configureCourseList() {
         // ----- [왼쪽] 코스 목록 영역 -----
         // 창 너비의 28%로 목록 폭을 조절 (240~420 사이)
         savedCourseRoot.widthProperty().addListener((obs, oldWidth, newWidth) ->
@@ -136,13 +148,16 @@ public class SavedCourseController extends BasePageController {
         });
         // 목록에서 코스를 선택하면 오른쪽 상세 화면을 갱신
         courseList.getSelectionModel().selectedItemProperty().addListener((o, old, value) -> showDetail(value));
+    }
 
+    /** 미리보기 지도와 경로 결과·오류 안내를 연결한다. */
+    private void configurePreviewMap() {
         // ----- [가운데] 지도 영역 -----
         // 안내 문구 박스는 mapStatus가 보일 때만 보이게 연결
         mapNotice.visibleProperty().bind(mapStatus.visibleProperty());
         mapNotice.managedProperty().bind(mapStatus.visibleProperty());
         mapRetry.managedProperty().bind(mapRetry.visibleProperty());
-        // 지도 객체 생성 및 설정 (후보 장소 버튼은 끄고, 도보 경로는 자동 표시)
+        // 지도 객체 생성 및 설정 (후보 장소 추가는 끄고, 이동 경로는 요청할 때만 조회)
         map = new PlannerMap(previewMap, (latitude, longitude) -> {}, this::showMapError);
         map.setCandidateActionsEnabled(false);
         map.setAutomaticWalking(false);
@@ -158,7 +173,10 @@ public class SavedCourseController extends BasePageController {
         });
         // 지도가 준비되면 안내 문구와 재시도 버튼을 숨김
         map.setOnReady(() -> { mapFailure = ""; refreshMapNotice(); });
+    }
 
+    /** 코스 요약·장소 표와 장소 클릭 시 지도 이동을 설정한다. */
+    private void configureDetailTables() {
         // ----- [가운데] 하단 정보 표 -----
         // 왼쪽: 코스 요약 표
         summaryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
@@ -201,24 +219,24 @@ public class SavedCourseController extends BasePageController {
             });
             return row;
         });
+    }
 
+    /** 메시지 표시 여부와 오류 알림을 연결한다. */
+    private void configureMessages() {
         // ----- [가운데] 안내 메시지 -----
         // 글자가 있을 때만 자리를 차지하게 연결
         messageLabel.managedProperty().bind(messageLabel.textProperty().isNotEmpty());
         // 메시지가 바뀌면 알림 처리 (오류 종류)
         watchNotice(messageLabel, PageFeedback.Kind.ERROR);
-
-        // ----- 초기 화면 상태 -----
-        showDetail(null);                       // 아무것도 선택하지 않은 상태로 시작
-        summaryTable.setSelectionModel(null);   // 표는 줄 선택 불가 (읽기 전용)
-        placeTable.setSelectionModel(null);
     }
+
 
     /** 화면을 열 때 필요한 것들을 전달받고, 코스 목록을 불러온다. */
     public void configure(SavedCourseRepository repository, UserContext context, Consumer<SavedCourse> onOpen) {
         configure(repository, context, onOpen, null);
     }
 
+    /** 사용자 세션과 저장소, 코스 불러오기·새 코스 동작을 연결한다. */
     public void configure(SavedCourseRepository repository, UserContext context, Consumer<SavedCourse> onOpen,
                           Runnable onNewCourse) {
         this.repository = repository;
@@ -242,6 +260,7 @@ public class SavedCourseController extends BasePageController {
         showDetail(null);
     }
 
+    /** 목록·이미지 응답을 무효화하고 미리보기 지도를 정리한다. */
     public void dispose() {
         clear();
         map.setOnReady(null);
@@ -422,6 +441,7 @@ public class SavedCourseController extends BasePageController {
         }));
     }
 
+    /** 선택한 코스를 지도에 표시하고 늦은 화면 맞춤 요청을 구분한다. */
     private void showMapPreview() {
         if (previewCourse == null) return;
         showingMap = true;
@@ -439,6 +459,7 @@ public class SavedCourseController extends BasePageController {
         refreshMapNotice();
     }
 
+    /** 사용자가 선택한 이미지·지도 보기 방식으로 전환한다. */
     @FXML private void onToggleMap() {
         if (previewCourse == null) return;
         selectedPreviewView = true;
@@ -451,6 +472,7 @@ public class SavedCourseController extends BasePageController {
         refreshMapNotice();
     }
 
+    /** 사용자가 요청한 경우에만 선택 코스의 이동 경로를 조회한다. */
     @FXML private void onRequestRoute() {
         if (previewCourse == null || !showingMap || !map.isReady() || previewCourse.plan().places().isEmpty()) return;
         selectedPreviewView = routeRequested = true;
@@ -459,14 +481,28 @@ public class SavedCourseController extends BasePageController {
         refreshMapNotice();
     }
 
+    /** 지도 오류를 기록하고 대체 미리보기와 재시도 안내를 갱신한다. */
     private void showMapError(String message) {
         mapFailure = message;
         refreshMapNotice();
     }
 
+    /** 지도·이미지 상태에 맞춰 미리보기와 안내를 갱신한다. */
     private void refreshMapNotice() {
         boolean hasCourse = previewCourse != null;
         boolean readyMap = showingMap && map.isReady() && mapFailure.isBlank();
+        updatePreviewControls(hasCourse, readyMap);
+        previewCaption.setText(buildPreviewCaption(hasCourse, readyMap));
+        String message = buildMapNotice(hasCourse);
+        mapStatus.setText(message);
+        mapStatus.setVisible(!message.isBlank());
+        mapRetry.setDisable(false);
+        mapRetry.setVisible(hasCourse && showingMap && (!mapFailure.isBlank() || !routeFailure.isBlank()));
+        mapRetry.setText(mapFailure.isBlank() && map.isReady() ? "이동 경로 다시 조회" : "지도 다시 불러오기");
+    }
+
+    /** 미리보기 화면과 지도 전환·경로 조회 버튼의 상태를 맞춘다. */
+    private void updatePreviewControls(boolean hasCourse, boolean readyMap) {
         previewMap.setVisible(hasCourse && showingMap);
         coursePreview.setVisible(hasCourse && !readyMap);
         toggleMapButton.setVisible(hasCourse);
@@ -477,24 +513,24 @@ public class SavedCourseController extends BasePageController {
         boolean pendingRoute = routeRequested && !routeMessage.isBlank() && routeFailure.isBlank();
         requestRouteButton.setDisable(!readyMap || pendingRoute || !hasCourse || previewCourse.plan().places().isEmpty());
         requestRouteButton.setText(routeRequested && routeMessage.isBlank() ? "이동 경로 새로 조회" : "이동 경로 조회");
-        previewCaption.setText(!hasCourse ? "" : readyMap
-                ? routeRequested && routeMessage.isBlank() ? "현재 조회한 이동 경로 · 저장 시점과 다를 수 있어요"
-                : "직선 장소 연결 · 실제 이동 경로와 다를 수 있어요"
-                : storedPreview ? "저장된 미리보기 · 생성 시점의 정보예요" : "장소 연결도 · 실제 이동 경로와 다를 수 있어요");
-        String message = "";
-        if (hasCourse && !showingMap && coursePreview.getImage() == null) {
-            message = "미리보기를 불러오고 있어요…";
-        } else if (hasCourse && showingMap) {
-            if (!mapFailure.isBlank()) message = mapFailure + " · 기본 미리보기를 대신 표시해요.";
-            else if (!map.isReady()) message = "지도를 불러오고 있어요. 미리보기와 코스 정보는 계속 볼 수 있어요…";
-            else if (!routeFailure.isBlank()) message = routeFailure + " · 직선 장소 연결을 유지해요.";
-            else message = routeMessage;
-        }
-        mapStatus.setText(message);
-        mapStatus.setVisible(!message.isBlank());
-        mapRetry.setDisable(false);
-        mapRetry.setVisible(hasCourse && showingMap && (!mapFailure.isBlank() || !routeFailure.isBlank()));
-        mapRetry.setText(mapFailure.isBlank() && map.isReady() ? "이동 경로 다시 조회" : "지도 다시 불러오기");
+    }
+
+    /** 현재 미리보기가 저장 이미지인지 지도·경로인지 짧게 설명한다. */
+    private String buildPreviewCaption(boolean hasCourse, boolean readyMap) {
+        if (!hasCourse) return "";
+        if (!readyMap) return storedPreview ? "저장된 미리보기 · 생성 시점의 정보예요" : "장소 연결도 · 실제 이동 경로와 다를 수 있어요";
+        if (routeRequested && routeMessage.isBlank()) return "현재 조회한 이동 경로 · 저장 시점과 다를 수 있어요";
+        return "직선 장소 연결 · 실제 이동 경로와 다를 수 있어요";
+    }
+
+    /** 미리보기 로딩과 지도·경로 오류 중 현재 필요한 안내를 고른다. */
+    private String buildMapNotice(boolean hasCourse) {
+        if (!hasCourse) return "";
+        if (!showingMap) return coursePreview.getImage() == null ? "미리보기를 불러오고 있어요…" : "";
+        if (!mapFailure.isBlank()) return mapFailure + " · 기본 미리보기를 대신 표시해요.";
+        if (!map.isReady()) return "지도를 불러오고 있어요. 미리보기와 코스 정보는 계속 볼 수 있어요…";
+        if (!routeFailure.isBlank()) return routeFailure + " · 직선 장소 연결을 유지해요.";
+        return routeMessage;
     }
 
     // ---------- [가운데] 버튼 상태 ----------

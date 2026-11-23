@@ -52,7 +52,11 @@ public final class RouteEditorController extends BasePageController {
     @FunctionalInterface public interface PlaceRefresh { List<Place> apply(List<Place> places) throws Exception; }
     private PlaceRefresh placeRefresh;
     private record CandidateSearch(List<Place> source,List<PlaceSearchService.NearbyPlace> matches) {}
+
+    /** 후보 검색 시 최신 장소 목록을 공급할 동작을 등록한다. */
     public void setPlaceRefresh(PlaceRefresh refresh) { placeRefresh = refresh; }
+
+    /** 장소 정정 제보를 전달할 동작을 등록한다. */
     public void setOnReport(Consumer<Place> report) { onReport = report; }
     @FXML private CheckBox includeUncertainPrice;
     @FXML private TextField placePriceField;
@@ -73,6 +77,7 @@ public final class RouteEditorController extends BasePageController {
     @FXML private Label walkingTimeLabel;
     @FXML private ComboBox<com.datecourse.model.TravelMode> travelModeBox;
     private boolean restoringTravelMode;
+    /** 편집 코스의 이동수단을 반환하며 코스가 없으면 도보를 사용한다. */
     private com.datecourse.model.TravelMode travelMode(){return original==null?com.datecourse.model.TravelMode.WALKING:original.travelMode();}
     private com.datecourse.model.TravelRoute walkingRoute;
     private String walkingMessage="";
@@ -100,8 +105,22 @@ public final class RouteEditorController extends BasePageController {
     private EditorState state = EditorState.CONDITION;
     private boolean changingState;
 
+    /** 편집 화면의 표시·입력·지도·목록 연결을 순서대로 준비한다. */
     @FXML
     private void initialize() {
+        configureVisibilityAndFilters();
+        configureMapAndTravelMode();
+        configureConditionInputs();
+        configureCandidateList();
+        registerConditionListeners();
+        configureCourseList();
+        configureEditorNavigation();
+        updateButtons();
+        setState(EditorState.CONDITION);
+    }
+
+    /** 조건 패널의 표시 규칙과 필터 구성을 연결한다. */
+    private void configureVisibilityAndFilters() {
         watchNotice(editorError, PageFeedback.Kind.ERROR);
         coursePane.managedProperty().bind(coursePane.visibleProperty());
         fitRouteButton.managedProperty().bind(fitRouteButton.visibleProperty());
@@ -122,6 +141,10 @@ public final class RouteEditorController extends BasePageController {
         ));
         subtypeField.managedProperty().bind(subtypeField.visibleProperty());
         tagField.managedProperty().bind(tagField.visibleProperty());
+    }
+
+    /** 편집 지도와 이동수단 변경 이벤트를 연결한다. */
+    private void configureMapAndTravelMode() {
         map = new PlannerMap(editMapView, (lat, lng) -> {}, editorError::setText);
         map.setAutomaticWalking(true);
         travelModeBox.getItems().setAll(com.datecourse.model.TravelMode.values());
@@ -138,6 +161,10 @@ public final class RouteEditorController extends BasePageController {
         map.setLoadingUi(this::beginLoading);
         map.setOnPlaceSelected(this::focusCandidate);
         map.setOnAddCandidate(id->{if(!candidatesDirty&&focusCandidate(id))onAddCandidate();});
+    }
+
+    /** 조건 입력의 기본값과 가격·후보 수 바인딩을 설정한다. */
+    private void configureConditionInputs() {
         activityBox.getItems().setAll("식사", "카페", "문화");
         activityBox.getSelectionModel().selectFirst();
         candidateLimitBox.getItems().setAll(NextPlaceCondition.DISPLAY_LIMITS);
@@ -167,6 +194,10 @@ public final class RouteEditorController extends BasePageController {
             button.managedProperty().bind(button.visibleProperty());
         placePriceField.setTooltip(new Tooltip("만원 단위 · 예: 0.7 = 7,000원, 0.82 = 8,200원\n화살표·스크롤은 0.1만원(1,000원)씩 조절해요."));
         includeUncertainPrice.setTooltip(new Tooltip("금액 또는 상한을 모르는 장소도 표시해요. 이 경우 가격 상한 충족 여부를 보장할 수 없어요. 숫자가 있는 추정 가격은 기본적으로 계산에 활용해요."));
+    }
+
+    /** 추천 후보 목록의 표시 방식과 선택 동작을 설정한다. */
+    private void configureCandidateList() {
         candidateList.setPlaceholder(new Label("조건을 정하고 추천받기를 눌러 주세요."));
         candidateList.setCellFactory(list -> new ListCell<>() {
             private final Label rank = new Label();
@@ -215,6 +246,10 @@ public final class RouteEditorController extends BasePageController {
             candidateIndex = value.intValue();
             showCandidate();
         });
+    }
+
+    /** 조건 변경 시 후보와 검색 범위를 갱신하도록 연결한다. */
+    private void registerConditionListeners() {
         activityBox.valueProperty().addListener((obs, old, value) -> {
             if(old!=null)rememberedFacets.put(old,currentFacets());
             refreshFacets();markCandidatesDirty();
@@ -243,6 +278,10 @@ public final class RouteEditorController extends BasePageController {
         editorError.visibleProperty().bind(editorError.managedProperty());
         rangeWarning.managedProperty().bind(rangeWarning.textProperty().isNotEmpty());
         rangeWarning.visibleProperty().bind(rangeWarning.managedProperty());
+    }
+
+    /** 편집 중인 장소 목록과 구간 반경 조절을 연결한다. */
+    private void configureCourseList() {
         placeList.setItems(draftPlaces);
         placeList.setPlaceholder(new Label("첫 장소를 추천받고 코스에 추가해 주세요."));
         placeList.setCellFactory(list -> new ListCell<>() {
@@ -273,20 +312,26 @@ public final class RouteEditorController extends BasePageController {
         selectedRadiusSlider.valueProperty().addListener((obs, old, value) -> {
             if (!syncingSelectedRadius) onUpdateSelectedRadius();
         });
+    }
+
+    /** 키보드 선택과 편집 패널 전환을 연결한다. */
+    private void configureEditorNavigation() {
         candidateList.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) { onCandidateDetail(); event.consume(); }
         });
         wirePane(coursePane, EditorState.COURSE);
         wirePane(conditionPane, EditorState.CONDITION);
         wirePane(choicePane, EditorState.CHOICE);
-        updateButtons();
-        setState(EditorState.CONDITION);
     }
 
+
+    /** 편집 화면에서 사용할 지도를 미리 불러온다. */
     public void prepareMap() { map.load(); }
+
+    /** 진행 중인 후보 응답을 무효화하고 지도를 정리한다. */
     public void dispose() { searchVersion++;map.dispose(); }
 
-    /** Reuse the live form so selected candidates and conditions also survive navigation. */
+    /** 화면 전환 시에도 후보와 조건을 유지하도록 기존 편집 폼을 재사용한다. */
     public void resume(RoutePlan context, List<Place> places) {
         boolean changed = original.startLat() != context.startLat() || original.startLng() != context.startLng()
                 || original.people() != context.people() || original.radius() != context.radius();
@@ -300,14 +345,17 @@ public final class RouteEditorController extends BasePageController {
         refreshMap(false);
     }
 
+    /** 현재 편집 내용을 독립적인 코스 객체로 반환한다. */
     public RoutePlan draftSnapshot() { return draft(); }
 
+    /** 편집 초안을 비우고 완료 흐름으로 공통 조건 화면에 돌아간다. */
     @FXML private void onResetDraft() {
         if (original == null) return;
         resetDraft();
         onFinish();
     }
 
+    /** 장소와 구간 반경·후보를 비우고 화면을 갱신한다. */
     void resetDraft() {
         draftPlaces.clear();
         arrivalRadii.clear();
@@ -317,6 +365,7 @@ public final class RouteEditorController extends BasePageController {
         notifyUser(PageFeedback.Kind.INFO, "편집 내용을 비웠어요.");
     }
 
+    /** 전달받은 코스로 새 편집을 시작하고 완료·취소 동작을 연결한다. */
     public void begin(RoutePlan snapshot, List<Place> places, Consumer<RoutePlan> complete, Runnable cancel) {
         original = snapshot;
         restoringTravelMode=true;travelModeBox.setValue(snapshot.travelMode());restoringTravelMode=false;
@@ -334,18 +383,22 @@ public final class RouteEditorController extends BasePageController {
         refreshMap(true);
     }
 
+    /** 이전 오류를 지우고 편집 지도를 다시 불러온다. */
     @FXML private void onReloadMap() {
         editorError.setText("");
         map.reload();
     }
 
+    /** 현재 장소 순서와 구간 반경으로 편집 코스를 만든다. */
     private RoutePlan draft() {
         return new RoutePlan(original.startLat(), original.startLng(), original.people(), original.radius(),
                 original.title(), draftPlaces, arrivalRadii,original.travelMode());
     }
 
+    /** 다음 장소 검색 반경을 100m 단위로 읽는다. */
     private int radius() { return (int) Math.round(radiusSlider.getValue() / 100) * 100; }
 
+    /** 현재 조건으로 후보를 조회하고 최신 검색 결과만 반영한다. */
     @FXML
     private void onRecommendNext() {
         if (original == null) return;
@@ -382,6 +435,7 @@ public final class RouteEditorController extends BasePageController {
         }
     }
 
+    /** 검색 결과가 없을 때 적용 가능한 조건 완화 방법을 표시한다. */
     private void showRecovery(com.datecourse.service.CandidateRecoveryService.Advice advice) {
         emptyResultMessage.setText(advice.message());
         for(Button button:List.of(includeUnknownRecovery,clearFacetsRecovery,expandRadiusRecovery,reviewPriceRecovery))button.setVisible(false);
@@ -399,17 +453,28 @@ public final class RouteEditorController extends BasePageController {
             button.setText(label);button.setVisible(true);
         }
     }
+
+    /** 가격 미확인 장소를 포함해 후보를 다시 검색한다. */
     @FXML private void onIncludeUnknownRecovery(){includeUncertainPrice.setSelected(true);onRecommendNext();}
+
+    /** 세부 필터를 비우고 후보를 다시 검색한다. */
     @FXML private void onClearFacetsRecovery(){onClearAdvancedFilters();onRecommendNext();}
+
+    /** 허용되는 최대 반경으로 후보를 다시 검색한다. */
     @FXML private void onExpandRadiusRecovery(){radiusSlider.setValue(radiusSlider.getMax());onRecommendNext();}
+
+    /** 가격 상한을 수정할 수 있도록 입력칸을 선택한다. */
     @FXML private void onReviewPriceRecovery(){placePriceField.requestFocus();placePriceField.selectAll();}
 
+    /** 선택된 추천 후보를 반환하며 선택이 없으면 null을 반환한다. */
     private Place candidate() { return candidateIndex < 0 || candidateIndex >= candidates.size() ? null : candidates.get(candidateIndex).place(); }
 
+    /** 후보 선택에 맞춰 지도와 버튼 상태를 갱신한다. */
     private void showCandidate() {
         refreshMap(false);
     }
 
+    /** 후보 선택과 검색 결과를 초기 상태로 되돌린다. */
     private void clearCandidate() {
         searchVersion++;
         emptyResults.setVisible(false);
@@ -423,6 +488,7 @@ public final class RouteEditorController extends BasePageController {
         editorError.setText("");
     }
 
+    /** 선택한 후보를 코스에 추가하고 변경 내용을 반영한다. */
     @FXML
     private void onAddCandidate() {
         if (state != EditorState.CHOICE || candidatesDirty) return;
@@ -435,6 +501,7 @@ public final class RouteEditorController extends BasePageController {
         map.fitLeg(draftPlaces.size()-1);
     }
 
+    /** 코스 변경 후 후보·요약·지도와 편집 상태를 갱신한다. */
     private void changed(boolean editingCourse) {
         int selected = placeList.getSelectionModel().getSelectedIndex();
         clearCandidate();
@@ -446,6 +513,7 @@ public final class RouteEditorController extends BasePageController {
         refreshMap(false);
     }
 
+    /** 편집 코스의 비용·이동수단·범위 요약을 갱신한다. */
     private void refreshSummary() {
         if (original == null) return;
         updateRadiusLimit();
@@ -462,6 +530,7 @@ public final class RouteEditorController extends BasePageController {
         if (!outsideRange.isEmpty() || !exceededLegs.isEmpty()) setState(EditorState.COURSE);
     }
 
+    /** 전체 범위를 고려해 다음 장소의 최대 검색 반경을 제한한다. */
     private void updateRadiusLimit() {
         int maximum = com.datecourse.service.NextPlaceRadius.maximum(draft());
         radiusSlider.setMax(maximum);
@@ -470,12 +539,18 @@ public final class RouteEditorController extends BasePageController {
         updateRadiusLabel();
         radiusSlider.setTooltip(new Tooltip("직전 장소(첫 장소는 출발지) 기준 직선 반경이에요.\n전체 범위를 덮는 반경까지, 현재 이동 방법과 전체 범위에 맞춰 조절해요."));
     }
+
+    /** 현재 선택된 검색 반경을 안내 문구에 표시한다. */
     private void updateRadiusLabel() {
         radiusLabel.setText("직선 반경 · " + radius() + "m (최대 " + (int) radiusSlider.getMax() + "m)");
     }
+
+    /** 초 단위 이동시간을 분 단위 문구로 바꾼다. */
     private static String minutes(long seconds) {
         return com.datecourse.model.TravelRoute.durationText(seconds);
     }
+
+    /** 장소로 이동하는 해당 구간의 시간 안내를 만든다. */
     private String walkingDescription(int index) {
         if(index<0||index>=draftPlaces.size())return "";
         if(walkingRoute==null||walkingRoute.legs().size()!=draftPlaces.size())return "\n"+travelMode().label()+" 시간 미확인";
@@ -484,6 +559,8 @@ public final class RouteEditorController extends BasePageController {
         String movement=leg.movementSummary();
         return "\n"+(movement.isBlank()?travelMode().label()+" "+minutes(leg.time()):movement+" · 합계 "+minutes(leg.time()))+" · 누적 "+minutes(total);
     }
+
+    /** 경로 결과와 조회 상태에 맞춰 총 이동시간을 표시한다. */
     private void refreshWalkingSummary() {
         if(draftPlaces.isEmpty()){
             walkingTimeLabel.setText("장소를 추가하면 "+travelMode().label()+" 시간을 계산해요.");
@@ -501,6 +578,7 @@ public final class RouteEditorController extends BasePageController {
         }
     }
 
+    /** 선택된 장소와 후보·조회 상태에 맞춰 편집 버튼을 갱신한다. */
     private void updateButtons() {
         boolean hasPlaces=!draftPlaces.isEmpty();
         coursePane.setVisible(hasPlaces);fitRouteButton.setVisible(hasPlaces);walkingSettingsButton.setVisible(hasPlaces&&travelMode()==com.datecourse.model.TravelMode.WALKING);
@@ -525,6 +603,7 @@ public final class RouteEditorController extends BasePageController {
         syncSelectedRadius();
     }
 
+    /** 선택한 구간의 저장 반경을 조절 슬라이더에 반영한다. */
     private void syncSelectedRadius() {
         int index = placeList.getSelectionModel().getSelectedIndex();
         boolean selected = index >= 0 && index < legs.size();
@@ -546,6 +625,7 @@ public final class RouteEditorController extends BasePageController {
         } finally { syncingSelectedRadius = false; }
     }
 
+    /** 선택한 구간의 반경 변경을 초안과 지도에 반영한다. */
     @FXML private void onUpdateSelectedRadius() {
         Place selected = placeList.getSelectionModel().getSelectedItem();
         if (selected == null || original == null) return;
@@ -556,8 +636,13 @@ public final class RouteEditorController extends BasePageController {
         map.ensureRangesVisible(selectedRadiusSlider.isValueChanging());
     }
 
+    /** 선택한 장소를 방문 순서에서 한 칸 앞으로 옮긴다. */
     @FXML private void onMoveUp() { move(-1); }
+
+    /** 선택한 장소를 방문 순서에서 한 칸 뒤로 옮긴다. */
     @FXML private void onMoveDown() { move(1); }
+
+    /** 선택한 장소를 지정한 방향으로 옮기고 코스를 갱신한다. */
     private void move(int direction) {
         int from = placeList.getSelectionModel().getSelectedIndex();
         int to = from + direction;
@@ -566,6 +651,8 @@ public final class RouteEditorController extends BasePageController {
         placeList.getSelectionModel().select(to);
         changed(true);
     }
+
+    /** 선택한 장소와 해당 구간 반경을 초안에서 제거한다. */
     @FXML private void onRemove() {
         int index = placeList.getSelectionModel().getSelectedIndex();
         if (index >= 0) {
@@ -574,15 +661,22 @@ public final class RouteEditorController extends BasePageController {
             changed(true);
         }
     }
+
+    /** 코스 범위를 검증하고 편집 결과를 완료 처리기에 전달한다. */
     @FXML private void onFinish() {
         if (original == null) return;
-        updateButtons(); // Guard the completion callback as well as the UI button.
+        updateButtons(); // 버튼 상태뿐 아니라 완료 콜백의 실행 조건도 확인한다.
         if (!outsideRange.isEmpty() || !exceededLegs.isEmpty()) { setState(EditorState.COURSE); return; }
         onComplete.accept(draft());
     }
+
+    /** 편집 초안을 유지한 채 취소 동작을 실행한다. */
     @FXML private void onCancel() { onCancel.run(); }
+
+    /** 다음 장소의 조건 패널로 전환한다. */
     @FXML private void onModifyConditions() { setState(EditorState.CONDITION); }
 
+    /** 하나의 편집 패널만 열고 해당 상태에 맞춰 지도를 갱신한다. */
     private void setState(EditorState requested) {
         resetDraftButton.setVisible(!draftPlaces.isEmpty()||!candidates.isEmpty());
         state = requested == EditorState.CHOICE && candidates.isEmpty()
@@ -599,11 +693,13 @@ public final class RouteEditorController extends BasePageController {
         } finally { changingState = false; }
         refreshMap(false);
     }
+
+    /** 패널 전환과 열린 패널을 유지하는 클릭 동작을 연결한다. */
     private void wirePane(TitledPane pane, EditorState target) {
         pane.getChildrenUnmodifiable().addListener((javafx.collections.ListChangeListener<javafx.scene.Node>) change -> {
             while (change.next()) for (javafx.scene.Node child : change.getAddedSubList()) {
                 if (!child.getStyleClass().contains("title")) continue;
-                // Watch the actual skin title as it is attached, including later skin replacements.
+                // 스킨이 교체되어도 실제로 붙은 제목 노드의 커서를 관리한다.
                 child.cursorProperty().addListener((property, previous, cursor) -> {
                     if (pane.isExpanded() && cursor != javafx.scene.Cursor.DEFAULT)
                         child.setCursor(javafx.scene.Cursor.DEFAULT);
@@ -621,10 +717,14 @@ public final class RouteEditorController extends BasePageController {
             }
         });
     }
+
+    /** 열린 패널과 닫힌 패널의 제목 커서를 구분한다. */
     private void updatePaneCursor(TitledPane pane) {
         pane.getChildrenUnmodifiable().stream().filter(node -> node.getStyleClass().contains("title"))
                 .forEach(title -> title.setCursor(pane.isExpanded() ? javafx.scene.Cursor.DEFAULT : javafx.scene.Cursor.HAND));
     }
+
+    /** 조건 변경으로 이전 후보를 무효화하고 재검색 필요 상태를 표시한다. */
     private void markCandidatesDirty() {
         updateFacetSummary();
         emptyResults.setVisible(false);
@@ -633,6 +733,8 @@ public final class RouteEditorController extends BasePageController {
         candidateStatus.setText(matchingCandidates.isEmpty()?"조건을 적용해 후보를 찾아 주세요.":"조건 변경됨 · 후보 업데이트 필요");
         candidateList.refresh();
     }
+
+    /** 표시 개수 제한을 적용하고 가능한 경우 기존 후보 선택을 유지한다. */
     private void displayCandidates() {
         if(candidateLimitBox.getValue()==null)return;
         Place selected=candidate();
@@ -645,6 +747,8 @@ public final class RouteEditorController extends BasePageController {
         recommendNextButton.setText(candidates.isEmpty() ? "후보 검색" : "후보 업데이트");
         candidateList.refresh();refreshMap(false);
     }
+
+    /** 종류·업종 선택의 전체 항목 안내를 설정한다. */
     private void installFacetLabels(ComboBox<String> box,String all) {
         box.setPromptText(all);
         box.setCellFactory(v->new ListCell<>(){@Override protected void updateItem(String text,boolean empty){
@@ -654,15 +758,23 @@ public final class RouteEditorController extends BasePageController {
             super.updateItem(text,empty);setText(text==null?all:text);
         }});
     }
+
+    /** 현재 선택된 세부 필터를 묶어 반환한다. */
     private FacetSelection currentFacets(){return new FacetSelection(subtypeBox.getValue(),detailTypeBox.getValue(),
             java.util.Set.copyOf(featureSelector.selectedTags()),priceFilterBox.getValue());}
+
+    /** 현재 활동에 해당하는 장소만 추린다. */
     private List<Place> activityPlaces(){return allPlaces.stream().filter(p->PlaceSearchService.categoryName(p.category()).equals(activityBox.getValue())).toList();}
+
+    /** 활동별로 기억한 필터 선택을 복원하며 선택지를 갱신한다. */
     private void refreshFacets() {
         if(subtypeBox==null)return;
         FacetSelection selection=java.util.Objects.equals(activityBox.getValue(),facetsActivity)?currentFacets():
                 rememberedFacets.getOrDefault(activityBox.getValue(),new FacetSelection(null,null,java.util.Set.of(),com.datecourse.model.PlacePriceFilter.ANY));
         populateFacets(selection);facetsActivity=activityBox.getValue();
     }
+
+    /** 장소 데이터에서 필터 선택지를 만들고 지정한 선택을 반영한다. */
     private void populateFacets(FacetSelection selection) {
         updatingFacets=true;
         try {
@@ -677,6 +789,8 @@ public final class RouteEditorController extends BasePageController {
             updateFacetVisibility();
         } finally {updatingFacets=false;}
     }
+
+    /** 선택한 종류에 맞는 세부 업종 목록을 갱신한다. */
     private void refreshDetailTypes(boolean retainMissing) {
         String selected=detailTypeBox.getValue();
         var types=new java.util.ArrayList<String>();types.add(null);
@@ -685,12 +799,17 @@ public final class RouteEditorController extends BasePageController {
         if(retainMissing&&selected!=null&&!types.contains(selected))types.add(selected);
         detailTypeBox.getItems().setAll(types);detailTypeBox.setValue(types.contains(selected)?selected:null);
     }
-    /** Refresh counts and options without silently broadening any applied condition. */
+
+    /** 적용된 조건을 넓히지 않고 필터 선택지와 개수를 갱신한다. */
     private void extendFacets(){populateFacets(currentFacets());}
+
+    /** 사용 가능한 필터의 표시 여부와 선택 요약을 갱신한다. */
     private void updateFacetVisibility() {
         subtypeField.setVisible(subtypeBox.getItems().size()>2);
         tagField.setVisible(true);updateFacetSummary();
     }
+
+    /** 선택한 필터를 개별 해제 가능한 요약 항목으로 표시한다. */
     private void updateFacetSummary() {
         var selections=new java.util.ArrayList<com.datecourse.ui.ExpandableFilterPane.Selection>();
         if(subtypeBox.getValue()!=null)selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("type","종류: "+subtypeBox.getValue(),()->subtypeBox.setValue(null),"type"));
@@ -700,6 +819,8 @@ public final class RouteEditorController extends BasePageController {
         featureSelector.selectedTags().stream().sorted().forEach(tag->selections.add(new com.datecourse.ui.ExpandableFilterPane.Selection("feature:"+tag.name(),tag.label(),()->featureSelector.selectedTags().remove(tag),"features")));
         filterPane.setSelections(selections);
     }
+
+    /** 기본 조건을 유지하고 세부 필터만 초기화한다. */
     @FXML private void onClearAdvancedFilters() {
         updatingFacets=true;
         try {subtypeBox.setValue(null);detailTypeBox.setValue(null);priceFilterBox.setValue(com.datecourse.model.PlacePriceFilter.ANY);
@@ -707,21 +828,37 @@ public final class RouteEditorController extends BasePageController {
         } finally {updatingFacets=false;}
         markCandidatesDirty();
     }
+
+    /** 추천 후보 패널에서 선택한 장소의 상세 카드를 연다. */
     @FXML private void onCandidateDetail() { if (state == EditorState.CHOICE && candidate() != null) map.showDetail(candidate()); }
+
+    /** 내 코스에서 선택한 장소의 상세 카드를 연다. */
     @FXML private void onPlaceDetail() {
         Place selected = placeList.getSelectionModel().getSelectedItem();
         if (selected != null) map.showDetail(selected);
     }
+
+    /** 현재 검색 범위가 보이도록 지도를 맞춘다. */
     @FXML private void onFitRange() { map.fit(false); }
+
+    /** 현재 이동 경로가 보이도록 지도를 맞춘다. */
     @FXML private void onFitRoute() { map.fit(true); }
 
+    /** 편집 코스를 반영하고 검색 범위에 맞춰 지도를 갱신한다. */
     public void fitRange() { refreshMap(true); }
+
+    /** 현재 코스의 이동 경로를 직접 조회한다. */
     @FXML private void onWalkingRoute() { map.requestWalkingRoute(); }
+
+    /** 이동 경로의 상세 안내 표시를 전환한다. */
     @FXML private void onWalkingExplanation() { map.toggleWalkingExplanation(); }
+
+    /** 도보 경로 설정 창을 열고 변경되면 경로를 다시 조회한다. */
     @FXML private void onTmapSettings() {
         if (TmapSettingsDialog.show(editMapView.getScene().getWindow())) map.refreshWalkingPreferences();
     }
 
+    /** 편집 상태와 선택 구간·후보를 지도에 반영한다. */
     private void refreshMap(boolean fit) {
         map.setCandidateActionsEnabled(!candidatesDirty);
         int index = placeList.getSelectionModel().getSelectedIndex();
@@ -731,6 +868,8 @@ public final class RouteEditorController extends BasePageController {
                         ? candidates.stream().map(PlaceSearchService.NearbyPlace::place).toList() : List.of(),
                 state == EditorState.CHOICE ? candidate() : null, radius(), true, fit);
     }
+
+    /** 지도의 장소 선택에 맞춰 후보 목록을 선택하고 해당 항목을 보여준다. */
     private boolean focusCandidate(long id) {
         for(int i=0;i<candidates.size();i++)if(candidates.get(i).place().recordId()==id) {
             setState(EditorState.CHOICE);
