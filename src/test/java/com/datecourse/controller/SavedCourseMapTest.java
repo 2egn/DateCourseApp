@@ -40,6 +40,8 @@ class SavedCourseMapTest {
                 window.presentRoute=function(){};window.showWalkingRoute=function(){};
                 window.resetPlannerMap=function(){};window.setOriginLocked=function(){};
                 window.setCandidateActionsEnabled=function(){};
+                window.focusCoursePlace=function(id){window.focusedPlace=id;};
+                window.fitConfirmedCourseView=function(){window.fitCalls=(window.fitCalls||0)+1;};
                 </script></html>
                 """);
             return new Form(root,controller,map,view);
@@ -275,6 +277,37 @@ class SavedCourseMapTest {
                 return null;
             });
         } finally {fx(()->{form.controller.dispose();return null;});}
+    }
+
+    @Test void masterNewCourseActionAndPlaceFocusPreserveOptInRouting() throws Exception {
+        try(var pool=pool()) {
+            var repository=new kr.ac.university.localdb.db.SavedCourseRepository(pool);var owner=new kr.ac.university.localdb.UserSession(7,"Demo");
+            var saved=repository.saveWithPreview(owner,null,PLAN,new com.datecourse.service.CoursePreviewImage().render(PLAN));
+            try(var context=new UserContext(owner,null,()->List.of(saved))) {
+                context.courses().get(5,TimeUnit.SECONDS);Form form=form();var routes=new AtomicInteger();var newCourses=new AtomicInteger();
+                try {
+                    fx(()->{form.map.setRouteRouter((stops,mode)->{routes.incrementAndGet();return route(stops);});
+                        form.controller.configure(repository,context,c->{},newCourses::incrementAndGet);return null;});
+                    awaitPreview(form);
+                    fx(()->{
+                        assertTrue((boolean)field(form.controller,"storedPreview"));assertFalse(form.view.isVisible());
+                        invoke(form.controller,"onNewCourseClick",null,null);assertEquals(1,newCourses.get());
+                        new Scene(form.root,1100,760);form.root.resize(1100,760);form.root.applyCss();form.root.layout();
+                        long imageVersion=(long)field(form.controller,"previewLoadVersion");
+                        var table=(TableView<?>)field(form.controller,"placeTable");
+                        var row=table.lookupAll(".table-row-cell").stream().filter(n->n instanceof TableRow<?> r&&!r.isEmpty()).map(n->(TableRow<?>)n).findFirst().orElseThrow();
+                        row.getOnMouseClicked().handle(null);
+                        assertEquals(imageVersion,field(form.controller,"previewLoadVersion"));
+                        assertTrue((boolean)field(form.controller,"showingMap"));assertEquals(PLAN,field(form.map,"plan"));
+                        ((MapBridge)field(form.map,"bridge")).onMapReady();
+                        assertEquals(1,((Number)form.view.getEngine().executeScript("window.focusedPlace")).intValue());
+                        assertEquals(0,routes.get());return null;
+                    });
+                    Thread.sleep(220); // The delayed whole-course fit must not override a place the user clicked.
+                    fx(()->{assertEquals(0,((Number)form.view.getEngine().executeScript("window.fitCalls||0")).intValue());return null;});
+                } finally {fx(()->{form.controller.dispose();return null;});}
+            }
+        }
     }
 
     private static com.zaxxer.hikari.HikariDataSource pool() throws Exception {

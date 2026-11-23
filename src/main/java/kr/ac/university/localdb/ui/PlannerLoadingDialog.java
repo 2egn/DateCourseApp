@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /** Short, nonblocking handoff between authenticated login and the JavaFX planner. */
-final class PlannerLoadingDialog extends JDialog implements AutoCloseable {
+final class PlannerLoadingDialog extends JDialog {
     private final JFrame owner;
     private final boolean ownerWasEnabled;
 
@@ -21,13 +21,13 @@ final class PlannerLoadingDialog extends JDialog implements AutoCloseable {
                 BorderFactory.createLineBorder(new Color(0xE5E8EB)),
                 BorderFactory.createEmptyBorder(28, 38, 28, 38)));
         JLabel message = new JLabel("화면과 장소 목록을 준비하고 있어요…");
-        message.setFont(UiTheme.BODY.deriveFont(Font.BOLD, 18f));
-        message.setForeground(UiTheme.TEXT);
+        message.setFont(LoginUI.BODY.deriveFont(Font.BOLD, 18f));
+        message.setForeground(LoginUI.TEXT);
         message.setAlignmentX(Component.CENTER_ALIGNMENT);
         JProgressBar progress = new JProgressBar();
         progress.setIndeterminate(true);
-        progress.setForeground(UiTheme.ACCENT);
-        progress.setBackground(UiTheme.INPUT);
+        progress.setForeground(LoginUI.ACCENT);
+        progress.setBackground(LoginUI.INPUT);
         progress.setBorderPainted(false);
         progress.setPreferredSize(new Dimension(250, 7));
         progress.setMaximumSize(new Dimension(250, 7));
@@ -47,7 +47,7 @@ final class PlannerLoadingDialog extends JDialog implements AutoCloseable {
         getRootPane().paintImmediately(0, 0, getWidth(), getHeight());
     }
 
-    @Override public void close() {
+    void close() {
         dispose();
         owner.setEnabled(ownerWasEnabled);
     }

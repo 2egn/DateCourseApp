@@ -77,10 +77,13 @@ final class PlannerMap {
     private String uiStatus;
     private Runnable onReady = () -> {};
     private boolean capturing;
+    private long routeImageVersion;
     private java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> pendingCapture;
     private Runnable cancelCapture=()->{};
     private boolean loaded;
     private RoutePlan plan;
+    private boolean fitWholeCourseOnRender;
+    private Place pendingFocus;
     private Place candidate;
     private List<Place> candidates = List.of();
     private Place pendingDetail;
@@ -131,6 +134,7 @@ final class PlannerMap {
             worker.setDaemon(true);
             worker.start();
         }, id -> Platform.runLater(()->placeSelected.accept(id)), () -> originChangeBlocked.run());
+        bridge.setOnRouteImageRequested(this::captureRouteImage);
         bridge.setOnAddCandidate(id -> Platform.runLater(()->{
             if(candidateActionsEnabled && candidates.stream().anyMatch(p->p.recordId()==id))addCandidate.accept(id);
         }));
@@ -153,6 +157,48 @@ final class PlannerMap {
         });
     }
 
+    private void captureRouteImage() {
+        if (!ready || !view.isVisible() || view.getWidth() <= 0 || view.getHeight() <= 0
+                || plan == null || plan.places().isEmpty()) {
+            error.accept("지도가 준비된 뒤 경로 이미지를 볼 수 있어요.");
+            return;
+        }
+        RoutePlan snapshot = plan;
+        long version = ++routeImageVersion;
+        int requestVersion = ((Number) view.getEngine().executeScript("window.routeImageRequestVersion || 0")).intValue();
+        int targetWidth = Math.max(1, ((Number) view.getEngine().executeScript(
+                "document.getElementById('map-surface').clientWidth")).intValue());
+        int targetHeight = Math.max(1, ((Number) view.getEngine().executeScript(
+                "document.getElementById('map-surface').clientHeight")).intValue());
+        capturePreview(snapshot, targetWidth, targetHeight).whenComplete((mapImage, captureFailure) -> {
+            if (captureFailure != null) {
+                Platform.runLater(() -> {
+                    if (!isCurrentRouteImage(version, snapshot)) return;
+                    if (ready) view.getEngine().executeScript("if(window.routeImageFailed)window.routeImageFailed()");
+                    error.accept("경로 이미지를 만들지 못했어요.");
+                });
+                return;
+            }
+            java.util.concurrent.CompletableFuture.supplyAsync(() -> {
+                try { return new com.datecourse.service.CoursePreviewImage().renderMapOnly(mapImage); }
+                catch (IOException failure) { throw new java.util.concurrent.CompletionException(failure); }
+            }).whenComplete((png, renderFailure) -> Platform.runLater(() -> {
+                if (!isCurrentRouteImage(version, snapshot)) return;
+                if (renderFailure != null) {
+                    if (ready) view.getEngine().executeScript("if(window.routeImageFailed)window.routeImageFailed()");
+                    error.accept("경로 이미지를 만들지 못했어요.");
+                    return;
+                }
+                String data = java.util.Base64.getEncoder().encodeToString(png);
+                view.getEngine().executeScript("if(window.showRouteImage)window.showRouteImage('data:image/png;base64," + data + "'," + requestVersion + ")");
+            }));
+        });
+    }
+
+    private boolean isCurrentRouteImage(long version, RoutePlan snapshot) {
+        return ready && version == routeImageVersion && java.util.Objects.equals(plan, snapshot);
+    }
+
     void load() {
         if (loaded) return;
         try {
@@ -168,6 +214,7 @@ final class PlannerMap {
     }
 
     void reload() {
+        routeImageVersion++;
         pageLoadPending = false;
         ready = false;
         loaded = false;
@@ -189,9 +236,17 @@ final class PlannerMap {
         return capturePreview(snapshot,stage->{});
     }
     java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(RoutePlan snapshot, Consumer<CaptureStage> progress) {
+        return capturePreview(snapshot, com.datecourse.service.CoursePreviewImage.MAP_WIDTH,
+                com.datecourse.service.CoursePreviewImage.MAP_HEIGHT, progress);
+    }
+    java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(RoutePlan snapshot, int targetWidth, int targetHeight) {
+        return capturePreview(snapshot, targetWidth, targetHeight, stage->{});
+    }
+    private java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage> capturePreview(
+            RoutePlan snapshot, int targetWidth, int targetHeight, Consumer<CaptureStage> progress) {
         progress.accept(CaptureStage.PREPARING);
         var result = new java.util.concurrent.CompletableFuture<java.awt.image.BufferedImage>();
-        if (capturing || !loaded && !ready || ready && !Boolean.TRUE.equals(view.getEngine().executeScript(
+        if (targetWidth <= 0 || targetHeight <= 0 || capturing || !loaded && !ready || ready && !Boolean.TRUE.equals(view.getEngine().executeScript(
                 "typeof window.beginCourseCapture === 'function'"))) {
             result.completeExceptionally(new IllegalStateException("지도가 준비되지 않았습니다."));
             return result;
@@ -226,7 +281,7 @@ final class PlannerMap {
                             "window.inspectMapCamera && !window.inspectMapCamera().moving")))return;
                     progress.accept(CaptureStage.CAPTURING);
                     originalSize[0]=view.getWidth();originalSize[1]=view.getHeight();
-                    view.setManaged(false);view.resize(com.datecourse.service.CoursePreviewImage.MAP_WIDTH,com.datecourse.service.CoursePreviewImage.MAP_HEIGHT);
+                    view.setManaged(false);view.resize(targetWidth,targetHeight);
                     Object began=view.getEngine().executeScript("window.beginCourseCapture("+placePayload.plan(snapshot)+")");
                     if(!Boolean.TRUE.equals(began))throw new IllegalStateException("지도 캡처를 시작하지 못했습니다.");
                     started[0]=true;return;
@@ -248,6 +303,7 @@ final class PlannerMap {
     }
 
     void dispose() {
+        routeImageVersion++;
         cancelCapture.run();
         pageLoadPending = false;
         viewport.close();
@@ -261,6 +317,11 @@ final class PlannerMap {
 
     void present(RoutePlan plan, Place candidate, int radius, boolean locked, boolean fit) {
         presentCandidates(plan, candidate == null ? List.of() : List.of(candidate), candidate, radius, locked, fit);
+    }
+
+    void presentCourse(RoutePlan plan, boolean locked) {
+        fitWholeCourseOnRender = true;
+        present(plan, null, plan.radius(), locked, true);
     }
 
     void presentCandidates(RoutePlan plan, List<Place> candidates, Place candidate, int radius, boolean locked, boolean fit) {
@@ -281,17 +342,26 @@ final class PlannerMap {
                 view.getEngine().executeScript("if(window.resetPlannerMap)window.resetPlannerMap()");
                 resetPending = false;
             }
+            view.getEngine().executeScript("if(window.setRouteViewVisible)window.setRouteViewVisible(" +
+                    (plan != null && !plan.places().isEmpty()) + ")");
             if (plan == null) return;
             setRangeAdjusting(rangeAdjusting);
             sendOriginLock();
             setCandidateActionsEnabled(candidateActionsEnabled);
             view.getEngine().executeScript("if(window.setCoursePreviewMode)window.setCoursePreviewMode(" + coursePreviewMode + ")");
+            boolean fitWholeCourse = fitWholeCourseOnRender;
             view.getEngine().executeScript("window.presentRoute(" + placePayload.plan(plan) + ","
                     + placePayload.place(candidate) + "," + radius + "," + locked + "," + fit + ","
-                    + placePayload.places(candidates) + ")");
+                    + placePayload.places(candidates) + "," + fitWholeCourse + ")");
+            fitWholeCourseOnRender = false;
             view.getEngine().executeScript("if(window.focusRouteLeg)window.focusRouteLeg("
                     + editingLegIndex + "," + editingLegRadius + ")");
             renderWalkingRoute(false);
+            if (pendingFocus != null) {
+                view.getEngine().executeScript("window.focusCoursePlace(" + pendingFocus.recordId() + ","
+                        + pendingFocus.lat() + "," + pendingFocus.lng() + ")");
+                pendingFocus = null;
+            }
             if (pendingDetail != null) {
                 view.getEngine().executeScript("window.openRoutePlace(" + pendingDetail.recordId() + ")");
                 pendingDetail = null;
@@ -318,6 +388,22 @@ final class PlannerMap {
 
     void fit(boolean wholeRoute) {
         if (ready) view.getEngine().executeScript("window.fitRouteView(" + wholeRoute + ")");
+    }
+
+    void fitCourse() {
+        if (ready && view.isVisible() && view.getWidth() > 0 && view.getHeight() > 0
+                && plan != null && !plan.places().isEmpty())
+            view.getEngine().executeScript("if(window.fitConfirmedCourseView)window.fitConfirmedCourseView()");
+    }
+
+    void focusPlace(Place place) {
+        if (place == null) return;
+        pendingFocus = place;
+        if (ready) {
+            view.getEngine().executeScript("window.focusCoursePlace(" + place.recordId() + ","
+                    + place.lat() + "," + place.lng() + ")");
+            pendingFocus = null;
+        }
     }
 
     void fitLeg(int index) {

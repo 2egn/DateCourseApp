@@ -10,8 +10,9 @@
         }
 
         body.course-capture #place-search, body.course-capture #map-status,
-        body.course-capture #map-legend, body.course-capture #place-detail,
-        body.course-capture #itinerary-rail, body.course-capture #walking-panel,
+        body.course-capture #range-tooltip, body.course-capture #place-detail,
+        body.course-capture #itinerary-rail, body.course-capture #route-controls,
+        body.course-capture #route-image-overlay, body.course-capture #route-image-zoom,
         body.course-capture .walking-route-tooltip, body.course-capture .place-pin-preview {
             display: none !important;
         }
@@ -21,35 +22,36 @@
         }
 
         .course-capture-pin {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             width: max-content;
-            max-width: 240px;
-            padding: 5px 10px 5px 5px;
+            max-width: 164px;
+            padding: 4px 8px 4px 4px;
             background: #fff;
             border: 1px solid #e4d4db;
             border-radius: 22px;
             box-shadow: 0 2px 7px #15233b26;
             color: #253244;
-            font: 600 15px/28px "Malgun Gothic", sans-serif;
+            font: 600 13px/26px "Malgun Gothic", sans-serif;
             white-space: nowrap;
         }
 
         .course-capture-pin b {
-            display: inline-block;
-            vertical-align: middle;
-            width: 28px;
-            height: 28px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 26px;
+            width: 26px;
+            height: 26px;
             text-align: center;
             border-radius: 50%;
             background: #ed5675;
             color: white;
+            font: 700 13px/1 "Malgun Gothic", sans-serif;
         }
 
         .course-capture-pin span {
-            display: inline-block;
-            vertical-align: middle;
-            margin-left: 6px;
-            max-width: 180px;
+            max-width: 112px;
             overflow: hidden;
             text-overflow: ellipsis;
         }
@@ -240,55 +242,132 @@
             line-height: 1.5;
         }
 
-        #map-legend {
-            position: absolute;
-            bottom: 68px;
-            right: 12px;
-            z-index: 10;
-            display: flex;
-            flex-wrap: wrap;
-            max-width: calc(100% - 24px);
-            gap: 8px 14px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 8px #0002;
-            font-size: 12px;
-            color: #4b5563;
-            pointer-events: none;
+
+
+
+
+
+        /* =====================================================================
+           지도 장소 상세 카드 크기와 버건디 테마
+           ===================================================================== */
+
+
+        /* 우측 상단 닫기(×) 버튼 위치 및 크기 축소 */
+        #place-detail .detail-close {
+            top: 10px !important;
+            right: 10px !important;
+            width: 26px !important;
+            height: 26px !important;
+            line-height: 24px !important;
+            font-size: 16px !important;
+            background: #F8F5EF !important;
+            color: #4A1827 !important;
+            border-radius: 8px !important;
+        }
+        #place-detail .detail-close:hover {
+            background: #E9DFD2 !important;
         }
 
-        #map-legend span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        /* 카테고리 & 장소명 크기 컴팩트화 */
+        #place-detail .detail-topline {
+            font-size: 11px !important;
+            color: #7A263A !important;
+            font-weight: bold !important;
+            margin-bottom: 2px !important;
+        }
+        #place-detail #detail-title {
+            font-size: 16px !important;
+            color: #4A1827 !important;
+            margin: 0 28px 8px 0 !important;
+            line-height: 1.3 !important;
         }
 
-        .origin-symbol {
-            width: 12px;
-            height: 12px;
-            border: 3px solid #2563eb;
-            border-radius: 50%;
+        /* 가격/주소/세부분류 행 간격 축소 */
+        #place-detail .detail-facts {
+            margin: 0 0 6px 0 !important;
+            gap: 4px 10px !important;
+            font-size: 12px !important;
+        }
+        #place-detail .detail-facts dt {
+            color: #8C7379 !important;
+            font-weight: normal !important;
+        }
+        #place-detail .detail-facts dd {
+            color: #4A1827 !important;
+            font-weight: bold !important;
         }
 
-        .next-range-symbol {
-            width: 14px;
-            height: 14px;
-            border: 2px dashed #15803d;
-            border-radius: 50%;
+        /* 부가 설명 문구 간격 축소 */
+        #place-detail .detail-extra {
+            font-size: 11.5px !important;
+            color: #6b7684 !important;
+            margin: 4px 0 8px 0 !important;
+            line-height: 1.4 !important;
         }
 
-        .course-symbol {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 18px;
-            height: 20px;
-            border-radius: 9px 9px 9px 0;
-            background: #e54870;
-            color: white;
-            font-style: normal;
-            font-weight: bold;
+        /* 하단 액션 버튼 영역 ('코스에 추가', '카카오맵에서 보기') */
+        #place-detail .detail-actions {
+            display: flex !important;
+            gap: 8px !important;
+            margin-top: 6px !important;
+        }
+
+        /* 분홍색으로 튀던 '코스에 추가' 버튼 -> 메인 버건디(#7A263A)로 통일 */
+        #place-detail .detail-add {
+            flex: 1 !important;
+            height: 34px !important;
+            padding: 0 12px !important;
+            background: #7A263A !important;
+            color: #FFFFFF !important;
+            border: none !important;
+            border-radius: 9px !important;
+            font-size: 12.5px !important;
+            font-weight: bold !important;
+        }
+        #place-detail .detail-add:hover {
+            background: #4A1827 !important;
+        }
+
+        /* '카카오맵에서 보기' 버튼 -> 연베이지 보조 버튼으로 통일 */
+        #place-detail .detail-map-link {
+            flex: 1 !important;
+            height: 34px !important;
+            line-height: 34px !important;
+            padding: 0 12px !important;
+            background: #E9DFD2 !important;
+            color: #4A1827 !important;
+            border: none !important;
+            border-radius: 9px !important;
+            font-size: 12px !important;
+            font-weight: bold !important;
+            text-align: center !important;
+            text-decoration: none !important;
+        }
+        #place-detail .detail-map-link:hover {
+            background: #dfd2c0 !important;
+        }
+
+        /* 맨 아래 '정보 정정 제보' & 참고 안내 한 줄로 컴팩트 정리 */
+        #place-detail .detail-report {
+            display: inline-block !important;
+            margin-top: 6px !important;
+            font-size: 11px !important;
+            color: #7A263A !important;
+        }
+        #place-detail .detail-note {
+            display: inline-block !important;
+            margin: 6px 0 0 8px !important;
+            font-size: 11px !important;
+            color: #8C7379 !important;
+        }
+
+        /* 지도 상단 검색 버튼(#search-submit)도 분홍색 대신 버건디로 통일 */
+        #search-submit {
+            background: #7A263A !important;
+            color: #FFFFFF !important;
+        }
+        #search-submit:hover {
+            background: #4A1827 !important;
         }
     </style>
 </head>
@@ -312,9 +391,30 @@
 </section>
 <div id="map-surface">
     <div id="map"></div>
-    <div id="map-legend" aria-label="지도 범위와 마커 안내"><span><i class="origin-symbol"></i><span id="route-range-label">출발지 중심 전체 범위</span></span><span
-            id="next-range-legend" hidden><i class="next-range-symbol"></i><span
-            id="next-range-label">이전 장소 기준 범위</span></span><span><i class="course-symbol">1</i>장소 · 코스 순서</span></div>
+    <section id="route-controls" hidden aria-label="지도 보기와 구간 안내">
+        <div id="route-view-toolbar" aria-label="코스 보기 방식">
+            <div class="route-view-buttons">
+                <button id="route-map-button" type="button" aria-pressed="true">지도 보기</button>
+                <button id="route-image-button" type="button" aria-pressed="false">이미지 보기</button>
+            </div>
+        </div>
+        <section id="walking-panel" hidden aria-label="구간 안내">
+            <div id="walking-summary" class="sr-only" role="status" aria-live="polite"></div>
+            <div id="walking-label">구간 안내</div>
+            <div id="walking-leg-list" role="group" aria-label="구간 안내 선택"></div>
+            <details id="walking-details" hidden>
+                <summary>선택 구간 안내</summary>
+                <div id="walking-detail-heading" class="walking-detail-heading"></div>
+                <div id="walking-detail-facts" class="walking-detail-facts"></div>
+                <ol id="walking-directions"></ol>
+            </details>
+        </section>
+    </section>
+    <div id="route-image-overlay" hidden aria-label="경로 이미지">
+        <img id="route-image" alt="코스 이동 경로 지도 이미지" role="button" tabindex="0" title="이미지 크게 보기"
+             aria-label="이미지를 눌러 크게 보기">
+    </div>
+    <div id="range-tooltip" role="tooltip" hidden></div>
     <section id="itinerary-rail" class="itinerary-rail" aria-label="코스와 주변 장소 탐색" hidden>
         <div class="planner-tabs" role="tablist" aria-label="장소 목록">
             <button id="course-tab" role="tab" aria-selected="true" aria-controls="itinerary-viewport" type="button">추천
@@ -348,16 +448,15 @@
     </section>
     <style>
         #walking-panel {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            right: 12px;
-            z-index: 8;
-            padding: 10px 12px;
-            border: 1px solid #dbe2eb;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, .97);
-            box-shadow: 0 3px 10px #1e293b15;
+            position: static;
+            width: max-content;
+            max-width: 100%;
+            margin-top: 4px;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
             font-size: 12px;
             color: #1e3a5f;
         }
@@ -368,30 +467,40 @@
 
         #walking-leg-list {
             display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            margin-top: 8px;
-            padding-bottom: 3px;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 0;
+        }
+
+        #walking-label {
+            margin: 0 0 4px 4px;
+            color: #a52950;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.2;
         }
 
         .walking-leg-button {
-            flex: 0 0 auto;
-            max-width: 260px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            display: grid;
+            place-items: center;
+            flex: 0 0 34px;
+            width: 34px;
+            height: 34px;
             border: 1px solid #d9e0e8;
-            border-left-width: 4px;
-            border-radius: 6px;
-            padding: 6px 8px;
+            border-radius: 50%;
+            padding: 0;
             background: #fff;
             color: #334155;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
         }
 
         .walking-leg-button[aria-pressed="true"] {
-            background: #edf2f7;
-            font-weight: bold;
+            border-color: #a52950;
+            background: #a52950;
+            color: #fff;
+            box-shadow: 0 2px 6px #a5295040;
         }
 
         .walking-route-tooltip {
@@ -520,18 +629,37 @@
         }
 
         #walking-panel details {
-            margin-top: 6px;
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            z-index: 72;
+            width: min(360px, calc(100vw - 24px));
+            max-height: min(48vh, 360px);
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin: 0;
+            padding: 11px 18px 11px 13px;
+            border: 1px solid #dbe2eb;
+            border-radius: 11px;
+            background: rgba(255,255,255,.98);
+            box-shadow: 0 5px 18px #1e293b24;
+            scrollbar-width: none;
         }
+
+        #walking-panel details::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
         #walking-panel summary {
             cursor: pointer;
         }
 
+        .walking-detail-heading { margin-top: 8px; font-weight: 700; color: #253244; }
+        .walking-detail-facts { margin-top: 4px; color: #526174; line-height: 1.5; }
+
         #walking-directions {
-            max-height: 130px;
-            overflow-y: auto;
+            max-height: none;
+            overflow: visible;
             margin: 6px 0 0;
-            padding-left: 0;
+            padding: 0 8px 0 24px;
             list-style: none;
         }
 
@@ -539,15 +667,12 @@
             margin: 4px 0;
             line-height: 1.5;
         }
+
     </style>
-    <section id="walking-panel" hidden aria-label="TMAP 도보 경로 안내">
-        <div id="walking-summary" role="status" aria-live="polite"></div>
-        <div id="walking-leg-list" role="group" aria-label="도보 구간 선택"></div>
-        <details id="walking-details" open hidden>
-            <summary>선택 구간 안내</summary>
-            <ol id="walking-directions"></ol>
-        </details>
-    </section>
+</div>
+<div id="route-image-zoom" hidden role="dialog" aria-modal="true" aria-label="경로 이미지 크게 보기">
+    <button id="route-image-zoom-close" type="button" aria-label="크게 보기 닫기">×</button>
+    <img id="route-image-zoomed" alt="코스 이동 경로 지도 이미지 크게 보기">
 </div>
 <div id="map-status" role="status" aria-live="polite">지도를 불러오고 있어요…</div>
 <script src="./kakao-config.js"></script>
@@ -556,5 +681,84 @@
 <script src="./pin-pointer-gesture.js"></script>
 <script src="./camera-motion.js"></script>
 <script src="./map.js"></script>
+<script>
+    (function () {
+        const controls = document.getElementById('route-controls');
+        const toolbar = document.getElementById('route-view-toolbar');
+        const overlay = document.getElementById('route-image-overlay');
+        const image = document.getElementById('route-image');
+        const zoom = document.getElementById('route-image-zoom');
+        const zoomedImage = document.getElementById('route-image-zoomed');
+        const mapButton = document.getElementById('route-map-button');
+        const imageButton = document.getElementById('route-image-button');
+        let courseKey = null;
+        window.routeImageRequestVersion = 0;
+        function invalidateImage() {
+            window.routeImageRequestVersion++;
+            selectView(false);
+            image.removeAttribute('src');
+            zoomedImage.removeAttribute('src');
+            toolbar.style.visibility = '';
+        }
+        window.setRouteImageCourse = function (plan) {
+            const nextKey = JSON.stringify(plan);
+            if (courseKey === nextKey) return;
+            courseKey = nextKey;
+            invalidateImage();
+        };
+        function selectView(isImage) {
+            overlay.hidden = !isImage;
+            mapButton.setAttribute('aria-pressed', String(!isImage));
+            imageButton.setAttribute('aria-pressed', String(isImage));
+            if (!isImage) zoom.hidden = true;
+        }
+        mapButton.addEventListener('click', function () {
+            window.routeImageRequestVersion++;
+            selectView(false);
+            requestAnimationFrame(function () {
+                if (window.fitConfirmedCourseView) window.fitConfirmedCourseView();
+            });
+        });
+        imageButton.addEventListener('click', function () {
+            window.routeImageRequestVersion++;
+            if (window.javaMapBridge) window.javaMapBridge.requestRouteImage();
+        });
+        function openZoom() {
+            if (!image.src) return;
+            zoomedImage.src = image.src;
+            zoom.hidden = false;
+            document.getElementById('route-image-zoom-close').focus();
+        }
+        function closeZoom() { zoom.hidden = true; }
+        image.addEventListener('click', openZoom);
+        image.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openZoom(); }
+        });
+        zoom.addEventListener('click', closeZoom);
+        document.getElementById('route-image-zoom-close').addEventListener('click', closeZoom);
+        zoom.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') closeZoom();
+        });
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && !zoom.hidden) closeZoom();
+        });
+        window.setRouteViewVisible = function (visible) {
+            controls.hidden = !visible;
+            if (!visible) invalidateImage();
+        };
+        window.prepareRouteImageCapture = function () {
+            selectView(false);
+            toolbar.style.visibility = 'hidden';
+        };
+        window.showRouteImage = function (dataUrl, requestVersion) {
+            if (requestVersion !== undefined && requestVersion !== window.routeImageRequestVersion) return;
+            image.src = dataUrl;
+            zoomedImage.src = dataUrl;
+            toolbar.style.visibility = '';
+            selectView(true);
+        };
+        window.routeImageFailed = function () { toolbar.style.visibility = ''; };
+    }());
+</script>
 </body>
 </html>

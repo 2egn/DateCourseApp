@@ -1,17 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
- fx:controller="com.datecourse.controller.MyPageController" spacing="18" styleClass="my-page">
- <Label text="내 페이지" styleClass="condition-title"/>
- <Label text="로그인한 회원 정보" styleClass="planner-caption"/>
- <VBox spacing="16" maxWidth="560" styleClass="profile-card">
-  <VBox spacing="6"><Label text="이름" styleClass="field-label"/><Label fx:id="nameLabel" text="—" wrapText="true"/></VBox>
-  <VBox spacing="6"><Label text="이메일" styleClass="field-label"/><Label fx:id="emailLabel" text="—" wrapText="true"/></VBox>
-  <VBox spacing="6"><Label text="전화번호" styleClass="field-label"/><Label fx:id="phoneLabel" text="—" wrapText="true"/></VBox>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.datecourse.controller.MyPageController" styleClass="my-page">
+
+ <VBox alignment="CENTER" spacing="20" maxWidth="460" styleClass="mypage-container">
+
+  <!-- 1. 상단 프로필 헤더 (전체 이름 배지 + 제목) -->
+  <VBox alignment="CENTER" spacing="8">
+   <StackPane styleClass="profile-avatar">
+    <Label fx:id="avatarLabel" text="—" styleClass="profile-avatar-icon"/>
+   </StackPane>
+   <Label text="마이페이지" styleClass="condition-title"/>
+   <Label text="내 계정 정보와 저장한 데이트 코스를 관리해요" styleClass="planner-caption"/>
+  </VBox>
+
+  <!-- 2. 회원 정보 카드 -->
+  <VBox spacing="0" styleClass="profile-card">
+   <HBox alignment="CENTER_LEFT" styleClass="profile-row">
+    <Label text="이름" styleClass="field-label"/>
+    <Region HBox.hgrow="ALWAYS"/>
+    <Label fx:id="nameLabel" text="—" wrapText="true" styleClass="profile-value"/>
+   </HBox>
+
+   <HBox alignment="CENTER_LEFT" styleClass="profile-row">
+    <Label text="이메일" styleClass="field-label"/>
+    <Region HBox.hgrow="ALWAYS"/>
+    <Label fx:id="emailLabel" text="—" wrapText="true" styleClass="profile-value"/>
+   </HBox>
+
+   <HBox alignment="CENTER_LEFT" styleClass="profile-row-last">
+    <Label text="전화번호" styleClass="field-label"/>
+    <Region HBox.hgrow="ALWAYS"/>
+    <Label fx:id="phoneLabel" text="—" wrapText="true" styleClass="profile-value"/>
+   </HBox>
+  </VBox>
+
+  <!-- 상태 알림 메시지 -->
+  <Label fx:id="statusLabel" wrapText="true" styleClass="sub-text"/>
+
+  <!-- 3. 하단 액션 버튼 영역 -->
+  <VBox spacing="10" alignment="CENTER">
+   <Button text="저장한 데이트 코스 보기" onAction="#onSavedCourses" maxWidth="500" styleClass="header-bg-btn"/>
+   <HBox spacing="10" alignment="CENTER">
+    <Button text="코스 만들기로" onAction="#onBack" HBox.hgrow="ALWAYS" maxWidth="500" styleClass="header-secondary"/>
+    <Button text="정보 새로고침" onAction="#onRefresh" HBox.hgrow="ALWAYS" maxWidth="500" styleClass="header-secondary"/>
+   </HBox>
+  </VBox>
+
  </VBox>
- <Label fx:id="statusLabel" wrapText="true"/>
- <FlowPane hgap="8" vgap="8"><Button text="코스 만들기로" onAction="#onBack" styleClass="header-secondary"/>
- <Button text="저장한 코스" onAction="#onSavedCourses" styleClass="header-save"/>
- <Button text="새로고침" onAction="#onRefresh" styleClass="header-secondary"/></FlowPane>
-</VBox>
+</StackPane>

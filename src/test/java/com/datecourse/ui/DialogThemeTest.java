@@ -31,7 +31,7 @@ class DialogThemeTest {
             assertEquals(primary.getHeight(),secondary.getHeight(),.1);assertEquals(primary.getHeight(),danger.getHeight(),.1);
             assertEquals(field.getHeight(),combo.getHeight(),.1);
             assertNotEquals(primary.getBackground().getFills().getFirst().getFill(),secondary.getBackground().getFills().getFirst().getFill());
-            assertEquals(Color.web("#191f28"),primary.getTextFill());
+            assertEquals(Color.WHITE,primary.getTextFill());
             assertTrue(((Text)folded.lookup(".title .text")).getFont().getSize()<title.getFont().getSize());
             var alert=new Alert(Alert.AlertType.CONFIRMATION,"저장하지 않은 내용이 있어요.",ButtonType.OK,ButtonType.CANCEL);
             DialogTheme.apply(alert);int count=alert.getDialogPane().getStylesheets().size();DialogTheme.apply(alert);

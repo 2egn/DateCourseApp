@@ -15,6 +15,9 @@ public final class MapBridge {
     private final Runnable originChangeBlocked;
     private Consumer<Long> reportPlace = ignored -> {};
     private Consumer<Long> addCandidate = ignored -> {};
+    private Runnable routeImageRequested = () -> {};
+    public void setOnRouteImageRequested(Runnable listener) { routeImageRequested = listener == null ? () -> {} : listener; }
+    public void requestRouteImage() { routeImageRequested.run(); }
     public void setOnAddCandidate(Consumer<Long> listener) { addCandidate=listener; }
     public void addCandidate(String recordId) {
         try {long id=Long.parseLong(recordId);if(id>0)addCandidate.accept(id);}

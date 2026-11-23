@@ -1,52 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.*?>
+<!-- JavaFX 클래스들 -->
 <?import com.datecourse.ui.ModernScrollPane?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
+<!--
+  장소 정보 정정 제보 검토 화면 (InformationReviewController와 연결)
+  구성 순서: [상단] 제목·상태 필터·새로고침 → [왼쪽] 제보 목록 → [오른쪽] 상세(제보 내용 → 정정값 → 검토 메모 → 승인/반려 버튼) → [하단] 상태 메시지·페이지 이동
+  Java 컨트롤러의 필드/메서드도 같은 순서로 정리되어 있음
+-->
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.datecourse.controller.InformationReviewController" stylesheets="@style.css"
             prefWidth="1020" prefHeight="690">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
+
+    <!-- [상단] 제목 / 상태 필터 / 새로고침 -->
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding>
+                <Insets bottom="12"/>
+            </padding>
             <Label text="장소 정보 정정 제보" styleClass="title"/>
             <Region HBox.hgrow="ALWAYS"/>
             <Label text="상태"/>
             <ComboBox fx:id="filterBox" prefWidth="130"/>
-            <Button fx:id="refreshButton" text="새로고침" onAction="#reload"/>
+            <Button fx:id="refreshButton" text="새로고침" onAction="#reload" styleClass="compact"/>
         </HBox>
     </top>
+
+    <!-- [중앙] 왼쪽: 제보 목록 / 오른쪽: 상세 + 검토 입력 -->
     <center>
         <SplitPane dividerPositions="0.36">
-            <ListView fx:id="reports"/>
+            <!-- 왼쪽: 제보 목록 -->
+            <ListView fx:id="reports" styleClass="saved-course-list"/>
+
+            <!-- 오른쪽: 제보 상세, 정정값·검토 메모 입력, 승인/반려 -->
             <VBox spacing="8">
                 <padding>
                     <Insets top="12" right="12" bottom="12" left="12"/>
                 </padding>
-                <ModernScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
-                    <Label fx:id="details" text="제보를 선택해 주세요." wrapText="true"/>
+                <!-- 제보 상세 내용 -->
+                <ModernScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="detail-scroll">
+                    <Label fx:id="details" text="제보를 선택해 주세요." wrapText="true" styleClass="detail-text"/>
                 </ModernScrollPane>
+                <!-- 승인할 정정값 입력 -->
                 <Label fx:id="valueHelp" text="승인할 정보"/>
                 <TextField fx:id="correctedValue"/>
+                <!-- 검토 메모 입력 -->
                 <Label text="검토 메모 · 승인 근거 또는 반려 이유"/>
                 <TextArea fx:id="reviewNote" prefRowCount="3" wrapText="true"/>
+                <!-- 승인 / 반려 버튼 -->
                 <HBox spacing="8">
-                    <Button fx:id="approveButton" text="검토 후 승인·수정" onAction="#approve" styleClass="primary"/>
-                    <Button fx:id="rejectButton" text="반려" onAction="#reject" styleClass="danger"/>
+                    <Button fx:id="approveButton" text="검토 후 승인·수정" onAction="#approve" styleClass="primary, compact"/>
+                    <Button fx:id="rejectButton" text="반려" onAction="#reject" styleClass="danger, compact"/>
                 </HBox>
             </VBox>
         </SplitPane>
     </center>
+
+    <!-- [하단] 상태 메시지 / 이전·다음 페이지 -->
     <bottom>
         <HBox spacing="8" alignment="CENTER_LEFT">
-            <Label fx:id="status" text="관리자 로그인으로 연결해 주세요." minHeight="36" wrapText="true" HBox.hgrow="ALWAYS"
+            <padding>
+                <Insets top="12"/>
+            </padding>
+            <Label fx:id="status" text="관리자 로그인으로 연결해 주세요." wrapText="true" HBox.hgrow="ALWAYS"
                    maxWidth="Infinity"/>
-            <Button fx:id="previousButton" text="이전" onAction="#previousPage"/>
-            <Button fx:id="nextButton" text="다음" onAction="#nextPage"/>
+            <Button fx:id="previousButton" text="이전" onAction="#previousPage" styleClass="compact"/>
+            <Button fx:id="nextButton" text="다음" onAction="#nextPage" styleClass="compact"/>
         </HBox>
     </bottom>
 </BorderPane>

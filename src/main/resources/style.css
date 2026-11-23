@@ -1,484 +1,1105 @@
-@import url("modern-scroll.css");
-/* ===== 색상 (여기만 바꾸면 전체 색이 바뀜) ===== */
-.candidate-evidence { -fx-font-size: 11px; -fx-text-fill: #626773; }
-.root {
-    -app-primary: #ff6b81;
-    -app-primary-dark: #e8506a;
-    -app-primary-light: #ffe3e8;
-    -app-bg: #fafafa;
-    -app-text: #191f28;
-    -app-muted: #6b7684;
-    -app-border: #e5e8eb;
-    -app-danger: #e03131;
-
-    -fx-font-family: "Malgun Gothic";
-    -fx-font-size: 13px;
-    -fx-background-color: -app-bg;
-}
-
-/* ===== 글자 ===== */
-.label { -fx-text-fill: -app-text; }
-.label.title { -fx-font-size: 20px; -fx-font-weight: bold; }
-.subtitle { -fx-font-size: 16px; -fx-font-weight: bold; }
-.section { -fx-font-weight: bold; }
-.muted { -fx-text-fill: -app-muted; -fx-font-size: 11px; }
-.error { -fx-text-fill: -app-danger; }
-.stat-number { -fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: -app-primary; }
-
-/* ===== 카드(둥근 흰 상자) ===== */
-.card {
-    -fx-background-color: white;
-    -fx-background-radius: 10;
-    -fx-border-color: -app-border;
-    -fx-border-radius: 10;
-    -fx-padding: 14;
-}
-.panel-bottom {
-    -fx-background-color: white;
-    -fx-border-color: -app-border;
-    -fx-border-width: 1 0 0 0;
-}
-
-/* ===== 버튼 ===== */
-.button {
-    -fx-min-height: 36; -fx-pref-height: 36; -fx-max-height: 36;
-    -fx-font-size: 13px; -fx-font-weight: normal;
-    -fx-background-color: #f2f4f6; -fx-text-fill: #334155;
-    -fx-border-color: #dce1e8; -fx-border-width: 1;
-    -fx-background-radius: 8; -fx-border-radius: 8;
-    -fx-padding: 6 12; -fx-cursor: hand;
-}
-.button:hover { -fx-background-color: #e9edf1; }
-.button:focused { -fx-border-color: #64748b; }
-.button:disabled { -fx-opacity: 0.4; -fx-cursor: default; }
-.button.primary, .button:default {
-    -fx-background-color: -app-primary; -fx-text-fill: -app-text;
-    -fx-border-color: transparent; -fx-font-weight: bold;
-}
-.button.primary:hover, .button:default:hover { -fx-background-color: #ff8294; }
-.button.secondary { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-border-color: #dce1e8; }
-.button.secondary:hover { -fx-background-color: #e9edf1; }
-.button.danger { -fx-background-color: #fff1f2; -fx-text-fill: #b4233f; -fx-border-color: #edb8c1; }
-.button.danger:hover { -fx-background-color: #ffe3e8; }
-.hyperlink { -fx-font-size: 12px; -fx-text-fill: #526174; -fx-padding: 2 0; -fx-underline: false; }
-.hyperlink:hover { -fx-underline: true; }
-.hyperlink:focused { -fx-border-color: #9ca3af; -fx-border-radius: 3; }
-
-/* ===== 입력칸 ===== */
-.text-field, .text-area, .combo-box, .spinner {
-    -fx-background-color: white;
-    -fx-background-radius: 8;
-    -fx-border-color: -app-border;
-    -fx-border-radius: 8;
-}
-.text-field, .combo-box .text-field { -fx-padding: 8 12; -fx-font-size: 13px; }
-.text-field, .combo-box, .spinner { -fx-min-height: 40; -fx-pref-height: 40; }
-.text-field { -fx-background-color: #f2f4f6; -fx-text-fill: -app-text; -fx-prompt-text-fill: #929ba6; }
-.text-area { -fx-font-size: 13px; }
-.text-area .content { -fx-padding: 10 12; }
-.text-field:focused, .text-area:focused, .combo-box:focused {
-    -fx-border-color: -app-primary;
-}
-.text-area .content { -fx-background-color: white; -fx-background-radius: 8; }
-
-.check-box:selected .mark { -fx-background-color: white; }
-.check-box:selected .box { -fx-background-color: -app-primary; -fx-border-color: -app-primary; }
-
-.slider .thumb { -fx-background-color: -app-primary; }
-.slider .track { -fx-background-color: -app-border; }
-
-/* ===== 목록 ===== */
-.list-view {
-    -fx-background-color: white;
-    -fx-background-radius: 10;
-    -fx-border-color: -app-border;
-    -fx-border-radius: 10;
-}
-.list-cell { -fx-padding: 8 10; -fx-background-color: transparent; }
-.saved-course-list .list-cell:filled {
-    -fx-border-color: transparent transparent #e2e7ed transparent;
-    -fx-border-width: 0 0 1 0;
-}
-.saved-course-title { -fx-font-weight: bold; }
-.saved-course-summary { -fx-font-size: 13px; }
-.list-cell .saved-course-updated { -fx-font-size: 12px; -fx-text-fill: #7b8490; }
-.saved-course-place-table, .saved-course-summary-table {
-    -fx-background-color: white;
-    -fx-border-color: #d8dee6;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-    -fx-table-cell-border-color: transparent;
-}
-.saved-course-place-table .column-header-background, .saved-course-summary-table .column-header-background { -fx-background-color: white; }
-.saved-course-place-table .column-header .label, .saved-course-summary-table .column-header .label { -fx-font-weight: bold; -fx-text-fill: #303844; }
-.saved-course-place-table .table-row-cell, .saved-course-summary-table .table-row-cell,
-.saved-course-place-table .table-row-cell:odd, .saved-course-summary-table .table-row-cell:odd {
-    -fx-background-color: white;
-    -fx-background-insets: 0;
-    -fx-padding: 0;
-    -fx-border-color: transparent;
-}
-.saved-course-place-table .table-row-cell:empty, .saved-course-summary-table .table-row-cell:empty {
-    -fx-background-color: white;
-    -fx-border-color: transparent;
-}
-.saved-course-place-table .table-row-cell:empty .table-cell, .saved-course-summary-table .table-row-cell:empty .table-cell {
-    -fx-background-color: white;
-    -fx-background-insets: 0;
-    -fx-border-color: transparent;
-}
-.saved-course-place-table .table-cell, .saved-course-summary-table .table-cell {
-    -fx-padding: 6 6;
-    -fx-alignment: TOP_LEFT;
-    -fx-background-color: #d8dee6, white;
-    -fx-background-insets: 0, 0 1 1 0;
-    -fx-border-color: transparent;
-}
-.list-cell:filled:hover { -fx-background-color: #f2f4f6; }
-.list-cell:filled:selected,
-.list-cell:filled:selected:focused {
-    -fx-background-color: #e9edf1;
-    -fx-text-fill: -app-text;
-}
-.list-cell:filled:selected .label { -fx-text-fill: -app-text; }
-.list-cell:filled:selected .saved-course-updated,
-.list-cell:filled:selected:focused .saved-course-updated { -fx-text-fill: #191f28; }
-
-/* 드롭다운은 선택·포커스·펼친 목록 모두 중립 회색으로 표시한다. */
-.combo-box { -fx-background-color: #f2f4f6; }
-.combo-box:focused, .combo-box:showing { -fx-border-color: #9ca3af; }
-.combo-box .list-cell,
-.combo-box .list-cell:filled:selected,
-.combo-box .list-cell:filled:selected:focused { -fx-background-color: transparent; -fx-text-fill: -app-text; }
-.combo-box .arrow-button { -fx-background-color: transparent; }
-.combo-box-popup .list-view .list-cell:filled:hover,
-.combo-box-popup .list-view .list-cell:filled:selected,
-.combo-box-popup .list-view .list-cell:filled:selected:focused { -fx-background-color: #e9edf1; -fx-text-fill: -app-text; }
-
-/* ===== 표 (관리자) ===== */
-.table-view {
-    -fx-background-color: white;
-    -fx-border-color: -app-border;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-}
-.table-view .column-header-background { -fx-background-color: #f3f3f3; }
-.table-view .column-header, .table-view .filler { -fx-background-color: transparent; }
-.table-row-cell:filled:selected {
-    -fx-background-color: -app-primary-light;
-    -fx-text-fill: -app-text;
-}
-.table-row-cell:filled:selected .text { -fx-fill: -app-text; }
-
-/* ===== 탭 (관리자) ===== */
-.tab-pane .tab-header-area .tab-header-background { -fx-background-color: transparent; }
-.tab-pane .tab:selected { -fx-background-color: -app-primary-light; }
-.tab-pane .tab:selected .tab-label { -fx-text-fill: -app-primary-dark; -fx-font-weight: bold; }
-
-/* Sliding condition form and category chips; scoped to this screen. */
-.condition-screen .condition-scroll,
-.condition-screen .condition-scroll > .viewport {
-    -fx-background-color: white;
-    -fx-background-insets: 0;
-    -fx-padding: 0;
-}
-.condition-screen .condition-form { -fx-background-color: white; }
-.condition-screen .condition-title { -fx-font-size: 20px; -fx-font-weight: bold; }
-.condition-screen .drawer-toggle {
-    -fx-background-color: white;
-    -fx-text-fill: -app-text;
-    -fx-border-color: -app-border;
-    -fx-border-radius: 12;
-    -fx-background-radius: 12;
-    -fx-padding: 7 10;
-}
-.condition-screen .drawer-toggle:hover { -fx-background-color: -app-primary-light; }
-.condition-screen .drawer-toggle:focused { -fx-border-color: -app-primary; }
-.condition-screen .category-chip {
-    -fx-background-color: #f5f6f8;
-    -fx-background-radius: 12;
-    -fx-border-color: transparent;
-    -fx-border-radius: 12;
-    -fx-padding: 8 10;
-    -fx-label-padding: 0 0 0 7;
-    -fx-text-fill: -app-text;
-    -fx-cursor: hand;
-}
-.condition-screen .category-chip:hover { -fx-background-color: #fff0f3; }
-.condition-screen .category-chip:selected {
-    -fx-background-color: -app-primary-light;
-    -fx-border-color: -app-primary;
-    -fx-font-weight: bold;
-}
-.condition-screen .category-chip:focused { -fx-border-color: transparent; }
-.condition-screen .category-chip .box {
-    -fx-background-color: white;
-    -fx-background-insets: 0;
-    -fx-background-radius: 5;
-    -fx-border-color: #b0b8c1;
-    -fx-border-radius: 5;
-    -fx-padding: 3;
-}
-.condition-screen .category-chip:selected .box {
-    -fx-background-color: -app-primary;
-    -fx-border-color: -app-primary;
-}
-.condition-screen .category-chip:selected .mark { -fx-background-color: #191f28; }
-
-/* Planner uses the same palette and soft fields as UiTheme's authentication screens. */
-.condition-screen {
-    -fx-background-color: #f7f8fa;
-    -fx-font-family: "Malgun Gothic";
+/* ================= 1. 팝업 및 전체 배경 ================= */
+.root, .dialog-pane {
+    -fx-background-color: #F8F5EF;
+    -fx-font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
     -fx-font-size: 14px;
 }
-.condition-screen .label { -fx-text-fill: #191f28; }
-.condition-screen .planner-header {
-    -fx-padding: 20 24 18 24;
-    -fx-background-color: white;
-    -fx-border-color: #eef0f3;
-    -fx-border-width: 0 0 1 0;
+
+.dialog-pane > .content {
+    -fx-padding: 20 24 12 24;
 }
-.condition-screen .planner-brand {
-    -fx-font-size: 12px;
+
+.dialog-pane > .button-bar {
+    -fx-padding: 8 24 20 24;
+}
+
+/* ================= 2. 글씨(Label) 볼드 및 색상 구분 ================= */
+.label {
+    -fx-text-fill: #4A1827;
     -fx-font-weight: bold;
-    -fx-text-fill: #6b7684;
+    -fx-font-size: 14px;
 }
-.condition-screen .planner-heading { -fx-font-size: 24px; -fx-font-weight: bold; }
-.condition-screen .region-badge {
-    -fx-background-color: #fff0f3;
-    -fx-background-radius: 20;
-    -fx-padding: 7 16;
+
+.sub-text {
+    -fx-text-fill: #7A263A;
+    -fx-font-weight: normal;
     -fx-font-size: 13px;
-    -fx-text-fill: #b63c57;
 }
-.condition-screen .condition-drawer {
-    -fx-background-color: white;
-    -fx-border-color: #eef0f3;
-    -fx-border-width: 0 1 0 0;
-}
-.condition-screen .condition-title { -fx-font-size: 20px; -fx-font-weight: bold; }
-.condition-screen .planner-caption { -fx-font-size: 12px; -fx-text-fill: #6b7684; }
-.condition-screen .field-label { -fx-font-size: 13px; -fx-text-fill: #6b7684; }
-.condition-screen .common-condition-label { -fx-font-size: 14px; -fx-text-fill: #191f28; -fx-font-weight: bold; }
-.condition-screen .text-field {
-    -fx-background-color: #f2f4f6;
-    -fx-background-radius: 10;
-    -fx-border-color: transparent;
-    -fx-border-radius: 10;
+
+/* ================= 3. 드롭다운(ComboBox) - 숫자('5') 표시 & 깔끔한 디자인 ================= */
+.combo-box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
     -fx-border-width: 1.5;
-    -fx-padding: 8 12;
-    -fx-font-size: 13px;
-    -fx-text-fill: #191f28;
-    -fx-prompt-text-fill: #929ba6;
-}
-.condition-screen .text-field:focused { -fx-border-color: #ff6b81; }
-.condition-screen .place-count-editor { -fx-padding: 8 34 8 12; }
-.condition-screen .place-count-buttons { -fx-padding: 2 4 2 0; }
-.condition-screen .place-count-arrow {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-border-color: transparent;
-    -fx-border-width: 1;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-    -fx-padding: 3 6;
-    -fx-min-height: 18;
-    -fx-pref-height: 18;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 2 6 2 6;
     -fx-cursor: hand;
 }
-.condition-screen .place-count-arrow:hover { -fx-background-color: #ffe3e8; }
-.condition-screen .place-count-arrow:pressed { -fx-background-color: #ffd3dc; }
-.condition-screen .place-count-arrow:focused { -fx-border-color: #ff6b81; }
-.condition-screen .place-count-arrow:disabled { -fx-opacity: 0.28; }
-.condition-screen .place-count-chevron {
-    -fx-fill: transparent;
-    -fx-stroke: #6b7684;
-    -fx-stroke-width: 1.5;
-    -fx-stroke-line-cap: round;
-    -fx-stroke-line-join: round;
+
+.combo-box:hover, .combo-box:focused, .combo-box:showing {
+    -fx-border-color: #7A263A;
 }
-.condition-screen .place-count-arrow:hover .place-count-chevron { -fx-stroke: #b63c57; }
-.condition-screen .planner-primary {
-    -fx-background-color: #ff6b81;
-    -fx-background-radius: 10;
-    -fx-text-fill: #191f28;
-    -fx-font-size: 15px;
-    -fx-padding: 14 20;
-}
-.condition-screen .planner-primary:hover { -fx-background-color: #ff8294; }
-.condition-screen .course-edit-panel {
-    -fx-background-color: white;
-    -fx-border-color: transparent transparent transparent #e5e8eb;
-    -fx-border-width: 0 0 0 1;
-}
-.condition-screen .drawer-toggle {
+
+/* 드롭다운 내부 선택된 값 칸 (패딩을 줄여 '5' 같은 짧은 숫자도 안 잘리게 유지) */
+.combo-box > .list-cell {
     -fx-background-color: transparent;
-    -fx-border-color: #dce1e8;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-padding: 4 6 4 6;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #4A1827;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
-    -fx-font-size: 12px;
-    -fx-font-weight: normal;
-    -fx-padding: 6 10;
 }
-.condition-screen .category-chip {
-    -fx-background-color: #f2f4f6;
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: normal;
+    -fx-padding: 8 12 8 12;
+}
+
+.combo-box-popup .list-cell:hover, .combo-box-popup .list-cell:selected {
+    -fx-background-color: #E9DFD2;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+}
+
+/* ================= 4. 입력창 (TextField, TextArea) ================= */
+.text-field, .text-area {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: normal;
+    -fx-prompt-text-fill: #A8969A;
+    -fx-padding: 10 12 10 12;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
-    -fx-padding: 10 12;
-    -fx-label-padding: 0;
+}
+
+.text-area .content {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #7A263A;
+}
+
+/* ================= 5. 기본 버튼 & 메인 버건디 버튼 ================= */
+.button {
+    -fx-border-width: 1.5;
+    -fx-background-color: #E9DFD2;
+    -fx-border-color: transparent;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20 10 20;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #dfd2c0;
+}
+
+.primary-button, .planner-primary, .button:default {
+    -fx-background-color: #7A263A;
+    -fx-border-color: transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20 10 20;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover, .planner-primary:hover, .button:default:hover {
+    -fx-background-color: #4A1827;
+}
+
+/* ================= 6. 다이얼로그 제목 & 에러 메시지 ================= */
+.dialog-main-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A1827;
+}
+
+.dialog-sub-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7A263A;
+}
+
+.confirm-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A1827;
+}
+
+.error {
+    -fx-text-fill: #B91C1C;
+    -fx-font-weight: bold;
     -fx-font-size: 13px;
 }
-.condition-screen .category-chip .box { -fx-padding: 0; -fx-min-width: 0; -fx-max-width: 0; -fx-pref-width: 0; -fx-opacity: 0; }
-.condition-screen .category-chip:hover { -fx-background-color: #e9edf1; }
-.condition-screen .category-chip:selected { -fx-background-color: #ffe3e8; -fx-border-color: #ff6b81; }
-.condition-screen .category-chip:selected:hover { -fx-background-color: #ffd3dc; }
-.condition-screen .category-chip:selected:focused { -fx-border-color: #ff6b81; }
-.condition-screen .separator .line { -fx-border-color: #eef0f3; -fx-border-width: 1 0 0 0; }
-.condition-screen .slider .track { -fx-background-color: #e5e8eb; -fx-pref-height: 4; }
-.condition-screen .slider .thumb { -fx-background-color: #ff6b81; -fx-padding: 7; -fx-effect: none; }
-.condition-screen .error { -fx-text-fill: #c83b52; -fx-font-size: 12px; }
-.condition-screen .planner-map { -fx-background-color: white; -fx-background-radius: 12; }
-.condition-screen .result-summary {
-    -fx-background-color: white;
-    -fx-background-radius: 12;
-    -fx-border-color: transparent transparent transparent #cbd5e1;
-    -fx-border-width: 0 0 0 4;
-    -fx-border-radius: 12;
-    -fx-padding: 9 13;
-    -fx-effect: dropshadow(gaussian, rgba(25,31,40,0.05), 10, 0, 0, 2);
-}
-.condition-screen .result-summary:success { -fx-background-color: #fff5f7; -fx-border-color: transparent transparent transparent #ff6b81; }
-.condition-screen .result-summary:warning { -fx-background-color: #fff9ed; -fx-border-color: transparent transparent transparent #e5a43a; }
-.condition-screen .result-summary-title { -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #191f28; }
-.condition-screen .result-summary-detail { -fx-font-size: 12px; -fx-text-fill: #6b7684; }
-.condition-screen .result-summary-badge { -fx-background-color: #eef1f5; -fx-background-radius: 7; -fx-padding: 5 8; -fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #526174; }
-.condition-screen .result-summary:success .result-summary-badge { -fx-background-color: #ffe0e8; -fx-text-fill: #a82e50; }
-.condition-screen .result-summary:warning .result-summary-badge { -fx-background-color: #ffedca; -fx-text-fill: #956015; }
-.route-editor-screen { -fx-background-color: white; }
-.route-edit-form { -fx-background-color: white; -fx-border-color: transparent transparent transparent #e5e8eb; }
-.map-toolbar { -fx-padding: 12 16; -fx-background-color: #f7f8fa; }
-.route-editor-footer { -fx-padding: 14 24; -fx-background-color: white; -fx-border-color: #e5e8eb transparent transparent transparent; }
-.candidate-card { -fx-padding: 14; -fx-background-color: #fff3f6; -fx-background-radius: 12; }
-.route-sidebar-summary { -fx-padding: 18 16 12; -fx-background-color: white; }
-.route-state-panels { -fx-padding: 0 14 12; }
-.route-sidebar-note { -fx-padding: 8 16 12; -fx-background-color: white; }
-.route-form-scroll { -fx-background-color: white; -fx-border-color: transparent; }
-.route-form-scroll > .viewport { -fx-background-color: white; }
-.compact-pane > .title { -fx-background-color: #f2f4f6; -fx-background-radius: 8; -fx-padding: 6 10; -fx-font-size: 13px; }
-.compact-pane > .content { -fx-background-color: white; -fx-border-color: #e5e8eb; -fx-border-radius: 0 0 8 8; -fx-padding: 8; }
-.condition-screen .route-edit-form .planner-primary { -fx-font-size: 13px; -fx-padding: 8 14; }
-.candidate-rank { -fx-min-width: 18; -fx-font-weight: bold; -fx-text-fill: #64748b; }
 
-.route-options-dialog { -fx-background-color: white; }
-.route-options-dialog .route-option-card { -fx-padding: 14; -fx-background-color: #f7f8fa; -fx-background-radius: 12; -fx-border-color: transparent; -fx-border-radius: 12; -fx-graphic-text-gap: 12; }
-.route-options-dialog .route-option-card:selected { -fx-background-color: #fff0f3; -fx-border-color: #ff6b81; }
-.route-options-dialog .radio-button:selected .radio .dot { -fx-background-color: #ff6b81; }
-.condition-form-scroll, .condition-form-scroll > .viewport {
-    -fx-background-color: white;
+/* ================= 7. 앱 최상단 공통 헤더 (DateCourse / 코스 만들기 / 저장한 코스 / 안시연님) ================= */
+.app-header, .shell-header, .top-bar, .nav-bar, .planner-top-bar {
+    -fx-background-color: #F8F5EF;
+    -fx-padding: 12 32 12 32; /* DateCourse 왼쪽 여백 32px 확보 */
+    -fx-border-color: transparent transparent #E9DFD2 transparent;
+    -fx-border-width: 1.5;
+}
+
+/* DateCourse 브랜드 로고 */
+.brand-title, .app-title, .shell-brand, .app-brand {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7A263A;
+    -fx-padding: 0 16 0 8;
+}
+
+/* 상단 '코스 만들기', '저장한 코스' 버튼을 바탕색(#F8F5EF)과 똑같이 */
+.app-header .button, .shell-header .button, .top-bar .button, .nav-bar .button, .planner-top-bar .button,
+.app-header .toggle-button, .shell-header .toggle-button, .top-bar .toggle-button, .nav-bar .toggle-button, .planner-top-bar .toggle-button,
+.nav-button, .shell-nav {
+    -fx-background-color: #F8F5EF;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.app-header .button:hover, .shell-header .button:hover, .top-bar .button:hover, .nav-bar .button:hover, .planner-top-bar .button:hover,
+.app-header .toggle-button:hover, .shell-header .toggle-button:hover, .top-bar .toggle-button:hover, .nav-bar .toggle-button:hover, .planner-top-bar .toggle-button:hover,
+.nav-button:hover, .shell-nav:hover {
+    -fx-background-color: #E9DFD2;
+}
+
+.app-header .toggle-button:selected, .shell-header .toggle-button:selected, .top-bar .toggle-button:selected, .nav-bar .toggle-button:selected, .planner-top-bar .toggle-button:selected,
+.nav-button:selected, .shell-nav:selected {
+    -fx-background-color: #F8F5EF;
+    -fx-text-fill: #7A263A;
+    -fx-border-color: transparent transparent #7A263A transparent;
+    -fx-border-width: 0 0 2.5 0;
+    -fx-background-radius: 0;
+}
+
+/* 오른쪽 끝 '안시연님' 메뉴 버튼을 다른 버튼들과 어울리는 베이지/버건디 톤으로 통일 */
+.menu-button, .account-menu, .user-menu {
+    -fx-background-color: #E9DFD2;
+    -fx-border-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 4 12 4 12;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover, .account-menu:hover, .user-menu:hover {
+    -fx-background-color: #dfd2c0;
+}
+
+.menu-button .label, .account-menu .label, .user-menu .label {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.menu-button .arrow, .account-menu .arrow, .user-menu .arrow {
+    -fx-background-color: #7A263A;
+}
+
+/* ================= 8. 마이페이지 전용 세련된 프로필 테마 ================= */
+.my-page {
+    -fx-background-color: #F8F5EF;
+    -fx-padding: 36 24 36 24;
+}
+
+.profile-avatar {
+    -fx-background-color: #7A263A;
+    -fx-background-radius: 24;
+    -fx-padding: 10 26 10 26;
+    -fx-effect: dropshadow(gaussian, rgba(122, 38, 58, 0.25), 10, 0, 0, 4);
+}
+
+.profile-avatar-icon {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.condition-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A1827;
+}
+
+.planner-caption {
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #8C7379;
+}
+
+.profile-card {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-padding: 6 24 6 24;
+    -fx-effect: dropshadow(gaussian, rgba(74, 24, 39, 0.08), 16, 0, 0, 6);
+}
+
+.profile-row {
+    -fx-padding: 18 0 18 0;
+    -fx-border-color: transparent transparent #E9DFD2 transparent;
+    -fx-border-width: 1;
+}
+
+.profile-row-last {
+    -fx-padding: 18 0 18 0;
+}
+
+.field-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7A263A;
+}
+
+.profile-value {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A1827;
+}
+
+.header-save {
+    -fx-background-color: #7A263A;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-padding: 13 20 13 20;
+    -fx-background-radius: 12;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.header-save:hover {
+    -fx-background-color: #4A1827;
+}
+
+.header-secondary {
+    -fx-background-color: #E9DFD2;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 11 16 11 16;
+    -fx-background-radius: 12;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.header-secondary:hover {
+    -fx-background-color: #dfd2c0;
+}
+
+.header-bg-btn {
+    -fx-background-color: #F8F5EF;
+    -fx-border-color: #7A263A;
+    -fx-border-width: 1.5;
+    -fx-text-fill: #7A263A;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-padding: 12 20 12 20;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-cursor: hand;
+}
+
+.header-bg-btn:hover {
+    -fx-background-color: #E9DFD2;
+}
+
+/* ================= 9. 필터 설정 버튼 중앙 정렬 & ExpandableFilterPane 디자인 통일 ================= */
+.filter-entry {
+    -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
+    -fx-graphic-text-gap: 8;
+    -fx-background-color: #E9DFD2;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 8 18 8 18;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.filter-entry:hover {
+    -fx-background-color: #dfd2c0;
+}
+
+.filter-entry-icon {
+    -fx-stroke: #7A263A;
+    -fx-stroke-width: 1.8;
+    -fx-fill: transparent;
+}
+
+.filter-editor {
+    -fx-background-color: #F8F5EF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 12 14 12 14;
+}
+
+.filter-category {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.2;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-cursor: hand;
+}
+
+.filter-category:hover {
+    -fx-background-color: #E9DFD2;
+}
+
+.filter-category:selected {
+    -fx-background-color: #7A263A;
+    -fx-border-color: #7A263A;
+    -fx-text-fill: #FFFFFF;
+}
+
+.filter-chip {
+    -fx-background-color: #E9DFD2;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 5 10 5 10;
+    -fx-background-radius: 14;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.filter-chip:hover {
+    -fx-background-color: #dfd2c0;
+}
+
+.filter-pane .hyperlink {
+    -fx-text-fill: #7A263A;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-border-color: transparent;
+    -fx-underline: false;
+    -fx-cursor: hand;
+}
+
+.filter-pane .hyperlink:hover {
+    -fx-text-fill: #4A1827;
+    -fx-underline: true;
+}
+
+.filter-scroll, .filter-scroll > .viewport {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* ================= 10. 코스 만들기/편집 화면 전용 정리 ================= */
+.editor-heading-bar {
+    -fx-padding: 14 28 10 28;
+}
+
+.editor-main-grid {
+    -fx-padding: 0 28 12 28;
+}
+
+.editor-summary-bar {
+    -fx-padding: 0 0 4 0;
+}
+
+.editor-summary-card {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 10 14 10 14;
+    -fx-effect: dropshadow(gaussian, rgba(74, 24, 39, 0.06), 8, 0, 0, 2);
+}
+
+.metric-caption {
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #8C7379;
+}
+
+.metric-value {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A1827;
+}
+
+.metric-value-accent, #priceWonLabel {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7A263A;
+}
+
+.place-count-arrow {
+    -fx-background-color: transparent;
+    -fx-background-radius: 6;
+    -fx-border-color: transparent;
+    -fx-border-radius: 6;
+    -fx-padding: 0;
+    -fx-min-height: 14;
+    -fx-pref-height: 18;
+    -fx-alignment: CENTER;
+}
+
+.place-count-arrow:hover,
+.place-count-arrow:pressed {
+    -fx-background-color: transparent; /* 전역 .button:hover의 베이지 방지 */
+}
+
+.place-count-chevron {
+    -fx-fill: transparent;
+    -fx-stroke: #7A263A;
+    -fx-stroke-width: 1.8;
+}
+
+.place-count-arrow:hover .place-count-chevron {
+    -fx-stroke: #4A1827; /* 더 진한 색 */
+}
+
+.place-count-arrow:pressed .place-count-chevron {
+    -fx-stroke: #B91C1C; /* 누르는 동안 */
+}
+
+.place-count-chevron {
+    -fx-fill: transparent;
+    -fx-stroke: #7A263A;
+    -fx-stroke-width: 1.8;
+}
+
+.drawer-toggle {
+    -fx-background-color: #E9DFD2;
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 8 14 8 14;
+    -fx-background-radius: 9;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.drawer-toggle:hover {
+    -fx-background-color: #dfd2c0;
+}
+
+.compact-pane > .title {
+    -fx-background-color: #E9DFD2;
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 10 14 10 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A1827;
+}
+
+.compact-pane > .content {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 0 1.5 1.5 1.5;
+    -fx-background-radius: 0 0 12 12;
+    -fx-border-radius: 0 0 12 12;
+    -fx-padding: 14;
+}
+
+.route-editor-footer {
+    -fx-padding: 12 28 12 28;
+    -fx-border-color: #E9DFD2 transparent transparent transparent;
+    -fx-border-width: 1.5;
+}
+
+/* ================= 진행 막대(ProgressBar) 버건디 & 베이지 테마 통일 ================= */
+.progress-bar {
+    -fx-min-height: 10;
+    -fx-pref-height: 10;
+    -fx-max-height: 10;
+}
+
+/* 막대 배경 트랙 (따뜻한 연베이지) */
+.progress-bar > .track {
+    -fx-background-color: #E9DFD2;
+    -fx-background-radius: 5;
+    -fx-border-color: transparent;
+}
+
+/* 차오르는 게이지 바 (기존 파란색 -> 메인 버건디로 변경) */
+.progress-bar > .bar {
+    -fx-background-color: #7A263A;
+    -fx-background-radius: 5;
+    -fx-background-insets: 0;
+}
+
+/* 오른쪽 상단 알림 팝업 카드만 작게 배경색 & 그림자 적용 */
+.feedback-toast {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-padding: 12 14 10 16;
+    -fx-effect: dropshadow(gaussian, rgba(74, 24, 39, 0.14), 14, 0, 0, 4);
+}
+
+/* 알림 종류별 테두리 포인트 */
+.feedback-info, .feedback-success {
+    -fx-border-color: #7A263A;
+}
+
+.feedback-error {
+    -fx-border-color: #B91C1C;
+}
+
+/* 알림창 내부 텍스트 */
+.feedback-toast .label {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+/* 오른쪽 위 작은 닫기(×) 버튼 (전역 .button 높이를 덮어써서 22x22 정사각형으로 유지) */
+.feedback-close {
+    -fx-background-color: #F8F5EF;
+    -fx-text-fill: #7A263A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 0;
+    -fx-min-width: 22;
+    -fx-pref-width: 22;
+    -fx-max-width: 22;
+    -fx-min-height: 22;
+    -fx-pref-height: 22;
+    -fx-max-height: 22;
+    -fx-background-radius: 11;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.feedback-close:hover {
+    -fx-background-color: #E9DFD2;
+}
+
+/* 아래 가는 카운트다운 진행 막대 (기존 파란색 -> 버건디 & 베이지로 변경) */
+.feedback-countdown {
+    -fx-min-height: 5;
+    -fx-pref-height: 5;
+    -fx-max-height: 5;
+}
+
+.feedback-countdown > .track {
+    -fx-background-color: #E9DFD2;
+    -fx-background-radius: 3;
+    -fx-border-color: transparent;
+}
+
+.feedback-countdown > .bar {
+    -fx-background-color: #7A263A;
+    -fx-background-radius: 3;
+    -fx-background-insets: 0;
+}
+
+.feedback-error .feedback-countdown > .bar {
+    -fx-background-color: #B91C1C;
+}
+
+/* 중앙 로딩 카드도 버건디/아이보리 테마로 통일 */
+.loading-shade {
+    -fx-background-color: rgba(74, 24, 39, 0.18);
+}
+
+.loading-card {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(74, 24, 39, 0.16), 16, 0, 0, 6);
+}
+
+.loading-card .progress-indicator {
+    -fx-progress-color: #7A263A;
+}
+
+/* ================= 11. 저장한 코스 화면 ================= */
+
+/* --- 텍스트 --- */
+.label.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A1827;
+}
+
+.subtitle {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7A263A;
+}
+
+.muted {
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #8C7379;
+}
+
+/* --- 레이아웃(여백/간격) : FXML의 Insets, spacing을 옮긴 것 --- */
+.saved-course-header {
+    -fx-pref-height: 40; /* 선과 선 사이 높이, 숫자는 조절 */
+    -fx-alignment: center-left; /* 세로는 가운데, 가로는 왼쪽 (원래 위치 유지) */
+    -fx-padding: 10 0 0 30; /* 위아래는 0, 왼쪽만 간격 */
+}
+
+.saved-course-list-pane {
+    -fx-padding: 10 10 20 20;
+    -fx-spacing: 10;
+}
+
+.saved-course-detail {
+    -fx-padding: 6 16 12 8;
+    -fx-spacing: 6;
+}
+
+.saved-course-bottom {
+    -fx-spacing: 10;
+    -fx-alignment: TOP_LEFT;
+}
+
+.saved-course-actions {
+    -fx-hgap: 8;
+    -fx-vgap: 6;
+}
+
+/* 지도 위 안내 박스 */
+.map-notice {
+    -fx-alignment: CENTER;
+    -fx-spacing: 8;
+    -fx-background-color: rgba(248, 245, 239, 0.95);
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+}
+
+/* --- 코스 목록 --- */
+.saved-course-list {
+    -fx-background-color: #FFFFFF;
+    -fx-background-insets: 0;
+    -fx-background-radius: 12;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 12;
+    -fx-padding: 8;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* 내부 노드가 네모난 배경을 그리지 않도록 */
+.saved-course-list .virtual-flow,
+.saved-course-list .clipped-container,
+.saved-course-list .sheet,
+.saved-course-list .viewport {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.saved-course-list .list-cell {
+    -fx-background-color: transparent; /* 빈 칸/선택 안 된 칸은 투명 → 바탕 흰색이 보임 */
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+    -fx-padding: 10 12 10 12;
+}
+
+.saved-course-list .list-cell:filled:hover {
+    -fx-background-color: #F8F5EF;
+}
+
+.saved-course-list .list-cell:filled:selected,
+.saved-course-list .list-cell:filled:selected:hover {
+    -fx-background-color: #E9DFD2;
+}
+
+.saved-course-list .list-cell:filled:selected .label {
+    -fx-text-fill: #4A1827;
+}
+
+/* --- 표 공통 (summaryTable, placeTable) --- */
+.saved-course-table {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 1; /* 안쪽 내용이 테두리 곡선에 덜 삐져나오게 */
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* 헤더 줄 전체 배경: 위쪽만 둥글게 */
+.saved-course-table .column-header-background {
+    -fx-background-color: #E9DFD2;
+    -fx-background-radius: 9 9 0 0;
+}
+
+/* 개별 헤더 칸은 투명 (배경이 두 겹으로 겹치지 않게) */
+.saved-course-table .column-header,
+.saved-course-table .filler {
+    -fx-background-color: transparent;
+    -fx-size: 36;
+    -fx-border-color: transparent;
+}
+
+.saved-course-table .column-header .label {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+}
+
+.saved-course-table .column-header .label {
+    -fx-max-width: infinity;
+    -fx-text-alignment: CENTER;
+}
+
+.saved-course-table .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-table-cell-border-color: #F1EAE0;
+}
+
+.saved-course-table .table-row-cell:filled:odd {
+    -fx-background-color: #FBF9F5;
+}
+
+.saved-course-table .table-row-cell:filled:even {
+    -fx-background-color: #FFFFFF;
+}
+
+.saved-course-table .table-row-cell:filled:selected {
+    -fx-background-color: #E9DFD2;
+}
+
+.saved-course-table .table-cell {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: normal;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 6 10 6 10;
+}
+
+.saved-course-table .table-row-cell:selected .table-cell {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+}
+
+/* --- 스크롤바 숨기기 (마우스 휠/터치패드 스크롤은 그대로 동작) --- */
+.saved-course-table .scroll-bar:vertical,
+.saved-course-table .scroll-bar:horizontal,
+.saved-course-list .scroll-bar:vertical,
+.saved-course-list .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-padding: 0;
+    -fx-pref-width: 0;
+    -fx-min-width: 0;
+    -fx-max-width: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+}
+
+.saved-course-table .scroll-bar .increment-button,
+.saved-course-table .scroll-bar .decrement-button,
+.saved-course-list .scroll-bar .increment-button,
+.saved-course-list .scroll-bar .decrement-button {
+    -fx-padding: 0;
+}
+
+/* --- 버튼 3종 (기본 .button의 패딩/둥근 모서리/폰트는 그대로 물려받고 색만 덮어씀) --- */
+.primary {
+    -fx-background-color: #7A263A;
+    -fx-text-fill: #FFFFFF;
+}
+
+.primary:hover {
+    -fx-background-color: #4A1827;
+}
+
+.secondary {
+    -fx-background-color: #E9DFD2;
+    -fx-text-fill: #4A1827;
+}
+
+.secondary:hover {
+    -fx-background-color: #dfd2c0;
+}
+
+.danger {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #B91C1C;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+    -fx-text-fill: #B91C1C;
+}
+
+.danger:hover {
+    -fx-background-color: #FDECEC;
+}
+
+/* 데이터 없는 빈 행: 배경, 줄무늬, 칸 사이 세로선 모두 제거 */
+.saved-course-table .table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.saved-course-table .table-row-cell:empty .table-cell {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+/* ================= 12. 슬라이더 (전체 범위) ================= */
+.slider .track {
+    -fx-background-color: #E9DFD2;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4;
+    -fx-pref-height: 6;
+    -fx-opacity: 1;
+}
+
+.slider .thumb {
+    -fx-background-color: #7A263A;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+    -fx-pref-width: 20;
+    -fx-pref-height: 20;
+    -fx-effect: dropshadow(gaussian, rgba(122, 38, 58, 0.30), 6, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.slider:hover .thumb,
+.slider .thumb:pressed {
+    -fx-background-color: #4A1827;
+}
+
+.slider:focused .thumb {
+    -fx-background-color: #7A263A;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+}
+
+/* ================= 13. 조건 입력 화면 레이아웃 (FXML의 spacing/alignment/Insets를 옮긴 것) ================= */
+
+/* 상단 헤더: 세로 가운데 정렬 + 버튼 간격 */
+.app-header {
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 8;
+}
+
+/* 오른쪽 조건 입력 사이드바 */
+.condition-form {
+    -fx-spacing: 10;
+    -fx-padding: 24 24 18 24;
+}
+
+.course-overview {
+    -fx-spacing: 12;
+}
+
+.result-summary-text {
+    -fx-spacing: 6;
+}
+
+/* "기본 조건" 섹션 안쪽 간격 */
+.condition-section {
+    -fx-spacing: 10;
+}
+
+.condition-group {
+    -fx-spacing: 6;
+}
+
+.condition-group-wide {
+    -fx-spacing: 12;
+}
+
+.condition-field {
+    -fx-spacing: 6;
+}
+
+.condition-field-tight {
+    -fx-spacing: 4;
+}
+
+.place-count-buttons {
+    -fx-pref-width: 30;
+    -fx-max-width: 30;
+    -fx-max-height: infinity; /* 40 → 입력칸 높이만큼 꽉 채움 */
+    -fx-alignment: CENTER;
+    -fx-padding: 4 0 4 0; /* 위아래 여백으로 두 화살표를 가운데로 모음 */
+}
+
+/* 지도 쪽 영역 */
+.map-column {
+    -fx-spacing: 12;
+    -fx-padding: 8 20 20 20;
+}
+
+.map-toolbar {
+    -fx-alignment: CENTER_RIGHT;
+    -fx-spacing: 8;
+}
+
+/* ================= 14. 조건 화면 사이드바 배경 + 포커스 테두리 제거 ================= */
+.condition-form-scroll,
+.condition-form-scroll:focused,
+.condition-form-scroll > .viewport {
+    -fx-background-color: #F8F5EF;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+.condition-form-scroll .corner {
+    -fx-background-color: transparent;
+}
+
+.condition-form {
+    -fx-background-color: #F8F5EF;
+}
+
+
+/* ================= 15. 탭 (회원 관리 / 장소 정보 제보) ================= */
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: #E9DFD2;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 6 18 6 18;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:hover {
+    -fx-background-color: #dfd2c0;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: #7A263A;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #4A1827;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.tab-pane > .tab-content-area {
+    -fx-background-color: transparent;
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent;
+}
+
+/* ================= 16. 좌우 분할(SplitPane) ================= */
+.split-pane {
+    -fx-background-color: transparent;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
 
-/* Shared shell and feedback: overlays never participate in map layout. */
-.app-header { -fx-padding: 15 24; -fx-background-color: white; -fx-border-color: transparent transparent #e5e8eb transparent; }
-.app-brand { -fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 0 12 0 0; }
-.condition-screen .account-menu { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-padding: 8 12; -fx-background-radius: 8; }
-.condition-screen .account-menu > .label { -fx-text-fill: #334155; -fx-font-size: 13px; }
-.condition-screen .account-menu .menu-item:focused { -fx-background-color: #e9edf2; }
-.my-page { -fx-padding: 28 32; -fx-background-color: #f7f8fa; }
-.profile-card { -fx-padding: 24; -fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #e5e8eb; -fx-border-radius: 12; }
-.condition-screen .editor-heading-bar { -fx-padding: 8 24; }
-.condition-screen .editor-heading-bar .planner-heading { -fx-font-size: 18px; }
-.route-editor-screen .map-toolbar { -fx-padding: 8 16; }
-.condition-screen .header-tab { -fx-background-color: transparent; -fx-text-fill: #526174; -fx-font-size: 13px; -fx-font-weight: normal; -fx-padding: 10 12; -fx-background-radius: 8; }
-.condition-screen .header-tab:hover, .condition-screen .header-tab:active { -fx-background-color: #edf0f3; -fx-text-fill: #191f28; }
-.condition-screen .header-tab:active { -fx-font-weight: bold; }
-.condition-screen .header-secondary { -fx-background-color: #f2f4f6; -fx-text-fill: #334155; -fx-font-size: 13px; -fx-padding: 10 14; }
-.condition-screen .header-save { -fx-font-size: 13px; -fx-padding: 10 16; }
-.feedback-toast { -fx-padding: 11 12 7 12; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 1 1 1 4; -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.15), 14, 0, 0, 4); }
-.feedback-toast .label { -fx-font-size: 13px; -fx-text-fill: #172033; -fx-font-weight: bold; -fx-padding: 3 0; }
-.feedback-info { -fx-background-color: #edf5ff; -fx-border-color: #4b83c4; }
-.feedback-success { -fx-background-color: #edf9f2; -fx-border-color: #379260; }
-.feedback-error { -fx-background-color: #fff1f0; -fx-border-color: #c8534e; }
-.feedback-toast .feedback-close { -fx-background-color: transparent; -fx-text-fill: #64748b; -fx-font-size: 17px; -fx-padding: 0; }
-.feedback-toast .feedback-close:hover { -fx-background-color: rgba(100,116,139,0.12); }
-.feedback-countdown { -fx-pref-height: 3; -fx-min-height: 3; -fx-max-height: 3; -fx-padding: 0; -fx-background-insets: 0; }
-.feedback-countdown .track { -fx-background-color: rgba(100,116,139,0.12); -fx-background-insets: 0; -fx-background-radius: 2; }
-.feedback-countdown .bar { -fx-background-color: #6486ac; -fx-background-insets: 0; -fx-background-radius: 2; -fx-padding: 1.5; }
-.feedback-success .bar { -fx-background-color: #379260; }
-.feedback-error .bar { -fx-background-color: #c8534e; }
-.loading-shade { -fx-background-color: rgba(245,247,250,0.72); }
-.loading-card { -fx-background-color: white; -fx-background-radius: 12; -fx-padding: 24; -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 16, 0, 0, 4); }
-.loading-card .label { -fx-font-size: 15px; -fx-text-fill: #334155; }
+.split-pane > .split-pane-divider {
+    -fx-background-color: #E9DFD2;
+    -fx-background-insets: 0;
+    -fx-padding: 0 1 0 1;
+}
 
-/* Common action geometry; text length controls width, role controls color. */
-.condition-screen .button.planner-primary,
-.condition-screen .button.header-save,
-.condition-screen .button.header-secondary,
-.condition-screen .button.drawer-toggle,
-.condition-screen .button.header-tab {
+.split-pane > .split-pane-divider > * {
+    -fx-background-color: transparent;
+}
+
+/* ================= 17. 목록/상세 영역 보강 ================= */
+/* 목록: 글자색 지정 (선택돼도 흰색으로 안 바뀌게) */
+.saved-course-list .list-cell {
+    -fx-text-fill: #4A1827;
     -fx-font-size: 13px;
-    -fx-padding: 6 12;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-border-width: 1;
-    -fx-border-color: transparent;
-    -fx-font-weight: normal;
-}
-.condition-screen .button.drawer-toggle,
-.condition-screen .button.header-secondary {
-    -fx-background-color: #f2f4f6;
-    -fx-border-color: #dce1e8;
-    -fx-text-fill: #334155;
-}
-.condition-screen .button.drawer-toggle:hover,
-.condition-screen .button.header-secondary:hover { -fx-background-color: #e9edf1; }
-.condition-screen .button.planner-primary,
-.condition-screen .button.header-save {
-    -fx-background-color: #ff6b81;
-    -fx-text-fill: #191f28;
     -fx-font-weight: bold;
 }
-.condition-screen .button.planner-primary:hover,
-.condition-screen .button.header-save:hover { -fx-background-color: #ff8294; }
-.condition-screen .button:focused { -fx-border-color: #64748b; }
-.condition-screen .account-menu { -fx-min-height: 36; -fx-pref-height: 36; -fx-max-height: 40; -fx-padding: 4 12; -fx-label-padding: 0; }
-.condition-screen .account-menu > .label { -fx-padding: 0; -fx-label-padding: 0; }
-.condition-screen .button.place-count-arrow { -fx-min-height: 0; -fx-pref-height: 18; -fx-max-height: 18; -fx-padding: 0; -fx-border-width: 0; }
-.condition-screen .button.feedback-close { -fx-min-height: 24; -fx-pref-height: 24; -fx-max-height: 24; -fx-padding: 0; }
 
-/* Course review and persistent search recovery reuse native JavaFX controls. */
-.course-overview-stops { -fx-font-size: 13px; -fx-text-fill: #334155; -fx-line-spacing: 6px; }
-.search-empty-state { -fx-padding: 14px; -fx-background-color: #f5f7fa; -fx-background-radius: 10px; }
+.saved-course-list .list-cell:filled:selected,
+.saved-course-list .list-cell:filled:selected:hover {
+    -fx-text-fill: #4A1827;
+}
 
-/* Filter controls use a stable entry and bounded category editor. */
-.condition-screen .filter-entry { -fx-background-color: #fff1f4; -fx-border-color: #f08ca0; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8 12; -fx-font-weight: bold; -fx-text-fill: #9d2446; -fx-cursor: hand; }
-.condition-screen .filter-entry:hover { -fx-background-color: #ffe2e9; }
-.filter-entry-icon { -fx-fill: transparent; -fx-stroke: #9d2446; -fx-stroke-width: 1.7; }
-.condition-screen .filter-editor { -fx-padding: 12; -fx-border-color: #e2e7ee; -fx-border-radius: 10; -fx-background-radius: 10; -fx-background-color: #fafbfd; }
-.condition-screen .filter-category { -fx-padding: 6 10; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: #dce1e8; -fx-background-color: white; -fx-text-fill: #334155; -fx-cursor: hand; }
-.condition-screen .filter-category:selected { -fx-background-color: #ffe2e9; -fx-border-color: #f08ca0; -fx-text-fill: #9d2446; }
-.condition-screen .filter-chip { -fx-padding: 4 9; -fx-background-color: #edf2f7; -fx-background-radius: 14; -fx-text-fill: #334155; -fx-font-size: 12px; -fx-cursor: hand; }
-.condition-screen .filter-chip:hover { -fx-background-color: #dfe7ef; }
+/* 상세 정보 카드 */
+.detail-scroll {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: #E9DFD2;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+    -fx-padding: 1;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
 
-.filter-scroll, .filter-scroll > .viewport { -fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 0; }
+.detail-scroll > .viewport {
+    -fx-background-color: transparent;
+}
 
-/* Category tones are shared by tabs, editor outline and selected chips. */
-.condition-screen .filter-category.filter-tone-blue, .condition-screen .filter-chip.filter-tone-blue { -fx-background-color: #eef4ff; -fx-border-color: #cbdcf8; -fx-text-fill: #2b5590; }
-.condition-screen .filter-category.filter-tone-amber, .condition-screen .filter-chip.filter-tone-amber { -fx-background-color: #fff7e6; -fx-border-color: #efdab2; -fx-text-fill: #805c19; }
-.condition-screen .filter-category.filter-tone-green, .condition-screen .filter-chip.filter-tone-green { -fx-background-color: #edf8f0; -fx-border-color: #c9e5d2; -fx-text-fill: #2b6d48; }
-.condition-screen .filter-category.filter-tone-blue:selected { -fx-background-color: #dce9ff; -fx-border-color: #739bd2; }
-.condition-screen .filter-category.filter-tone-amber:selected { -fx-background-color: #ffedc5; -fx-border-color: #bd933d; }
-.condition-screen .filter-category.filter-tone-green:selected { -fx-background-color: #d9efdf; -fx-border-color: #72aa84; }
-.condition-screen .filter-category.filter-tone-neutral:selected { -fx-background-color: #e8edf3; -fx-border-color: #94a3b8; -fx-text-fill: #334155; }
-.condition-screen .filter-editor.filter-tone-blue { -fx-background-color: #f7faff; -fx-border-color: #cbdcf8; }
-.condition-screen .filter-editor.filter-tone-amber { -fx-background-color: #fffcf4; -fx-border-color: #efdab2; }
-.condition-screen .filter-editor.filter-tone-green { -fx-background-color: #f6fbf7; -fx-border-color: #c9e5d2; }
-.condition-screen .filter-chip { -fx-border-radius: 14; -fx-border-width: 1; -fx-border-color: transparent; }
-.condition-screen .filter-chip:hover { -fx-opacity: .8; }
+.detail-text {
+    -fx-font-weight: normal;
+    -fx-font-size: 14px;
+    -fx-line-spacing: 3;
+    -fx-padding: 12 14 12 14;
+}
 
-/* Native confirmation/text-input dialogs use the same palette and control roles. */
-.dialog-pane { -fx-background-color: white; -fx-padding: 20; }
-.dialog-pane .header-panel { -fx-background-color: white; -fx-padding: 0 0 12 0; }
-.dialog-pane .header-panel .label { -fx-font-size: 16px; -fx-font-weight: bold; }
-.dialog-pane .content.label { -fx-font-size: 13px; -fx-wrap-text: true; }
+/* TextArea 안쪽 ScrollPane이 만드는 모서리 조각 제거 */
+.text-area > .scroll-pane,
+.text-area > .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ================= 18. 작은 버튼 (반드시 파일 맨 아래!) ================= */
+.compact {
+    -fx-padding: 6 14 6 14;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+/* Keep default single-line inputs aligned; individual compact forms may override these sizes. */
+.text-field, .combo-box { -fx-pref-height: 44; }

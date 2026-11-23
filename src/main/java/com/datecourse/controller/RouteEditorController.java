@@ -67,7 +67,9 @@ public final class RouteEditorController extends BasePageController {
     @FXML private ListView<PlaceSearchService.NearbyPlace> candidateList;
     @FXML private ScrollPane candidateScroll;
     @FXML private Slider radiusSlider;
+    @FXML private Label metricTransportLabel, metricTimeLabel, metricPriceCaption, metricPriceLabel;
     @FXML private Label radiusLabel, summaryLabel, editorError, commonLabel;
+    @FXML private TextField originSearchField;
     @FXML private Label walkingTimeLabel;
     @FXML private ComboBox<com.datecourse.model.TravelMode> travelModeBox;
     private boolean restoringTravelMode;
@@ -263,6 +265,9 @@ public final class RouteEditorController extends BasePageController {
             if (value.intValue() >= 0 && !changingState) setState(EditorState.COURSE);
             updateButtons();
             refreshMap(false);
+            if (value.intValue() >= 0) {
+                map.fitLeg(value.intValue());
+            }
         });
         placeList.setOnMouseClicked(event -> { if (event.getClickCount() == 2) onPlaceDetail(); });
         selectedRadiusSlider.valueProperty().addListener((obs, old, value) -> {
@@ -447,6 +452,9 @@ public final class RouteEditorController extends BasePageController {
         RoutePlan plan = draft();
         summaryLabel.setText(String.format("%d곳 · %d명 · %s",
                 draftPlaces.size(), plan.people(), plan.costEstimate().display()));
+        if (metricTransportLabel != null) metricTransportLabel.setText(travelMode().label());
+        if (metricPriceCaption != null) metricPriceCaption.setText(String.format("총 예상 가격 (%d곳 · %d명)", draftPlaces.size(), plan.people()));
+        if (metricPriceLabel != null) metricPriceLabel.setText(plan.costEstimate().display());
         coursePane.setText("내 코스 보기 · " + draftPlaces.size() + "곳");
         updateButtons();
         placeList.refresh();
@@ -477,12 +485,20 @@ public final class RouteEditorController extends BasePageController {
         return "\n"+(movement.isBlank()?travelMode().label()+" "+minutes(leg.time()):movement+" · 합계 "+minutes(leg.time()))+" · 누적 "+minutes(total);
     }
     private void refreshWalkingSummary() {
-        if(draftPlaces.isEmpty()){walkingTimeLabel.setText("장소를 추가하면 "+travelMode().label()+" 시간을 계산해요.");return;}
+        if(draftPlaces.isEmpty()){
+            walkingTimeLabel.setText("장소를 추가하면 "+travelMode().label()+" 시간을 계산해요.");
+            if (metricTimeLabel != null) metricTimeLabel.setText("0분");
+            return;
+        }
         if(walkingRoute!=null&&walkingRoute.legs().size()==draftPlaces.size()) {
             long last=walkingRoute.legs().getLast().time();
             walkingTimeLabel.setText("최근 이동 "+minutes(last)+" · 누적 "+travelMode().label()+" "+minutes(walkingRoute.totalTime())+" · "+travelMode().timeNote()+(walkingRoute.provider().isBlank()?"":" · 경로 "+walkingRoute.provider()));
-        } else walkingTimeLabel.setText(walkingMessage.contains("중")||walkingMessage.contains("준비")
-            ? travelMode().label()+" 이동시간 조회 중…" : travelMode().label()+" 시간 미확인"+(walkingMessage.isBlank()?"":" · "+walkingMessage));
+            if (metricTimeLabel != null) metricTimeLabel.setText("총 " + minutes(walkingRoute.totalTime()));
+        } else {
+            boolean loading = walkingMessage.contains("중")||walkingMessage.contains("준비");
+            walkingTimeLabel.setText(loading ? travelMode().label()+" 이동시간 조회 중…" : travelMode().label()+" 시간 미확인"+(walkingMessage.isBlank()?"":" · "+walkingMessage));
+            if (metricTimeLabel != null) metricTimeLabel.setText(loading ? "계산 중…" : "미확인");
+        }
     }
 
     private void updateButtons() {
@@ -729,4 +745,5 @@ public final class RouteEditorController extends BasePageController {
         }
         return false;
     }
+
 }

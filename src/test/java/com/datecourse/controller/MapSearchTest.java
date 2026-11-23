@@ -312,9 +312,9 @@ class MapSearchTest {
         script(engine,"pressTarget.remove();gestureEvent('mouseup',releaseTarget,1)");
         assertEquals("손 뗄 때 상세 열기",script(engine,"document.getElementById('detail-title').textContent"));
         assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
-        assertEquals(1,((Number)script(engine,"mapPans.length-releasePanCount")).intValue());
+        assertEquals(0,((Number)script(engine,"mapPans.length-releasePanCount")).intValue());
         script(engine,"releasePin.onclick();gestureEvent('click',releaseTarget,1)");
-        assertEquals(1,((Number)script(engine,"mapPans.length-releasePanCount")).intValue());
+        assertEquals(0,((Number)script(engine,"mapPans.length-releasePanCount")).intValue());
     }
     @Test void pinPressDraggedBeforeReleaseDoesNotOpenDetails() throws Exception {
         WebEngine engine=loadMap(850,720);
@@ -359,16 +359,16 @@ class MapSearchTest {
         assertEquals("한 번 클릭 장소",script(engine,"document.getElementById('detail-title').textContent"));
         assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
         assertEquals(0,((Number)script(engine,"wrapperClicks")).intValue());
-        assertEquals(1,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
+        assertEquals(0,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
         script(engine,"dispatchAtPin(singleClickPlaces[1],'mousemove');dispatchAtPin(singleClickPlaces[1],'click')");
         assertEquals("다른 핀 장소",script(engine,"document.getElementById('detail-title').textContent"));
-        assertEquals(2,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
+        assertEquals(0,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
         script(engine,"window.simulatingDrag=true;dispatchAtPin(singleClickPlaces[0],'mousedown',clickShield,-100);dispatchAtPin(singleClickPlaces[0],'click');window.simulatingDrag=false");
         assertEquals("다른 핀 장소",script(engine,"document.getElementById('detail-title').textContent"));
-        assertEquals(2,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
+        assertEquals(0,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
         script(engine,"window.routeControl=document.createElement('button');routeControl.className='walking-leg-badge';window.routeControlClicks=0;routeControl.onclick=function(){routeControlClicks++;};document.getElementById('map').appendChild(routeControl);dispatchAtPin(singleClickPlaces[1],'click',routeControl)");
         assertEquals(1,((Number)script(engine,"routeControlClicks")).intValue());
-        assertEquals(2,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
+        assertEquals(0,((Number)script(engine,"mapPans.length-panCountBefore")).intValue());
     }
 
     @Test void pointerInsidePinKeepsPreviewDespiteRepeatedSdkExitEvents() throws Exception {
@@ -676,7 +676,7 @@ class MapSearchTest {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/saved-course-view.fxml"));loader.load();
                 SavedCourseController controller=loader.getController();
                 var repository=new kr.ac.university.localdb.db.SavedCourseRepository(new org.h2.jdbcx.JdbcDataSource());
-                controller.configure(repository,context,c->{});controller.configure(repository,context,c->{});
+                controller.configure(repository,context,c->{},()->{});controller.configure(repository,context,c->{},()->{});
                 assertSame(context,field(controller,"userContext"));assertFalse(controller.isLoading());
                 assertEquals(1,((javafx.scene.control.ListView<?>)field(controller,"courseList")).getItems().size());
                 FXMLLoader profileLoader=new FXMLLoader(getClass().getResource("/my-page-view.fxml"));profileLoader.load();
@@ -747,11 +747,11 @@ class MapSearchTest {
             window.green=pins.find(function(p){return p.options.strokeColor==='#15803d';});
             window.focusRouteLeg(1,700);
             """);
-        assertEquals(true,script(engine,"green.position.getLat()===35.001 && green.radius===700 && document.getElementById('next-range-label').textContent.includes('A → B')"));
+        assertEquals(true,script(engine,"green.position.getLat()===35.001 && green.radius===700"));
         script(engine,"window.focusRouteLeg(0,300)");
         assertEquals(true,script(engine,"green.position.getLat()===35 && green.radius===300"));
         script(engine,"window.focusRouteLeg(null,null)");
-        assertEquals(true,script(engine,"green.position.getLat()===35.002 && green.radius===500 && document.getElementById('next-range-label').textContent.includes('마지막 장소')"));
+        assertEquals(true,script(engine,"green.position.getLat()===35.002 && green.radius===500"));
     }
 
     @Test void commonResetRestoresDefaultsAndClearsSelectedOriginAndMapSnapshot() throws Exception {
@@ -798,7 +798,7 @@ class MapSearchTest {
         assertEquals(true,script(engine,"pins.every(function(p){return !p.attached;}) && routeOverlays.every(function(o){return !o.attached;}) && routeLines.every(function(l){return !l.attached;})"));
         assertEquals("[]",script(engine,"JSON.stringify(bridgeSelections)"));
         assertEquals("true",script(engine,"document.getElementById('place-detail').getAttribute('aria-hidden')"));
-        assertEquals(true,script(engine,"document.getElementById('walking-panel').hidden && document.getElementById('next-range-legend').hidden"));
+        assertEquals(true,script(engine,"document.getElementById('walking-panel').hidden && !pins.some(c=>c.attached && c.options.strokeColor==='#15803d')"));
         assertEquals(35.1796,((Number)script(engine,"testMap.getCenter().getLat()")).doubleValue(),0.000001);
         assertEquals(5,((Number)script(engine,"testMap.getLevel()")).intValue());
         script(engine,"testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
@@ -946,10 +946,10 @@ class MapSearchTest {
             ]},'',false);
             routeLines[3].onclick();
             """);
-        assertEquals(true,script(engine,"document.getElementById('walking-panel').hidden"));
+        assertEquals(true,script(engine,"document.getElementById('walking-details').hidden"));
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
         script(engine,"pins.filter(p=>p.coursePin && p.attached)[0].onclick()");
-        assertEquals(true,script(engine,"document.getElementById('walking-panel').hidden"));
+        assertEquals(true,script(engine,"document.getElementById('walking-details').hidden"));
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
         assertEquals("첫 장소",script(engine,"document.getElementById('detail-title').textContent"));
         assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
@@ -1340,7 +1340,10 @@ class MapSearchTest {
                 assertTrue(dialog.isShowing());assertEquals("-1",value.getText());assertNull(dialog.getResult());
                 value.setText("9500");source.setText("javascript:alert(1)");send.fire();
                 assertTrue(dialog.isShowing());assertTrue(((javafx.scene.control.Label)pane.lookup("#reportError")).getText().contains("https"));
-                source.setText("https://example.test/menu");send.fire();
+                source.setText("https://example.test/menu");
+                answerReportConfirmation(javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE);send.fire();
+                assertTrue(dialog.isShowing());assertNull(dialog.getResult());assertEquals("9500",value.getText());
+                answerReportConfirmation(javafx.scene.control.ButtonBar.ButtonData.OK_DONE);send.fire();
                 assertFalse(dialog.isShowing());assertNotNull(dialog.getResult());assertEquals("9500",dialog.getResult().value());
                 assertEquals(com.datecourse.model.InformationReport.Field.PRICE,dialog.getResult().field());
             } finally {dialog.close();}
@@ -1348,6 +1351,17 @@ class MapSearchTest {
             try{cancelled.show();((javafx.scene.control.Button)cancelled.getDialogPane().lookupButton(javafx.scene.control.ButtonType.CANCEL)).fire();
                 assertFalse(cancelled.isShowing());assertNull(cancelled.getResult());}finally{cancelled.close();}
             return null;
+        });
+    }
+
+    private static void answerReportConfirmation(javafx.scene.control.ButtonBar.ButtonData answer) {
+        Platform.runLater(()->{
+            var window=javafx.stage.Window.getWindows().stream()
+                .filter(w->w instanceof javafx.stage.Stage stage && "제보 확인".equals(stage.getTitle()))
+                .findFirst().orElseThrow();
+            var pane=(javafx.scene.control.DialogPane)window.getScene().getRoot();
+            var type=pane.getButtonTypes().stream().filter(b->b.getButtonData()==answer).findFirst().orElseThrow();
+            ((javafx.scene.control.Button)pane.lookupButton(type)).fire();
         });
     }
 
@@ -1758,6 +1772,107 @@ class MapSearchTest {
         });
     }
 
+    @Test void rangeHintsAppearOnlyNearVisibleCircleBorders() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[]},null,500,true,false,[]);
+            testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));
+            window.moveToRange=function(meters,buttons){
+                var viewport=document.getElementById('map'),rect=viewport.getBoundingClientRect();
+                var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(35.1578+meters/6378137*180/Math.PI,129.06));
+                viewport.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:buttons||0,
+                    clientX:rect.left+point.x*rect.width/viewport.clientWidth,
+                    clientY:rect.top+point.y*rect.height/viewport.clientHeight}));
+            };
+            moveToRange(0);
+            """);
+        assertNull(script(engine,"document.getElementById('map-legend')"));
+        assertEquals(true,script(engine,"document.getElementById('range-tooltip').hidden"));
+        script(engine,"moveToRange(1000)");
+        assertEquals(false,script(engine,"document.getElementById('range-tooltip').hidden"));
+        assertEquals("전체 허용 범위 · 1,000m",script(engine,"document.getElementById('range-tooltip').textContent"));
+        script(engine,"moveToRange(500)");
+        assertEquals("다음 장소의 검색 범위 · 500m",script(engine,"document.getElementById('range-tooltip').textContent"));
+        script(engine,"moveToRange(500,1)");
+        assertEquals(true,script(engine,"document.getElementById('range-tooltip').hidden"));
+        script(engine,"document.getElementById('map').style.transform='scale(.8)';moveToRange(1000)");
+        assertEquals(false,script(engine,"document.getElementById('range-tooltip').hidden"));
+        script(engine,"document.getElementById('map-surface').classList.add('has-route-popup');moveToRange(1000)");
+        assertEquals(true,script(engine,"document.getElementById('range-tooltip').hidden"));
+        script(engine,"document.getElementById('map-surface').classList.remove('has-route-popup');setCoursePreviewMode(true);moveToRange(1000)");
+        assertEquals(true,script(engine,"document.getElementById('range-tooltip').hidden"));
+    }
+
+    @Test void routeImagesRejectOldCoursesAndCancelledRequests() throws Exception {
+        WebEngine engine=loadMap();
+        script(engine,"""
+            window.javaMapBridge.requestRouteImage=function(){};
+            window.imagePlan={startLat:35.15,startLng:129.06,radius:1000,places:[
+                {recordId:1,placeId:'first',name:'첫 코스',lat:35.16,lng:129.07}]};
+            presentRoute(imagePlan,null,500,true,false,[]);
+            var canvas=document.createElement('canvas');canvas.width=canvas.height=32;
+            window.imageData=canvas.toDataURL('image/png');
+            document.getElementById('route-image-button').click();
+            window.firstImageRequest=routeImageRequestVersion;
+            showRouteImage(imageData,firstImageRequest);
+            """);
+        assertEquals(false,script(engine,"document.getElementById('route-image-overlay').hidden"));
+        script(engine,"""
+            imagePlan.places=[{recordId:2,placeId:'second',name:'다른 코스',lat:35.17,lng:129.08}];
+            presentRoute(imagePlan,null,500,true,false,[]);
+            showRouteImage(imageData,firstImageRequest);
+            """);
+        assertEquals(true,script(engine,"document.getElementById('route-image-overlay').hidden && !document.getElementById('route-image').hasAttribute('src')"));
+        script(engine,"""
+            document.getElementById('route-image-button').click();window.cancelledRequest=routeImageRequestVersion;
+            document.getElementById('route-map-button').click();showRouteImage(imageData,cancelledRequest);
+            """);
+        assertEquals(true,script(engine,"document.getElementById('route-image-overlay').hidden"));
+        script(engine,"document.getElementById('route-image-button').click();showRouteImage(imageData,routeImageRequestVersion)");
+        assertEquals(false,script(engine,"document.getElementById('route-image-overlay').hidden"));
+        script(engine,"resetPlannerMap();showRouteImage(imageData,cancelledRequest)");
+        assertEquals(true,script(engine,"document.getElementById('route-image-overlay').hidden"));
+    }
+
+    @Test void compactSearchOptionsKeepTheirValuesAndWrapInsideTheForm() throws Exception {
+        fx(()->{
+            var loader=new FXMLLoader(getClass().getResource("/route-editor-view.fxml"));Parent root=loader.load();
+            RouteEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
+            editor.begin(new com.datecourse.model.RoutePlan(35,129,2,1000,"",java.util.List.of()),java.util.List.of(),p->{},()->{});
+            new Scene(root,960,680);root.resize(960,680);root.applyCss();root.layout();
+            var count=(javafx.scene.control.ComboBox<?>)field(editor,"conditionCandidateLimitBox");
+            var cell=(javafx.scene.control.ListCell<?>)count.lookup(".combo-box > .list-cell");
+            assertEquals(count.getValue().toString(),cell.getText());
+            assertEquals(count.getValue().toString(),((javafx.scene.text.Text)cell.lookup(".text")).getText(),"후보 수 숫자가 잘리지 않아야 합니다.");
+            var include=(CheckBox)field(editor,"includeUncertainPrice");
+            assertTrue(include.getWidth()>=include.prefWidth(-1),"가격 미확인 옵션이 잘리지 않아야 합니다.");
+            var form=root.lookup(".route-edit-form").localToScene(root.lookup(".route-edit-form").getBoundsInLocal());
+            for(var node:java.util.List.of(count,include,root.lookup("#recommendNextButton"))) {
+                var bounds=node.localToScene(node.getBoundsInLocal());
+                assertTrue(bounds.getMinX()>=form.getMinX()&&bounds.getMaxX()<=form.getMaxX());
+            }
+            Path file=Path.of("build/ui-preview/compact-search-options.png");Files.createDirectories(file.getParent());
+            ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",file.toFile());
+            editor.dispose();return null;
+        });
+    }
+
+    @Test void masterRouteImageControlsRemainConnected() throws Exception {
+        WebEngine engine=loadMap();
+        script(engine,"""
+            window.imageRequests=0;window.javaMapBridge.requestRouteImage=function(){imageRequests++;};
+            window.setRouteViewVisible(true);document.getElementById('route-image-button').click();
+            var canvas=document.createElement('canvas');canvas.width=canvas.height=32;
+            window.showRouteImage(canvas.toDataURL('image/png'));
+            """);
+        assertEquals(1,((Number)script(engine,"imageRequests")).intValue());
+        assertEquals(true,script(engine,"!document.getElementById('route-controls').hidden && !document.getElementById('route-image-overlay').hidden"));
+        script(engine,"document.getElementById('route-image').click()");
+        assertEquals(false,script(engine,"document.getElementById('route-image-zoom').hidden"));
+        script(engine,"document.getElementById('route-image-zoom-close').click();document.getElementById('route-map-button').click()");
+        assertEquals(true,script(engine,"document.getElementById('route-image-zoom').hidden && document.getElementById('route-image-overlay').hidden"));
+    }
+
     @Test void savedPreviewConnectionsNeverReplaceMainRoutesAndReturnAfterRouteFailure() throws Exception {
         WebEngine engine=loadMap();
         script(engine,"""
@@ -1767,7 +1882,7 @@ class MapSearchTest {
             ]},null,1000,true,false,[]);
             """);
         assertEquals(true,script(engine,"routeLines.filter(l=>l.attached).length===1 && routeLines.filter(l=>l.attached)[0].options.strokeStyle==='dash'"));
-        assertEquals(true,script(engine,"document.getElementById('next-range-legend').hidden && document.getElementById('place-search').hidden"));
+        assertEquals(true,script(engine,"!pins.some(c=>c.attached && c.options.strokeColor==='#15803d') && document.getElementById('place-search').hidden"));
         script(engine,"""
             window.showWalkingRoute({mode:'WALKING',totalDistance:100,totalTime:60,legs:[{
               from:{name:'출발'},to:{name:'도착'},distance:100,time:60,
@@ -1794,10 +1909,10 @@ class MapSearchTest {
             """);
         assertEquals(true,script(engine,"routeLines.filter(l=>l.attached&&l.options.zIndex===4).map(l=>l.options.strokeStyle).join(',')==='shortdash,solid'"));
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.includes('대중교통 + 도보')"));
-        script(engine,"routeLines[1].onmouseover({});routeLines[1].onclick({});window.mixedTooltip=routeOverlays[0].options.content;");
-        assertEquals(true,script(engine,"mixedTooltip.textContent.includes('도보 약 2분 → 버스 약 8분')"));
-        assertEquals(true,script(engine,"mixedTooltip.textContent.includes('1,550원')"));
-        assertEquals(true,script(engine,"mixedTooltip.classList.contains('is-detailed')"));
+        script(engine,"routeLines[1].onmouseover({});routeLines[1].onclick({});document.querySelector('.walking-leg-button').click();");
+        assertEquals(true,script(engine,"document.getElementById('walking-detail-facts').textContent.includes('도보 약 2분 → 버스 약 8분')"));
+        assertEquals(true,script(engine,"document.getElementById('walking-detail-facts').textContent.includes('1,550원')"));
+        assertEquals(true,script(engine,"!document.getElementById('walking-details').hidden && document.getElementById('walking-details').open"));
         script(engine,"""
             window.showWalkingRoute({mode:'TRANSIT',provider:'TMAP',totalDistance:100,totalTime:120,legs:[{
               from:{name:'출발'},to:{name:'근처'},distance:100,time:120,fare:0,transfers:0,
@@ -1877,8 +1992,8 @@ class MapSearchTest {
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",preview.toFile());
             root.resize(960,680);root.applyCss();root.layout();
             WebView editMap=(WebView)field(editor,"editMapView");
-            assertTrue(editMap.getWidth() >= 500);
-            assertTrue(editMap.getHeight() >= 400, "지도 높이: " + editMap.getHeight());
+            assertTrue(editMap.getWidth() >= root.getLayoutBounds().getWidth() * .4);
+            assertTrue(editMap.getHeight() >= root.getLayoutBounds().getHeight() / 2, "지도 높이: " + editMap.getHeight());
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",
                     Path.of("build","ui-preview","route-editor-small.png").toFile());
             invoke(editor,"onFinish");
@@ -2099,7 +2214,7 @@ class MapSearchTest {
             new Scene(root,1440,960);root.resize(1440,960);root.applyCss();root.layout();
             var footer=root.lookup("#editorFooter");var map=(WebView)field(editor,"editMapView");
             double mapHeight=map.getHeight(),footerY=footer.localToScene(footer.getBoundsInLocal()).getMinY();
-            assertEquals(960-76,footerY,0.1);
+            assertEquals(root.getLayoutBounds().getHeight()-footer.getBoundsInParent().getHeight(),footerY,0.1);
             var course=(javafx.scene.control.TitledPane)field(editor,"coursePane");course.setExpanded(true);root.applyCss();root.layout();
             assertEquals(mapHeight,map.getHeight(),0.1);assertEquals(footerY,footer.localToScene(footer.getBoundsInLocal()).getMinY(),0.1);
             assertTrue(root.lookupAll(".list-cell").stream().anyMatch(node->node instanceof javafx.scene.control.ListCell<?> cell
@@ -2112,7 +2227,7 @@ class MapSearchTest {
             root.applyCss();root.layout();assertEquals(mapHeight,map.getHeight(),0.1);
             root.resize(960,680);root.applyCss();root.layout();
             double smallHeight=map.getHeight();double smallFooter=footer.localToScene(footer.getBoundsInLocal()).getMinY();
-            assertEquals(680-76,smallFooter,0.1);
+            assertEquals(root.getLayoutBounds().getHeight()-footer.getBoundsInParent().getHeight(),smallFooter,0.1);
             course.setExpanded(true);invoke(editor,"onRecommendNext");root.applyCss();root.layout();
             assertEquals(smallHeight,map.getHeight(),0.1);assertEquals(smallFooter,footer.localToScene(footer.getBoundsInLocal()).getMinY(),0.1);
             return null;
@@ -2302,7 +2417,7 @@ class MapSearchTest {
         assertEquals(true,script(edit,"testMap.getLevel()>5 && Math.abs(testMap.getCenter().getLat()-35.157)<.001"));
         assertEquals(true, script(edit,"pins.some(function(p){return p.attached && p.options.strokeColor==='#2563eb' && p.radius===1200 && p.position.getLat()===35.157;})"));
         assertEquals(true, script(edit,"pins.some(function(p){return p.attached && p.options.strokeColor==='#15803d' && p.options.strokeStyle==='shortdash' && p.radius===1000 && p.position.getLat()===35.158;})"));
-        assertEquals(false,script(edit,"document.getElementById('next-range-legend').hidden"));
+        assertEquals(false,script(edit,"!pins.some(c=>c.attached && c.options.strokeColor==='#15803d')"));
         assertEquals("FIT",script(edit,"inspectMapCamera().last.intent"));
         assertEquals("[]",script(edit,"JSON.stringify(bridgeSelections)"));
         script(edit,"testMap.onclick({latLng:new kakao.maps.LatLng(36,130)})");
@@ -2313,7 +2428,7 @@ class MapSearchTest {
         script(edit,"window.presentRoute({startLat:35.157,startLng:129.06,radius:800,places:[]},null,200,true,true)");
         assertEquals(true,script(edit,"pins.some(function(p){return p.attached && p.options.strokeColor==='#15803d' && p.radius===200 && p.position.getLat()===35.157;})"));
         script(edit,"window.presentRoute("+plan+",null,500,false,true)");
-        assertEquals(true,script(edit,"document.getElementById('next-range-legend').hidden"));
+        assertEquals(true,script(edit,"!pins.some(c=>c.attached && c.options.strokeColor==='#15803d')"));
         assertEquals(false,script(edit,"pins.some(function(p){return p.attached && p.options.strokeColor==='#15803d';})"));
         assertEquals(true,script(edit,"Math.abs(testMap.getCenter().getLat()-35.157)<1e-8 && Math.abs(testMap.getCenter().getLng()-129.06)<1e-8"));
     }
@@ -2697,7 +2812,7 @@ class MapSearchTest {
             """);
         assertEquals(true,script(engine,"oldCoursePins.length>0 && oldCoursePins.every(function(p){return !p.attached;})"));
         assertEquals(true,script(engine,"oldRouteLines.length===0 && routeLines.length===0"));
-        assertEquals(true,script(engine,"document.getElementById('place-detail').hidden && document.getElementById('next-range-legend').hidden"));
+        assertEquals(true,script(engine,"document.getElementById('place-detail').hidden && !pins.some(c=>c.attached && c.options.strokeColor==='#15803d')"));
     }
 
     @Test
@@ -2745,7 +2860,7 @@ class MapSearchTest {
         FutureTask<Void> setup = new FutureTask<>(() -> {
             engine.executeScript("""
                 disposeMapZoom();
-                window.controlIds=['place-search','map-legend','map-status','place-detail'];
+                window.controlIds=['place-search','range-tooltip','map-status','place-detail'];
                 window.controlSizes=controlIds.map(function(id){var r=document.getElementById(id).getBoundingClientRect();return [r.width,r.height];});
                 testMap.getProjection=function(){
                     var unit=100000*Math.pow(2,5-testMap.getLevel());
@@ -3212,7 +3327,7 @@ class MapSearchTest {
                     > root.lookup("#mapView").localToScene(root.lookup("#mapView").getBoundsInLocal()).getMaxX());
             assertTrue(root.lookup("#mapView").getBoundsInLocal().getWidth() > 500);
             assertFalse(root.lookup("#routeEditor").isVisible());
-            assertTrue(root.lookup("#resultSummary").getBoundsInLocal().getHeight() < 100);
+            assertTrue(root.lookup("#saveStatusLabel").getBoundsInLocal().getHeight() < 100);
             Path image = Path.of("build", "ui-preview", "condition-planner.png");
             Files.createDirectories(image.getParent());
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null, null), null), "png", image.toFile());

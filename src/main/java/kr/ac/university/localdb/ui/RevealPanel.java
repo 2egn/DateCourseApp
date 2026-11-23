@@ -15,7 +15,7 @@ public final class RevealPanel extends JPanel {
     public RevealPanel(String label,JComponent input) {
         super(new BorderLayout(0,6));
         setBorder(BorderFactory.createEmptyBorder(10,0,10,0));
-        JLabel heading=new JLabel(label);heading.setForeground(UiTheme.MUTED);heading.setFont(UiTheme.BODY.deriveFont(13f));
+        JLabel heading=new JLabel(label);heading.setForeground(LoginUI.MUTED);heading.setFont(LoginUI.BODY.deriveFont(13f));
         add(heading,BorderLayout.NORTH); add(input,BorderLayout.CENTER);
         setAlignmentX(Component.LEFT_ALIGNMENT);
         setVisible(false);

@@ -14,7 +14,7 @@ final class CapsLockHint extends JLabel {
     CapsLockHint(JPasswordField field, java.util.function.BooleanSupplier capsLockState) {
         super(" ");
         this.capsLockState = capsLockState;
-        setFont(UiTheme.BODY.deriveFont(12f));
+        setFont(LoginUI.BODY.deriveFont(12f));
         setForeground(new Color(0xB45309));
         timer = new Timer(200, event -> refresh(field));
         field.addFocusListener(new FocusAdapter() {

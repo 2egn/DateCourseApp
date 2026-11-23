@@ -62,13 +62,13 @@ public final class AppDialogs {
         JLabel badge=new JLabel(type==JOptionPane.QUESTION_MESSAGE ? "?" : type==JOptionPane.INFORMATION_MESSAGE ? "✓" : "!",SwingConstants.CENTER) {
             protected void paintComponent(Graphics g){
                 Graphics2D p=(Graphics2D)g.create();p.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-                p.setColor(UiTheme.SOFT);p.fillOval(0,0,getWidth(),getHeight());p.dispose();super.paintComponent(g);
+                p.setColor(LoginUI.SOFT);p.fillOval(0,0,getWidth(),getHeight());p.dispose();super.paintComponent(g);
             }
         };
-        badge.setPreferredSize(new Dimension(42,42));badge.setForeground(new Color(0xB4233F));badge.setFont(UiTheme.BODY.deriveFont(Font.BOLD,22f));
-        JLabel heading=new JLabel(title);heading.setFont(UiTheme.BODY.deriveFont(Font.BOLD,22f));heading.setForeground(UiTheme.TEXT);
+        badge.setPreferredSize(new Dimension(42,42));badge.setForeground(new Color(0xB4233F));badge.setFont(LoginUI.BODY.deriveFont(Font.BOLD,22f));
+        JLabel heading=new JLabel(title);heading.setFont(LoginUI.BODY.deriveFont(Font.BOLD,22f));heading.setForeground(LoginUI.TEXT);
         header.add(badge,BorderLayout.WEST);header.add(heading,BorderLayout.CENTER);body.add(header,BorderLayout.NORTH);
-        JTextArea text=new JTextArea(message);text.setFont(UiTheme.BODY);text.setForeground(UiTheme.MUTED);
+        JTextArea text=new JTextArea(message);text.setFont(LoginUI.BODY);text.setForeground(LoginUI.MUTED);
         text.setEditable(false);text.setFocusable(false);text.setLineWrap(true);text.setWrapStyleWord(true);text.setOpaque(false);
         text.setSize(384,Short.MAX_VALUE);
         int height=Math.max(46,Math.min(240,text.getPreferredSize().height));
@@ -77,7 +77,8 @@ public final class AppDialogs {
         body.add(scroll,BorderLayout.CENTER);
         JPanel buttons=new JPanel(new GridLayout(1,choices.length,12,0));buttons.setOpaque(false);
         for(int i=0;i<choices.length;i++) {
-            final int index=i;JButton button=new JButton(choices[i]);UiTheme.button(button,i==0);
+            final int index=i;JButton button=new JButton(choices[i]);
+            LoginUI.button(button,i==0);
             button.setPreferredSize(new Dimension(120,50));button.addActionListener(e -> action.accept(index));buttons.add(button);
         }
         body.add(buttons,BorderLayout.SOUTH);return body;
