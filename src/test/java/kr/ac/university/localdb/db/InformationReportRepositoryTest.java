@@ -1,5 +1,7 @@
 package kr.ac.university.localdb.db;
 
+import com.datecourse.page.review.InformationReviewController;
+
 import com.datecourse.model.*;
 import com.zaxxer.hikari.HikariDataSource;
 import kr.ac.university.localdb.UserSession;
@@ -162,9 +164,9 @@ class InformationReportRepositoryTest {
         assertTrue(started.await(10,java.util.concurrent.TimeUnit.SECONDS));
         var allowReview=new java.util.concurrent.atomic.AtomicBoolean(false);
         javafx.scene.Parent root=fx(()->{
-            var loader=new javafx.fxml.FXMLLoader(getClass().getResource("/information-review-view.fxml"));
+            var loader=new javafx.fxml.FXMLLoader(getClass().getResource("/com/datecourse/page/review/information-review-view.fxml"));
             javafx.scene.Parent page=loader.load();new javafx.scene.Scene(page,1020,690);page.resize(1020,690);page.applyCss();page.layout();
-            var controller=(com.datecourse.controller.InformationReviewController)loader.getController();
+            var controller=(com.datecourse.page.review.InformationReviewController)loader.getController();
             var confirm=controller.getClass().getDeclaredField("confirmation");confirm.setAccessible(true);
             confirm.set(controller,(java.util.function.BiPredicate<String,String>)(title,message)->allowReview.get());
             controller.configure(session);return page;
@@ -243,9 +245,9 @@ class InformationReportRepositoryTest {
         catch(IllegalStateException running){javafx.application.Platform.runLater(started::countDown);}
         assertTrue(started.await(5,java.util.concurrent.TimeUnit.SECONDS));
         var root=fx(()->{
-            var loader=new javafx.fxml.FXMLLoader(getClass().getResource("/information-review-view.fxml"));
+            var loader=new javafx.fxml.FXMLLoader(getClass().getResource("/com/datecourse/page/review/information-review-view.fxml"));
             javafx.scene.Parent page=loader.load();new javafx.scene.Scene(page,1020,690);page.resize(1020,690);page.applyCss();page.layout();
-            loader.<com.datecourse.controller.InformationReviewController>getController().configure(session);return page;
+            loader.<com.datecourse.page.review.InformationReviewController>getController().configure(session);return page;
         });
         awaitReportPage(root,"1페이지",50);
         fx(()->{assertFalse(root.lookup("#nextButton").isDisabled());

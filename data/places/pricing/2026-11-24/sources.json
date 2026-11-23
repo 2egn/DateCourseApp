@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "retrievedAt": "2026-11-23T15:57:50.728588+00:00",
+  "regionalRequest": {
+    "url": "https://hamoni.mois.go.kr/portal/lcpr/getIndvSrcvEatoutCstList.do",
+    "searchItemNo": "BA,BB,BC,BD,BE,BF,BG,BH,BI",
+    "searchCtpv": "6260000",
+    "searchBgngYm": "202610",
+    "searchEndYm": "202610"
+  },
+  "regionalRawSha256": "e1dbf5c711e509726749aeeb4254f4539e12299d92e02a08f5890842556ca331",
+  "sources": [
+    {
+      "kind": "REGIONAL",
+      "region": "부산",
+      "menu": "냉면",
+      "unit": "PER_PERSON",
+      "amount": 12000,
+      "period": "2026-10",
+      "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+      "locator": "2026.10 · 부산 · 냉면",
+      "label": "부산 지역별 외식비",
+      "servingVerified": true
+    },
+    {
+      "kind": "REGIONAL",
+      "region": "부산",
+      "menu": "비빔밥",
+      "unit": "PER_PERSON",
+      "amount": 9686,
+      "period": "2026-10",
+      "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+      "locator": "2026.10 · 부산 · 비빔밥",
+      "label": "부산 지역별 외식비",
+      "servingVerified": true
+    },
+    {
+      "kind": "REGIONAL",
+      "region": "부산",
+      "menu": "김치찌개 백반",
+      "unit": "PER_PERSON",
+      "amount": 8429,
+      "period": "2026-10",
+      "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+      "locator": "2026.10 · 부산 · 김치찌개 백반",
+      "label": "부산 지역별 외식비",
+      "servingVerified": true
+    },
+    {
+      "kind": "REGIONAL",
+      "region": "부산",
+      "menu": "짜장면",
+      "unit": "PER_PERSON",
+      "amount": 7000,
+      "period": "2026-10",
+      "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+      "locator": "2026.10 · 부산 · 짜장면",
+      "label": "부산 지역별 외식비",
+      "servingVerified": true
+    },
+    {
+      "kind": "REGIONAL",
+      "region": "부산",
+      "menu": "삼계탕",
+      "unit": "PER_PERSON",
+      "amount": 17429,
+      "period": "2026-10",
+      "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+      "locator": "2026.10 · 부산 · 삼계탕",
+      "label": "부산 지역별 외식비",
+      "servingVerified": true
+    },
+    {
+      "kind": "REGIONAL",
+      "region": "부산",
+      "menu": "칼국수",
+      "unit": "PER_PERSON",
+      "amount": 8071,
+      "period": "2026-10",
+      "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+      "locator": "2026.10 · 부산 · 칼국수",
+      "label": "부산 지역별 외식비",
+      "servingVerified": true
+    },
+    {
+      "kind": "SURVEY",
+      "region": "전국",
+      "menu": "커피",
+      "unit": "PER_DRINK",
+      "amount": 4118,
+      "period": "2025",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+      "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+      "sampleCount": 530,
+      "label": "외식업체 조사",
+      "servingVerified": false,
+      "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+    }
+  ],
+  "excluded": [
+    {
+      "menu": "김밥",
+      "reason": "1줄을 1인 식사 가격으로 환산하지 않음"
+    },
+    {
+      "menu": "삼겹살",
+      "reason": "중량을 임의의 1인분으로 환산하지 않음"
+    }
+  ]
+}

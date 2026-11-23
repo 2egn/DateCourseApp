@@ -1,10 +1,17 @@
 ---
-title: MapBridge
+current_source: src/main/java/com/datecourse/page/common/map/MapEventBridge.java
+layout_updated: 2026-11-24
+title: MapEventBridge (이전 MapBridge)
 source: src/main/java/com/datecourse/controller/MapBridge.java
 source_commit: ea2242b
 source_sha256: 1a86040173a31e904f80856371408dbbd496481b1d71ea4f896c2b19281ebc59
 readability_updated: 2026-11-14
 ---
+
+## 현재 이름·경로 · 2026-11-24
+
+`MapEventBridge` → `src/main/java/com/datecourse/page/common/map/MapEventBridge.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+
 
 # MapBridge
 

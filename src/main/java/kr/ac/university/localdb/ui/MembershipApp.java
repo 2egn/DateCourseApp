@@ -1,6 +1,8 @@
 package kr.ac.university.localdb.ui;
 
-import com.datecourse.controller.ConditionController;
+import com.datecourse.page.review.InformationReviewController;
+
+import com.datecourse.page.condition.CoursePlannerController;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
@@ -33,7 +35,7 @@ public class MembershipApp {
 
     // ===== 필드: 연결 대상·세션·상태 =====
     private volatile MemberRepository repository;
-    private volatile ConditionController plannerController;
+    private volatile CoursePlannerController plannerController;
     private boolean closePending;
     private java.util.function.BooleanSupplier adminCloseCheck;
     private UserSession userSession;
@@ -158,7 +160,7 @@ public class MembershipApp {
     private void requestWindowClose() {
         if(closePending)return;
         if(adminCloseCheck!=null && !adminCloseCheck.getAsBoolean())return;
-        ConditionController controller=plannerController;
+        CoursePlannerController controller=plannerController;
         if(controller==null){exitApplication.run();return;}
         closePending=true;
         Platform.runLater(()->{
@@ -307,11 +309,11 @@ public class MembershipApp {
         Platform.runLater(() ->{
             try{
                 Platform.setImplicitExit(false);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/condition-view.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/datecourse/page/condition/condition-view.fxml"));
 
                 Parent root = loader.load();
 
-                ConditionController controller = loader.getController();
+                CoursePlannerController controller = loader.getController();
                 plannerController = controller;
                 controller.setUserSession(userSession);
                 controller.setSavedCourseRepository(repository.savedCourses());
@@ -403,7 +405,7 @@ public class MembershipApp {
     private void showAdmin(MemberRepository.AdminSession session) {
         var members=new MemberAdminPanel(session);
         var reviewBusy=new java.util.concurrent.atomic.AtomicBoolean();
-        var reviewController=new java.util.concurrent.atomic.AtomicReference<com.datecourse.controller.InformationReviewController>();
+        var reviewController=new java.util.concurrent.atomic.AtomicReference<com.datecourse.page.review.InformationReviewController>();
         var tabs=new JTabbedPane();AdminStyle.tabs(tabs);tabs.setBorder(BorderFactory.createEmptyBorder(0,20,0,0));tabs.addTab("회원 관리",members);
         var reportPanel=new JFXPanel();tabs.addTab("장소 정보 제보",reportPanel);
         var logoutButton=new JButton("로그아웃");
@@ -423,8 +425,8 @@ public class MembershipApp {
         });
         Platform.runLater(()->{
             try {
-                var loader=new FXMLLoader(getClass().getResource("/information-review-view.fxml"));Parent page=loader.load();
-                var controller=loader.<com.datecourse.controller.InformationReviewController>getController();reviewController.set(controller);
+                var loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/review/information-review-view.fxml"));Parent page=loader.load();
+                var controller=loader.<com.datecourse.page.review.InformationReviewController>getController();reviewController.set(controller);
                 controller.loadingProperty().addListener((o,a,value)->reviewBusy.set(value));
                 controller.configure(session);reportPanel.setScene(new Scene(page));
             } catch(IOException failure) {

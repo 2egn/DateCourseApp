@@ -1,10 +1,17 @@
 ---
+current_source: src/main/java/com/datecourse/page/common/PageFeedback.java
+layout_updated: 2026-11-24
 title: PageFeedback
 source: src/main/java/com/datecourse/controller/PageFeedback.java
 source_commit: ea2242b
 source_sha256: 251dbce5d314c3d61014acc0e6b3d194bdde96913ead7f0fc30869cce8d1ecfd
 readability_updated: 2026-11-14
 ---
+
+## 현재 이름·경로 · 2026-11-24
+
+`PageFeedback` → `src/main/java/com/datecourse/page/common/PageFeedback.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+
 
 # PageFeedback
 

@@ -14,7 +14,7 @@ public class AdminTestApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/admin-view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/datecourse/page/admin/admin-view.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("관리자 테스트");
         stage.show();

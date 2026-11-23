@@ -1,4 +1,6 @@
 ---
+current_source: src/main/java/com/datecourse/page/saved/SavedCourseController.java
+layout_updated: 2026-11-24
 title: SavedCourseController
 source: src/main/java/com/datecourse/controller/SavedCourseController.java
 source_commit: ea2242b
@@ -7,6 +9,11 @@ readability_updated: 2026-11-14
 reviewed_commit: 9e59289
 reviewed_at: 2026-11-23
 ---
+
+## 현재 이름·경로 · 2026-11-24
+
+`SavedCourseController` → `src/main/java/com/datecourse/page/saved/SavedCourseController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+
 
 ## 현재 구현 · 2026-11-23
 

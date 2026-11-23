@@ -1,4 +1,6 @@
 ---
+current_source: src/test/java/com/datecourse/page/common/map/MapEventBridgeTest.java
+layout_updated: 2026-11-24
 readability_updated: 2026-11-13
 project: DateCourseApp
 class: MapBridgeTest
@@ -13,6 +15,9 @@ tags:
   - 개발노트
 title: MapBridgeTest
 ---
+
+현재 테스트 위치: `src/test/java/com/datecourse/page/common/map/MapEventBridgeTest.java`. 아래 발췌는 기존 커밋 기준이며, [[페이지_구조와_이름_2026_11_24|페이지·이름 변경]]을 함께 확인하세요.
+
 
 > [!info] 개발 중인 코드
 > 2026-11-11 작업본 기준이다. 확정 설계가 아니며, 코드가 바뀌면 이 노트도 새 내용으로 바꿔요.

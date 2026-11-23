@@ -14,7 +14,7 @@ public class SavedCourseTestApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/saved-course-view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/datecourse/page/saved/saved-course-view.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("저장한 코스 테스트");
         stage.show();

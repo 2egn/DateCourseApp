@@ -89,6 +89,35 @@ class PlaceCatalogRepositoryTest {
         assertEquals(1,catalog.synchronize(batch(2,place("PUBLIC:A","가게",5000),place("PUBLIC:B","돌아온 가게",7000))).reactivated());
         assertEquals(id,catalog.findAll().get(1).recordId());
     }
+    @Test void priceOnlyUpdatePreservesIdsSavedSnapshotsAndAdministratorCorrections() throws Exception {
+        var a=place("PUBLIC:A","가게",5000);
+        catalog.synchronize(batch(0,a));
+        var before=catalog.findAll().getFirst();
+        var session=new UserSession(7,"사용자");
+        var saved=new SavedCourseRepository(pool);
+        var plan=new RoutePlan(35.1578,129.06,2,1000,"기존 코스",List.of(before));
+        saved.save(session,plan);
+        var reports=new InformationReportRepository(pool);
+        long report=reports.submit(session,before,InformationReport.Field.PRICE,"7000","메뉴 확인","https://example.test");
+        reports.review(report,true,"7000","검토 완료");
+        var next=batch(1,place("PUBLIC:A","가게",8071));
+        assertEquals(1,catalog.synchronize(next,PlaceCatalogRepository.ImportMode.PRICE_UPDATE).updated());
+        assertEquals(before.recordId(),catalog.findAll().getFirst().recordId());
+        assertEquals(plan,saved.findAll(session).getFirst().plan());
+        assertEquals(7000,reports.apply(catalog.findAll()).getFirst().price());
+        assertEquals(1,catalog.synchronize(next,PlaceCatalogRepository.ImportMode.PRICE_UPDATE).unchanged());
+    }
+    @Test void priceOnlyUpdateRejectsIdentityChangeAdditionAndRemovalBeforeWrites() throws Exception {
+        var a=place("PUBLIC:A","가게",5000);var b=place("PUBLIC:B","다른 가게",6000);
+        catalog.synchronize(batch(0,a,b));
+        var before=catalog.findAll();
+        for(var invalid:List.of(batch(1,a),batch(1,a,b,place("PUBLIC:C","추가",8000)),
+                batch(1,place("PUBLIC:A","이름 변경",9000),b))) {
+            assertThrows(IllegalArgumentException.class,()->catalog.synchronize(invalid,PlaceCatalogRepository.ImportMode.PRICE_UPDATE));
+            assertEquals(before,catalog.findAll());
+            assertEquals(1,count("place_catalog_imports"));
+        }
+    }
     @Test void staleOrConflictingGenerationNeverChangesCommittedData() throws Exception {
         catalog.synchronize(batch(2,place("PUBLIC:A","가게",5000)));
         assertThrows(IllegalArgumentException.class,()->catalog.synchronize(batch(1,place("PUBLIC:A","이전",1000))));
@@ -132,6 +161,42 @@ class PlaceCatalogRepositoryTest {
         assertEquals(0,count("data_records"));assertEquals(0,count("place_catalog_entries"));
         assertEquals(0,count("place_catalog_revisions"));assertEquals(0,count("place_catalog_imports"));
         assertTrue(catalog.findImported().isEmpty());
+    }
+    @Test void multipleWriteBatchesPreserveIdsAndRevisionKindsIncludingFinalRemainder() throws Exception {
+        var original=java.util.stream.IntStream.range(0,405)
+            .mapToObj(i->place(String.format("PUBLIC:%04d",i),"가게",5000)).toArray(Place[]::new);
+        catalog.synchronize(batch(0,original));
+        var before=catalog.findAll();
+        var updated=java.util.stream.IntStream.range(0,405)
+            .mapToObj(i->place(String.format("PUBLIC:%04d",i),"가게",6000)).toArray(Place[]::new);
+        assertEquals(405,catalog.synchronize(batch(1,updated),PlaceCatalogRepository.ImportMode.PRICE_UPDATE).updated());
+        assertEquals(200,catalog.synchronize(batch(2,Arrays.copyOf(updated,205))).deactivated());
+        var reactivated=catalog.synchronize(batch(3,updated));
+        assertEquals(200,reactivated.reactivated());assertEquals(205,reactivated.unchanged());
+        assertEquals(405,catalog.synchronize(batch(3,updated)).unchanged());
+        assertEquals(before.stream().map(Place::recordId).toList(),catalog.findAll().stream().map(Place::recordId).toList());
+        assertTrue(catalog.findAll().stream().allMatch(p->p.price()==6000));
+        assertEquals(1210,count("place_catalog_revisions"));
+        try(var c=pool.getConnection();var s=c.createStatement();var rows=s.executeQuery(
+                "SELECT change_kind,COUNT(*) FROM place_catalog_revisions GROUP BY change_kind")) {
+            var kinds=new HashMap<String,Integer>();while(rows.next())kinds.put(rows.getString(1),rows.getInt(2));
+            assertEquals(Map.of("INSERT",405,"UPDATE",405,"DEACTIVATE",200,"REACTIVATE",200),kinds);
+        }
+    }
+    @Test void lateRevisionFailureRollsBackPreviouslyExecutedWriteBatches() throws Exception {
+        var places=java.util.stream.IntStream.range(0,405)
+            .mapToObj(i->place(String.format("PUBLIC:%04d",i),"가게",5000)).toArray(Place[]::new);
+        catalog.synchronize(batch(0,places));
+        var before=catalog.findAll();
+        try(var c=pool.getConnection();var s=c.createStatement()) {
+            s.executeUpdate("ALTER TABLE place_catalog_revisions ADD CONSTRAINT reject_late_update CHECK(change_kind <> 'UPDATE' OR place_key <> 'PUBLIC:0404')");
+        }
+        var updated=java.util.stream.IntStream.range(0,405)
+            .mapToObj(i->place(String.format("PUBLIC:%04d",i),"가게",6000)).toArray(Place[]::new);
+        assertThrows(SQLException.class,()->catalog.synchronize(batch(1,updated),PlaceCatalogRepository.ImportMode.PRICE_UPDATE));
+        assertEquals(before,catalog.findAll());
+        assertEquals(1,count("place_catalog_imports"));assertEquals(405,count("place_catalog_revisions"));
+        assertEquals(405,catalog.synchronize(batch(0,places)).unchanged());
     }
     @Test void corruptionIsReportedInsteadOfFallingBackToLegacyData() throws Exception {
         catalog.synchronize(batch(0,place("PUBLIC:A","가게",5000)));

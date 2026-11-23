@@ -6,6 +6,18 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PriceEvidenceTest {
+    @Test void statisticalSourcesKeepExistingSchemaAndEstimatedCost() throws Exception {
+        for (String source : List.of("부산 지역별 외식비", "외식업체 조사")) {
+            var price = new PriceEstimate(4118,4118,PriceEstimate.Unit.PER_DRINK,
+                source + " · 커피 · 2025 · 대표 메뉴 가정", PriceEstimate.Evidence.SIMILAR_ESTIMATE,
+                "https://example.test", "2025");
+            assertEquals(source, price.briefBasis());
+            assertTrue(price.estimated());
+            assertTrue(price.display().startsWith("약 "));
+            var json = new ObjectMapper();
+            assertEquals(price,json.readValue(json.writeValueAsString(price),PriceEstimate.class));
+        }
+    }
     @Test void displayExplanationKeepsOnlyShortBasisAndRetainsFullEvidenceInternally() {
         var p=new PriceEstimate(7000,7000,PriceEstimate.Unit.PER_PERSON,"부산 착한가격업소 한식 고유장소 115곳 · 평균 · 자세한 산식",
             PriceEstimate.Evidence.SIMILAR_ESTIMATE,"https://example.test/source","2026-11-14");

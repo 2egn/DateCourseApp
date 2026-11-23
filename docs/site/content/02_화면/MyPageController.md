@@ -1,10 +1,17 @@
 ---
+current_source: src/main/java/com/datecourse/page/account/MyPageController.java
+layout_updated: 2026-11-24
 title: MyPageController
 source: src/main/java/com/datecourse/controller/MyPageController.java
 source_commit: ea2242b
 source_sha256: 46c5984367c89ac5bca3b5285934eee2f9a5a68f783d3536fad921c656c770c3
 readability_updated: 2026-11-14
 ---
+
+## 현재 이름·경로 · 2026-11-24
+
+`MyPageController` → `src/main/java/com/datecourse/page/account/MyPageController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+
 
 # MyPageController
 

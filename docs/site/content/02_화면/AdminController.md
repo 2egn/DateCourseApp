@@ -1,4 +1,6 @@
 ---
+current_source: src/main/java/com/datecourse/page/admin/AdminController.java
+layout_updated: 2026-11-24
 readability_updated: 2026-11-13
 project: DateCourseApp
 class: AdminController
@@ -13,6 +15,11 @@ tags:
   - 개발노트
 title: AdminController
 ---
+
+## 현재 이름·경로 · 2026-11-24
+
+`AdminController` → `src/main/java/com/datecourse/page/admin/AdminController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+
 
 > [!info] 개발 중인 코드
 > 2026-11-11 작업본 기준이다. 확정 설계가 아니며, 코드가 바뀌면 이 노트도 새 내용으로 바꿔요.

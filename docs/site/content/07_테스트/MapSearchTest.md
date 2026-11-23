@@ -1,10 +1,15 @@
 ---
+current_source: src/test/java/com/datecourse/page/condition/CoursePlannerUiTest.java
+layout_updated: 2026-11-24
 title: MapSearchTest
 source: src/test/java/com/datecourse/controller/MapSearchTest.java
 source_commit: ea2242b
 source_sha256: 9a5fe70ea8aa009976a8779fb716227cac0b1fe1b975a22ec4954472ce2a4e83
 readability_updated: 2026-11-14
 ---
+
+현재 테스트 위치: `src/test/java/com/datecourse/page/condition/CoursePlannerUiTest.java`. 아래 발췌는 기존 커밋 기준이며, [[페이지_구조와_이름_2026_11_24|페이지·이름 변경]]을 함께 확인하세요.
+
 
 # MapSearchTest
 

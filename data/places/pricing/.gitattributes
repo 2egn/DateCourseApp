@@ -1,0 +1,2 @@
+# 지문과 특징 자료 연결을 Windows 체크아웃에서도 유지한다.
+*.json text eol=lf

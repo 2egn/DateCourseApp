@@ -14,7 +14,7 @@ public class ConditionTestApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/condition-view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/datecourse/page/condition/condition-view.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("조건입력 테스트");
         stage.show();

@@ -11,6 +11,7 @@ import java.util.*;
 public final class ExpansionRehearsal {
     private static final ObjectMapper JSON=new ObjectMapper();
     public static void main(String[] args) throws Exception {
+        boolean priceUpdate=args.length==7 && args[6].equals("price-update");
         var before=PublicPlaceImport.batch(Path.of(args[0]),Path.of(args[1])).places();
         var after=PublicPlaceImport.batch(Path.of(args[2]),Path.of(args[3])).places();
         var origins=JSON.readTree(Path.of(args[4]).toFile()).path("origins");
@@ -45,15 +46,18 @@ public final class ExpansionRehearsal {
                 }
                 var replay=new ArrayList<Place>();
                 var activities=List.of("식사","카페","문화");
+                boolean baselineEligible=true;
                 for(int step=0;step<baselineRoute.size();step++) {
                     var expected=baselineRoute.get(step);
                     var condition=new NextPlaceCondition(activities.get(step),cap,legRadius,unknown,Set.of(),Set.of(),30);
-                    check(service.matching(after,replay,lat,lng,2,radius,condition).stream().anyMatch(p->p.place().sameIdentityAs(expected)),"BASELINE_ROUTE_LOST");
+                    boolean eligible=service.matching(after,replay,lat,lng,2,radius,condition).stream().anyMatch(p->p.place().sameIdentityAs(expected));
+                    baselineEligible &= eligible;
+                    if(!priceUpdate)check(eligible,"BASELINE_ROUTE_LOST");
                     replay.add(expected);
                 }
                 var row=new LinkedHashMap<String,Object>(Map.of("origin",origin.path("name").asText(),"mode",mode.name(),"radius",radius,"legRadius",legRadius,
                     "priceCap",cap,"includeUnknown",unknown,"beforeVisited",visited[0],"afterVisited",visited[1]));
-                row.put("baselineRouteStillEligible",true);
+                row.put("baselineRouteStillEligible",baselineEligible);
                 row.put("beforeRoute",baselineRoute.stream().map(Place::stableKey).toList());
                 row.put("afterRoute",expandedRoute.stream().map(Place::stableKey).toList());
                 rows.add(row);
@@ -77,6 +81,8 @@ public final class ExpansionRehearsal {
         report.put("baselinePlaces",before.size());report.put("expandedPlaces",after.size());report.put("scenarioCount",rows.size());
         report.put("completedBefore",rows.stream().filter(r->r.get("beforeVisited").equals(3)).count());
         report.put("completedAfter",rows.stream().filter(r->r.get("afterVisited").equals(3)).count());
+        report.put("priceUpdate",priceUpdate);
+        report.put("baselineIneligibleScenarios",rows.stream().filter(r->Boolean.FALSE.equals(r.get("baselineRouteStillEligible"))).count());
         report.put("greedyRegressions",rows.stream().filter(r->(int)r.get("afterVisited")<(int)r.get("beforeVisited")).toList());
         report.put("fixedOriginCoverage",coverage);report.put("scenarios",rows);
         Files.writeString(Path.of(args[5]),JSON.writerWithDefaultPrettyPrinter().writeValueAsString(report).replace("\r\n","\n")+"\n");

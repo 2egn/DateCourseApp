@@ -3,6 +3,7 @@
 | 위치 | 용도 |
 |---|---|
 | `place-data-pilot/` | 서면·전포 공공자료 추출, 가격 규칙 검사, Google Places 소량 조회 실험 |
+| `supplement_place_prices.py` | 매장·지역·조사 가격의 선택과 가격 전용 스냅샷·변경 보고서 생성 |
 
 ```powershell
 # 프로젝트 최상단에서 실행. 외부 API를 호출하지 않는다.
@@ -16,3 +17,5 @@ python -m unittest discover -s tools/place-data-pilot -p test_pilot.py -v
 문서 사이트에만 쓰는 빌드·검사 도구는 해당 기능과 함께 `docs/site/tools/`에 둔다.
 
 카탈로그 확장의 읽기 전용 사전 확인·운영 적재 보존 검사·모의 추천은 [catalog-ops](catalog-ops/README.md)를 사용한다. 기본 검사는 DB를 변경하지 않으며 적용 모드를 명시해야 적재한다.
+
+가격 보완의 출처·제약·재현 명령은 [가격 자료 안내](../data/places/pricing/2026-11-24/README.md)를 참고한다.

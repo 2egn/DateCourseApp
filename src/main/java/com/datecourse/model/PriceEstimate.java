@@ -36,6 +36,9 @@ public record PriceEstimate(Integer minimum, Integer maximum, Unit unit, String 
     public boolean estimated() { return evidence == Evidence.SIMILAR_ESTIMATE || evidence == Evidence.DEMO_ASSUMPTION; }
     public String evidenceText() { return evidence.label(); }
     public String briefBasis() {
+        if (basis.startsWith("부산 지역별 외식비 ·")) return "부산 지역별 외식비";
+        if (basis.startsWith("외식업체 조사 ·")) return "외식업체 조사";
+        if (basis.startsWith("매장 공개 메뉴 ·")) return "매장 공개 메뉴";
         if (basis.contains("착한가격업소")) return "부산 착한가격업소";
         return switch(evidence) {
             case GOOGLE_PROVIDED -> "Google Places";

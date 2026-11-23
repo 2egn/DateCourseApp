@@ -14,7 +14,7 @@ public class CommunityTestApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/community-view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/datecourse/page/community/community-view.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("커뮤니티 테스트");
         stage.show();

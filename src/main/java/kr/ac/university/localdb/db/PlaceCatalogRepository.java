@@ -23,13 +23,15 @@ public final class PlaceCatalogRepository implements PlaceSource {
             if (places.isEmpty()) throw new IllegalArgumentException("빈 전체 스냅샷은 적재하지 않습니다.");
         }
     }
-    public enum ImportMode { FULL_SNAPSHOT, EXPANSION }
+    public enum ImportMode { FULL_SNAPSHOT, EXPANSION, PRICE_UPDATE }
     public record ImportResult(long importId, int inserted, int updated, int reactivated, int deactivated, int unchanged) {}
     public record PreparedBatch(String fingerprint, SortedMap<String, String> payloads) {
         public PreparedBatch { payloads = Collections.unmodifiableSortedMap(new TreeMap<>(payloads)); }
     }
     private record Existing(long entryId, long recordId, String sourceKey, String hash, String payload, boolean active) {}
     private static final ObjectMapper JSON = new ObjectMapper().enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+    // 큰 payload를 한 번에 지나치게 모으지 않도록 쓰기 묶음 크기를 제한한다.
+    private static final int WRITE_BATCH_SIZE = 200;
     private final DataSource pool;
     public PlaceCatalogRepository(DataSource pool) { this.pool = Objects.requireNonNull(pool); }
 
@@ -88,6 +90,7 @@ public final class PlaceCatalogRepository implements PlaceSource {
                 }
                 checkVersion(connection, batch, prepared.fingerprint());
                 var existing = existing(connection);
+                if (mode == ImportMode.PRICE_UPDATE) validatePriceUpdate(batch, prepared, existing);
                 if (mode == ImportMode.EXPANSION && existing.entrySet().stream().anyMatch(row ->
                         row.getValue().active() && row.getValue().sourceKey().equals(batch.sourceKey())
                                 && !prepared.payloads().containsKey(row.getKey())))
@@ -95,31 +98,44 @@ public final class PlaceCatalogRepository implements PlaceSource {
                 long run = newRun(connection, batch, prepared.fingerprint());
                 int inserted=0, updated=0, reactivated=0, unchanged=0, deactivated=0;
                 long category = category(connection);
-                for (var row : prepared.payloads().entrySet()) {
-                    var previous = existing.get(row.getKey());
-                    String digest = hash(row.getValue());
-                    if (previous != null && !previous.sourceKey().equals(batch.sourceKey()))
-                        throw new IllegalArgumentException("다른 자료가 관리 중인 장소 ID와 충돌합니다.");
-                    if (previous == null) {
-                        long entry = insertEntry(connection, row.getKey(), batch.sourceKey(), row.getValue(), digest, run);
-                        long record = newRecord(connection, category, entry);
-                        execute(connection, "UPDATE place_catalog_entries SET record_id=? WHERE entry_id=?", record, entry);
-                        revision(connection, run, row.getKey(), record, "INSERT", row.getValue(), true);
-                        inserted++;
-                    } else if (!previous.active() || !previous.hash().equals(digest)) {
-                        execute(connection, "UPDATE place_catalog_entries SET payload=?,payload_hash=?,active=TRUE,last_import_id=? WHERE entry_id=?",
-                                row.getValue(), digest, run, previous.entryId());
-                        revision(connection, run, row.getKey(), previous.recordId(), previous.active()?"UPDATE":"REACTIVATE", row.getValue(), true);
-                        if (previous.active()) updated++; else reactivated++;
-                    } else unchanged++;
-                }
-                for (var row : existing.entrySet()) {
-                    var value = row.getValue();
-                    if (value.active() && value.sourceKey().equals(batch.sourceKey()) && !prepared.payloads().containsKey(row.getKey())) {
-                        execute(connection, "UPDATE place_catalog_entries SET active=FALSE,last_import_id=? WHERE entry_id=?", run, value.entryId());
-                        revision(connection, run, row.getKey(), value.recordId(), "DEACTIVATE", value.payload(), false);
-                        deactivated++;
+                try (var updates=connection.prepareStatement("UPDATE place_catalog_entries SET payload=?,payload_hash=?,active=TRUE,last_import_id=? WHERE entry_id=?");
+                     var deactivations=connection.prepareStatement("UPDATE place_catalog_entries SET active=FALSE,last_import_id=? WHERE entry_id=?");
+                     var revisions=connection.prepareStatement("INSERT INTO place_catalog_revisions(import_id,place_key,record_id,change_kind,payload,active) VALUES(?,?,?,?,?,?)")) {
+                    int pending=0;
+                    for (var row : prepared.payloads().entrySet()) {
+                        var previous = existing.get(row.getKey());
+                        String digest = hash(row.getValue());
+                        if (previous != null && !previous.sourceKey().equals(batch.sourceKey()))
+                            throw new IllegalArgumentException("다른 자료가 관리 중인 장소 ID와 충돌합니다.");
+                        if (previous == null) {
+                            long entry = insertEntry(connection, row.getKey(), batch.sourceKey(), row.getValue(), digest, run);
+                            long record = newRecord(connection, category, entry);
+                            execute(connection, "UPDATE place_catalog_entries SET record_id=? WHERE entry_id=?", record, entry);
+                            addBatch(revisions, run, row.getKey(), record, "INSERT", row.getValue(), true);
+                            inserted++;
+                        } else if (!previous.active() || !previous.hash().equals(digest)) {
+                            addBatch(updates, row.getValue(), digest, run, previous.entryId());
+                            addBatch(revisions, run, row.getKey(), previous.recordId(), previous.active()?"UPDATE":"REACTIVATE", row.getValue(), true);
+                            if (previous.active()) updated++; else reactivated++;
+                        } else { unchanged++; continue; }
+                        if (++pending == WRITE_BATCH_SIZE) {
+                            flushBatches(updates,deactivations,revisions);
+                            pending=0;
+                        }
                     }
+                    for (var row : existing.entrySet()) {
+                        var value = row.getValue();
+                        if (value.active() && value.sourceKey().equals(batch.sourceKey()) && !prepared.payloads().containsKey(row.getKey())) {
+                            addBatch(deactivations, run, value.entryId());
+                            addBatch(revisions, run, row.getKey(), value.recordId(), "DEACTIVATE", value.payload(), false);
+                            deactivated++;
+                            if (++pending == WRITE_BATCH_SIZE) {
+                                flushBatches(updates,deactivations,revisions);
+                                pending=0;
+                            }
+                        }
+                    }
+                    if(pending>0)flushBatches(updates,deactivations,revisions);
                 }
                 execute(connection, "DELETE FROM place_catalog_sources WHERE source_key=?", batch.sourceKey());
                 execute(connection, "INSERT INTO place_catalog_sources(source_key,generated_at,fingerprint) VALUES(?,?,?)",
@@ -128,9 +144,25 @@ public final class PlaceCatalogRepository implements PlaceSource {
                         inserted,updated,reactivated,deactivated,unchanged,run);
                 connection.commit();
                 return new ImportResult(run,inserted,updated,reactivated,deactivated,unchanged);
-            } catch (SQLException | RuntimeException failure) {
+            } catch (SQLException | IOException | RuntimeException failure) {
                 connection.rollback(); throw failure;
             }
+        }
+    }
+    /** 가격 보완은 잠금 안에서 전체 장소·가격 외 필드의 보존을 확인한 뒤에만 허용한다. */
+    private static void validatePriceUpdate(Batch batch, PreparedBatch prepared, Map<String,Existing> existing) throws IOException {
+        var active = new TreeMap<String,String>();
+        existing.forEach((key,row) -> {
+            if (row.active() && row.sourceKey().equals(batch.sourceKey())) active.put(key,row.payload());
+        });
+        if (!active.keySet().equals(prepared.payloads().keySet()))
+            throw new IllegalArgumentException("가격 보완 중 장소 추가·삭제는 허용하지 않습니다.");
+        for (var row : active.entrySet()) {
+            var before = (com.fasterxml.jackson.databind.node.ObjectNode)JSON.readTree(row.getValue());
+            var after = (com.fasterxml.jackson.databind.node.ObjectNode)JSON.readTree(prepared.payloads().get(row.getKey()));
+            before.remove("priceEstimate");
+            after.remove("priceEstimate");
+            if (!before.equals(after)) throw new IllegalArgumentException("가격 보완 중 장소 정보 변경은 허용하지 않습니다.");
         }
     }
     private void checkVersion(Connection c, Batch batch, String fingerprint) throws SQLException {
@@ -168,8 +200,19 @@ public final class PlaceCatalogRepository implements PlaceSource {
     private long newRecord(Connection c,long category,long entry) throws SQLException {
         return insert(c,"INSERT INTO data_records(category_id,source_file,source_row_number,data_payload) VALUES(?,'managed_place_catalog_v1',?,'{}')",category,entry);
     }
-    private void revision(Connection c,long run,String key,long record,String kind,String payload,boolean active) throws SQLException {
-        execute(c,"INSERT INTO place_catalog_revisions(import_id,place_key,record_id,change_kind,payload,active) VALUES(?,?,?,?,?,?)",run,key,record,kind,payload,active);
+    /** 같은 SQL의 매개변수를 쌓고 실행은 제한된 묶음 단위로 처리한다. */
+    private static void addBatch(PreparedStatement statement,Object... values) throws SQLException {
+        parameters(statement,values);
+        statement.addBatch();
+    }
+    /** 어느 묶음이 실패해도 호출부의 전체 트랜잭션을 롤백한다. */
+    private static void flushBatches(PreparedStatement... statements) throws SQLException {
+        for(var statement:statements) {
+            for(int result:statement.executeBatch()) {
+                if(result==Statement.EXECUTE_FAILED)throw new SQLException("장소 자료 일괄 쓰기에 실패했습니다.");
+            }
+            statement.clearBatch();
+        }
     }
     private static void parameters(PreparedStatement statement,Object... values) throws SQLException {
         for(int i=0;i<values.length;i++)statement.setObject(i+1,values[i]);

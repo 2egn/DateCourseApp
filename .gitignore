@@ -57,6 +57,7 @@ src/main/resources/map/kakao-config.js
 .vscode/
 
 # Build output
+__pycache__/
 target/
 .local/
 /.codex/config.toml

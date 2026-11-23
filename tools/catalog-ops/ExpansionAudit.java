@@ -17,12 +17,12 @@ public final class ExpansionAudit {
     /** 기본 모드는 읽기 전용이며 apply를 지정해야 확장 적재를 수행한다. */
     public static void main(String[] args) {
         try {
-            if (args.length != 6 || !Set.of("preflight", "apply").contains(args[0]))
+            if (args.length != 6 || !Set.of("preflight", "apply", "price-preflight", "price-apply").contains(args[0]))
                 throw new IllegalArgumentException("INVALID_ARGUMENTS");
             var baseline = PublicPlaceImport.batch(Path.of(args[1]), Path.of(args[2]));
             var next = PublicPlaceImport.batch(Path.of(args[3]), Path.of(args[4]));
             try (var pool = DatabasePool.create(DbSettings.load())) {
-                var report = verify(pool, baseline, next, args[0].equals("apply"));
+                var report = verify(pool, baseline, next, args[0].endsWith("apply"), args[0].startsWith("price-"));
                 Path output = Path.of(args[5]);
                 if (output.getParent() != null) Files.createDirectories(output.getParent());
                 Files.writeString(output, JSON.writerWithDefaultPrettyPrinter().writeValueAsString(report).replace("\r\n","\n") + "\n", StandardCharsets.UTF_8);
@@ -38,10 +38,24 @@ public final class ExpansionAudit {
     /** 자료와 DB 기준본을 대조하고 선택적으로 적재·반복 적재·보존 검사를 수행한다. */
     static Map<String,Object> verify(HikariDataSource pool, PlaceCatalogRepository.Batch baseline,
                                     PlaceCatalogRepository.Batch next, boolean apply) throws Exception {
+        return verify(pool,baseline,next,apply,false);
+    }
+
+    /** 가격 변경 모드에서는 장소 수·ID·가격 외 내용을 고정한다. */
+    static Map<String,Object> verify(HikariDataSource pool, PlaceCatalogRepository.Batch baseline,
+                                    PlaceCatalogRepository.Batch next, boolean apply, boolean pricesOnly) throws Exception {
         var oldPrepared = PlaceCatalogRepository.prepare(baseline);
         var nextPrepared = PlaceCatalogRepository.prepare(next);
         require(baseline.sourceKey().equals(next.sourceKey()), "SOURCE_CHANGED");
-        require(nextPrepared.payloads().entrySet().containsAll(oldPrepared.payloads().entrySet()), "BASELINE_CHANGED");
+        if (pricesOnly) {
+            require(nextPrepared.payloads().keySet().equals(oldPrepared.payloads().keySet()),"PLACE_SET_CHANGED");
+            for (var row : oldPrepared.payloads().entrySet()) {
+                var oldValue=(com.fasterxml.jackson.databind.node.ObjectNode)JSON.readTree(row.getValue());
+                var newValue=(com.fasterxml.jackson.databind.node.ObjectNode)JSON.readTree(nextPrepared.payloads().get(row.getKey()));
+                oldValue.remove("priceEstimate");newValue.remove("priceEstimate");
+                require(oldValue.equals(newValue),"NON_PRICE_FIELD_CHANGED");
+            }
+        } else require(nextPrepared.payloads().entrySet().containsAll(oldPrepared.payloads().entrySet()), "BASELINE_CHANGED");
         Map<String,Entry> before;
         Map<String,String> protectedBefore;
         Map<Long,String> recordsBefore;
@@ -60,19 +74,26 @@ public final class ExpansionAudit {
         report.put("stagedPlaces",next.places().size());
         report.put("payloadFingerprint",nextPrepared.fingerprint());
         report.put("baselineMatchesDatabase",true);
-        report.put("existingPayloadsPreserved",true);
+        report.put(pricesOnly?"nonPriceFieldsPreserved":"existingPayloadsPreserved",true);
+        report.put("pricesOnly",pricesOnly);
         report.put("applied",apply);
         if (!apply) return report;
         var catalog = new PlaceCatalogRepository(pool);
         long started = System.nanoTime();
-        var result = catalog.synchronize(next,PlaceCatalogRepository.ImportMode.EXPANSION);
+        var mode=pricesOnly?PlaceCatalogRepository.ImportMode.PRICE_UPDATE:PlaceCatalogRepository.ImportMode.EXPANSION;
+        long expectedUpdates=oldPrepared.payloads().entrySet().stream()
+            .filter(row->!row.getValue().equals(nextPrepared.payloads().get(row.getKey()))).count();
+        var result = catalog.synchronize(next,mode);
         report.put("result",result);
-        require(result.updated()==0 && result.deactivated()==0 && result.reactivated()==0, "UNEXPECTED_EXISTING_CHANGE");
+        require(result.updated()==(pricesOnly?expectedUpdates:0) && result.deactivated()==0 && result.reactivated()==0
+            && (!pricesOnly || result.inserted()==0), "UNEXPECTED_EXISTING_CHANGE");
         try (var connection = pool.getConnection()) {
             connection.setReadOnly(true);
             var after = entries(connection,next.sourceKey());
             require(payloads(after).equals(nextPrepared.payloads()), "IMPORTED_PAYLOAD_MISMATCH");
-            require(after.entrySet().containsAll(before.entrySet()), "EXISTING_RECORD_CHANGED");
+            if(pricesOnly) {
+                for(var row:before.entrySet()) require(after.get(row.getKey()).recordId()==row.getValue().recordId(),"EXISTING_RECORD_CHANGED");
+            } else require(after.entrySet().containsAll(before.entrySet()), "EXISTING_RECORD_CHANGED");
             require(protectedBefore.equals(protectedTables(connection)), "PROTECTED_TABLE_CHANGED");
             require(dataRecords(connection).entrySet().containsAll(recordsBefore.entrySet()), "EXISTING_DATA_RECORD_CHANGED");
             report.put("activeAfter",after.size());
@@ -81,7 +102,7 @@ public final class ExpansionAudit {
         report.put("existingRecordIdsPreserved",true);
         report.put("payloadMismatches",0);
         report.put("unchangedTables",new ArrayList<>(protectedBefore.keySet()));
-        var repeat = catalog.synchronize(next,PlaceCatalogRepository.ImportMode.EXPANSION);
+        var repeat = catalog.synchronize(next,mode);
         require(repeat.inserted()==0 && repeat.updated()==0 && repeat.reactivated()==0 && repeat.deactivated()==0
                 && repeat.unchanged()==next.places().size(), "REPEAT_IMPORT_CHANGED_DATA");
         try (var connection = pool.getConnection()) {
@@ -91,7 +112,8 @@ public final class ExpansionAudit {
         }
         report.put("repeat",repeat);
         report.put("applyAndVerificationSeconds",(System.nanoTime()-started)/1_000_000_000.0);
-        report.put("providerChecks","Existing public snapshots only; no new provider identity or price verification");
+        report.put("providerChecks",pricesOnly?"Official statistical estimates; no new venue price or identity verification"
+            :"Existing public snapshots only; no new provider identity or price verification");
         return report;
     }
 

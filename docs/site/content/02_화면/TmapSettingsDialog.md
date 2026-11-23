@@ -1,4 +1,6 @@
 ---
+current_source: src/main/java/com/datecourse/page/common/TmapSettingsDialog.java
+layout_updated: 2026-11-24
 readability_updated: 2026-11-13
 title: TmapSettingsDialog
 source: src/main/java/com/datecourse/controller/TmapSettingsDialog.java
@@ -6,6 +8,11 @@ source_commit: d32bc764dea8aec3c630f528b5e59eb1703c708e
 source_sha256: f5e376a53f3b0adea01f82187ad2d8f16ace6c3d2828e5dd0a2e08720dc94379
 reviewed: 2026-11-11
 ---
+
+## 현재 이름·경로 · 2026-11-24
+
+`TmapSettingsDialog` → `src/main/java/com/datecourse/page/common/TmapSettingsDialog.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+
 
 > **문서 기준:** `d32bc76` 리뷰 대상 소스. 개발 중이며 [[업데이트_내역|업데이트 내역]]에서 기존 노트와의 버전 차이를 확인해요.
 

@@ -1,10 +1,17 @@
 ---
+current_source: src/main/java/com/datecourse/page/common/BasePageController.java
+layout_updated: 2026-11-24
 title: BasePageController
 source: src/main/java/com/datecourse/controller/BasePageController.java
 source_commit: ea2242b
 source_sha256: 06295b66d2c88d7227105cf60877784949d5bbbd0207c6937054531fda706c27
 readability_updated: 2026-11-14
 ---
+
+## 현재 이름·경로 · 2026-11-24
+
+`BasePageController` → `src/main/java/com/datecourse/page/common/BasePageController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+
 
 # BasePageController
 

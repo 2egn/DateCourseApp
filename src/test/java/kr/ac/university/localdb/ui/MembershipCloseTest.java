@@ -1,6 +1,6 @@
 package kr.ac.university.localdb.ui;
 
-import com.datecourse.controller.ConditionController;
+import com.datecourse.page.condition.CoursePlannerController;
 import javafx.application.Platform;
 import javax.swing.*;
 import java.awt.event.WindowEvent;
@@ -25,7 +25,7 @@ class MembershipCloseTest {
         catch(IllegalStateException started){Platform.runLater(ready::countDown);}
         assertTrue(ready.await(5,TimeUnit.SECONDS));
         var allowed=new AtomicBoolean();var decisions=new AtomicInteger();var exits=new AtomicInteger();
-        var controller=new ConditionController(){
+        var controller=new CoursePlannerController(){
             @Override public boolean confirmWindowClose(){assertTrue(Platform.isFxApplicationThread());decisions.incrementAndGet();return allowed.get();}
         };
         var app=edt(()->{var a=new MembershipApp();a.installCloseHandling();set(a,"plannerController",controller);

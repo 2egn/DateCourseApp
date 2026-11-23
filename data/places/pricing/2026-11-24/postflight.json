@@ -1,0 +1,12 @@
+{
+  "schemaVersion" : 1,
+  "sourceKey" : "busan-public-places",
+  "generatedAt" : "2026-11-24T01:00:00Z",
+  "baselinePlaces" : 2040,
+  "stagedPlaces" : 2040,
+  "payloadFingerprint" : "2bdc7e9da5ed99eb676be4a68000d48ad57f25d57221f6ed924f2bc19e3e62e9",
+  "baselineMatchesDatabase" : true,
+  "nonPriceFieldsPreserved" : true,
+  "pricesOnly" : true,
+  "applied" : false
+}

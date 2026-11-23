@@ -20,6 +20,8 @@ final class DatabasePool {
         // Do not send periodic keepalive queries to an otherwise unused cloud database.
         pool.setKeepaliveTime(0);
         if (settings.url().startsWith("jdbc:mysql:")) {
+            // PreparedStatement 배치를 공급사 드라이버의 일괄 전송으로 묶는다.
+            pool.addDataSourceProperty("rewriteBatchedStatements", "true");
             pool.addDataSourceProperty("connectTimeout", "5000");
             pool.addDataSourceProperty("socketTimeout", "10000");
         }

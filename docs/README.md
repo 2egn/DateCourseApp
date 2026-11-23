@@ -2,7 +2,7 @@
 
 후속 변경: [혼합 이동과 범위 확대](transport-walking-and-ranges-2026-11-17.md). 운영 DB의 범위 CHECK도 사용자 승인 후 전체 30km·구간 60km로 확장했다.
 
-현재 앱 코드 기준은 **9e59289 · 2026-11-23**이며 [최신 아키텍처](architecture.md)와 [루트 README](../README.md)를 먼저 읽는다. [AGENTS](../AGENTS.md)는 에이전트 변경·검증 지침이다.
+기능 정리 기준은 **9e59289 · 2026-11-23**, 페이지 구조·이름 갱신은 **2026-11-24**다. [최신 아키텍처](architecture.md), [페이지 이름·위치 대응](site/content/페이지_구조와_이름_2026_11_24.md), [루트 README](../README.md)를 먼저 읽는다. [AGENTS](../AGENTS.md)는 에이전트 변경·검증 지침이다.
 
 [2026-11-17 체크포인트](releases/checkpoint-2026-11-17.md)는 당시 운영 검증 기록이다. 코드·자료 해시·운영 DB·Worker 상태와 재현 명령을 함께 기록했다.
 

@@ -47,4 +47,17 @@ class ExpansionAuditTest {
         assertThrows(IllegalStateException.class,()->ExpansionAudit.verify(pool,baseline,missing,true));
         assertEquals(866,catalog.findAll().size());
     }
+    @Test void priceAuditUpdatesOnlyPricesAndKeepsAllExistingRecordIds() throws Exception {
+        var list=new ArrayList<>(baseline.places());var p=list.getFirst();
+        list.set(0,new Place(p.recordId(),p.placeId(),p.name(),p.category(),p.lat(),p.lng(),
+            new com.datecourse.model.PriceEstimate(8071,8071,com.datecourse.model.PriceEstimate.Unit.PER_PERSON,
+                "부산 지역별 외식비 · 칼국수",com.datecourse.model.PriceEstimate.Evidence.SIMILAR_ESTIMATE,
+                "https://example.test","2026-10"),p.rating(),p.details()));
+        var changed=new PlaceCatalogRepository.Batch(baseline.sourceKey(),baseline.generatedAt().plusSeconds(1),list);
+        var result=ExpansionAudit.verify(pool,baseline,changed,true,true);
+        assertEquals(true,result.get("nonPriceFieldsPreserved"));
+        assertEquals(1,((PlaceCatalogRepository.ImportResult)result.get("result")).updated());
+        assertEquals(866,result.get("activeAfter"));
+        assertEquals(866,((PlaceCatalogRepository.ImportResult)result.get("repeat")).unchanged());
+    }
 }
