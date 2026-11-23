@@ -78,6 +78,10 @@ const revisionState=updateDocumentRevisions(previousRevisions,documentContents,i
 const result=spawnSync(process.execPath,['quartz/bootstrap-cli.mjs','build','-d','team-content','-o',path.join(site,'public'),'--concurrency','1'],{cwd:quartz,stdio:'inherit'});
 if(result.status!==0)process.exit(result.status||1);
 const contentIndex=JSON.parse(fs.readFileSync(path.join(site,'public/static/contentIndex.json'),'utf8'));
+const requiredDocuments=['index.md','현재_구현_흐름.md','업데이트_내역.md'];
+const publishedFiles=new Set(Object.values(contentIndex).map(note=>note.filePath));
+for(const required of requiredDocuments)if(!publishedFiles.has(required))
+ throw Error(`문서 빌드 누락: ${required}. Quartz 저장소의 Git 제외 규칙과 노트 입력 경로를 확인하세요.`);
 const revisionIndex={};
 for(const [slug,note] of Object.entries(contentIndex)){const state=revisionState.documents[note.filePath];if(state?.present)revisionIndex[slug==='index'?'/':'/'+slug]={version:state.revision+'-'+state.fingerprint.slice(0,16),revision:state.revision,updated:state.updated};}
 const revisionJson=JSON.stringify(revisionIndex).replaceAll('<','\\u003c');
