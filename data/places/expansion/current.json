@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "scope": "production_public_catalog_not_bundled_demo",
+  "sourceKey": "busan-public-places",
+  "places": 2040,
+  "dataset": "data/places/expansion/busan-core-2026-11-23/places.json",
+  "facts": "data/places/expansion/busan-core-2026-11-23/appeal/demo_appeal_facts.json",
+  "datasetSha256": "7e4df8157d35a15dffe0037b7948bb1dd4fc12075cd8424915f08732982fd9c9",
+  "factsSha256": "be8f9144aee46251c34884d7ca7757a995d4182791f51b2fb14d32463da72411",
+  "payloadFingerprint": "f8e5a505625d8c10225efd66d7afd29df940bab0e4a7b0c0f6d5f7d01377335c",
+  "generatedAt": "2026-11-23T11:14:30.502114Z",
+  "verifiedAt": "2026-11-23T14:46:39.158047+00:00",
+  "importVerification": "data/places/expansion/busan-core-2026-11-23/import-verification.json",
+  "previousDataset": "data/places/expansion/suyeong-2026-11-16/places.json",
+  "note": "Future expansion must retain this complete baseline. Existing public snapshots, not new business or provider identity verification."
+}

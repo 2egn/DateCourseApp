@@ -14,3 +14,5 @@ python -m unittest discover -s tools/place-data-pilot -p test_pilot.py -v
 실제 API 조회 명령은 별도이며, 이전 실행의 잠금 파일을 유지해 실수로 반복 호출되지 않게 했다. 폴더 정리 과정에서는 API를 다시 호출하지 않는다.
 
 문서 사이트에만 쓰는 빌드·검사 도구는 해당 기능과 함께 `docs/site/tools/`에 둔다.
+
+카탈로그 확장의 읽기 전용 사전 확인·운영 적재 보존 검사·모의 추천은 [catalog-ops](catalog-ops/README.md)를 사용한다. 기본 검사는 DB를 변경하지 않으며 적용 모드를 명시해야 적재한다.

@@ -8,7 +8,7 @@
 
 [2026-11-16 구조 검토](architecture-review-2026-11-16.md)는 과거 제안이며, 현재 구현과 구분한다.
 
-공공 시연 표본은 [386곳 확대 기록](dataset-expansion-2026-11-16.md), 현재 운영 카탈로그 866곳은 [수영구 확대 기록](district-expansion-2026-11-16.md)에 정리했다.
+공공 시연 표본은 [386곳 확대 기록](dataset-expansion-2026-11-16.md), 이전 866곳은 [수영구 확대 기록](district-expansion-2026-11-16.md), 현재 운영 2,040곳은 [부산 주요 지역 확대](busan-core-expansion-2026-11-23.md)에 정리했다.
 교통수단 연결은 [카카오 경로 구현](kakao-routing-2026-11-16.md)에서 확인한다.
 확장 전 품질과 구조는 [데이터 자가진단](research/dataset-self-audit-2026-11-16.md), 후속 작업은 [수영구 확대 기록](district-expansion-2026-11-16.md)과 [코스 모의 테스트](suyeong-rehearsal-2026-11-16.md)에서 확인한다.
 

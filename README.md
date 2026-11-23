@@ -39,6 +39,8 @@ IntelliJ 실행 진입점은 `com.datecourse.app.AppLauncher`이고 Working dire
 | 자동차 | 30km | 60km |
 | 대중교통 + 도보 | 20km | 40km |
 
+운영 공공 카탈로그는 **2,040곳**으로 확장했다. 내장 시연 386곳은 유지한다. [확장·보존 검증 결과](docs/busan-core-expansion-2026-11-23.md)와 [현재 기준본](data/places/expansion/current.json)을 참고한다.
+
 ## 코드와 문서 찾기
 
 | 위치 | 내용 |
