@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!-- JavaFX 클래스들 -->
 <?import javafx.scene.control.*?>
 <?import com.datecourse.ui.FormScrollPane?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
 <?import javafx.scene.shape.SVGPath?>
 
-<!-- 조건 입력 화면 -->
+<!--
+  조건 입력 화면
+  구조 순서 (ConditionController.java의 필드·메서드 순서와 동일)
+    1. 헤더(상단 바)
+    2. 본문 - 메인 페이지
+       2-1. 오른쪽 사이드바: 코스 검토 → 01 기본 조건 → 하단 버튼
+       2-2. 가운데 지도 영역
+    3. 숨김 화면(루트 편집 / 저장한 코스 / 마이페이지)
+-->
 <StackPane fx:id="plannerRoot" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.datecourse.controller.ConditionController" prefWidth="1440" prefHeight="960"
            stylesheets="@style.css">
     <BorderPane>
-        <!-- 헤더(상단 바) -->
+
+        <!-- ================= 1. 헤더(상단 바) ================= -->
         <top>
             <HBox fx:id="headerBar" styleClass="app-header">
+                <!-- 로고 -->
                 <Label text="DateCourse" styleClass="app-brand" minWidth="-Infinity"/>
+                <!-- 화면 이동 버튼 -->
                 <Button fx:id="homeButton" text="코스 만들기" onAction="#onHome"
                         minWidth="-Infinity"/>
                 <Button fx:id="savedCoursesButton" text=" 저장한 코스" onAction="#onSavedCourses"
                         minWidth="-Infinity"/>
                 <Region HBox.hgrow="ALWAYS"/>
+                <!-- 계정 메뉴 -->
                 <MenuButton fx:id="userLabel" text="시연 모드" disable="true" styleClass="account-menu"
                             minWidth="-Infinity">
                     <items>
@@ -30,22 +42,27 @@
                 </MenuButton>
             </HBox>
         </top>
-        <!-- 본문 -->
+
+        <!-- ================= 2. 본문 ================= -->
         <center>
             <StackPane>
+
                 <!-- 메인 페이지(지도 + 오른쪽 사이드바) -->
                 <BorderPane fx:id="mainPage">
-                    <!-- 오른쪽(조건입력 사이드바) -->
+
+                    <!-- 2-1. 오른쪽: 조건 입력 사이드바 -->
                     <right>
                         <FormScrollPane fx:id="mainSidebar" prefWidth="400" minWidth="360" maxWidth="Infinity"
                                         fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER"
                                         styleClass="condition-form-scroll">
 
                             <VBox minWidth="0" styleClass="condition-form">
-                                <!-- 코스 검토 -->
+
+                                <!-- (1) 코스 검토: 코스가 확정된 뒤에만 표시 -->
                                 <VBox fx:id="courseOverview" styleClass="course-overview" visible="false"
                                       managed="false">
                                     <Label text="코스 검토" styleClass="condition-title"/>
+                                    <!-- 코스 요약 / 이동 시간 요약 -->
                                     <HBox>
                                         <VBox styleClass="result-summary-text" minWidth="0" HBox.hgrow="ALWAYS">
                                             <Label fx:id="resultLabel" text="아직 확정된 코스가 없어요." wrapText="true"
@@ -54,15 +71,19 @@
                                                    wrapText="true"/>
                                         </VBox>
                                     </HBox>
+                                    <!-- 코스 저장 버튼 -->
                                     <Button fx:id="saveCourseButton" text="코스 저장" onAction="#onSaveCourse"
                                             styleClass="planner-primary" maxWidth="Infinity"/>
+                                    <!-- 확정된 장소 목록 -->
                                     <Label fx:id="completedStopsLabel" wrapText="true" maxWidth="Infinity"/>
                                 </VBox>
-                                <!-- 01 기본 조건 -->
+
+                                <!-- (2) 01 기본 조건 -->
                                 <TitledPane fx:id="commonConditionsPane" text="01 기본 조건"
                                             animated="false" styleClass="compact-pane">
                                     <VBox styleClass="condition-section">
                                         <Label text="기본 조건" styleClass="condition-title"/>
+
                                         <!-- 장소 선택 -->
                                         <VBox styleClass="condition-group">
                                             <VBox styleClass="condition-field-tight">
@@ -71,6 +92,7 @@
                                                        minHeight="-Infinity" wrapText="true"
                                                        styleClass="planner-caption"/>
                                             </VBox>
+                                            <!-- 장소 목록 선택(접힘) -->
                                             <TitledPane styleClass="compact-pane"
                                                         text="추가 설정 · 장소 목록" expanded="false" animated="false">
                                                 <VBox styleClass="condition-field">
@@ -79,9 +101,10 @@
                                                 </VBox>
                                             </TitledPane>
                                         </VBox>
+
                                         <!-- 인원 / 이동 방법 / 전체 범위 -->
                                         <VBox styleClass="condition-group-wide">
-                                            <!-- 인원 입력 -->
+                                            <!-- 인원 입력 (입력창 + 위/아래 화살표) -->
                                             <VBox styleClass="condition-field">
                                                 <Label text="인원(명)" styleClass="field-label"/>
                                                 <StackPane minWidth="0">
@@ -114,7 +137,7 @@
                                                 <ComboBox fx:id="travelModeBox" accessibleText="코스 이동 방법"
                                                           maxWidth="Infinity"/>
                                             </VBox>
-                                            <!-- 전체 범위 -->
+                                            <!-- 전체 범위 (슬라이더) -->
                                             <VBox styleClass="condition-field">
                                                 <Label text="전체 범위" styleClass="field-label"/>
                                                 <Label fx:id="radiusLabel" text="출발지 중심 · 500m"
@@ -132,27 +155,33 @@
                                         </VBox>
                                     </VBox>
                                 </TitledPane>
-                                <!-- 하단 버튼 -->
+
+                                <!-- (3) 하단 버튼 / 안내 메시지 -->
+                                <!-- 코스 만들기·편집 버튼 -->
                                 <Button fx:id="recommendButton" text="코스 만들기 →" onAction="#onRecommendClick"
                                         maxWidth="Infinity" styleClass="drawer-toggle"/>
+                                <!-- 오류 / 저장 상태 메시지 -->
                                 <Label fx:id="errorLabel" minHeight="-Infinity" wrapText="true" styleClass="error"/>
                                 <Label fx:id="saveStatusLabel" wrapText="true" styleClass="planner-caption"/>
                                 <Region VBox.vgrow="ALWAYS"/>
+                                <!-- 코스 초기화 버튼 -->
                                 <Button fx:id="newCourseButton" text="코스 초기화" onAction="#onNewCourse"
                                         styleClass="drawer-toggle"/>
                             </VBox>
                         </FormScrollPane>
                     </right>
 
-                    <!-- 가운데: 지도 영역 -->
+                    <!-- 2-2. 가운데: 지도 영역 -->
                     <center>
                         <VBox styleClass="map-column">
+                            <!-- 지도 위 도구 모음 1: 경로 조회 / 도보 설정 -->
                             <HBox fx:id="walkingToolbar" styleClass="map-toolbar">
                                 <Button text="이동 경로 조회" onAction="#onWalkingRoute" styleClass="planner-primary"
                                         minHeight="38" prefHeight="38"/>
                                 <Button fx:id="walkingSettingsButton" text="도보 설정" onAction="#onTmapSettings"
                                         styleClass="drawer-toggle"/>
                             </HBox>
+                            <!-- 지도 위 도구 모음 2: 지도 다시 불러오기 -->
                             <HBox styleClass="map-toolbar">
                                 <Button fx:id="reloadMapButton" text="지도 다시 불러오기" onAction="#onReloadMap"
                                         styleClass="drawer-toggle" minWidth="-Infinity"/>
@@ -163,7 +192,7 @@
                     </center>
                 </BorderPane>
 
-                <!-- 숨김 화면 -->
+                <!-- ================= 3. 숨김 화면 ================= -->
                 <!-- 루트 편집 화면 -->
                 <fx:include fx:id="routeEditor" source="route-editor-view.fxml" visible="false" managed="false"
                             disable="true"/>

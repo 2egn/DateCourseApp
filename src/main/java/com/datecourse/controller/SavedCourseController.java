@@ -8,96 +8,86 @@ import com.datecourse.service.UserContext;
 import kr.ac.university.localdb.db.SavedCourseRepository;
 import java.util.function.Consumer;
 
-/** List and details use the same saved snapshot returned to the planner. */
+/**
+ * 저장한 코스 화면 컨트롤러 (saved-course-view.fxml과 연결).
+ * List and details use the same saved snapshot returned to the planner.
+ *
+ * <p>구성 순서 (FXML과 동일):
+ * <ol>
+ *   <li>필드: FXML 컴포넌트(왼쪽 목록 → 가운데 상세) → 내부 상태</li>
+ *   <li>초기화: initialize(), configure(), clear()</li>
+ *   <li>버튼 동작: FXML 위에서 아래 순서대로</li>
+ *   <li>화면 갱신: 코스 목록 / 상세 / 지도 / 버튼 상태</li>
+ *   <li>보조 메서드</li>
+ * </ol>
+ */
 public class SavedCourseController extends BasePageController {
+
+    // =====================================================================
+    // 1. 필드
+    // =====================================================================
+
+    // ---------- FXML 컴포넌트 (fxml 위에서 아래 순서) ----------
+
+    // 전체 화면 루트
     @FXML private javafx.scene.layout.BorderPane savedCourseRoot;
+
+    // [왼쪽] 코스 목록
     @FXML private javafx.scene.layout.VBox courseListPane;
     @FXML private ListView<SavedCourse> courseList;
+    @FXML private Label emptyLabel;
+
+    // [가운데] 상세 제목
+    @FXML private Label detailTitle;
+
+    // [가운데] 지도
+    @FXML private javafx.scene.layout.StackPane mapPane;
+    @FXML private javafx.scene.web.WebView previewMap;
+    @FXML private javafx.scene.layout.VBox mapNotice;
+    @FXML private Label mapStatus;
+    @FXML private Button mapRetry;
+
+    // [가운데] 하단 정보 표
     @FXML private TableView<CourseDetailRow> summaryTable;
     @FXML private TableColumn<CourseDetailRow, String> summaryLabelColumn, summaryValueColumn;
-    @FXML private Label emptyLabel, detailTitle, messageLabel;
-    @FXML private javafx.scene.layout.HBox bottomInfo;
     @FXML private TableView<PlaceInfoRow> placeTable;
     @FXML private TableColumn<PlaceInfoRow, String> placeOrderColumn, placeNameColumn, placePriceColumn, placeAddressColumn;
-    private final com.datecourse.service.SavedCoursePresenter presenter = new com.datecourse.service.SavedCoursePresenter();
-    @FXML private Button deleteButton, renameButton, openButton, refreshButton;
-    @FXML private javafx.scene.web.WebView previewMap;
-    @FXML private javafx.scene.layout.StackPane mapPane;
-    @FXML private Label mapStatus;
-    @FXML private javafx.scene.layout.VBox mapNotice;
-    @FXML private Button mapRetry;
-    private PlannerMap map;
-    private SavedCourseRepository repository;
-    private UserContext userContext;
-    private long viewVersion;
-    private Consumer<SavedCourse> onOpen;
-    private Runnable onNewCourse;
-    private boolean busy;
-    private long previewVersion;
 
+    // [가운데] 안내 메시지
+    @FXML private Label messageLabel;
+
+    // [가운데] 버튼
+    @FXML private Button openButton, refreshButton, renameButton, deleteButton;
+
+    // ---------- 내부 상태 (FXML과 무관) ----------
+
+    private final com.datecourse.service.SavedCoursePresenter presenter = new com.datecourse.service.SavedCoursePresenter();
+    private PlannerMap map;                        // 지도 제어
+    private SavedCourseRepository repository;      // 코스 저장소(DB)
+    private UserContext userContext;               // 로그인한 사용자 정보
+    private Consumer<SavedCourse> onOpen;          // "이 코스 불러오기" 눌렀을 때 실행할 동작
+    private Runnable onNewCourse;                  // "새 코스" 눌렀을 때 실행할 동작
+    private boolean busy;                          // 처리 중이면 true (버튼 중복 클릭 방지)
+    private long viewVersion;                      // 목록 불러오기 요청 번호 (오래된 응답 무시용)
+    private long previewVersion;                   // 지도 미리보기 요청 번호 (오래된 응답 무시용)
+
+    // 표의 한 줄을 나타내는 데이터
     private record CourseDetailRow(String label, String value) {}
     private record PlaceInfoRow(String order, String name, String price, String address) {}
 
+    // =====================================================================
+    // 2. 초기화
+    // =====================================================================
+
+    /** 화면이 만들어질 때 한 번 실행됨. FXML 순서대로 각 영역을 설정한다. */
     @FXML public void initialize() {
+        // ----- [왼쪽] 코스 목록 영역 -----
+        // 창 너비의 28%로 목록 폭을 조절 (240~420 사이)
         savedCourseRoot.widthProperty().addListener((obs, oldWidth, newWidth) ->
-                courseListPane.setPrefWidth(Math.max(240, Math.min(420, newWidth.doubleValue() * 0.28))));
-        courseListPane.setPrefWidth(Math.max(240, Math.min(420, savedCourseRoot.getWidth() * 0.28)));
-        mapNotice.visibleProperty().bind(mapStatus.visibleProperty());
-        mapNotice.managedProperty().bind(mapStatus.visibleProperty());
-        mapRetry.managedProperty().bind(mapRetry.visibleProperty());
-        map = new PlannerMap(previewMap, (latitude, longitude) -> {}, this::showMapError);
-        map.setCandidateActionsEnabled(false);
-        map.setAutomaticWalking(true);
-        map.setWalkingResultListener((route, message) -> {
-            if (route == null && message != null && !message.isBlank()) {
-                mapStatus.setText(message);
-                mapStatus.setVisible(true);
-            } else if (route != null) {
-                mapStatus.setVisible(false);
-            }
-        });
-        map.setOnReady(() -> {
-            mapStatus.setVisible(false);
-            mapRetry.setVisible(false);
-            mapRetry.setDisable(false);
-        });
-        messageLabel.managedProperty().bind(messageLabel.textProperty().isNotEmpty());
-        summaryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        summaryTable.setFixedCellSize(-1);
-        summaryLabelColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().label()));
-        summaryValueColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().value()));
-        summaryLabelColumn.setSortable(false);
-        summaryValueColumn.setSortable(false);
-        summaryLabelColumn.setReorderable(false);
-        summaryValueColumn.setReorderable(false);
-        for (TableColumn<CourseDetailRow, String> column : java.util.List.of(summaryLabelColumn, summaryValueColumn))
-            setWrappingCellFactory(column);
-        placeTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        placeTable.setFixedCellSize(-1);
-        placeTable.setSortPolicy(table -> false);
-        placeOrderColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().order()));
-        placeNameColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().name()));
-        placePriceColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().price()));
-        placeAddressColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().address()));
-        for (TableColumn<PlaceInfoRow, String> column : java.util.List.of(placeOrderColumn, placeNameColumn, placePriceColumn, placeAddressColumn)) {
-            column.setSortable(false);
-            column.setReorderable(false);
-            setWrappingCellFactory(column);
-        }
-        placeTable.setRowFactory(table -> {
-            TableRow<PlaceInfoRow> row = new TableRow<>();
-            row.setCursor(javafx.scene.Cursor.HAND);
-            row.setOnMouseClicked(event -> {
-                if (row.isEmpty()) return;
-                SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
-                int index = row.getIndex();
-                if (selected == null || index < 0 || index >= selected.plan().places().size()) return;
-                previewVersion++;
-                map.focusPlace(selected.plan().places().get(index));
-            });
-            return row;
-        });
-        watchNotice(messageLabel, PageFeedback.Kind.ERROR);
+                courseListPane.setPrefWidth(Math.clamp(newWidth.doubleValue() * 0.28, 240, 420)));
+        courseListPane.setPrefWidth(Math.clamp(savedCourseRoot.getWidth() * 0.28, 240, 420));
+
+        // 목록 한 칸(셀)의 모양
         courseList.setCellFactory(list -> new ListCell<>() {
             // 셀마다 한 번만 만들어서 재사용 (updateItem이 불릴 때마다 새로 만들지 않음)
             private final Label titleLabel = new Label();
@@ -120,6 +110,7 @@ public class SavedCourseController extends BasePageController {
                 box.maxWidthProperty().bind(widthProperty().subtract(24));
             }
 
+            // 셀에 코스 내용을 채움 (빈 칸이면 비움)
             @Override protected void updateItem(SavedCourse course, boolean empty) {
                 super.updateItem(course, empty);
                 if (empty || course == null) {
@@ -134,43 +125,90 @@ public class SavedCourseController extends BasePageController {
                 setGraphic(box);
             }
         });
+        // 목록에서 코스를 선택하면 오른쪽 상세 화면을 갱신
         courseList.getSelectionModel().selectedItemProperty().addListener((o, old, value) -> showDetail(value));
-        showDetail(null);
-        summaryTable.setSelectionModel(null);
+
+        // ----- [가운데] 지도 영역 -----
+        // 안내 문구 박스는 mapStatus가 보일 때만 보이게 연결
+        mapNotice.visibleProperty().bind(mapStatus.visibleProperty());
+        mapNotice.managedProperty().bind(mapStatus.visibleProperty());
+        mapRetry.managedProperty().bind(mapRetry.visibleProperty());
+        // 지도 객체 생성 및 설정 (후보 장소 버튼은 끄고, 도보 경로는 자동 표시)
+        map = new PlannerMap(previewMap, (latitude, longitude) -> {}, this::showMapError);
+        map.setCandidateActionsEnabled(false);
+        map.setAutomaticWalking(true);
+        // 도보 경로 결과에 따라 안내 문구 표시/숨김
+        map.setWalkingResultListener((route, message) -> {
+            if (route == null && message != null && !message.isBlank()) {
+                mapStatus.setText(message);
+                mapStatus.setVisible(true);
+            } else if (route != null) {
+                mapStatus.setVisible(false);
+            }
+        });
+        // 지도가 준비되면 안내 문구와 재시도 버튼을 숨김
+        map.setOnReady(() -> {
+            mapStatus.setVisible(false);
+            mapRetry.setVisible(false);
+            mapRetry.setDisable(false);
+        });
+
+        // ----- [가운데] 하단 정보 표 -----
+        // 왼쪽: 코스 요약 표
+        summaryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        summaryTable.setFixedCellSize(-1);
+        summaryLabelColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().label()));
+        summaryValueColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().value()));
+        summaryLabelColumn.setSortable(false);
+        summaryValueColumn.setSortable(false);
+        summaryLabelColumn.setReorderable(false);
+        summaryValueColumn.setReorderable(false);
+        for (TableColumn<CourseDetailRow, String> column : java.util.List.of(summaryLabelColumn, summaryValueColumn))
+            setWrappingCellFactory(column);
+
+        // 오른쪽: 장소 표
+        placeTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        placeTable.setFixedCellSize(-1);
+        placeTable.setSortPolicy(table -> false);
+        placeOrderColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().order()));
+        placeNameColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().name()));
+        placePriceColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().price()));
+        placeAddressColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().address()));
+        for (TableColumn<PlaceInfoRow, String> column : java.util.List.of(placeOrderColumn, placeNameColumn, placePriceColumn, placeAddressColumn)) {
+            column.setSortable(false);
+            column.setReorderable(false);
+            setWrappingCellFactory(column);
+        }
+        // 장소 줄을 클릭하면 지도가 그 장소로 이동
+        placeTable.setRowFactory(table -> {
+            TableRow<PlaceInfoRow> row = new TableRow<>();
+            row.setCursor(javafx.scene.Cursor.HAND);
+            row.setOnMouseClicked(event -> {
+                if (row.isEmpty()) return;
+                SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
+                int index = row.getIndex();
+                if (selected == null || index < 0 || index >= selected.plan().places().size()) return;
+                previewVersion++;
+                map.focusPlace(selected.plan().places().get(index));
+            });
+            return row;
+        });
+
+        // ----- [가운데] 안내 메시지 -----
+        // 글자가 있을 때만 자리를 차지하게 연결
+        messageLabel.managedProperty().bind(messageLabel.textProperty().isNotEmpty());
+        // 메시지가 바뀌면 알림 처리 (오류 종류)
+        watchNotice(messageLabel, PageFeedback.Kind.ERROR);
+
+        // ----- 초기 화면 상태 -----
+        showDetail(null);                       // 아무것도 선택하지 않은 상태로 시작
+        summaryTable.setSelectionModel(null);   // 표는 줄 선택 불가 (읽기 전용)
         placeTable.setSelectionModel(null);
     }
 
-    private static <T> void setWrappingCellFactory(TableColumn<T, String> column) {
-        column.setCellFactory(ignored -> {
-            TableCell<T, String> cell = new TableCell<>();
-            javafx.scene.text.Text text = new javafx.scene.text.Text();
-            // 열 너비에 맞춰 자동 줄바꿈 (좌우 여백만큼 뺌)
-            text.wrappingWidthProperty().bind(column.widthProperty().subtract(18));
-            // 셀의 값이 바뀌면 글자도 자동으로 바뀜
-            text.textProperty().bind(cell.itemProperty());
-            cell.setGraphic(text);
-            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
-            return cell;
-        });
-    }
-
-    private void configurePlaceRows(java.util.List<String> descriptions) {
-        placeTable.getItems().setAll(descriptions.stream().map(SavedCourseController::toPlaceInfoRow).toList());
-    }
-
-    private static PlaceInfoRow toPlaceInfoRow(String text) {
-        String[] lines = text.split("\\R", 3);
-        String first = lines.length > 0 ? lines[0] : "";
-        int separator = first.indexOf(". ");
-        String order = separator > 0 ? first.substring(0, separator) : "";
-        String name = separator > 0 ? first.substring(separator + 2) : first;
-        String price = lines.length > 1 ? lines[1].replaceFirst("^가격:\\s*", "") : "가격 정보 없음";
-        String address = lines.length > 2 ? lines[2].replaceFirst("^주소:\\s*", "") : "주소 정보 없음";
-        return new PlaceInfoRow(order, name, price, address);
-    }
-
+    /** 화면을 열 때 필요한 것들을 전달받고, 코스 목록을 불러온다. */
     public void configure(SavedCourseRepository repository, UserContext context, Consumer<SavedCourse> onOpen,
-                         Runnable onNewCourse) {
+                          Runnable onNewCourse) {
         this.repository = repository;
         this.userContext = context;
         this.onOpen = onOpen;
@@ -178,10 +216,7 @@ public class SavedCourseController extends BasePageController {
         loadCourses();
     }
 
-    @FXML private void onNewCourseClick() {
-        if (!busy && onNewCourse != null) onNewCourse.run();
-    }
-
+    /** 화면을 닫을 때 상태를 모두 비운다. */
     public void clear() {
         viewVersion++;
         map.reset();
@@ -195,63 +230,16 @@ public class SavedCourseController extends BasePageController {
         showDetail(null);
     }
 
-    private String title(SavedCourse course) { return course.plan().title().isBlank() ? "내 코스" : course.plan().title(); }
-    private String updatedText(SavedCourse course) {
-        return course.updatedAt() == null ? "시각 미확인" : java.time.format.DateTimeFormatter
-                .ofPattern("yyyy.MM.dd HH:mm").withZone(java.time.ZoneId.of("Asia/Seoul")).format(course.updatedAt());
+    // =====================================================================
+    // 3. 버튼 동작 (FXML 위에서 아래 순서)
+    // =====================================================================
+
+    /** [왼쪽] "새 코스" 버튼 */
+    @FXML private void onNewCourseClick() {
+        if (!busy && onNewCourse != null) onNewCourse.run();
     }
 
-    private void showDetail(SavedCourse course) {
-        summaryTable.getItems().clear();
-        placeTable.getItems().clear();
-        detailTitle.setText(course == null ? "코스를 선택해 주세요" : title(course));
-        if (course != null) {
-            var summary=presenter.present(course);
-            summaryTable.getItems().setAll(java.util.Arrays.stream(summary.details().split("\\R"))
-                    .map(SavedCourseController::toCourseDetailRow).toList());
-            configurePlaceRows(summary.places());
-        }
-        showPreview(course);
-        updateButtons();
-    }
-
-    private static CourseDetailRow toCourseDetailRow(String line) {
-        int separator = line.indexOf(':');
-        return separator < 0 ? new CourseDetailRow("카테고리", line)
-                : new CourseDetailRow(line.substring(0, separator).trim(), line.substring(separator + 1).trim());
-    }
-
-    private void showPreview(SavedCourse course) {
-        long version = ++previewVersion;
-        mapPane.setVisible(course != null);
-        mapPane.setManaged(course != null);
-        mapRetry.setVisible(false);
-        if (course == null) {
-            map.reset();
-            mapStatus.setVisible(false);
-            return;
-        }
-        mapStatus.setText("실시간 지도를 불러오고 있어요…");
-        mapStatus.setVisible(!map.isReady());
-        map.setOriginLocked(true);
-        map.setCandidateActionsEnabled(false);
-        map.presentCourse(course.plan(), true);
-        map.load();
-        var fitAfterLayout = new javafx.animation.PauseTransition(javafx.util.Duration.millis(180));
-        fitAfterLayout.setOnFinished(event -> {
-            if (previewVersion == version && courseList.getSelectionModel().getSelectedItem() == course) map.fitCourse();
-        });
-        fitAfterLayout.play();
-        if (map.isReady()) mapStatus.setVisible(false);
-    }
-
-    private void showMapError(String message) {
-        mapStatus.setText(message);
-        mapStatus.setVisible(true);
-        mapRetry.setDisable(false);
-        mapRetry.setVisible(true);
-    }
-
+    /** [지도] "지도 다시 불러오기" 버튼 */
     @FXML private void onMapRetry() {
         if (courseList.getSelectionModel().getSelectedItem() == null) return;
         mapStatus.setText("실시간 지도를 다시 불러오고 있어요…");
@@ -260,21 +248,63 @@ public class SavedCourseController extends BasePageController {
         map.reload();
     }
 
-    private void updateButtons() {
-        boolean unavailable = busy || courseList.getSelectionModel().getSelectedItem() == null;
-        openButton.setDisable(unavailable);
-        deleteButton.setDisable(unavailable);
-        renameButton.setDisable(unavailable);
-        refreshButton.setDisable(busy);
-        courseList.setDisable(busy);
+    /** [하단] "이 코스 불러오기" 버튼 */
+    @FXML private void onOpenClick() {
+        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
+        if (!busy && selected != null && onOpen != null) onOpen.accept(selected);
     }
 
+    /** [하단] "새로고침" 버튼 */
     @FXML private void onRefreshClick() {
         if (repository == null || busy) return;
         userContext.invalidateCourses();
         loadCourses();
     }
 
+    /** [하단] "이름 변경" 버튼 */
+    @FXML private void onRenameClick() {
+        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
+        if (busy || selected == null) return;
+        TextInputDialog dialog = new TextInputDialog(selected.plan().title());
+        dialog.initOwner(courseList.getScene().getWindow());
+        com.datecourse.ui.DialogTheme.apply(dialog);
+        dialog.setHeaderText("코스 이름을 입력해 주세요. (1~20자)");
+        dialog.showAndWait().ifPresent(input -> {
+            String title = input.trim();
+            if (title.isEmpty() || title.length() > 20) { messageLabel.setText("이름은 1~20자로 입력해 주세요."); return; }
+            var owner = userContext.session();
+            var storage = repository;
+            run(() -> { storage.rename(owner, selected.courseId(), title); return true; }, ignored -> {
+                notifyUser(PageFeedback.Kind.SUCCESS, "코스 이름을 바꿨어요.");
+                onRefreshClick();
+            });
+        });
+    }
+
+    /** [하단] "삭제" 버튼 (확인 창 후 삭제) */
+    @FXML private void onDeleteClick() {
+        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
+        if (busy || selected == null) return;
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "'" + title(selected) + "' 코스를 삭제할까요?", ButtonType.OK, ButtonType.CANCEL);
+        confirm.initOwner(courseList.getScene().getWindow());
+        com.datecourse.ui.DialogTheme.apply(confirm);
+        if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
+        var owner = userContext.session();
+        var storage = repository;
+        run(() -> { storage.delete(owner, selected.courseId()); return true; }, ignored -> {
+            notifyUser(PageFeedback.Kind.SUCCESS, "코스를 삭제했어요.");
+            onRefreshClick();
+        });
+    }
+
+    // =====================================================================
+    // 4. 화면 갱신
+    // =====================================================================
+
+    // ---------- [왼쪽] 코스 목록 ----------
+
+    /** DB에서 저장한 코스 목록을 불러와 목록에 채운다. */
     private void loadCourses() {
         if (userContext == null) return;
         UserContext context = userContext;
@@ -303,46 +333,130 @@ public class SavedCourseController extends BasePageController {
         });
     }
 
-    @FXML private void onOpenClick() {
-        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
-        if (!busy && selected != null && onOpen != null) onOpen.accept(selected);
+    // ---------- [가운데] 상세 정보 ----------
+
+    /** 선택한 코스의 제목, 표, 지도를 갱신한다. (null이면 빈 화면) */
+    private void showDetail(SavedCourse course) {
+        summaryTable.getItems().clear();
+        placeTable.getItems().clear();
+        detailTitle.setText(course == null ? "코스를 선택해 주세요" : title(course));
+        if (course != null) {
+            var summary=presenter.present(course);
+            summaryTable.getItems().setAll(java.util.Arrays.stream(summary.details().split("\\R"))
+                    .map(SavedCourseController::toCourseDetailRow).toList());
+            configurePlaceRows(summary.places());
+        }
+        showPreview(course);
+        updateButtons();
     }
 
-    @FXML private void onDeleteClick() {
-        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
-        if (busy || selected == null) return;
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "'" + title(selected) + "' 코스를 삭제할까요?", ButtonType.OK, ButtonType.CANCEL);
-        confirm.initOwner(courseList.getScene().getWindow());
-        com.datecourse.ui.DialogTheme.apply(confirm);
-        if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
-        var owner = userContext.session();
-        var storage = repository;
-        run(() -> { storage.delete(owner, selected.courseId()); return true; }, ignored -> {
-            notifyUser(PageFeedback.Kind.SUCCESS, "코스를 삭제했어요.");
-            onRefreshClick();
+    // ---------- [가운데] 지도 ----------
+
+    /** 선택한 코스를 지도에 표시한다. */
+    private void showPreview(SavedCourse course) {
+        long version = ++previewVersion;
+        mapPane.setVisible(course != null);
+        mapPane.setManaged(course != null);
+        mapRetry.setVisible(false);
+        if (course == null) {
+            map.reset();
+            mapStatus.setVisible(false);
+            return;
+        }
+        mapStatus.setText("실시간 지도를 불러오고 있어요…");
+        mapStatus.setVisible(!map.isReady());
+        map.setOriginLocked(true);
+        map.setCandidateActionsEnabled(false);
+        map.presentCourse(course.plan(), true);
+        map.load();
+        // 화면 배치가 끝난 뒤(0.18초 후) 코스 전체가 보이도록 지도 맞춤
+        var fitAfterLayout = new javafx.animation.PauseTransition(javafx.util.Duration.millis(180));
+        fitAfterLayout.setOnFinished(event -> {
+            if (previewVersion == version && courseList.getSelectionModel().getSelectedItem() == course) map.fitCourse();
+        });
+        fitAfterLayout.play();
+        if (map.isReady()) mapStatus.setVisible(false);
+    }
+
+    /** 지도 오류 시 안내 문구와 재시도 버튼을 보여준다. */
+    private void showMapError(String message) {
+        mapStatus.setText(message);
+        mapStatus.setVisible(true);
+        mapRetry.setDisable(false);
+        mapRetry.setVisible(true);
+    }
+
+    // ---------- [가운데] 버튼 상태 ----------
+
+    /** 처리 중이거나 선택된 코스가 없으면 버튼을 비활성화한다. */
+    private void updateButtons() {
+        boolean unavailable = busy || courseList.getSelectionModel().getSelectedItem() == null;
+        openButton.setDisable(unavailable);
+        deleteButton.setDisable(unavailable);
+        renameButton.setDisable(unavailable);
+        refreshButton.setDisable(busy);
+        courseList.setDisable(busy);
+    }
+
+    // =====================================================================
+    // 5. 보조 메서드
+    // =====================================================================
+
+    // ---------- 목록 표시용 문자열 ----------
+
+    /** 코스 제목 (비어 있으면 "내 코스") */
+    private String title(SavedCourse course) { return course.plan().title().isBlank() ? "내 코스" : course.plan().title(); }
+
+    /** 최근 수정 시각 문자열 (한국 시간 기준) */
+    private String updatedText(SavedCourse course) {
+        return course.updatedAt() == null ? "시각 미확인" : java.time.format.DateTimeFormatter
+                .ofPattern("yyyy.MM.dd HH:mm").withZone(java.time.ZoneId.of("Asia/Seoul")).format(course.updatedAt());
+    }
+
+    // ---------- 표 데이터 변환 ----------
+
+    /** "이름: 내용" 형태의 한 줄을 요약 표의 한 행으로 바꾼다. */
+    private static CourseDetailRow toCourseDetailRow(String line) {
+        int separator = line.indexOf(':');
+        return separator < 0 ? new CourseDetailRow("카테고리", line)
+                : new CourseDetailRow(line.substring(0, separator).trim(), line.substring(separator + 1).trim());
+    }
+
+    /** 장소 설명 목록을 장소 표에 채운다. */
+    private void configurePlaceRows(java.util.List<String> descriptions) {
+        placeTable.getItems().setAll(descriptions.stream().map(SavedCourseController::toPlaceInfoRow).toList());
+    }
+
+    /** 장소 설명(여러 줄 문자열)을 순서/이름/가격/주소로 나눠 표의 한 행으로 바꾼다. */
+    private static PlaceInfoRow toPlaceInfoRow(String text) {
+        String[] lines = text.split("\\R", 3);
+        String first = lines.length > 0 ? lines[0] : "";
+        int separator = first.indexOf(". ");
+        String order = separator > 0 ? first.substring(0, separator) : "";
+        String name = separator > 0 ? first.substring(separator + 2) : first;
+        String price = lines.length > 1 ? lines[1].replaceFirst("^가격:\\s*", "") : "가격 정보 없음";
+        String address = lines.length > 2 ? lines[2].replaceFirst("^주소:\\s*", "") : "주소 정보 없음";
+        return new PlaceInfoRow(order, name, price, address);
+    }
+
+    /** 표의 열이 긴 글을 자동 줄바꿈해서 보여주도록 설정한다. */
+    private static <T> void setWrappingCellFactory(TableColumn<T, String> column) {
+        column.setCellFactory(ignored -> {
+            TableCell<T, String> cell = new TableCell<>();
+            javafx.scene.text.Text text = new javafx.scene.text.Text();
+            // 열 너비에 맞춰 자동 줄바꿈 (좌우 여백만큼 뺌)
+            text.wrappingWidthProperty().bind(column.widthProperty().subtract(18));
+            // 셀의 값이 바뀌면 글자도 자동으로 바뀜
+            text.textProperty().bind(cell.itemProperty());
+            cell.setGraphic(text);
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            return cell;
         });
     }
 
-    @FXML private void onRenameClick() {
-        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
-        if (busy || selected == null) return;
-        TextInputDialog dialog = new TextInputDialog(selected.plan().title());
-        dialog.initOwner(courseList.getScene().getWindow());
-        com.datecourse.ui.DialogTheme.apply(dialog);
-        dialog.setHeaderText("코스 이름을 입력해 주세요. (1~20자)");
-        dialog.showAndWait().ifPresent(input -> {
-            String title = input.trim();
-            if (title.isEmpty() || title.length() > 20) { messageLabel.setText("이름은 1~20자로 입력해 주세요."); return; }
-            var owner = userContext.session();
-            var storage = repository;
-            run(() -> { storage.rename(owner, selected.courseId(), title); return true; }, ignored -> {
-                notifyUser(PageFeedback.Kind.SUCCESS, "코스 이름을 바꿨어요.");
-                onRefreshClick();
-            });
-        });
-    }
+    // ---------- 작업 실행 ----------
 
+    /** 이름 변경/삭제 같은 작업을 실행한다. (처리 중 표시 → 성공/실패 처리) */
     private <T> void run(java.util.concurrent.Callable<T> work, Consumer<T> success) {
         UserContext context = userContext;
         busy = true;

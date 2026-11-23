@@ -47,7 +47,7 @@ class SavedCoursePreviewTest {
                     Parent root=loader.load();new Scene(root,1000,680);
                     var status=(javafx.scene.control.Label)root.lookup("#previewStatus");
                     status.textProperty().addListener((o,old,value)->{if(value.startsWith("아직 미리보기가 없어요"))ready.countDown();});
-                    loader.<SavedCourseController>getController().configure(repository,context,course->{});
+                    loader.<SavedCourseController>getController().configure(repository,context,course->{},()->{});
                     return root;
                 });Platform.runLater(load);var root=load.get(5,TimeUnit.SECONDS);
                 assertTrue(ready.await(5,TimeUnit.SECONDS));
@@ -55,7 +55,7 @@ class SavedCoursePreviewTest {
                 var loaded=new CountDownLatch(1);
                 var refresh=new FutureTask<Void>(()->{
                     ((ImageView)root.lookup("#coursePreview")).imageProperty().addListener((o,old,value)->{if(value!=null)loaded.countDown();});
-                    loader.<SavedCourseController>getController().configure(repository,context,course->{});
+                    loader.<SavedCourseController>getController().configure(repository,context,course->{},()->{});
                     return null;
                 });Platform.runLater(refresh);refresh.get(5,TimeUnit.SECONDS);
                 assertTrue(loaded.await(5,TimeUnit.SECONDS));
@@ -81,7 +81,7 @@ class SavedCoursePreviewTest {
             try(var context=new com.datecourse.service.UserContext(owner,null,()->{loads.incrementAndGet();return repository.findAll(owner);})) {
                 context.courses().get(5,TimeUnit.SECONDS);
                 var loader=new FXMLLoader(getClass().getResource("/saved-course-view.fxml"));
-                var root=fx(()->{Parent node=loader.load();new Scene(node,1000,680);loader.<SavedCourseController>getController().configure(repository,context,c->{});return node;});
+                var root=fx(()->{Parent node=loader.load();new Scene(node,1000,680);loader.<SavedCourseController>getController().configure(repository,context,c->{},()->{});return node;});
                 awaitFx(()->root.lookup("#previewRetry").isVisible());
                 var generator=SavedCourseController.class.getDeclaredField("previewGenerator");generator.setAccessible(true);
                 fx(()->{

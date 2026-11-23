@@ -13,9 +13,12 @@ import java.util.concurrent.Callable;
 import java.util.function.*;
 
 /**
+ * 관리자용 회원 관리 화면: 검색 → 선택 → 수정/탈퇴/영구 삭제.
  * One selected member, one draft, one background operation at a time.
  */
 public final class MemberAdminPanel extends JPanel {
+
+    // ===== 회원 상태(화면에는 한글 라벨로 표시) =====
     enum Status {
         ACTIVE("정상"), INACTIVE("탈퇴");
         private final String label;
@@ -30,22 +33,31 @@ public final class MemberAdminPanel extends JPanel {
         }
     }
 
+    // ===== 필드: 데이터·표 =====
     private final MemberRepository.AdminSession session;
     private final MemberTableModel model = new MemberTableModel();
     private final JTable table = new JTable(model);
+    private final BiPredicate<String, String> confirmation;   // 확인창(제목, 내용) → 예/아니오
+
+    // ===== 필드: 입력·버튼·안내 문구 =====
     private final JTextField search = new LoginUI.TextField(24), person = new LoginUI.TextField(18), phone = new LoginUI.TextField(18);
     private final JComboBox<Status> memberStatus = new JComboBox<>(Status.values());
     private final JButton refresh = button("검색", false), all = button("전체 보기", false), save = button("변경 저장", true),
             withdraw = button("탈퇴 처리", false), delete = button("영구 삭제", false);
     private final JLabel selection = new JLabel("회원을 선택해 주세요."), count = new JLabel("회원 목록"), message = new JLabel(" ");
-    private final BiPredicate<String, String> confirmation;
-    private MemberRepository.Member selected;
-    private boolean busy, filling;
 
+    // ===== 필드: 상태 =====
+    private MemberRepository.Member selected;   // 현재 선택된 회원
+    private boolean busy, filling;              // busy: 작업 중 / filling: 화면을 채우는 중(이벤트 무시)
+
+    // ===== 생성자 =====
+
+    /** 실제 사용용: 확인창은 기본 대화상자를 사용합니다. */
     public MemberAdminPanel(MemberRepository.AdminSession session) {
         this(session, null);
     }
 
+    /** 화면 구성(제목·검색줄·표·편집 영역)과 이벤트 연결을 한 번에 처리합니다. 테스트에서는 confirmation을 바꿔 끼울 수 있습니다. */
     MemberAdminPanel(MemberRepository.AdminSession session, BiPredicate<String, String> confirmation) {
         super(new BorderLayout(12, 12));
         this.session = Objects.requireNonNull(session); // [변경] 간격 16 → 12
@@ -150,6 +162,20 @@ public final class MemberAdminPanel extends JPanel {
         load(" "); // [변경] "회원을 선택해 주세요." → " " (위쪽 문구와 중복 방지)
     }
 
+    // ===== 외부에서 호출하는 메서드 =====
+
+    /** 관리자 화면을 떠나도 되는지 확인합니다(작업 중이면 거절, 수정 중이면 버릴지 질문). */
+    public boolean confirmLeave() {
+        if (busy) {
+            notice("진행 중인 작업이 끝난 뒤 다시 시도해 주세요.", false);
+            return false;
+        }
+        return discardDraft();
+    }
+
+    // ===== 화면 구성 도우미 =====
+
+    /** 공통 스타일의 버튼을 만들고 글자 길이에 맞게 너비를 정합니다. */
     private static JButton button(String text, boolean primary) {
         var button = new JButton(text);
         LoginUI.button(button, primary);
@@ -173,6 +199,7 @@ public final class MemberAdminPanel extends JPanel {
         return panel;
     }
 
+    /** 편집 영역에 "라벨 위, 입력칸 아래" 한 묶음을 지정한 열(column)에 추가합니다. */
     private static void addField(JPanel panel, String label, JComponent input, int column, double weight) {
         var c = new GridBagConstraints();
         c.gridx = column;
@@ -189,6 +216,7 @@ public final class MemberAdminPanel extends JPanel {
         panel.add(input, c);
     }
 
+    /** 표의 모양(행 높이·열 너비·줄무늬·선택색)을 설정합니다. */
     private void configureTable() {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setAutoCreateRowSorter(true);
@@ -223,6 +251,9 @@ public final class MemberAdminPanel extends JPanel {
         });
     }
 
+    // ===== 선택·편집 상태 관리 =====
+
+    /** 표에서 다른 회원을 고르면, 수정 중인 내용을 확인한 뒤 편집 영역을 새로 채웁니다. */
     private void selectionChanged() {
         if (filling || busy) return;
         int row = table.getSelectedRow();
@@ -236,6 +267,7 @@ public final class MemberAdminPanel extends JPanel {
         fillEditor();
     }
 
+    /** 선택 변경을 취소했을 때 표의 선택을 원래 회원으로 되돌립니다. */
     private void restoreSelection() {
         filling = true;
         try {
@@ -248,6 +280,7 @@ public final class MemberAdminPanel extends JPanel {
         }
     }
 
+    /** 선택된 회원의 정보를 편집 영역(이름·전화번호·상태)에 채웁니다. */
     private void fillEditor() {
         filling = true;
         try {
@@ -261,37 +294,37 @@ public final class MemberAdminPanel extends JPanel {
         updateControls();
     }
 
+    /** 입력값이 선택된 회원의 원래 값과 다른지(저장하지 않은 변경이 있는지) 확인합니다. */
     private boolean dirty() {
         return selected != null && (!person.getText().trim().equals(selected.name())
                 || !phone.getText().trim().equals(Objects.toString(selected.phone(), ""))
                 || memberStatus.getSelectedItem() != Status.valueOf(selected.status()));
     }
 
+    /** 저장하지 않은 변경이 없거나, 있어도 사용자가 버리겠다고 하면 true. */
     private boolean discardDraft() {
         return !dirty() || confirmation.test("변경 내용 확인", "저장하지 않은 회원 정보 변경을 버릴까요?");
     }
 
-    public boolean confirmLeave() {
-        if (busy) {
-            notice("진행 중인 작업이 끝난 뒤 다시 시도해 주세요.", false);
-            return false;
-        }
-        return discardDraft();
-    }
+    // ===== 조회(검색·목록 표시) =====
 
+    /** 검색 버튼/Enter: 작업 중이 아니고 변경을 버려도 될 때 목록을 다시 불러옵니다. */
     private void search() {
         if (!busy && discardDraft()) load("검색 결과를 확인해 주세요.");
     }
 
+    /** 검색어로 회원 목록을 백그라운드에서 조회한 뒤 표에 보여줍니다. */
     private void load(String done) {
         String keyword = search.getText();
         task("회원 목록을 불러오고 있어요…", () -> session.list(keyword), rows -> showRows(rows, done));
     }
 
+    /** 목록을 표에 표시합니다(선택 유지 없음). */
     private void showRows(List<MemberRepository.Member> rows, String done) {
         showRows(rows, null, done);
     }
 
+    /** 목록을 표에 표시하고, keep으로 받은 id의 회원이 있으면 다시 선택해 줍니다. */
     private void showRows(List<MemberRepository.Member> rows, Long keep, String done) {
         filling = true;
         try {
@@ -315,6 +348,9 @@ public final class MemberAdminPanel extends JPanel {
         notice(done, false);
     }
 
+    // ===== 변경 작업(저장·탈퇴·삭제) =====
+
+    /** 변경 저장: 입력 검사 → 변경 내용 확인창 → 수정 후 목록 새로고침. */
     private void save() {
         if (busy || selected == null || !dirty()) return;
         String name = person.getText().trim(), telephone = phone.getText().trim();
@@ -341,6 +377,7 @@ public final class MemberAdminPanel extends JPanel {
         }, expected.id(), "회원 정보를 변경했어요.");
     }
 
+    /** 탈퇴 처리: 정상 회원만 가능하며, 정보와 코스는 남기고 로그인만 제한합니다. */
     private void withdraw() {
         if (busy || selected == null || !"ACTIVE".equals(selected.status())) return;
         if (dirty()) {
@@ -356,6 +393,7 @@ public final class MemberAdminPanel extends JPanel {
         }, expected.id(), "탈퇴 처리했어요. 회원 정보와 코스는 유지돼요.");
     }
 
+    /** 영구 삭제: 탈퇴 회원만 가능. 삭제 가능 여부 확인 → 확인창 → 삭제 후 목록 새로고침. */
     private void delete() {
         if (busy || selected == null || !"INACTIVE".equals(selected.status())) return;
         if (dirty()) {
@@ -382,6 +420,7 @@ public final class MemberAdminPanel extends JPanel {
         });
     }
 
+    /** DB를 바꾸는 작업(write)을 실행한 뒤 같은 검색어로 목록을 다시 불러와 보여줍니다. */
     private void change(Callable<Void> write, Long keep, String done) {
         String keyword = search.getText();
         task("변경 내용을 처리하고 있어요…", () -> {
@@ -395,6 +434,9 @@ public final class MemberAdminPanel extends JPanel {
         }, rows -> showRows(rows == null ? List.of() : rows, keep, done + (rows == null ? " 목록을 불러오지 못했어요. 다시 검색해 주세요." : "")));
     }
 
+    // ===== 공통: 백그라운드 실행·안내·버튼 상태 =====
+
+    /** 공통 비동기 처리: 작업 중 표시 → 백그라운드 실행 → 성공/오류 안내 → 버튼 상태 복구. */
     private <T> void task(String pending, Callable<T> work, Consumer<T> success) {
         if (busy) return;
         busy = true;
@@ -422,11 +464,13 @@ public final class MemberAdminPanel extends JPanel {
         }.execute();
     }
 
+    /** 아래쪽 안내 문구를 표시합니다(error가 true면 빨간색). */
     private void notice(String text, boolean error) {
         message.setText(text);
         message.setForeground(error ? new Color(0xB4233F) : LoginUI.MUTED);
     }
 
+    /** 작업 중/선택/수정 여부에 따라 입력칸과 버튼의 활성화 상태를 갱신합니다. */
     private void updateControls() {
         boolean editable = selected != null && !busy;
         for (JComponent control : List.of(search, refresh, all, table, table.getTableHeader()))
@@ -439,10 +483,14 @@ public final class MemberAdminPanel extends JPanel {
         delete.setEnabled(editable && !dirty() && "INACTIVE".equals(selected.status()));
     }
 
+    // ===== 내부 클래스: 표 데이터 모델 =====
+
+    /** 회원 목록(rows)을 표의 행·열로 보여주는 모델. */
     private static final class MemberTableModel extends AbstractTableModel {
         private final String[] columns = {"이름", "이메일", "전화번호", "상태", "가입일"};
         private List<MemberRepository.Member> rows = List.of();
 
+        /** 회원 id로 목록에서의 위치를 찾습니다(없으면 -1). */
         int indexOf(long id) {
             for (int i = 0; i < rows.size(); i++) if (rows.get(i).id() == id) return i;
             return -1;
@@ -468,6 +516,7 @@ public final class MemberAdminPanel extends JPanel {
             return String.class;
         }
 
+        /** 칸에 표시할 값: 가입일은 "yyyy-MM-dd HH:mm" 형태로 잘라 보여줍니다. */
         @Override
         public Object getValueAt(int row, int column) {
             var member = rows.get(row);

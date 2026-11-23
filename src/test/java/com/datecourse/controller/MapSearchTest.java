@@ -676,7 +676,7 @@ class MapSearchTest {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/saved-course-view.fxml"));loader.load();
                 SavedCourseController controller=loader.getController();
                 var repository=new kr.ac.university.localdb.db.SavedCourseRepository(new org.h2.jdbcx.JdbcDataSource());
-                controller.configure(repository,context,c->{});controller.configure(repository,context,c->{});
+                controller.configure(repository,context,c->{},()->{});controller.configure(repository,context,c->{},()->{});
                 assertSame(context,field(controller,"userContext"));assertFalse(controller.isLoading());
                 assertEquals(1,((javafx.scene.control.ListView<?>)field(controller,"courseList")).getItems().size());
                 FXMLLoader profileLoader=new FXMLLoader(getClass().getResource("/my-page-view.fxml"));profileLoader.load();
