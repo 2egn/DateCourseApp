@@ -1,0 +1,26 @@
+gradle.projectsEvaluated {
+    def app = gradle.rootProject
+    app.sourceSets.test.java.srcDir(app.file('tools/catalog-ops'))
+    app.tasks.register('verifyCatalogExpansion', JavaExec) {
+        group = 'verification'
+        dependsOn app.tasks.testClasses
+        classpath = app.sourceSets.test.runtimeClasspath
+        mainClass = 'kr.ac.university.localdb.db.ExpansionAudit'
+        ['placeBaseline','placeBaselineFacts','placeDataset','placeFacts','placeReport'].each { key ->
+            if (!app.hasProperty(key)) throw new GradleException("${key} is required")
+        }
+        args app.findProperty('placeExpansionMode') ?: 'preflight',
+            app.property('placeBaseline'), app.property('placeBaselineFacts'),
+            app.property('placeDataset'), app.property('placeFacts'), app.property('placeReport')
+    }
+}
+gradle.projectsEvaluated {
+    def app=gradle.rootProject
+    app.tasks.register('rehearseCatalogExpansion', JavaExec) {
+        group='verification'
+        dependsOn app.tasks.testClasses
+        classpath=app.sourceSets.test.runtimeClasspath
+        mainClass='kr.ac.university.localdb.db.ExpansionRehearsal'
+        args app.property('placeBaseline'),app.property('placeBaselineFacts'),app.property('placeDataset'),app.property('placeFacts'),app.property('placeScenarios'),app.property('placeReport')
+    }
+}

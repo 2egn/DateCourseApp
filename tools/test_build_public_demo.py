@@ -7,6 +7,28 @@ from unittest.mock import patch
 from build_public_demo import ROOT, POLICY, build, load_policy, select_places, valid_point
 
 class PublicExpansionTest(unittest.TestCase):
+    def test_spatial_sampling_keeps_existing_places_and_reaches_other_neighborhoods(self):
+        rows=[dict(place_id=str(i),name='카페 '+str(i),road_address='도로 '+str(i),lot_address='',
+                   category='CAFE',industry_name='카페',lat=35.15+i*.00001,lon=129.11) for i in range(5)]
+        rows.append(dict(rows[0],place_id='far',name='다른 동네',road_address='먼 도로',lat=35.17))
+        policy=load_policy(POLICY);policy.update(categoryLimits=dict(MEAL=1,CAFE=3,CULTURE=1),
+            preferredPerCuisine=0,preferredDesignated=0,center=dict(lat=35.15,lng=129.11),spatialCellMeters=500)
+        selected=select_places(rows,['0'],[],set(),set(),lambda p:None,policy)
+        self.assertEqual('0',selected[0]['place_id'])
+        self.assertEqual(3,len(selected))
+        self.assertIn('far',[p['place_id'] for p in selected])
+        self.assertEqual(selected,select_places(rows,['0'],[],set(),set(),lambda p:None,policy))
+        blocked=select_places(rows,['0'],[],{'far'},set(),lambda p:None,policy)
+        self.assertNotIn('far',[p['place_id'] for p in blocked])
+
+    def test_spatial_policy_rejects_invalid_cell_sizes(self):
+        policy=load_policy(POLICY)
+        with tempfile.TemporaryDirectory() as directory:
+            target=Path(directory)/'policy.json'
+            for invalid in [True,0,-1,'500',float('nan'),float('inf')]:
+                target.write_text(json.dumps(dict(policy,spatialCellMeters=invalid)),encoding='utf-8')
+                with self.assertRaises(ValueError):load_policy(target)
+
     def test_expanded_snapshot_retains_original_ids_coordinates_and_prices(self):
         directory=ROOT/'data/places/demo'
         source=(directory/'seomyeon-public-estimates.json').read_bytes()

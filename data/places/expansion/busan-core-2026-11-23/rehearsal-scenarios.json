@@ -1,0 +1,55 @@
+{
+  "coordinateNote": "Approximate public test origins, not station entrances or verified provider routes",
+  "origins": [
+    {
+      "name": "서면",
+      "lat": 35.1578,
+      "lng": 129.06
+    },
+    {
+      "name": "가야",
+      "lat": 35.1533,
+      "lng": 129.037
+    },
+    {
+      "name": "개금",
+      "lat": 35.152,
+      "lng": 129.021
+    },
+    {
+      "name": "수영",
+      "lat": 35.1675,
+      "lng": 129.1147
+    },
+    {
+      "name": "민락",
+      "lat": 35.1562,
+      "lng": 129.1267
+    },
+    {
+      "name": "대연",
+      "lat": 35.135,
+      "lng": 129.1
+    },
+    {
+      "name": "용호",
+      "lat": 35.119,
+      "lng": 129.113
+    },
+    {
+      "name": "해운대",
+      "lat": 35.163,
+      "lng": 129.163
+    },
+    {
+      "name": "장산",
+      "lat": 35.1698,
+      "lng": 129.1765
+    },
+    {
+      "name": "송정",
+      "lat": 35.178,
+      "lng": 129.199
+    }
+  ]
+}

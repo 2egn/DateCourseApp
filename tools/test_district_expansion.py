@@ -13,6 +13,28 @@ class DistrictExpansionTest(unittest.TestCase):
     def row(self,pid,name='가게',lat='35.15',lng='129.11',address='도로 1'):
         return dict(place_id=pid,name=name,lat=lat,lon=lng,road_address=address,lot_address='',category='MEAL',district='수영구',source_reference_date='2026-09-30')
 
+    def test_core_expansion_retains_published_places_facts_and_conservative_new_prices(self):
+        root=ROOT/'data/places/expansion';base=root/'suyeong-2026-11-16';expanded=root/'busan-core-2026-11-23'
+        old=json.loads((base/'places.json').read_text(encoding='utf-8'))['places']
+        places=json.loads((expanded/'places.json').read_text(encoding='utf-8'))['places']
+        self.assertEqual(old,places[:len(old)]);self.assertEqual(2040,len(places))
+        self.assertEqual(len(places),len({p['recordId'] for p in places}))
+        self.assertEqual(len(places),len({p['details']['externalIds']['public'] for p in places}))
+        old_facts=json.loads((base/'appeal/demo_appeal_facts.json').read_text(encoding='utf-8'))['places']
+        facts=json.loads((expanded/'appeal/demo_appeal_facts.json').read_text(encoding='utf-8'));index={p['placeId']:p for p in facts['places']}
+        self.assertTrue(all(p==index[p['placeId']] for p in old_facts))
+        self.assertEqual(2040,len(index))
+        import hashlib
+        self.assertEqual(hashlib.sha256((expanded/'places.json').read_bytes()).hexdigest(),facts['datasetSha256'])
+        reports=json.loads((expanded/'stage-reports.json').read_text(encoding='utf-8'))['stages']
+        quarantined=set(pid for report in reports for pid in report['quality']['quarantinedIds'])
+        for place in places[len(old):]:
+            self.assertNotIn(place['details']['externalIds']['public'],quarantined)
+            self.assertEqual(0,place['rating'])
+            price=place['priceEstimate'];self.assertNotIn(price['evidence'],['GOOGLE_PROVIDED','ADMIN_REVIEWED'])
+            if price['evidence']=='SIMILAR_ESTIMATE':self.assertIn(place['details']['subcategory'],reports[0]['pricePolicy']['allowedSubtypes'])
+            if price['evidence']=='UNKNOWN':self.assertIsNone(price['minimum']);self.assertIsNone(price['maximum'])
+
     def test_suspected_duplicates_are_quarantined_but_existing_records_are_retained(self):
         rows=[self.row('old'),self.row('new',lat='35.1501',address='도로 2'),self.row('other',name='다른 가게'),self.row('bad',name='좌표 없음',lat='')]
         report=screen(rows,['old'])

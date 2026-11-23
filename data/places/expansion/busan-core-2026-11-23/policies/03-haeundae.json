@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "district": "해운대구",
+  "center": {
+    "lat": 35.163,
+    "lng": 129.163
+  },
+  "radiusMeters": 2000,
+  "categoryLimits": {
+    "MEAL": 1000,
+    "CAFE": 820,
+    "CULTURE": 280
+  },
+  "preferredPerCuisine": 0,
+  "preferredDesignated": 20,
+  "earliestReferenceDate": "2024-01-01",
+  "pricePolicy": {
+    "minimumSamples": 20,
+    "allowedSubtypes": [
+      "카페",
+      "백반/한정식",
+      "국/탕/찌개류",
+      "국수/칼국수",
+      "냉면/밀면",
+      "중국집"
+    ]
+  },
+  "spatialCellMeters": 500
+}

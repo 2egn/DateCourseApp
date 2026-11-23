@@ -1,0 +1,5162 @@
+{
+  "baseline": "data/places/expansion/suyeong-2026-11-16/places.json",
+  "stages": [
+    {
+      "schemaVersion": 1,
+      "district": "부산진구",
+      "baselineSha256": "b113902b854c924198fa0cd8afb2e9e610e89f908054c564db4363f838e803c3",
+      "datasetSha256": "9bbccd84cae63288b4398aaca464738c650ce1ffe4e612bb68b6a67efb1151dc",
+      "policySha256": "8a982d149185f9451f56409ef766516c872a46ffa77b8b7b36b31fd4e6d838e7",
+      "retained": 866,
+      "added": 338,
+      "total": 1204,
+      "districtSourceRows": 5532,
+      "addedCategories": {
+        "MEAL": 110,
+        "CAFE": 200,
+        "CULTURE": 28
+      },
+      "addedPriceEvidence": {
+        "UNKNOWN": 112,
+        "SIMILAR_ESTIMATE": 225,
+        "REFERENCE": 1
+      },
+      "pricePolicy": {
+        "minimumSamples": 20,
+        "allowedSubtypes": [
+          "카페",
+          "백반/한정식",
+          "국/탕/찌개류",
+          "국수/칼국수",
+          "냉면/밀면",
+          "중국집"
+        ]
+      },
+      "priceCohorts": {
+        "한식": {
+          "amount": 7000,
+          "sampleSize": 115,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_PERSON"
+        },
+        "카페": {
+          "amount": 2400,
+          "sampleSize": 25,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_DRINK"
+        },
+        "중식": {
+          "amount": 6000,
+          "sampleSize": 57,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_PERSON"
+        },
+        "일식": {
+          "amount": 8200,
+          "sampleSize": 5,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_PERSON"
+        }
+      },
+      "retainedPriceReviewIds": [
+        "SBIZ:MA010120220805402285",
+        "SBIZ:MA010120220807013467",
+        "SBIZ:MA010120220807155887",
+        "SBIZ:MA010120220808837597",
+        "SBIZ:MA0101202608A0071318",
+        "SBIZ:MA010120220809693555",
+        "SBIZ:MA0101202506A0019696",
+        "SBIZ:MA010120220800085324",
+        "SBIZ:MA0101202503A0059212",
+        "SBIZ:MA0101202504A0033854",
+        "SBIZ:MA010120220810439799",
+        "SBIZ:MA0101202406A0550263",
+        "SBIZ:MA0101202406A0281278",
+        "SBIZ:MA010120220812355949",
+        "SBIZ:MA0101202603A0046536",
+        "SBIZ:MA010120220812913053",
+        "SBIZ:MA0101202308A0045433",
+        "SBIZ:MA0101202608A0030160",
+        "SBIZ:MA0101202306A0044087",
+        "SBIZ:MA0101202512A0025483",
+        "SBIZ:MA0101202406A0297115",
+        "SBIZ:MA0101202603A0024929",
+        "SBIZ:MA010120220811767364",
+        "SBIZ:MA010120220809294021",
+        "SBIZ:MA0101202406A0436947",
+        "SBIZ:MA0101202603A0046145",
+        "SBIZ:MA0101202306A0036771",
+        "SBIZ:MA0101202406A0137263",
+        "SBIZ:MA010120220806922520",
+        "SBIZ:MA010120220814280613",
+        "SBIZ:MA0101202511A0021696",
+        "SBIZ:MA0101202409A0065615",
+        "SBIZ:MA010120220812494700",
+        "SBIZ:MA0101202406A0060699",
+        "SBIZ:MA0101202608A0101710",
+        "SBIZ:MA010120220810096162",
+        "SBIZ:MA010120220808700057",
+        "SBIZ:MA0101202406A0176217",
+        "SBIZ:MA010120220809933715",
+        "SBIZ:MA0101202406A0495139",
+        "SBIZ:MA0101202512A0043989",
+        "SBIZ:MA0101202406A0103804",
+        "SBIZ:MA0101202508A0033290",
+        "SBIZ:MA0101202308A0071840",
+        "SBIZ:MA0101202503A0076315",
+        "SBIZ:MA0101202504A0032310",
+        "SBIZ:MA010120220810691645",
+        "SBIZ:MA0101202209A0056857",
+        "SBIZ:MA010120220810658772",
+        "SBIZ:MA010120220809863172",
+        "SBIZ:MA010120220805253991"
+      ],
+      "priceLimitation": "Inexpensive-designated-shop sample; not representative of ordinary venue prices. No fresh venue or provider verification.",
+      "sourceMode": "existing_public_snapshots_offline",
+      "quality": {
+        "reviews": [
+          {
+            "publicId": "LIB:158",
+            "name": "구포도서관분관부산영어도서관",
+            "address": "부산광역시 부산진구 가야대로 734",
+            "retainedExisting": false,
+            "reasons": [
+              "missing_or_invalid_coordinate"
+            ]
+          },
+          {
+            "publicId": "LIB:159",
+            "name": "부산진구기적의도서관",
+            "address": "부산광역시 부산진구 범양로125번길 19",
+            "retainedExisting": false,
+            "reasons": [
+              "missing_or_invalid_coordinate"
+            ]
+          },
+          {
+            "publicId": "LIB:160",
+            "name": "부산진구당감도서관",
+            "address": "부산광역시 부산 부산진구 가야대로703번나길 33",
+            "retainedExisting": false,
+            "reasons": [
+              "missing_or_invalid_coordinate"
+            ]
+          },
+          {
+            "publicId": "LIB:211",
+            "name": "꿈자람작은도서관",
+            "address": "부산광역시 부산진구 전포대로190번길 35, 전포종합사회복지관 1층",
+            "retainedExisting": false,
+            "reasons": [
+              "missing_or_invalid_coordinate"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220800647351",
+            "name": "양정기사식당",
+            "address": "부산광역시 부산진구 중앙대로970번길 34",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220803218447",
+            "name": "샐러드바스켓",
+            "address": "부산광역시 부산진구 서면로 55",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220803372010",
+            "name": "아리카페",
+            "address": "부산광역시 부산진구 중앙대로 749",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220806578630",
+            "name": "큰손김밥",
+            "address": "부산광역시 부산진구 서면로 56",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220806592388",
+            "name": "동방축산",
+            "address": "부산광역시 부산진구 중앙대로691번길 60",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808227050",
+            "name": "컴포즈커피",
+            "address": "부산광역시 부산진구 동천로85번길 1",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808436086",
+            "name": "샐러드바스켓",
+            "address": "부산광역시 부산진구 서면로 55",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808536693",
+            "name": "돼지충전소",
+            "address": "부산광역시 부산진구 당감서로100번길 9",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808599365",
+            "name": "청년어부",
+            "address": "부산광역시 부산진구 서전로10번길 13",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808634025",
+            "name": "양지맛사랑",
+            "address": "부산광역시 부산진구 백양관문로 3",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220809332025",
+            "name": "일미리금계찜닭부산",
+            "address": "부산광역시 부산진구 당감로 17",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220809973318",
+            "name": "태진한우",
+            "address": "부산광역시 부산진구 부전로 108",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810146508",
+            "name": "여보식당",
+            "address": "부산광역시 부산진구 냉정로253번길 24",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810420693",
+            "name": "코코샤브",
+            "address": "부산광역시 부산진구 가야대로 597",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810606383",
+            "name": "일도벤딩",
+            "address": "부산광역시 부산진구 백양관문로77번길 41",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810627122",
+            "name": "대서양식당",
+            "address": "부산광역시 부산진구 부전로96번길 26",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810629887",
+            "name": "포항물횟집",
+            "address": "부산광역시 부산진구 새싹로29번길 14-8",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810632046",
+            "name": "포항물횟집",
+            "address": "부산광역시 부산진구 새싹로29번길 14-7",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810658233",
+            "name": "대서양식당",
+            "address": "부산광역시 부산진구 부전로96번길 20",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810687275",
+            "name": "서가네오리",
+            "address": "부산광역시 부산진구 가야공원로 83-33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810712738",
+            "name": "카페히로",
+            "address": "부산광역시 부산진구 가야대로454번길 42",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220812370531",
+            "name": "땅땅치킨부전전포점",
+            "address": "부산광역시 부산진구 중앙대로 786",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220812978975",
+            "name": "프랭크버거",
+            "address": "부산광역시 부산진구 중앙대로680번길 22",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813140259",
+            "name": "할리스부산시민공원점",
+            "address": "부산광역시 부산진구 시민공원로 73",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813532656",
+            "name": "5일장터",
+            "address": "부산광역시 부산진구 동천로95번길 20-5",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813598450",
+            "name": "열정푸드",
+            "address": "부산광역시 부산진구 백양대로357번길 78",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220814023419",
+            "name": "양정기사식당",
+            "address": "부산광역시 부산진구 중앙대로970번길 38",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202209A0090448",
+            "name": "태진한우",
+            "address": "부산광역시 부산진구 부전로 108",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202211A0103449",
+            "name": "동방축산",
+            "address": "부산광역시 부산진구 중앙대로691번길 60",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202212A0083237",
+            "name": "아리카페",
+            "address": "부산광역시 부산진구 중앙대로 749",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202212A0101100",
+            "name": "비치빈",
+            "address": "부산광역시 부산진구 진남로 506",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202302A0017761",
+            "name": "땅땅치킨부전전포점",
+            "address": "부산광역시 부산진구 중앙대로 786",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202302A0091038",
+            "name": "양지맛사랑",
+            "address": "부산광역시 부산진구 백양관문로 3",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202303A0031080",
+            "name": "돼지충전소",
+            "address": "부산광역시 부산진구 당감서로 102",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202305A0092891",
+            "name": "갓포사잇쿠마",
+            "address": "부산광역시 부산진구 동성로71번길 31",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202305A0125063",
+            "name": "나이브",
+            "address": "부산광역시 부산진구 전포대로186번길 37-1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202305A0161620",
+            "name": "연운당",
+            "address": "부산광역시 부산진구 서전로46번길 62-8",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202305A0165509",
+            "name": "연운당",
+            "address": "부산광역시 부산진구 서전로46번길 62-8",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202307A0101002",
+            "name": "족당희",
+            "address": "부산광역시 부산진구 가야대로443번길 11",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202308A0044130",
+            "name": "맛나네",
+            "address": "부산광역시 부산진구 대학로 66",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202308A0051064",
+            "name": "서가네오리",
+            "address": "부산광역시 부산진구 가야공원로 83-33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202309A0054718",
+            "name": "여보식당",
+            "address": "부산광역시 부산진구 냉정로253번길 24",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202310A0053898",
+            "name": "열정푸드",
+            "address": "부산광역시 부산진구 백양대로357번길 78",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0060699",
+            "name": "압구정편의점부산",
+            "address": "부산광역시 부산진구 중앙대로680번가길 56",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0154448",
+            "name": "맛나네",
+            "address": "부산광역시 부산진구 대학로 66",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0258573",
+            "name": "일미리금계찜닭부산",
+            "address": "부산광역시 부산진구 당감로 17",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0299782",
+            "name": "문화양곱창",
+            "address": "부산광역시 부산진구 가야대로784번길 56-8",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0402087",
+            "name": "압구정편의점부산",
+            "address": "부산광역시 부산진구 중앙대로680번가길 56",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202409A0173000",
+            "name": "5일장터",
+            "address": "부산광역시 부산진구 서전로 14",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202409A0232449",
+            "name": "토다공원",
+            "address": "부산광역시 부산진구 전포대로210번길 36",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202411A0051092",
+            "name": "큰손김밥",
+            "address": "부산광역시 부산진구 서면로 56",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202411A0097692",
+            "name": "구포촌국수서면",
+            "address": "부산광역시 부산진구 동천로 56",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202412A0022067",
+            "name": "족발사관학교",
+            "address": "부산광역시 부산진구 동평로 69",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202501A0012766",
+            "name": "나이브",
+            "address": "부산광역시 부산진구 전포대로186번길 37",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202503A0018252",
+            "name": "구포촌국수서면",
+            "address": "부산광역시 부산진구 동천로 56",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202503A0073924",
+            "name": "프랭크버거",
+            "address": "부산광역시 부산진구 중앙대로680번길 22",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202504A0033854",
+            "name": "림잇티드",
+            "address": "부산광역시 부산진구 동천로85번길 35",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202506A0005433",
+            "name": "당감쪽갈비",
+            "address": "부산광역시 부산진구 당감로16번길 40",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202506A0027514",
+            "name": "족당희",
+            "address": "부산광역시 부산진구 가야대로443번길 11",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202507A0003385",
+            "name": "문화양곱창",
+            "address": "부산광역시 부산진구 가야대로784번길 56-8",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202507A0022779",
+            "name": "문화양곱창",
+            "address": "부산광역시 부산진구 가야대로784번길 56-8",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202507A0025866",
+            "name": "족발사관학교",
+            "address": "부산광역시 부산진구 동평로 69",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202509A0021357",
+            "name": "문화양곱창",
+            "address": "부산광역시 부산진구 가야대로784번길 56-8",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202509A0041641",
+            "name": "넘버나인한우",
+            "address": "부산광역시 부산진구 서전로 11",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202512A0009379",
+            "name": "비치빈",
+            "address": "부산광역시 부산진구 진남로 506",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202512A0024536",
+            "name": "뚜레쥬르범천점",
+            "address": "부산광역시 부산진구 중앙대로 632",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202512A0040366",
+            "name": "청년어부",
+            "address": "부산광역시 부산진구 서전로10번길 18",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202601A0021914",
+            "name": "넘버나인한우",
+            "address": "부산광역시 부산진구 동천로107번길 25",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202602A0015545",
+            "name": "토다공원",
+            "address": "부산광역시 부산진구 전포대로210번길 36",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202602A0035349",
+            "name": "당감쪽갈비",
+            "address": "부산광역시 부산진구 당감로16번길 40",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202602A0035438",
+            "name": "아덴블랑제리",
+            "address": "부산광역시 부산진구 냉정로 237",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202608A0025261",
+            "name": "림잇티드",
+            "address": "부산광역시 부산진구 동천로85번길 35",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202608A0065103",
+            "name": "갓포사잇쿠마",
+            "address": "부산광역시 부산진구 동성로71번길 31",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1317549",
+            "name": "컴포즈커피",
+            "address": "부산광역시 부산진구 동천로85번길 1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1720091",
+            "name": "일도벤딩",
+            "address": "부산광역시 부산진구 백양관문로77번길 41",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1729917",
+            "name": "온그룹의료재단온종합병원",
+            "address": "부산광역시 부산진구 가야대로 721",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1729919",
+            "name": "온그룹의료재단온종합병원",
+            "address": "부산광역시 부산진구 가야대로 721",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1738251",
+            "name": "카페히로",
+            "address": "부산광역시 부산진구 가야대로454번길 42",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2098372",
+            "name": "헤렌가세",
+            "address": "부산광역시 부산진구 서면로68번길 20",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2098373",
+            "name": "헤렌가세",
+            "address": "부산광역시 부산진구 서면로68번길 20",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2154040",
+            "name": "할리스부산시민공원점",
+            "address": "부산광역시 부산진구 시민공원로 73",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2364300",
+            "name": "스타벅스",
+            "address": "부산광역시 부산진구 중앙대로 894",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202204A1768294",
+            "name": "뚜레쥬르범천점",
+            "address": "부산광역시 부산진구 중앙대로 632",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202211A2210962",
+            "name": "스페이스크래프트",
+            "address": "부산광역시 부산진구 중앙대로 672",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202302A1336024",
+            "name": "아덴블랑제리",
+            "address": "부산광역시 부산진구 냉정로 237",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0008598",
+            "name": "한국맥도날드서면",
+            "address": "부산광역시 부산진구 중앙대로692번길 33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0008808",
+            "name": "한국맥도날드",
+            "address": "부산광역시 부산진구 가야대로 607",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009044",
+            "name": "한국맥도날드",
+            "address": "부산광역시 부산진구 복지로 70",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009084",
+            "name": "한국맥도날드부산범전DT점",
+            "address": "부산광역시 부산진구 중앙대로 823",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009207",
+            "name": "한국맥도날드",
+            "address": "부산광역시 부산진구 가야대로 607",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009219",
+            "name": "한국맥도날드",
+            "address": "부산광역시 부산진구 가야대로 607",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009262",
+            "name": "한국맥도날드서면",
+            "address": "부산광역시 부산진구 중앙대로692번길 33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009269",
+            "name": "한국맥도날드",
+            "address": "부산광역시 부산진구 복지로 70",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009304",
+            "name": "한국맥도날드서면",
+            "address": "부산광역시 부산진구 중앙대로692번길 33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009359",
+            "name": "한국맥도날드부산범전DT점",
+            "address": "부산광역시 부산진구 중앙대로 823",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009383",
+            "name": "한국맥도날드부산범전DT점",
+            "address": "부산광역시 부산진구 중앙대로 823",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009437",
+            "name": "한국맥도날드",
+            "address": "부산광역시 부산진구 복지로 70",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202504A0768838",
+            "name": "벤처:템플오브템포",
+            "address": "부산광역시 부산진구 동성로 35",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202505A0008519",
+            "name": "한국맥도날드부산범전DT점",
+            "address": "부산광역시 부산진구 중앙대로 823",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202509A1728211",
+            "name": "코코샤브",
+            "address": "부산광역시 부산진구 가야대로 597",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202509A2242841",
+            "name": "스페이스크래프트",
+            "address": "부산광역시 부산진구 중앙대로 672",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202604A2220543",
+            "name": "라이크댓커피",
+            "address": "부산광역시 부산진구 중앙대로824번길 6",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202605A0485698",
+            "name": "스타벅스",
+            "address": "부산광역시 부산진구 양지로 1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202605A2224613",
+            "name": "라이크댓커피",
+            "address": "부산광역시 부산진구 중앙대로824번길 6",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202607A0753808",
+            "name": "벤처템플오브템포",
+            "address": "부산광역시 부산진구 동성로 35",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          }
+        ],
+        "exactNameAddressGroups": [
+          [
+            "SBIZ:MA010120220803218447",
+            "SBIZ:MA010120220808436086"
+          ],
+          [
+            "SBIZ:MA010120220803372010",
+            "SBIZ:MA0101202212A0083237"
+          ],
+          [
+            "SBIZ:MA010120220806578630",
+            "SBIZ:MA0101202411A0051092"
+          ],
+          [
+            "SBIZ:MA010120220806592388",
+            "SBIZ:MA0101202211A0103449"
+          ],
+          [
+            "SBIZ:MA010120220808227050",
+            "SBIZ:MA0106202201A1317549"
+          ],
+          [
+            "SBIZ:MA010120220808634025",
+            "SBIZ:MA0101202302A0091038"
+          ],
+          [
+            "SBIZ:MA010120220809332025",
+            "SBIZ:MA0101202406A0258573"
+          ],
+          [
+            "SBIZ:MA010120220809973318",
+            "SBIZ:MA0101202209A0090448"
+          ],
+          [
+            "SBIZ:MA010120220810146508",
+            "SBIZ:MA0101202309A0054718"
+          ],
+          [
+            "SBIZ:MA010120220810420693",
+            "SBIZ:MA0106202509A1728211"
+          ],
+          [
+            "SBIZ:MA010120220810606383",
+            "SBIZ:MA0106202201A1720091"
+          ],
+          [
+            "SBIZ:MA010120220810687275",
+            "SBIZ:MA0101202308A0051064"
+          ],
+          [
+            "SBIZ:MA010120220810712738",
+            "SBIZ:MA0106202201A1738251"
+          ],
+          [
+            "SBIZ:MA010120220812370531",
+            "SBIZ:MA0101202302A0017761"
+          ],
+          [
+            "SBIZ:MA010120220812978975",
+            "SBIZ:MA0101202503A0073924"
+          ],
+          [
+            "SBIZ:MA010120220813140259",
+            "SBIZ:MA0106202201A2154040"
+          ],
+          [
+            "SBIZ:MA010120220813598450",
+            "SBIZ:MA0101202310A0053898"
+          ],
+          [
+            "SBIZ:MA0101202212A0101100",
+            "SBIZ:MA0101202512A0009379"
+          ],
+          [
+            "SBIZ:MA0101202305A0092891",
+            "SBIZ:MA0101202608A0065103"
+          ],
+          [
+            "SBIZ:MA0101202305A0161620",
+            "SBIZ:MA0101202305A0165509"
+          ],
+          [
+            "SBIZ:MA0101202307A0101002",
+            "SBIZ:MA0101202506A0027514"
+          ],
+          [
+            "SBIZ:MA0101202308A0044130",
+            "SBIZ:MA0101202406A0154448"
+          ],
+          [
+            "SBIZ:MA0101202406A0060699",
+            "SBIZ:MA0101202406A0402087"
+          ],
+          [
+            "SBIZ:MA0101202406A0299782",
+            "SBIZ:MA0101202507A0003385",
+            "SBIZ:MA0101202507A0022779",
+            "SBIZ:MA0101202509A0021357"
+          ],
+          [
+            "SBIZ:MA0101202409A0232449",
+            "SBIZ:MA0101202602A0015545"
+          ],
+          [
+            "SBIZ:MA0101202411A0097692",
+            "SBIZ:MA0101202503A0018252"
+          ],
+          [
+            "SBIZ:MA0101202412A0022067",
+            "SBIZ:MA0101202507A0025866"
+          ],
+          [
+            "SBIZ:MA0101202504A0033854",
+            "SBIZ:MA0101202608A0025261"
+          ],
+          [
+            "SBIZ:MA0101202506A0005433",
+            "SBIZ:MA0101202602A0035349"
+          ],
+          [
+            "SBIZ:MA0101202512A0024536",
+            "SBIZ:MA0106202204A1768294"
+          ],
+          [
+            "SBIZ:MA0101202602A0035438",
+            "SBIZ:MA0106202302A1336024"
+          ],
+          [
+            "SBIZ:MA0106202201A1729917",
+            "SBIZ:MA0106202201A1729919"
+          ],
+          [
+            "SBIZ:MA0106202201A2098372",
+            "SBIZ:MA0106202201A2098373"
+          ],
+          [
+            "SBIZ:MA0106202211A2210962",
+            "SBIZ:MA0106202509A2242841"
+          ],
+          [
+            "SBIZ:MA0106202401A0008598",
+            "SBIZ:MA0106202401A0009262",
+            "SBIZ:MA0106202401A0009304"
+          ],
+          [
+            "SBIZ:MA0106202401A0008808",
+            "SBIZ:MA0106202401A0009207",
+            "SBIZ:MA0106202401A0009219"
+          ],
+          [
+            "SBIZ:MA0106202401A0009044",
+            "SBIZ:MA0106202401A0009269",
+            "SBIZ:MA0106202401A0009437"
+          ],
+          [
+            "SBIZ:MA0106202401A0009084",
+            "SBIZ:MA0106202401A0009359",
+            "SBIZ:MA0106202401A0009383",
+            "SBIZ:MA0106202505A0008519"
+          ],
+          [
+            "SBIZ:MA0106202504A0768838",
+            "SBIZ:MA0106202607A0753808"
+          ],
+          [
+            "SBIZ:MA0106202604A2220543",
+            "SBIZ:MA0106202605A2224613"
+          ]
+        ],
+        "nearbySameNamePairs": [
+          {
+            "ids": [
+              "SBIZ:MA010120220800647351",
+              "SBIZ:MA010120220814023419"
+            ],
+            "meters": 14.7,
+            "name": "양정기사식당"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220803218447",
+              "SBIZ:MA010120220808436086"
+            ],
+            "meters": 0.0,
+            "name": "샐러드바스켓"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220803372010",
+              "SBIZ:MA0101202212A0083237"
+            ],
+            "meters": 0.0,
+            "name": "아리카페"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220806578630",
+              "SBIZ:MA0101202411A0051092"
+            ],
+            "meters": 0.0,
+            "name": "큰손김밥"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220806592388",
+              "SBIZ:MA0101202211A0103449"
+            ],
+            "meters": 0.0,
+            "name": "동방축산"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808227050",
+              "SBIZ:MA0106202201A1317549"
+            ],
+            "meters": 0.0,
+            "name": "컴포즈커피"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808536693",
+              "SBIZ:MA0101202303A0031080"
+            ],
+            "meters": 18.0,
+            "name": "돼지충전소"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808599365",
+              "SBIZ:MA0101202512A0040366"
+            ],
+            "meters": 39.7,
+            "name": "청년어부"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808634025",
+              "SBIZ:MA0101202302A0091038"
+            ],
+            "meters": 0.0,
+            "name": "양지맛사랑"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220809332025",
+              "SBIZ:MA0101202406A0258573"
+            ],
+            "meters": 0.0,
+            "name": "일미리금계찜닭부산"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220809973318",
+              "SBIZ:MA0101202209A0090448"
+            ],
+            "meters": 0.0,
+            "name": "태진한우"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810146508",
+              "SBIZ:MA0101202309A0054718"
+            ],
+            "meters": 0.0,
+            "name": "여보식당"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810420693",
+              "SBIZ:MA0106202509A1728211"
+            ],
+            "meters": 0.0,
+            "name": "코코샤브"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810606383",
+              "SBIZ:MA0106202201A1720091"
+            ],
+            "meters": 0.0,
+            "name": "일도벤딩"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810627122",
+              "SBIZ:MA010120220810658233"
+            ],
+            "meters": 32.9,
+            "name": "대서양식당"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810629887",
+              "SBIZ:MA010120220810632046"
+            ],
+            "meters": 20.2,
+            "name": "포항물횟집"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810687275",
+              "SBIZ:MA0101202308A0051064"
+            ],
+            "meters": 0.0,
+            "name": "서가네오리"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810712738",
+              "SBIZ:MA0106202201A1738251"
+            ],
+            "meters": 0.0,
+            "name": "카페히로"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220812370531",
+              "SBIZ:MA0101202302A0017761"
+            ],
+            "meters": 0.0,
+            "name": "땅땅치킨부전전포점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220812978975",
+              "SBIZ:MA0101202503A0073924"
+            ],
+            "meters": 0.0,
+            "name": "프랭크버거"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220813140259",
+              "SBIZ:MA0106202201A2154040"
+            ],
+            "meters": 13.0,
+            "name": "할리스부산시민공원점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220813532656",
+              "SBIZ:MA0101202409A0173000"
+            ],
+            "meters": 18.1,
+            "name": "5일장터"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220813598450",
+              "SBIZ:MA0101202310A0053898"
+            ],
+            "meters": 0.0,
+            "name": "열정푸드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202212A0101100",
+              "SBIZ:MA0101202512A0009379"
+            ],
+            "meters": 0.0,
+            "name": "비치빈"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202305A0092891",
+              "SBIZ:MA0101202608A0065103"
+            ],
+            "meters": 0.0,
+            "name": "갓포사잇쿠마"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202305A0125063",
+              "SBIZ:MA0101202501A0012766"
+            ],
+            "meters": 7.1,
+            "name": "나이브"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202305A0161620",
+              "SBIZ:MA0101202305A0165509"
+            ],
+            "meters": 0.0,
+            "name": "연운당"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202307A0101002",
+              "SBIZ:MA0101202506A0027514"
+            ],
+            "meters": 0.0,
+            "name": "족당희"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202308A0044130",
+              "SBIZ:MA0101202406A0154448"
+            ],
+            "meters": 0.0,
+            "name": "맛나네"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202406A0060699",
+              "SBIZ:MA0101202406A0402087"
+            ],
+            "meters": 0.0,
+            "name": "압구정편의점부산"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202406A0299782",
+              "SBIZ:MA0101202507A0003385"
+            ],
+            "meters": 0.0,
+            "name": "문화양곱창"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202406A0299782",
+              "SBIZ:MA0101202507A0022779"
+            ],
+            "meters": 0.0,
+            "name": "문화양곱창"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202406A0299782",
+              "SBIZ:MA0101202509A0021357"
+            ],
+            "meters": 0.0,
+            "name": "문화양곱창"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202409A0232449",
+              "SBIZ:MA0101202602A0015545"
+            ],
+            "meters": 0.0,
+            "name": "토다공원"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202411A0097692",
+              "SBIZ:MA0101202503A0018252"
+            ],
+            "meters": 0.0,
+            "name": "구포촌국수서면"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202412A0022067",
+              "SBIZ:MA0101202507A0025866"
+            ],
+            "meters": 0.0,
+            "name": "족발사관학교"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202504A0033854",
+              "SBIZ:MA0101202608A0025261"
+            ],
+            "meters": 0.0,
+            "name": "림잇티드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202506A0005433",
+              "SBIZ:MA0101202602A0035349"
+            ],
+            "meters": 0.0,
+            "name": "당감쪽갈비"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202507A0003385",
+              "SBIZ:MA0101202507A0022779"
+            ],
+            "meters": 0.0,
+            "name": "문화양곱창"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202507A0003385",
+              "SBIZ:MA0101202509A0021357"
+            ],
+            "meters": 0.0,
+            "name": "문화양곱창"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202507A0022779",
+              "SBIZ:MA0101202509A0021357"
+            ],
+            "meters": 0.0,
+            "name": "문화양곱창"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202509A0041641",
+              "SBIZ:MA0101202601A0021914"
+            ],
+            "meters": 25.0,
+            "name": "넘버나인한우"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202512A0024536",
+              "SBIZ:MA0106202204A1768294"
+            ],
+            "meters": 0.0,
+            "name": "뚜레쥬르범천점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202602A0035438",
+              "SBIZ:MA0106202302A1336024"
+            ],
+            "meters": 0.0,
+            "name": "아덴블랑제리"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202201A1729917",
+              "SBIZ:MA0106202201A1729919"
+            ],
+            "meters": 0.0,
+            "name": "온그룹의료재단온종합병원"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202201A2098372",
+              "SBIZ:MA0106202201A2098373"
+            ],
+            "meters": 0.0,
+            "name": "헤렌가세"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202201A2364300",
+              "SBIZ:MA0106202605A0485698"
+            ],
+            "meters": 26.2,
+            "name": "스타벅스"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202211A2210962",
+              "SBIZ:MA0106202509A2242841"
+            ],
+            "meters": 0.0,
+            "name": "스페이스크래프트"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008598",
+              "SBIZ:MA0106202401A0009262"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드서면"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008598",
+              "SBIZ:MA0106202401A0009304"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드서면"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008808",
+              "SBIZ:MA0106202401A0009207"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008808",
+              "SBIZ:MA0106202401A0009219"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009044",
+              "SBIZ:MA0106202401A0009269"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009044",
+              "SBIZ:MA0106202401A0009437"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009084",
+              "SBIZ:MA0106202401A0009359"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드부산범전DT점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009084",
+              "SBIZ:MA0106202401A0009383"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드부산범전DT점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009084",
+              "SBIZ:MA0106202505A0008519"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드부산범전DT점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009207",
+              "SBIZ:MA0106202401A0009219"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009262",
+              "SBIZ:MA0106202401A0009304"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드서면"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009269",
+              "SBIZ:MA0106202401A0009437"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009359",
+              "SBIZ:MA0106202401A0009383"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드부산범전DT점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009359",
+              "SBIZ:MA0106202505A0008519"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드부산범전DT점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009383",
+              "SBIZ:MA0106202505A0008519"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드부산범전DT점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202504A0768838",
+              "SBIZ:MA0106202607A0753808"
+            ],
+            "meters": 0.0,
+            "name": "벤처템플오브템포"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202604A2220543",
+              "SBIZ:MA0106202605A2224613"
+            ],
+            "meters": 0.0,
+            "name": "라이크댓커피"
+          }
+        ],
+        "quarantinedIds": [
+          "LIB:158",
+          "LIB:159",
+          "LIB:160",
+          "LIB:211",
+          "SBIZ:MA010120220800647351",
+          "SBIZ:MA010120220803218447",
+          "SBIZ:MA010120220806578630",
+          "SBIZ:MA010120220806592388",
+          "SBIZ:MA010120220808436086",
+          "SBIZ:MA010120220808536693",
+          "SBIZ:MA010120220808634025",
+          "SBIZ:MA010120220809332025",
+          "SBIZ:MA010120220809973318",
+          "SBIZ:MA010120220810146508",
+          "SBIZ:MA010120220810420693",
+          "SBIZ:MA010120220810606383",
+          "SBIZ:MA010120220810627122",
+          "SBIZ:MA010120220810629887",
+          "SBIZ:MA010120220810632046",
+          "SBIZ:MA010120220810658233",
+          "SBIZ:MA010120220810687275",
+          "SBIZ:MA010120220810712738",
+          "SBIZ:MA010120220812370531",
+          "SBIZ:MA010120220812978975",
+          "SBIZ:MA010120220813140259",
+          "SBIZ:MA010120220813598450",
+          "SBIZ:MA010120220814023419",
+          "SBIZ:MA0101202209A0090448",
+          "SBIZ:MA0101202211A0103449",
+          "SBIZ:MA0101202212A0083237",
+          "SBIZ:MA0101202212A0101100",
+          "SBIZ:MA0101202302A0017761",
+          "SBIZ:MA0101202302A0091038",
+          "SBIZ:MA0101202303A0031080",
+          "SBIZ:MA0101202305A0092891",
+          "SBIZ:MA0101202305A0125063",
+          "SBIZ:MA0101202305A0161620",
+          "SBIZ:MA0101202305A0165509",
+          "SBIZ:MA0101202307A0101002",
+          "SBIZ:MA0101202308A0044130",
+          "SBIZ:MA0101202308A0051064",
+          "SBIZ:MA0101202309A0054718",
+          "SBIZ:MA0101202310A0053898",
+          "SBIZ:MA0101202406A0154448",
+          "SBIZ:MA0101202406A0258573",
+          "SBIZ:MA0101202406A0299782",
+          "SBIZ:MA0101202406A0402087",
+          "SBIZ:MA0101202409A0232449",
+          "SBIZ:MA0101202411A0051092",
+          "SBIZ:MA0101202411A0097692",
+          "SBIZ:MA0101202412A0022067",
+          "SBIZ:MA0101202501A0012766",
+          "SBIZ:MA0101202503A0018252",
+          "SBIZ:MA0101202503A0073924",
+          "SBIZ:MA0101202506A0005433",
+          "SBIZ:MA0101202506A0027514",
+          "SBIZ:MA0101202507A0003385",
+          "SBIZ:MA0101202507A0022779",
+          "SBIZ:MA0101202507A0025866",
+          "SBIZ:MA0101202509A0021357",
+          "SBIZ:MA0101202512A0009379",
+          "SBIZ:MA0101202512A0024536",
+          "SBIZ:MA0101202602A0015545",
+          "SBIZ:MA0101202602A0035349",
+          "SBIZ:MA0101202602A0035438",
+          "SBIZ:MA0101202608A0025261",
+          "SBIZ:MA0101202608A0065103",
+          "SBIZ:MA0106202201A1317549",
+          "SBIZ:MA0106202201A1720091",
+          "SBIZ:MA0106202201A1729917",
+          "SBIZ:MA0106202201A1729919",
+          "SBIZ:MA0106202201A1738251",
+          "SBIZ:MA0106202201A2098372",
+          "SBIZ:MA0106202201A2098373",
+          "SBIZ:MA0106202201A2154040",
+          "SBIZ:MA0106202201A2364300",
+          "SBIZ:MA0106202204A1768294",
+          "SBIZ:MA0106202211A2210962",
+          "SBIZ:MA0106202302A1336024",
+          "SBIZ:MA0106202401A0008598",
+          "SBIZ:MA0106202401A0008808",
+          "SBIZ:MA0106202401A0009044",
+          "SBIZ:MA0106202401A0009084",
+          "SBIZ:MA0106202401A0009207",
+          "SBIZ:MA0106202401A0009219",
+          "SBIZ:MA0106202401A0009262",
+          "SBIZ:MA0106202401A0009269",
+          "SBIZ:MA0106202401A0009304",
+          "SBIZ:MA0106202401A0009359",
+          "SBIZ:MA0106202401A0009383",
+          "SBIZ:MA0106202401A0009437",
+          "SBIZ:MA0106202504A0768838",
+          "SBIZ:MA0106202505A0008519",
+          "SBIZ:MA0106202509A1728211",
+          "SBIZ:MA0106202509A2242841",
+          "SBIZ:MA0106202604A2220543",
+          "SBIZ:MA0106202605A0485698",
+          "SBIZ:MA0106202605A2224613",
+          "SBIZ:MA0106202607A0753808"
+        ]
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "district": "남구",
+      "baselineSha256": "9bbccd84cae63288b4398aaca464738c650ce1ffe4e612bb68b6a67efb1151dc",
+      "datasetSha256": "059189949d3096ab0ff5e3210f8b8a7ab96bc958c1e3cc859afa5bf43d3a72a5",
+      "policySha256": "402d25349274b4be725cd75e57777a5c62d3ef85fe427c374fede28fec9869f3",
+      "retained": 1204,
+      "added": 356,
+      "total": 1560,
+      "districtSourceRows": 2866,
+      "addedCategories": {
+        "MEAL": 150,
+        "CAFE": 150,
+        "CULTURE": 56
+      },
+      "addedPriceEvidence": {
+        "SIMILAR_ESTIMATE": 186,
+        "UNKNOWN": 164,
+        "REFERENCE": 6
+      },
+      "pricePolicy": {
+        "minimumSamples": 20,
+        "allowedSubtypes": [
+          "카페",
+          "백반/한정식",
+          "국/탕/찌개류",
+          "국수/칼국수",
+          "냉면/밀면",
+          "중국집"
+        ]
+      },
+      "priceCohorts": {
+        "한식": {
+          "amount": 7000,
+          "sampleSize": 115,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_PERSON"
+        },
+        "카페": {
+          "amount": 2400,
+          "sampleSize": 25,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_DRINK"
+        },
+        "중식": {
+          "amount": 6000,
+          "sampleSize": 57,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_PERSON"
+        },
+        "일식": {
+          "amount": 8200,
+          "sampleSize": 5,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_PERSON"
+        }
+      },
+      "retainedPriceReviewIds": [
+        "SBIZ:MA010120220805402285",
+        "SBIZ:MA010120220807013467",
+        "SBIZ:MA010120220807155887",
+        "SBIZ:MA010120220808837597",
+        "SBIZ:MA0101202608A0071318",
+        "SBIZ:MA010120220809693555",
+        "SBIZ:MA0101202506A0019696",
+        "SBIZ:MA010120220800085324",
+        "SBIZ:MA0101202503A0059212",
+        "SBIZ:MA0101202504A0033854",
+        "SBIZ:MA010120220810439799",
+        "SBIZ:MA0101202406A0550263",
+        "SBIZ:MA0101202406A0281278",
+        "SBIZ:MA010120220812355949",
+        "SBIZ:MA0101202603A0046536",
+        "SBIZ:MA010120220812913053",
+        "SBIZ:MA0101202308A0045433",
+        "SBIZ:MA0101202608A0030160",
+        "SBIZ:MA0101202306A0044087",
+        "SBIZ:MA0101202512A0025483",
+        "SBIZ:MA0101202406A0297115",
+        "SBIZ:MA0101202603A0024929",
+        "SBIZ:MA010120220811767364",
+        "SBIZ:MA010120220809294021",
+        "SBIZ:MA0101202406A0436947",
+        "SBIZ:MA0101202603A0046145",
+        "SBIZ:MA0101202306A0036771",
+        "SBIZ:MA0101202406A0137263",
+        "SBIZ:MA010120220806922520",
+        "SBIZ:MA010120220814280613",
+        "SBIZ:MA0101202511A0021696",
+        "SBIZ:MA0101202409A0065615",
+        "SBIZ:MA010120220812494700",
+        "SBIZ:MA0101202406A0060699",
+        "SBIZ:MA0101202608A0101710",
+        "SBIZ:MA010120220810096162",
+        "SBIZ:MA010120220808700057",
+        "SBIZ:MA0101202406A0176217",
+        "SBIZ:MA010120220809933715",
+        "SBIZ:MA0101202406A0495139",
+        "SBIZ:MA0101202512A0043989",
+        "SBIZ:MA0101202406A0103804",
+        "SBIZ:MA0101202508A0033290",
+        "SBIZ:MA0101202308A0071840",
+        "SBIZ:MA0101202503A0076315",
+        "SBIZ:MA0101202504A0032310",
+        "SBIZ:MA010120220810691645",
+        "SBIZ:MA0101202209A0056857",
+        "SBIZ:MA010120220810658772",
+        "SBIZ:MA010120220809863172",
+        "SBIZ:MA010120220805253991"
+      ],
+      "priceLimitation": "Inexpensive-designated-shop sample; not representative of ordinary venue prices. No fresh venue or provider verification.",
+      "sourceMode": "existing_public_snapshots_offline",
+      "quality": {
+        "reviews": [
+          {
+            "publicId": "SBIZ:MA010120220804892300",
+            "name": "살롱드그르니에",
+            "address": "부산광역시 남구 천제등로 53",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220804925921",
+            "name": "메그네이트",
+            "address": "부산광역시 남구 진남로 135",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220805992044",
+            "name": "자담치킨",
+            "address": "부산광역시 남구 못골번영로 46",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808097686",
+            "name": "메그네이트",
+            "address": "부산광역시 남구 진남로 135",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808099363",
+            "name": "성우식육식당",
+            "address": "부산광역시 남구 용호로90번길 30",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808508711",
+            "name": "살롱드그르니에",
+            "address": "부산광역시 남구 천제등로 53",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808599365",
+            "name": "청년어부",
+            "address": "부산광역시 부산진구 서전로10번길 13",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808802004",
+            "name": "양산박",
+            "address": "부산광역시 남구 못골로 75",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811158033",
+            "name": "한우참사랑",
+            "address": "부산광역시 남구 유엔평화로 43-1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811390555",
+            "name": "양산박",
+            "address": "부산광역시 남구 못골로 75",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811395025",
+            "name": "칠성식당",
+            "address": "부산광역시 남구 지게골로 12",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811417688",
+            "name": "칠성식당",
+            "address": "부산광역시 남구 지게골로 4",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811432891",
+            "name": "바다양푼이동태탕",
+            "address": "부산광역시 남구 신선로 311",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811435942",
+            "name": "메그네이트",
+            "address": "부산광역시 남구 진남로 135",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811443409",
+            "name": "더맛",
+            "address": "부산광역시 남구 조각공원로 45",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220812217095",
+            "name": "홍익갤러리향인정;씨아트",
+            "address": "부산광역시 남구 분포로 101",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220812389106",
+            "name": "합천국밥집",
+            "address": "부산광역시 남구 용호로 237",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220812417349",
+            "name": "합천국밥집",
+            "address": "부산광역시 남구 용호로 235",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220812424261",
+            "name": "코랄블루",
+            "address": "부산광역시 남구 용소로7번길 24",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220812829405",
+            "name": "153커피하우스",
+            "address": "부산광역시 남구 유엔평화로 161",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220812884744",
+            "name": "미소함바",
+            "address": "부산광역시 남구 용주로 27",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813456449",
+            "name": "마일로",
+            "address": "부산광역시 남구 분포로 145",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813532656",
+            "name": "5일장터",
+            "address": "부산광역시 부산진구 동천로95번길 20-5",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202307A0060244",
+            "name": "한우참사랑",
+            "address": "부산광역시 남구 유엔평화로 43-1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202308A0076344",
+            "name": "푸르티아",
+            "address": "부산광역시 남구 수영로334번길 55",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202308A0089411",
+            "name": "블랙스타",
+            "address": "부산광역시 남구 동제당로 2",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202409A0038194",
+            "name": "바다양푼이동태탕",
+            "address": "부산광역시 남구 신선로 311-1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202409A0173000",
+            "name": "5일장터",
+            "address": "부산광역시 부산진구 서전로 14",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202502A0068283",
+            "name": "티앤푸드",
+            "address": "부산광역시 남구 수영로298번길 36",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202505A0021884",
+            "name": "티앤푸드",
+            "address": "부산광역시 남구 수영로298번길 36",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202508A0005495",
+            "name": "토핑몬스터피자",
+            "address": "부산광역시 남구 유엔로 131",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202509A0041641",
+            "name": "넘버나인한우",
+            "address": "부산광역시 부산진구 서전로 11",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202511A0012719",
+            "name": "마일로",
+            "address": "부산광역시 남구 분포로 145",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202512A0040366",
+            "name": "청년어부",
+            "address": "부산광역시 부산진구 서전로10번길 18",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202601A0021914",
+            "name": "넘버나인한우",
+            "address": "부산광역시 부산진구 동천로107번길 25",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202603A0043875",
+            "name": "자담치킨",
+            "address": "부산광역시 남구 못골번영로 46",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202607A0156535",
+            "name": "푸르티아",
+            "address": "부산광역시 남구 수영로334번길 56-6",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202608A0071973",
+            "name": "153커피하우스",
+            "address": "부산광역시 남구 유엔평화로 161",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1296268",
+            "name": "성우식육식당",
+            "address": "부산광역시 남구 용호로90번길 30",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1868144",
+            "name": "더맛",
+            "address": "부산광역시 남구 조각공원로 45",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2000638",
+            "name": "홍익갤러리향인정;씨아트",
+            "address": "부산광역시 남구 분포로 101",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2034777",
+            "name": "코랄블루",
+            "address": "부산광역시 남구 용소로7번길 24",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2111310",
+            "name": "미소함바",
+            "address": "부산광역시 남구 용주로 27",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202301A2273136",
+            "name": "공차",
+            "address": "부산광역시 남구 용소로 9",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202309A2222359",
+            "name": "블랙스타",
+            "address": "부산광역시 남구 동제당로 2",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202312A2266821",
+            "name": "더오션테이블",
+            "address": "부산광역시 남구 분포로 61",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0008580",
+            "name": "한국맥도날드",
+            "address": "부산광역시 남구 수영로 304",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0008602",
+            "name": "한국맥도날드",
+            "address": "부산광역시 남구 수영로 304",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009311",
+            "name": "한국맥도날드",
+            "address": "부산광역시 남구 수영로 304",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202406A2313565",
+            "name": "공차",
+            "address": "부산광역시 남구 용소로 9",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202502A2262170",
+            "name": "더오션테이블",
+            "address": "부산광역시 남구 분포로 61",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202604A0542281",
+            "name": "토핑몬스터피자",
+            "address": "부산광역시 남구 유엔로 131",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202607A2214270",
+            "name": "블랙스타",
+            "address": "부산광역시 남구 동제당로 2",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          }
+        ],
+        "exactNameAddressGroups": [
+          [
+            "SBIZ:MA010120220804892300",
+            "SBIZ:MA010120220808508711"
+          ],
+          [
+            "SBIZ:MA010120220804925921",
+            "SBIZ:MA010120220808097686",
+            "SBIZ:MA010120220811435942"
+          ],
+          [
+            "SBIZ:MA010120220805992044",
+            "SBIZ:MA0101202603A0043875"
+          ],
+          [
+            "SBIZ:MA010120220808099363",
+            "SBIZ:MA0106202201A1296268"
+          ],
+          [
+            "SBIZ:MA010120220808802004",
+            "SBIZ:MA010120220811390555"
+          ],
+          [
+            "SBIZ:MA010120220811158033",
+            "SBIZ:MA0101202307A0060244"
+          ],
+          [
+            "SBIZ:MA010120220811443409",
+            "SBIZ:MA0106202201A1868144"
+          ],
+          [
+            "SBIZ:MA010120220812217095",
+            "SBIZ:MA0106202201A2000638"
+          ],
+          [
+            "SBIZ:MA010120220812424261",
+            "SBIZ:MA0106202201A2034777"
+          ],
+          [
+            "SBIZ:MA010120220812829405",
+            "SBIZ:MA0101202608A0071973"
+          ],
+          [
+            "SBIZ:MA010120220812884744",
+            "SBIZ:MA0106202201A2111310"
+          ],
+          [
+            "SBIZ:MA010120220813456449",
+            "SBIZ:MA0101202511A0012719"
+          ],
+          [
+            "SBIZ:MA0101202308A0089411",
+            "SBIZ:MA0106202309A2222359",
+            "SBIZ:MA0106202607A2214270"
+          ],
+          [
+            "SBIZ:MA0101202502A0068283",
+            "SBIZ:MA0101202505A0021884"
+          ],
+          [
+            "SBIZ:MA0101202508A0005495",
+            "SBIZ:MA0106202604A0542281"
+          ],
+          [
+            "SBIZ:MA0106202301A2273136",
+            "SBIZ:MA0106202406A2313565"
+          ],
+          [
+            "SBIZ:MA0106202312A2266821",
+            "SBIZ:MA0106202502A2262170"
+          ],
+          [
+            "SBIZ:MA0106202401A0008580",
+            "SBIZ:MA0106202401A0008602",
+            "SBIZ:MA0106202401A0009311"
+          ]
+        ],
+        "nearbySameNamePairs": [
+          {
+            "ids": [
+              "SBIZ:MA010120220804892300",
+              "SBIZ:MA010120220808508711"
+            ],
+            "meters": 0.0,
+            "name": "살롱드그르니에"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220804925921",
+              "SBIZ:MA010120220808097686"
+            ],
+            "meters": 0.0,
+            "name": "메그네이트"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220804925921",
+              "SBIZ:MA010120220811435942"
+            ],
+            "meters": 0.0,
+            "name": "메그네이트"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220805992044",
+              "SBIZ:MA0101202603A0043875"
+            ],
+            "meters": 0.0,
+            "name": "자담치킨"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808097686",
+              "SBIZ:MA010120220811435942"
+            ],
+            "meters": 0.0,
+            "name": "메그네이트"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808099363",
+              "SBIZ:MA0106202201A1296268"
+            ],
+            "meters": 0.0,
+            "name": "성우식육식당"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808599365",
+              "SBIZ:MA0101202512A0040366"
+            ],
+            "meters": 39.7,
+            "name": "청년어부"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808802004",
+              "SBIZ:MA010120220811390555"
+            ],
+            "meters": 0.0,
+            "name": "양산박"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811158033",
+              "SBIZ:MA0101202307A0060244"
+            ],
+            "meters": 0.0,
+            "name": "한우참사랑"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811395025",
+              "SBIZ:MA010120220811417688"
+            ],
+            "meters": 42.9,
+            "name": "칠성식당"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811432891",
+              "SBIZ:MA0101202409A0038194"
+            ],
+            "meters": 7.1,
+            "name": "바다양푼이동태탕"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811443409",
+              "SBIZ:MA0106202201A1868144"
+            ],
+            "meters": 0.0,
+            "name": "더맛"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220812217095",
+              "SBIZ:MA0106202201A2000638"
+            ],
+            "meters": 0.0,
+            "name": "홍익갤러리향인정;씨아트"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220812389106",
+              "SBIZ:MA010120220812417349"
+            ],
+            "meters": 16.2,
+            "name": "합천국밥집"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220812424261",
+              "SBIZ:MA0106202201A2034777"
+            ],
+            "meters": 0.0,
+            "name": "코랄블루"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220812829405",
+              "SBIZ:MA0101202608A0071973"
+            ],
+            "meters": 0.0,
+            "name": "153커피하우스"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220812884744",
+              "SBIZ:MA0106202201A2111310"
+            ],
+            "meters": 0.0,
+            "name": "미소함바"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220813456449",
+              "SBIZ:MA0101202511A0012719"
+            ],
+            "meters": 0.0,
+            "name": "마일로"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220813532656",
+              "SBIZ:MA0101202409A0173000"
+            ],
+            "meters": 18.1,
+            "name": "5일장터"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202308A0076344",
+              "SBIZ:MA0101202607A0156535"
+            ],
+            "meters": 37.3,
+            "name": "푸르티아"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202308A0089411",
+              "SBIZ:MA0106202309A2222359"
+            ],
+            "meters": 0.0,
+            "name": "블랙스타"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202308A0089411",
+              "SBIZ:MA0106202607A2214270"
+            ],
+            "meters": 0.0,
+            "name": "블랙스타"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202502A0068283",
+              "SBIZ:MA0101202505A0021884"
+            ],
+            "meters": 0.0,
+            "name": "티앤푸드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202508A0005495",
+              "SBIZ:MA0106202604A0542281"
+            ],
+            "meters": 0.0,
+            "name": "토핑몬스터피자"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202509A0041641",
+              "SBIZ:MA0101202601A0021914"
+            ],
+            "meters": 25.0,
+            "name": "넘버나인한우"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202301A2273136",
+              "SBIZ:MA0106202406A2313565"
+            ],
+            "meters": 0.0,
+            "name": "공차"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202309A2222359",
+              "SBIZ:MA0106202607A2214270"
+            ],
+            "meters": 0.0,
+            "name": "블랙스타"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202312A2266821",
+              "SBIZ:MA0106202502A2262170"
+            ],
+            "meters": 0.0,
+            "name": "더오션테이블"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008580",
+              "SBIZ:MA0106202401A0008602"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008580",
+              "SBIZ:MA0106202401A0009311"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008602",
+              "SBIZ:MA0106202401A0009311"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          }
+        ],
+        "quarantinedIds": [
+          "SBIZ:MA010120220804892300",
+          "SBIZ:MA010120220804925921",
+          "SBIZ:MA010120220805992044",
+          "SBIZ:MA010120220808097686",
+          "SBIZ:MA010120220808099363",
+          "SBIZ:MA010120220808508711",
+          "SBIZ:MA010120220808802004",
+          "SBIZ:MA010120220811158033",
+          "SBIZ:MA010120220811390555",
+          "SBIZ:MA010120220811395025",
+          "SBIZ:MA010120220811417688",
+          "SBIZ:MA010120220811432891",
+          "SBIZ:MA010120220811435942",
+          "SBIZ:MA010120220811443409",
+          "SBIZ:MA010120220812217095",
+          "SBIZ:MA010120220812389106",
+          "SBIZ:MA010120220812417349",
+          "SBIZ:MA010120220812424261",
+          "SBIZ:MA010120220812829405",
+          "SBIZ:MA010120220812884744",
+          "SBIZ:MA010120220813456449",
+          "SBIZ:MA0101202307A0060244",
+          "SBIZ:MA0101202308A0076344",
+          "SBIZ:MA0101202308A0089411",
+          "SBIZ:MA0101202409A0038194",
+          "SBIZ:MA0101202502A0068283",
+          "SBIZ:MA0101202505A0021884",
+          "SBIZ:MA0101202508A0005495",
+          "SBIZ:MA0101202511A0012719",
+          "SBIZ:MA0101202603A0043875",
+          "SBIZ:MA0101202607A0156535",
+          "SBIZ:MA0101202608A0071973",
+          "SBIZ:MA0106202201A1296268",
+          "SBIZ:MA0106202201A1868144",
+          "SBIZ:MA0106202201A2000638",
+          "SBIZ:MA0106202201A2034777",
+          "SBIZ:MA0106202201A2111310",
+          "SBIZ:MA0106202301A2273136",
+          "SBIZ:MA0106202309A2222359",
+          "SBIZ:MA0106202312A2266821",
+          "SBIZ:MA0106202401A0008580",
+          "SBIZ:MA0106202401A0008602",
+          "SBIZ:MA0106202401A0009311",
+          "SBIZ:MA0106202406A2313565",
+          "SBIZ:MA0106202502A2262170",
+          "SBIZ:MA0106202604A0542281",
+          "SBIZ:MA0106202607A2214270"
+        ]
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "district": "해운대구",
+      "baselineSha256": "059189949d3096ab0ff5e3210f8b8a7ab96bc958c1e3cc859afa5bf43d3a72a5",
+      "datasetSha256": "7e4df8157d35a15dffe0037b7948bb1dd4fc12075cd8424915f08732982fd9c9",
+      "policySha256": "1e9c135b593b331fdfd278a716c70f784a7d6a76e12a17f27e06e0b512c7fead",
+      "retained": 1560,
+      "added": 480,
+      "total": 2040,
+      "districtSourceRows": 4671,
+      "addedCategories": {
+        "MEAL": 200,
+        "CAFE": 200,
+        "CULTURE": 80
+      },
+      "addedPriceEvidence": {
+        "SIMILAR_ESTIMATE": 250,
+        "UNKNOWN": 222,
+        "REFERENCE": 8
+      },
+      "pricePolicy": {
+        "minimumSamples": 20,
+        "allowedSubtypes": [
+          "카페",
+          "백반/한정식",
+          "국/탕/찌개류",
+          "국수/칼국수",
+          "냉면/밀면",
+          "중국집"
+        ]
+      },
+      "priceCohorts": {
+        "한식": {
+          "amount": 7000,
+          "sampleSize": 115,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_PERSON"
+        },
+        "카페": {
+          "amount": 2400,
+          "sampleSize": 25,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_DRINK"
+        },
+        "중식": {
+          "amount": 6000,
+          "sampleSize": 57,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_PERSON"
+        },
+        "일식": {
+          "amount": 8200,
+          "sampleSize": 5,
+          "aggregation": "mean_of_per_place_menu_medians",
+          "source": "busan_good_price_shops",
+          "bias": "inexpensive_designated_shops",
+          "unit": "PER_PERSON"
+        }
+      },
+      "retainedPriceReviewIds": [
+        "SBIZ:MA010120220805402285",
+        "SBIZ:MA010120220807013467",
+        "SBIZ:MA010120220807155887",
+        "SBIZ:MA010120220808837597",
+        "SBIZ:MA0101202608A0071318",
+        "SBIZ:MA010120220809693555",
+        "SBIZ:MA0101202506A0019696",
+        "SBIZ:MA010120220800085324",
+        "SBIZ:MA0101202503A0059212",
+        "SBIZ:MA0101202504A0033854",
+        "SBIZ:MA010120220810439799",
+        "SBIZ:MA0101202406A0550263",
+        "SBIZ:MA0101202406A0281278",
+        "SBIZ:MA010120220812355949",
+        "SBIZ:MA0101202603A0046536",
+        "SBIZ:MA010120220812913053",
+        "SBIZ:MA0101202308A0045433",
+        "SBIZ:MA0101202608A0030160",
+        "SBIZ:MA0101202306A0044087",
+        "SBIZ:MA0101202512A0025483",
+        "SBIZ:MA0101202406A0297115",
+        "SBIZ:MA0101202603A0024929",
+        "SBIZ:MA010120220811767364",
+        "SBIZ:MA010120220809294021",
+        "SBIZ:MA0101202406A0436947",
+        "SBIZ:MA0101202603A0046145",
+        "SBIZ:MA0101202306A0036771",
+        "SBIZ:MA0101202406A0137263",
+        "SBIZ:MA010120220806922520",
+        "SBIZ:MA010120220814280613",
+        "SBIZ:MA0101202511A0021696",
+        "SBIZ:MA0101202409A0065615",
+        "SBIZ:MA010120220812494700",
+        "SBIZ:MA0101202406A0060699",
+        "SBIZ:MA0101202608A0101710",
+        "SBIZ:MA010120220810096162",
+        "SBIZ:MA010120220808700057",
+        "SBIZ:MA0101202406A0176217",
+        "SBIZ:MA010120220809933715",
+        "SBIZ:MA0101202406A0495139",
+        "SBIZ:MA0101202512A0043989",
+        "SBIZ:MA0101202406A0103804",
+        "SBIZ:MA0101202508A0033290",
+        "SBIZ:MA0101202308A0071840",
+        "SBIZ:MA0101202503A0076315",
+        "SBIZ:MA0101202504A0032310",
+        "SBIZ:MA010120220810691645",
+        "SBIZ:MA0101202209A0056857",
+        "SBIZ:MA010120220810658772",
+        "SBIZ:MA010120220809863172",
+        "SBIZ:MA010120220805253991"
+      ],
+      "priceLimitation": "Inexpensive-designated-shop sample; not representative of ordinary venue prices. No fresh venue or provider verification.",
+      "sourceMode": "existing_public_snapshots_offline",
+      "quality": {
+        "reviews": [
+          {
+            "publicId": "SBIZ:MA010120220802784200",
+            "name": "거대곰탕",
+            "address": "부산광역시 해운대구 해운대해변로 163",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220803426302",
+            "name": "달인막창",
+            "address": "부산광역시 해운대구 중동1로19번길 13",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220803557839",
+            "name": "카페가까",
+            "address": "부산광역시 해운대구 재반로226번길 72",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220804883452",
+            "name": "스카이비즈컴퍼니",
+            "address": "부산광역시 해운대구 센텀중앙로 97",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220805510582",
+            "name": "흥부보쌈&족발",
+            "address": "부산광역시 해운대구 좌동순환로468번길 68-1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220805689382",
+            "name": "아미티스",
+            "address": "부산광역시 해운대구 구남로 37",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220806401451",
+            "name": "해성막창집",
+            "address": "부산광역시 해운대구 중동1로19번길 25",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220806634786",
+            "name": "삼촌밥차",
+            "address": "부산광역시 해운대구 센텀중앙로 97",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220806636552",
+            "name": "오소아",
+            "address": "부산광역시 해운대구 재반로11번길 63",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220806727490",
+            "name": "해성막창집",
+            "address": "부산광역시 해운대구 중동1로19번길 29",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808520359",
+            "name": "안동갈비",
+            "address": "부산광역시 해운대구 마린시티3로 23",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808599365",
+            "name": "청년어부",
+            "address": "부산광역시 부산진구 서전로10번길 13",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808647575",
+            "name": "해성막창집",
+            "address": "부산광역시 해운대구 중동1로19번길 29",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220808690284",
+            "name": "옛날통닭",
+            "address": "부산광역시 해운대구 아랫반송로39번길 13",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810419381",
+            "name": "원조할매국밥",
+            "address": "부산광역시 해운대구 구남로21번길 33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810461808",
+            "name": "통바지",
+            "address": "부산광역시 해운대구 대천로106번길 20",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220810755997",
+            "name": "포동",
+            "address": "부산광역시 해운대구 달맞이길62번길 51",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811393849",
+            "name": "김밥/만두/분식",
+            "address": "부산광역시 해운대구 해운대로 799",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811398008",
+            "name": "김밥/만두/분식",
+            "address": "부산광역시 해운대구 해운대로 799",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811399283",
+            "name": "김밥/만두/분식",
+            "address": "부산광역시 해운대구 해운대로 799",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811433675",
+            "name": "소문난튀김",
+            "address": "부산광역시 해운대구 구남로41번길 29",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811443957",
+            "name": "인화칼국수",
+            "address": "부산광역시 해운대구 윗반송로31번길 71",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811450801",
+            "name": "금당",
+            "address": "부산광역시 해운대구 반여로155번다길 29-4",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811456767",
+            "name": "다조에프앤에스",
+            "address": "부산광역시 해운대구 반여로155번나길 107",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811464090",
+            "name": "행복한느림보이흥용과자점",
+            "address": "부산광역시 해운대구 센텀남대로 35",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811469836",
+            "name": "서울마님죽",
+            "address": "부산광역시 해운대구 윗반송로 73-1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811471517",
+            "name": "장수오리마을",
+            "address": "부산광역시 해운대구 재반로63번길 10",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811472023",
+            "name": "김밥/만두/분식",
+            "address": "부산광역시 해운대구 해운대로 799",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811472243",
+            "name": "김밥/만두/분식",
+            "address": "부산광역시 해운대구 해운대로 799",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811472261",
+            "name": "김밥/만두/분식",
+            "address": "부산광역시 해운대구 해운대로 799",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811472724",
+            "name": "김밥/만두/분식",
+            "address": "부산광역시 해운대구 해운대로 799",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811546676",
+            "name": "산내들푸드서비스",
+            "address": "부산광역시 해운대구 반여로41번길 36",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811794506",
+            "name": "월남선생",
+            "address": "부산광역시 해운대구 센텀동로 26",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811824944",
+            "name": "청담실비",
+            "address": "부산광역시 해운대구 해운대로143번길 39",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220811913277",
+            "name": "카와",
+            "address": "부산광역시 해운대구 선수촌로 66-2",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813158574",
+            "name": "무브먼트랩",
+            "address": "부산광역시 해운대구 달맞이길65번길 148",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813263878",
+            "name": "통바지",
+            "address": "부산광역시 해운대구 대천로106번길 20",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813532656",
+            "name": "5일장터",
+            "address": "부산광역시 부산진구 동천로95번길 20-5",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813684064",
+            "name": "지평파트너스올드머그",
+            "address": "부산광역시 해운대구 송정구덕포길 122",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA010120220813995314",
+            "name": "영커피백병원점",
+            "address": "부산광역시 해운대구 좌동순환로249번길 21",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202210A0059144",
+            "name": "카페가까",
+            "address": "부산광역시 해운대구 재반로226번길 72",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202212A0049397",
+            "name": "지평파트너스올드머그",
+            "address": "부산광역시 해운대구 송정구덕포길 128",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202301A0091486",
+            "name": "삼촌밥차",
+            "address": "부산광역시 해운대구 센텀중앙로 97",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202305A0003064",
+            "name": "뚜레쥬르수비교차로",
+            "address": "부산광역시 해운대구 해운대로 407",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202308A0017888",
+            "name": "교촌치킨",
+            "address": "부산광역시 해운대구 해운대로 604",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202309A0064450",
+            "name": "프레제",
+            "address": "부산광역시 해운대구 마린시티2로 33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202309A0075276",
+            "name": "금당",
+            "address": "부산광역시 해운대구 반여로155번다길 29-4",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202311A0040869",
+            "name": "루아앤티그리",
+            "address": "부산광역시 해운대구 청사포로67번길 99",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202311A0072212",
+            "name": "장수오리마을",
+            "address": "부산광역시 해운대구 재반로63번길 10",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0009495",
+            "name": "카와",
+            "address": "부산광역시 해운대구 선수촌로 66-2",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0062702",
+            "name": "원조할매국밥",
+            "address": "부산광역시 해운대구 구남로21번길 27",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0130672",
+            "name": "청담실비",
+            "address": "부산광역시 해운대구 해운대로143번길 39",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0169922",
+            "name": "영커피백병원점",
+            "address": "부산광역시 해운대구 좌동순환로249번길 21",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0222686",
+            "name": "달인막창",
+            "address": "부산광역시 해운대구 중동1로19번길 13",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0290685",
+            "name": "아미티스",
+            "address": "부산광역시 해운대구 구남로 37",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202406A0389922",
+            "name": "사실빙",
+            "address": "부산광역시 해운대구 세실로 86",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202409A0173000",
+            "name": "5일장터",
+            "address": "부산광역시 부산진구 서전로 14",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202411A0034329",
+            "name": "옛날통닭",
+            "address": "부산광역시 해운대구 아랫반송로39번길 13",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202411A0079597",
+            "name": "오소아",
+            "address": "부산광역시 해운대구 재반로11번길 63",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202502A0113886",
+            "name": "삼굽살",
+            "address": "부산광역시 해운대구 재송1로 44",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202505A0019178",
+            "name": "이안IAan",
+            "address": "부산광역시 해운대구 달맞이길65번길 88",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202506A0036650",
+            "name": "흥부보쌈&족발",
+            "address": "부산광역시 해운대구 좌동순환로468번길 68-1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202507A0003482",
+            "name": "사실빙",
+            "address": "부산광역시 해운대구 세실로 86",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202509A0013346",
+            "name": "안동갈비",
+            "address": "부산광역시 해운대구 마린시티3로 23",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202509A0041641",
+            "name": "넘버나인한우",
+            "address": "부산광역시 부산진구 서전로 11",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202511A0001873",
+            "name": "행복한느림보이흥용과자점",
+            "address": "부산광역시 해운대구 센텀남대로 35",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202511A0039295",
+            "name": "프레제",
+            "address": "부산광역시 해운대구 마린시티2로 33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202512A0040366",
+            "name": "청년어부",
+            "address": "부산광역시 부산진구 서전로10번길 18",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202601A0021914",
+            "name": "넘버나인한우",
+            "address": "부산광역시 부산진구 동천로107번길 25",
+            "retainedExisting": true,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202604A0025058",
+            "name": "삼굽살",
+            "address": "부산광역시 해운대구 재송1로 44",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202604A0043813",
+            "name": "소문난튀김",
+            "address": "부산광역시 해운대구 구남로41번길 29",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202607A0070658",
+            "name": "이안IAan",
+            "address": "부산광역시 해운대구 달맞이길65번길 88",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202607A0073682",
+            "name": "삼공에프앤비",
+            "address": "부산광역시 해운대구 달맞이길 30",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202607A0097854",
+            "name": "서울마님죽",
+            "address": "부산광역시 해운대구 윗반송로 73-1",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202607A0121255",
+            "name": "교촌치킨",
+            "address": "부산광역시 해운대구 해운대로 604",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202608A0031614",
+            "name": "뚜레쥬르수비교차로",
+            "address": "부산광역시 해운대구 해운대로 407",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202608A0051337",
+            "name": "삼공에프앤비",
+            "address": "부산광역시 해운대구 달맞이길 30",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202608A0062329",
+            "name": "거대곰탕",
+            "address": "부산광역시 해운대구 해운대해변로 163",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202608A0063897",
+            "name": "인화칼국수",
+            "address": "부산광역시 해운대구 윗반송로31번길 67",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0101202608A0098918",
+            "name": "요아정마린시티점",
+            "address": "부산광역시 해운대구 마린시티2로 33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A0741914",
+            "name": "스카이비즈컴퍼니",
+            "address": "부산광역시 해운대구 센텀중앙로 97",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1743980",
+            "name": "포동",
+            "address": "부산광역시 해운대구 달맞이길62번길 51",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1870647",
+            "name": "다조에프앤에스",
+            "address": "부산광역시 해운대구 반여로155번나길 107",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A1930367",
+            "name": "월남선생",
+            "address": "부산광역시 해운대구 센텀동로 26",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2157135",
+            "name": "무브먼트랩",
+            "address": "부산광역시 해운대구 달맞이길65번길 148",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2339877",
+            "name": "일조집돈독",
+            "address": "부산광역시 해운대구 달맞이길62번길 55",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2364177",
+            "name": "스타벅스",
+            "address": "부산광역시 해운대구 달맞이길 30",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2364306",
+            "name": "스타벅스",
+            "address": "부산광역시 해운대구 센텀남대로 35",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202201A2364503",
+            "name": "스타벅스",
+            "address": "부산광역시 해운대구 센텀남대로 35",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202301A1903159",
+            "name": "산내들푸드서비스",
+            "address": "부산광역시 해운대구 반여로41번길 36",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202304A1994721",
+            "name": "현대그린푸드오스템임플란트부산",
+            "address": "부산광역시 해운대구 반송로513번길 66-16",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202304A1994820",
+            "name": "현대그린푸드오스템임플란트부산",
+            "address": "부산광역시 해운대구 반송로513번길 66-16",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202304A2092968",
+            "name": "WEHEALTH",
+            "address": "부산광역시 해운대구 세실로 45",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0008641",
+            "name": "한국맥도날드",
+            "address": "부산광역시 해운대구 좌동순환로 455",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0008668",
+            "name": "한국맥도날드",
+            "address": "부산광역시 해운대구 좌동순환로 455",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009009",
+            "name": "한국맥도날드DT점",
+            "address": "부산광역시 해운대구 해운대로570번길 51",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009125",
+            "name": "한국맥도날드",
+            "address": "부산광역시 해운대구 좌동순환로 455",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009198",
+            "name": "한국맥도날드DT점",
+            "address": "부산광역시 해운대구 해운대로570번길 51",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009223",
+            "name": "한국맥도날드좌동점",
+            "address": "부산광역시 해운대구 좌동순환로 181",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009323",
+            "name": "한국맥도날드좌동점",
+            "address": "부산광역시 해운대구 좌동순환로 181",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009341",
+            "name": "한국맥도날드",
+            "address": "부산광역시 해운대구 좌동순환로 455",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009458",
+            "name": "한국맥도날드좌동점",
+            "address": "부산광역시 해운대구 좌동순환로 181",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A0009478",
+            "name": "한국맥도날드DT점",
+            "address": "부산광역시 해운대구 해운대로570번길 51",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A1133713",
+            "name": "루아앤티그리",
+            "address": "부산광역시 해운대구 청사포로67번길 99",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202401A2457180",
+            "name": "스타벅스",
+            "address": "부산광역시 해운대구 달맞이길 30",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202405A2434318",
+            "name": "일조집;돈독",
+            "address": "부산광역시 해운대구 달맞이길62번길 55",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202412A1768299",
+            "name": "요아정마린시티점",
+            "address": "부산광역시 해운대구 마린시티2로 33",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "SBIZ:MA0106202604A2092756",
+            "name": "WEHEALTH",
+            "address": "부산광역시 해운대구 세실로 45",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "STD:15012890:a330725fce5babc7031e2b0c",
+            "name": "견우공원",
+            "address": "부산광역시 해운대구 좌동 1311",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          },
+          {
+            "publicId": "STD:15012890:d38e36761f1449a6ff1d1805",
+            "name": "견우공원",
+            "address": "부산광역시 해운대구 좌동 1311",
+            "retainedExisting": false,
+            "reasons": [
+              "nearby_same_name",
+              "same_name_and_address"
+            ]
+          }
+        ],
+        "exactNameAddressGroups": [
+          [
+            "SBIZ:MA010120220802784200",
+            "SBIZ:MA0101202608A0062329"
+          ],
+          [
+            "SBIZ:MA010120220803426302",
+            "SBIZ:MA0101202406A0222686"
+          ],
+          [
+            "SBIZ:MA010120220803557839",
+            "SBIZ:MA0101202210A0059144"
+          ],
+          [
+            "SBIZ:MA010120220804883452",
+            "SBIZ:MA0106202201A0741914"
+          ],
+          [
+            "SBIZ:MA010120220805510582",
+            "SBIZ:MA0101202506A0036650"
+          ],
+          [
+            "SBIZ:MA010120220805689382",
+            "SBIZ:MA0101202406A0290685"
+          ],
+          [
+            "SBIZ:MA010120220806634786",
+            "SBIZ:MA0101202301A0091486"
+          ],
+          [
+            "SBIZ:MA010120220806636552",
+            "SBIZ:MA0101202411A0079597"
+          ],
+          [
+            "SBIZ:MA010120220806727490",
+            "SBIZ:MA010120220808647575"
+          ],
+          [
+            "SBIZ:MA010120220808520359",
+            "SBIZ:MA0101202509A0013346"
+          ],
+          [
+            "SBIZ:MA010120220808690284",
+            "SBIZ:MA0101202411A0034329"
+          ],
+          [
+            "SBIZ:MA010120220810461808",
+            "SBIZ:MA010120220813263878"
+          ],
+          [
+            "SBIZ:MA010120220810755997",
+            "SBIZ:MA0106202201A1743980"
+          ],
+          [
+            "SBIZ:MA010120220811393849",
+            "SBIZ:MA010120220811398008",
+            "SBIZ:MA010120220811399283",
+            "SBIZ:MA010120220811472023",
+            "SBIZ:MA010120220811472243",
+            "SBIZ:MA010120220811472261",
+            "SBIZ:MA010120220811472724"
+          ],
+          [
+            "SBIZ:MA010120220811433675",
+            "SBIZ:MA0101202604A0043813"
+          ],
+          [
+            "SBIZ:MA010120220811450801",
+            "SBIZ:MA0101202309A0075276"
+          ],
+          [
+            "SBIZ:MA010120220811456767",
+            "SBIZ:MA0106202201A1870647"
+          ],
+          [
+            "SBIZ:MA010120220811464090",
+            "SBIZ:MA0101202511A0001873"
+          ],
+          [
+            "SBIZ:MA010120220811469836",
+            "SBIZ:MA0101202607A0097854"
+          ],
+          [
+            "SBIZ:MA010120220811471517",
+            "SBIZ:MA0101202311A0072212"
+          ],
+          [
+            "SBIZ:MA010120220811546676",
+            "SBIZ:MA0106202301A1903159"
+          ],
+          [
+            "SBIZ:MA010120220811794506",
+            "SBIZ:MA0106202201A1930367"
+          ],
+          [
+            "SBIZ:MA010120220811824944",
+            "SBIZ:MA0101202406A0130672"
+          ],
+          [
+            "SBIZ:MA010120220811913277",
+            "SBIZ:MA0101202406A0009495"
+          ],
+          [
+            "SBIZ:MA010120220813158574",
+            "SBIZ:MA0106202201A2157135"
+          ],
+          [
+            "SBIZ:MA010120220813995314",
+            "SBIZ:MA0101202406A0169922"
+          ],
+          [
+            "SBIZ:MA0101202305A0003064",
+            "SBIZ:MA0101202608A0031614"
+          ],
+          [
+            "SBIZ:MA0101202308A0017888",
+            "SBIZ:MA0101202607A0121255"
+          ],
+          [
+            "SBIZ:MA0101202309A0064450",
+            "SBIZ:MA0101202511A0039295"
+          ],
+          [
+            "SBIZ:MA0101202311A0040869",
+            "SBIZ:MA0106202401A1133713"
+          ],
+          [
+            "SBIZ:MA0101202406A0389922",
+            "SBIZ:MA0101202507A0003482"
+          ],
+          [
+            "SBIZ:MA0101202502A0113886",
+            "SBIZ:MA0101202604A0025058"
+          ],
+          [
+            "SBIZ:MA0101202505A0019178",
+            "SBIZ:MA0101202607A0070658"
+          ],
+          [
+            "SBIZ:MA0101202607A0073682",
+            "SBIZ:MA0101202608A0051337"
+          ],
+          [
+            "SBIZ:MA0101202608A0098918",
+            "SBIZ:MA0106202412A1768299"
+          ],
+          [
+            "SBIZ:MA0106202201A2339877",
+            "SBIZ:MA0106202405A2434318"
+          ],
+          [
+            "SBIZ:MA0106202201A2364177",
+            "SBIZ:MA0106202401A2457180"
+          ],
+          [
+            "SBIZ:MA0106202201A2364306",
+            "SBIZ:MA0106202201A2364503"
+          ],
+          [
+            "SBIZ:MA0106202304A1994721",
+            "SBIZ:MA0106202304A1994820"
+          ],
+          [
+            "SBIZ:MA0106202304A2092968",
+            "SBIZ:MA0106202604A2092756"
+          ],
+          [
+            "SBIZ:MA0106202401A0008641",
+            "SBIZ:MA0106202401A0008668",
+            "SBIZ:MA0106202401A0009125",
+            "SBIZ:MA0106202401A0009341"
+          ],
+          [
+            "SBIZ:MA0106202401A0009009",
+            "SBIZ:MA0106202401A0009198",
+            "SBIZ:MA0106202401A0009478"
+          ],
+          [
+            "SBIZ:MA0106202401A0009223",
+            "SBIZ:MA0106202401A0009323",
+            "SBIZ:MA0106202401A0009458"
+          ],
+          [
+            "STD:15012890:a330725fce5babc7031e2b0c",
+            "STD:15012890:d38e36761f1449a6ff1d1805"
+          ]
+        ],
+        "nearbySameNamePairs": [
+          {
+            "ids": [
+              "SBIZ:MA010120220802784200",
+              "SBIZ:MA0101202608A0062329"
+            ],
+            "meters": 0.0,
+            "name": "거대곰탕"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220803426302",
+              "SBIZ:MA0101202406A0222686"
+            ],
+            "meters": 0.0,
+            "name": "달인막창"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220803557839",
+              "SBIZ:MA0101202210A0059144"
+            ],
+            "meters": 0.0,
+            "name": "카페가까"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220804883452",
+              "SBIZ:MA0106202201A0741914"
+            ],
+            "meters": 0.0,
+            "name": "스카이비즈컴퍼니"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220805510582",
+              "SBIZ:MA0101202506A0036650"
+            ],
+            "meters": 0.0,
+            "name": "흥부보쌈&족발"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220805689382",
+              "SBIZ:MA0101202406A0290685"
+            ],
+            "meters": 0.0,
+            "name": "아미티스"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220806401451",
+              "SBIZ:MA010120220806727490"
+            ],
+            "meters": 26.9,
+            "name": "해성막창집"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220806401451",
+              "SBIZ:MA010120220808647575"
+            ],
+            "meters": 26.9,
+            "name": "해성막창집"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220806634786",
+              "SBIZ:MA0101202301A0091486"
+            ],
+            "meters": 0.0,
+            "name": "삼촌밥차"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220806636552",
+              "SBIZ:MA0101202411A0079597"
+            ],
+            "meters": 0.0,
+            "name": "오소아"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220806727490",
+              "SBIZ:MA010120220808647575"
+            ],
+            "meters": 0.0,
+            "name": "해성막창집"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808520359",
+              "SBIZ:MA0101202509A0013346"
+            ],
+            "meters": 0.0,
+            "name": "안동갈비"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808599365",
+              "SBIZ:MA0101202512A0040366"
+            ],
+            "meters": 39.7,
+            "name": "청년어부"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220808690284",
+              "SBIZ:MA0101202411A0034329"
+            ],
+            "meters": 0.0,
+            "name": "옛날통닭"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810419381",
+              "SBIZ:MA0101202406A0062702"
+            ],
+            "meters": 26.0,
+            "name": "원조할매국밥"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810461808",
+              "SBIZ:MA010120220813263878"
+            ],
+            "meters": 0.0,
+            "name": "통바지"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220810755997",
+              "SBIZ:MA0106202201A1743980"
+            ],
+            "meters": 0.0,
+            "name": "포동"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811393849",
+              "SBIZ:MA010120220811398008"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811393849",
+              "SBIZ:MA010120220811399283"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811393849",
+              "SBIZ:MA010120220811472023"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811393849",
+              "SBIZ:MA010120220811472243"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811393849",
+              "SBIZ:MA010120220811472261"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811393849",
+              "SBIZ:MA010120220811472724"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811398008",
+              "SBIZ:MA010120220811399283"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811398008",
+              "SBIZ:MA010120220811472023"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811398008",
+              "SBIZ:MA010120220811472243"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811398008",
+              "SBIZ:MA010120220811472261"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811398008",
+              "SBIZ:MA010120220811472724"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811399283",
+              "SBIZ:MA010120220811472023"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811399283",
+              "SBIZ:MA010120220811472243"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811399283",
+              "SBIZ:MA010120220811472261"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811399283",
+              "SBIZ:MA010120220811472724"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811433675",
+              "SBIZ:MA0101202604A0043813"
+            ],
+            "meters": 0.0,
+            "name": "소문난튀김"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811443957",
+              "SBIZ:MA0101202608A0063897"
+            ],
+            "meters": 10.5,
+            "name": "인화칼국수"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811450801",
+              "SBIZ:MA0101202309A0075276"
+            ],
+            "meters": 0.0,
+            "name": "금당"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811456767",
+              "SBIZ:MA0106202201A1870647"
+            ],
+            "meters": 0.0,
+            "name": "다조에프앤에스"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811464090",
+              "SBIZ:MA0101202511A0001873"
+            ],
+            "meters": 0.0,
+            "name": "행복한느림보이흥용과자점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811469836",
+              "SBIZ:MA0101202607A0097854"
+            ],
+            "meters": 0.0,
+            "name": "서울마님죽"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811471517",
+              "SBIZ:MA0101202311A0072212"
+            ],
+            "meters": 0.0,
+            "name": "장수오리마을"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811472023",
+              "SBIZ:MA010120220811472243"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811472023",
+              "SBIZ:MA010120220811472261"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811472023",
+              "SBIZ:MA010120220811472724"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811472243",
+              "SBIZ:MA010120220811472261"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811472243",
+              "SBIZ:MA010120220811472724"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811472261",
+              "SBIZ:MA010120220811472724"
+            ],
+            "meters": 0.0,
+            "name": "김밥/만두/분식"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811546676",
+              "SBIZ:MA0106202301A1903159"
+            ],
+            "meters": 0.0,
+            "name": "산내들푸드서비스"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811794506",
+              "SBIZ:MA0106202201A1930367"
+            ],
+            "meters": 24.4,
+            "name": "월남선생"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811824944",
+              "SBIZ:MA0101202406A0130672"
+            ],
+            "meters": 0.0,
+            "name": "청담실비"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220811913277",
+              "SBIZ:MA0101202406A0009495"
+            ],
+            "meters": 0.0,
+            "name": "카와"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220813158574",
+              "SBIZ:MA0106202201A2157135"
+            ],
+            "meters": 0.0,
+            "name": "무브먼트랩"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220813532656",
+              "SBIZ:MA0101202409A0173000"
+            ],
+            "meters": 18.1,
+            "name": "5일장터"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220813684064",
+              "SBIZ:MA0101202212A0049397"
+            ],
+            "meters": 27.4,
+            "name": "지평파트너스올드머그"
+          },
+          {
+            "ids": [
+              "SBIZ:MA010120220813995314",
+              "SBIZ:MA0101202406A0169922"
+            ],
+            "meters": 0.0,
+            "name": "영커피백병원점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202305A0003064",
+              "SBIZ:MA0101202608A0031614"
+            ],
+            "meters": 0.0,
+            "name": "뚜레쥬르수비교차로"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202308A0017888",
+              "SBIZ:MA0101202607A0121255"
+            ],
+            "meters": 0.0,
+            "name": "교촌치킨"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202309A0064450",
+              "SBIZ:MA0101202511A0039295"
+            ],
+            "meters": 0.0,
+            "name": "프레제"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202311A0040869",
+              "SBIZ:MA0106202401A1133713"
+            ],
+            "meters": 0.0,
+            "name": "루아앤티그리"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202406A0389922",
+              "SBIZ:MA0101202507A0003482"
+            ],
+            "meters": 0.0,
+            "name": "사실빙"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202502A0113886",
+              "SBIZ:MA0101202604A0025058"
+            ],
+            "meters": 0.0,
+            "name": "삼굽살"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202505A0019178",
+              "SBIZ:MA0101202607A0070658"
+            ],
+            "meters": 0.0,
+            "name": "이안IAan"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202509A0041641",
+              "SBIZ:MA0101202601A0021914"
+            ],
+            "meters": 25.0,
+            "name": "넘버나인한우"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202607A0073682",
+              "SBIZ:MA0101202608A0051337"
+            ],
+            "meters": 0.0,
+            "name": "삼공에프앤비"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0101202608A0098918",
+              "SBIZ:MA0106202412A1768299"
+            ],
+            "meters": 0.0,
+            "name": "요아정마린시티점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202201A2339877",
+              "SBIZ:MA0106202405A2434318"
+            ],
+            "meters": 0.0,
+            "name": "일조집돈독"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202201A2364177",
+              "SBIZ:MA0106202401A2457180"
+            ],
+            "meters": 0.0,
+            "name": "스타벅스"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202201A2364306",
+              "SBIZ:MA0106202201A2364503"
+            ],
+            "meters": 0.0,
+            "name": "스타벅스"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202304A1994721",
+              "SBIZ:MA0106202304A1994820"
+            ],
+            "meters": 0.0,
+            "name": "현대그린푸드오스템임플란트부산"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202304A2092968",
+              "SBIZ:MA0106202604A2092756"
+            ],
+            "meters": 0.0,
+            "name": "WEHEALTH"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008641",
+              "SBIZ:MA0106202401A0008668"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008641",
+              "SBIZ:MA0106202401A0009125"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008641",
+              "SBIZ:MA0106202401A0009341"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008668",
+              "SBIZ:MA0106202401A0009125"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0008668",
+              "SBIZ:MA0106202401A0009341"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009009",
+              "SBIZ:MA0106202401A0009198"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드DT점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009009",
+              "SBIZ:MA0106202401A0009478"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드DT점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009125",
+              "SBIZ:MA0106202401A0009341"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009198",
+              "SBIZ:MA0106202401A0009478"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드DT점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009223",
+              "SBIZ:MA0106202401A0009323"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드좌동점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009223",
+              "SBIZ:MA0106202401A0009458"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드좌동점"
+          },
+          {
+            "ids": [
+              "SBIZ:MA0106202401A0009323",
+              "SBIZ:MA0106202401A0009458"
+            ],
+            "meters": 0.0,
+            "name": "한국맥도날드좌동점"
+          },
+          {
+            "ids": [
+              "STD:15012890:a330725fce5babc7031e2b0c",
+              "STD:15012890:d38e36761f1449a6ff1d1805"
+            ],
+            "meters": 0.0,
+            "name": "견우공원"
+          }
+        ],
+        "quarantinedIds": [
+          "SBIZ:MA010120220802784200",
+          "SBIZ:MA010120220803426302",
+          "SBIZ:MA010120220803557839",
+          "SBIZ:MA010120220804883452",
+          "SBIZ:MA010120220805510582",
+          "SBIZ:MA010120220805689382",
+          "SBIZ:MA010120220806401451",
+          "SBIZ:MA010120220806634786",
+          "SBIZ:MA010120220806636552",
+          "SBIZ:MA010120220806727490",
+          "SBIZ:MA010120220808520359",
+          "SBIZ:MA010120220808647575",
+          "SBIZ:MA010120220808690284",
+          "SBIZ:MA010120220810419381",
+          "SBIZ:MA010120220810461808",
+          "SBIZ:MA010120220810755997",
+          "SBIZ:MA010120220811393849",
+          "SBIZ:MA010120220811398008",
+          "SBIZ:MA010120220811399283",
+          "SBIZ:MA010120220811433675",
+          "SBIZ:MA010120220811443957",
+          "SBIZ:MA010120220811450801",
+          "SBIZ:MA010120220811456767",
+          "SBIZ:MA010120220811464090",
+          "SBIZ:MA010120220811469836",
+          "SBIZ:MA010120220811471517",
+          "SBIZ:MA010120220811472023",
+          "SBIZ:MA010120220811472243",
+          "SBIZ:MA010120220811472261",
+          "SBIZ:MA010120220811472724",
+          "SBIZ:MA010120220811546676",
+          "SBIZ:MA010120220811794506",
+          "SBIZ:MA010120220811824944",
+          "SBIZ:MA010120220811913277",
+          "SBIZ:MA010120220813158574",
+          "SBIZ:MA010120220813263878",
+          "SBIZ:MA010120220813684064",
+          "SBIZ:MA010120220813995314",
+          "SBIZ:MA0101202210A0059144",
+          "SBIZ:MA0101202212A0049397",
+          "SBIZ:MA0101202301A0091486",
+          "SBIZ:MA0101202305A0003064",
+          "SBIZ:MA0101202308A0017888",
+          "SBIZ:MA0101202309A0064450",
+          "SBIZ:MA0101202309A0075276",
+          "SBIZ:MA0101202311A0040869",
+          "SBIZ:MA0101202311A0072212",
+          "SBIZ:MA0101202406A0009495",
+          "SBIZ:MA0101202406A0062702",
+          "SBIZ:MA0101202406A0130672",
+          "SBIZ:MA0101202406A0169922",
+          "SBIZ:MA0101202406A0222686",
+          "SBIZ:MA0101202406A0290685",
+          "SBIZ:MA0101202406A0389922",
+          "SBIZ:MA0101202411A0034329",
+          "SBIZ:MA0101202411A0079597",
+          "SBIZ:MA0101202502A0113886",
+          "SBIZ:MA0101202505A0019178",
+          "SBIZ:MA0101202506A0036650",
+          "SBIZ:MA0101202507A0003482",
+          "SBIZ:MA0101202509A0013346",
+          "SBIZ:MA0101202511A0001873",
+          "SBIZ:MA0101202511A0039295",
+          "SBIZ:MA0101202604A0025058",
+          "SBIZ:MA0101202604A0043813",
+          "SBIZ:MA0101202607A0070658",
+          "SBIZ:MA0101202607A0073682",
+          "SBIZ:MA0101202607A0097854",
+          "SBIZ:MA0101202607A0121255",
+          "SBIZ:MA0101202608A0031614",
+          "SBIZ:MA0101202608A0051337",
+          "SBIZ:MA0101202608A0062329",
+          "SBIZ:MA0101202608A0063897",
+          "SBIZ:MA0101202608A0098918",
+          "SBIZ:MA0106202201A0741914",
+          "SBIZ:MA0106202201A1743980",
+          "SBIZ:MA0106202201A1870647",
+          "SBIZ:MA0106202201A1930367",
+          "SBIZ:MA0106202201A2157135",
+          "SBIZ:MA0106202201A2339877",
+          "SBIZ:MA0106202201A2364177",
+          "SBIZ:MA0106202201A2364306",
+          "SBIZ:MA0106202201A2364503",
+          "SBIZ:MA0106202301A1903159",
+          "SBIZ:MA0106202304A1994721",
+          "SBIZ:MA0106202304A1994820",
+          "SBIZ:MA0106202304A2092968",
+          "SBIZ:MA0106202401A0008641",
+          "SBIZ:MA0106202401A0008668",
+          "SBIZ:MA0106202401A0009009",
+          "SBIZ:MA0106202401A0009125",
+          "SBIZ:MA0106202401A0009198",
+          "SBIZ:MA0106202401A0009223",
+          "SBIZ:MA0106202401A0009323",
+          "SBIZ:MA0106202401A0009341",
+          "SBIZ:MA0106202401A0009458",
+          "SBIZ:MA0106202401A0009478",
+          "SBIZ:MA0106202401A1133713",
+          "SBIZ:MA0106202401A2457180",
+          "SBIZ:MA0106202405A2434318",
+          "SBIZ:MA0106202412A1768299",
+          "SBIZ:MA0106202604A2092756",
+          "STD:15012890:a330725fce5babc7031e2b0c",
+          "STD:15012890:d38e36761f1449a6ff1d1805"
+        ]
+      }
+    }
+  ]
+}

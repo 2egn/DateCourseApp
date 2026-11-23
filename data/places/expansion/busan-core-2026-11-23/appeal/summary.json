@@ -1,0 +1,38 @@
+{
+  "demo_places": 2040,
+  "busan_bus_stops": 10046,
+  "national_bus_rows": 227102,
+  "busan_railway_rows": 135,
+  "busanjin_model_rows": 43,
+  "model_unique_place_matches": 32,
+  "model_review_needed": 11,
+  "tag_counts": {
+    "GOOD_PRICE": 102,
+    "NEAR_SUBWAY": 1219,
+    "NEAR_BUS": 1869,
+    "MODEL_RESTAURANT": 4,
+    "FREE_ADMISSION": 13
+  },
+  "source_date_counts_rail": {
+    "2022-11-30": 109,
+    "2022-04-27": 9,
+    "2025-04-08": 17
+  },
+  "additional_facility_fact_count": 13,
+  "ui_or_database_changed": false,
+  "input_mode": "offline_reuse",
+  "calculated_at": "2026-11-23",
+  "designation_coverage": [
+    {
+      "district": "부산진구",
+      "referenceDate": "2025-11-17"
+    }
+  ],
+  "missing_designation_coverage_means": "unknown, not undesignated",
+  "retained_fact_places": 866,
+  "retained_fact_policy": "Previously published facts and calculation dates retained unchanged",
+  "fact_calculation_dates": {
+    "2026-11-16": 1375,
+    "2026-11-23": 1713
+  }
+}

@@ -1,0 +1,19 @@
+# 카탈로그 확장 검증 도구
+
+기존 앱의 Java 모델·저장소를 그대로 사용하는 유지보수 도구다. 일반 앱 빌드에는 포함하지 않고 Gradle init script로 테스트 소스에만 추가한다. 실제 DB 주소나 키를 인수·문서에 넣지 않는다.
+
+- `ExpansionAudit`: 기존 전체 기준본과 운영 활성 payload가 일치하는지 확인한다. 기본 `preflight`는 읽기 전용이다. `-PplaceExpansionMode=apply`일 때만 EXPANSION 모드 적재·반복 적재를 수행한다.
+- 적재 전후 기존 DB 번호·payload·일반 데이터 행과 카탈로그 외 테이블을 비교한다. 보호 테이블은 개인정보·PNG 원문 대신 메모리 내 행 지문으로 비교하며 지문도 결과에 내보내지 않는다.
+- 기준본이 바뀌거나 누락됐으면 쓰기 전에 중단한다. SQL 오류 원문이나 연결 정보를 출력하지 않는다.
+- `ExpansionRehearsal`: 실제 추천·가격·특징·반경 검사를 사용한다. 실제 경로 API·DB 연결 없이, 고정 최근접 선택과 기존 코스의 유지 여부를 비교한다.
+- `ExpansionAuditTest`: H2에서 전체 확장·기존 번호 보존·보호 테이블 보존·변형/부분 입력 거부를 검증한다.
+
+## 실행
+
+프로젝트 루트에서 `-I tools/catalog-ops/verify.init.gradle`을 붙인다. 데이터 경로와 모드를 명시하며 `verifyCatalogExpansion`과 `rehearseCatalogExpansion` 작업을 사용한다. 구체적인 재현 명령과 불변 기준 자료는 해당 `data/places/expansion/*/README.md`를 따른다.
+
+```powershell
+.\gradlew.bat -I tools/catalog-ops/verify.init.gradle test
+```
+
+DB 적재 결과가 성공했더라도 후속 검증이 실패할 수 있으므로, 재실행 전에 출력 보고서와 적재 이력을 먼저 확인한다. 이 도구는 다른 사용자의 변경을 자동으로 되돌리지 않는다.

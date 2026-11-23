@@ -1,0 +1,26 @@
+{
+  "inputs": {
+    "data/places/expansion/busan-core-2026-11-23/places.json": "7e4df8157d35a15dffe0037b7948bb1dd4fc12075cd8424915f08732982fd9c9",
+    "data/places/public/busan/busan_good_price_shops.csv": "03f12ee5f4b94474ce0bcef32cf67d781a642707e7ee24dbdfcf42578b5b00e1",
+    "data/places/public/busan/busan_places.csv": "7e04410a6cdf57065a7b064407b9b4e992b29bb3cf3f43edf7de52cdad17c1f2",
+    "data/places/public/busan/raw/busan_standard_sources.json": "b0191185be7562ebebda56c94ae39fa8d5cc99d71a67cde3bb44178aa0e9f9f4",
+    "data/places/appeal/designation-sources.json": "fa014fe5bdd996e37a1c971318644026d82a2da52e3134b03f180f18eef7c88d",
+    "data/places/appeal/manual-facility-facts.json": "fe93d3b074fca64ed8539739298b75e2c7d00055332265519b26cd0eb3b2889b",
+    "data/places/appeal/busan-2026-11-14/raw/busan_bus_stops.csv": "74060217eaa9b05ea07f692646813a1690495afb7d9287632c756e2819fdfff4",
+    "data/places/appeal/busan-2026-11-14/raw/busan_railway_stations.csv": "be858b691edbf741c00601ef0d682734b0dcdae74ad327efe6eb7d4a039191da",
+    "data/places/expansion/suyeong-2026-11-16/places.json": "b113902b854c924198fa0cd8afb2e9e610e89f908054c564db4363f838e803c3",
+    "data/places/expansion/suyeong-2026-11-16/appeal/demo_appeal_facts.json": "7cc09edf5b322fc63ee27b0ef27d35be74b0cb9bcd37a1988f6d9091f49737f4",
+    "data/places/appeal/busan-2026-11-14/raw/busanjin_model_restaurants_cp949.csv": "08bd230f7eb751fa8bb3c75db2eb3bb4c93dfc7237883df7f7dc68c99db0b678"
+  },
+  "outputs": {
+    "additional_facility_facts.json": "f1fd176189138307f7efc5ff6a021e126e891524096053f96199ac8a8ee76a1b",
+    "busanjin_model_restaurants.csv": "1837a8ad89cc810e802b7d4ec91d9751f7ded64f7f0ade79015c91c5904bc1be",
+    "demo_appeal_facts.json": "be8f9144aee46251c34884d7ca7757a995d4182791f51b2fb14d32463da72411",
+    "demo_nearest_transit.csv": "e973651e9b3032271ef17cbcf1d8cd6935a1438121c17f58d75e7b221b31bc60",
+    "designation_links.csv": "6953c57f84b15fd738160c3faf144487b4425ce4d2f36e1a9a5a229b669736ac",
+    "designation_review_needed.json": "278fe3405f0f8b7fbb5e3fac293ae02bec957166465b8b6ac8218c8de750cfc8",
+    "sources.json": "61b20fe41647a21dd2849cff494c9aecb9e316bf8757146f7b5dab6c04b390e6",
+    "summary.json": "c6d0dec812268ae524e8cab767f8998dfaf669e9d50c3173147979b35dfcb0c1",
+    "threshold_comparison.json": "3d9ccb8feef1b96b319c6fce015412a3cbea1668237933da321f781cb8efa5ed"
+  }
+}

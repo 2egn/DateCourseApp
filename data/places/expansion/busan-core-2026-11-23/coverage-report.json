@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-23",
+  "baselinePlaces": 866,
+  "expandedPlaces": 2040,
+  "added": 1174,
+  "baselineSha256": "b113902b854c924198fa0cd8afb2e9e610e89f908054c564db4363f838e803c3",
+  "datasetSha256": "7e4df8157d35a15dffe0037b7948bb1dd4fc12075cd8424915f08732982fd9c9",
+  "before": {
+    "districtCategories": {
+      "남구": {
+        "CULTURE": 8,
+        "MEAL": 2
+      },
+      "부산진구": {
+        "MEAL": 238,
+        "CAFE": 120,
+        "CULTURE": 18
+      },
+      "수영구": {
+        "MEAL": 300,
+        "CAFE": 150,
+        "CULTURE": 30
+      }
+    },
+    "occupied500mCells": {
+      "남구:CULTURE": 3,
+      "남구:MEAL": 1,
+      "부산진구:CAFE": 4,
+      "부산진구:CULTURE": 16,
+      "부산진구:MEAL": 13,
+      "수영구:CAFE": 11,
+      "수영구:CULTURE": 20,
+      "수영구:MEAL": 26
+    }
+  },
+  "after": {
+    "districtCategories": {
+      "남구": {
+        "CULTURE": 64,
+        "MEAL": 152,
+        "CAFE": 150
+      },
+      "부산진구": {
+        "MEAL": 348,
+        "CAFE": 320,
+        "CULTURE": 46
+      },
+      "수영구": {
+        "MEAL": 300,
+        "CAFE": 150,
+        "CULTURE": 30
+      },
+      "해운대구": {
+        "MEAL": 200,
+        "CAFE": 200,
+        "CULTURE": 80
+      }
+    },
+    "occupied500mCells": {
+      "남구:CAFE": 55,
+      "남구:CULTURE": 40,
+      "남구:MEAL": 10,
+      "부산진구:CAFE": 74,
+      "부산진구:CULTURE": 35,
+      "부산진구:MEAL": 17,
+      "수영구:CAFE": 11,
+      "수영구:CULTURE": 20,
+      "수영구:MEAL": 26,
+      "해운대구:CAFE": 81,
+      "해운대구:CULTURE": 56,
+      "해운대구:MEAL": 16
+    }
+  },
+  "categories": {
+    "MEAL": 1000,
+    "CAFE": 820,
+    "CULTURE": 220
+  },
+  "priceEvidence": {
+    "SIMILAR_ESTIMATE": 1174,
+    "UNKNOWN": 849,
+    "REFERENCE": 17
+  },
+  "sourceMode": "Existing checksum-verified public snapshots; no fresh business-status or Google verification"
+}

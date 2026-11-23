@@ -242,7 +242,26 @@ def manual_facilities(demos, facts):
     return result
 
 
-def collect(offline=False, demo_path=None, output=OUT):
+def retain_existing_facts(demos, facts, baseline_dataset, baseline_facts):
+    """기존 장소와 근거 날짜를 보존하고 새 장소의 속성만 추가한다."""
+    baseline_bytes=read_lf_bytes(baseline_dataset)
+    baseline=json.loads(baseline_bytes)['places']
+    previous=read_json(baseline_facts)
+    if previous.get('schemaVersion')!=1 or previous.get('datasetSha256')!=hashlib.sha256(baseline_bytes).hexdigest():
+        raise ValueError('Retained facts must match their baseline dataset')
+    places={p['placeId']:p for p in demos}
+    old={p['placeId']:p for p in previous['places']}
+    if len(old)!=len(previous['places']) or set(old)!={p['placeId'] for p in baseline}:
+        raise ValueError('Retained fact IDs do not match the baseline')
+    for place in baseline:
+        if places.get(place['placeId'])!=place or old[place['placeId']]['publicPlaceId']!=place['details']['externalIds']['public']:
+            raise ValueError('Retained place changed or was removed')
+    return [old.get(p['placeId'],p) for p in facts]
+
+
+def collect(offline=False, demo_path=None, output=OUT, baseline_dataset=None, baseline_facts=None):
+    if (baseline_dataset is None)!=(baseline_facts is None):
+        raise ValueError("Provide both retained dataset and facts")
     demo_path = Path(demo_path) if demo_path else ROOT / 'data/places/demo/seomyeon-public-estimates.json'
     source_pack=SOURCE_PACK
     OUT=Path(output)
@@ -323,6 +342,8 @@ def collect(offline=False, demo_path=None, output=OUT):
         'station_within_m': {str(m): sum(float(p['station_distance_m']) <= m for p in nearest) for m in (100,200,300,500)},
         'bus_stop_within_m': {str(m): sum(float(p['bus_distance_m']) <= m for p in nearest) for m in (50,100,150,200)},
         'note': '거리 표시는 소수점 첫째 자리 반올림. 기본 태그 판정은 반올림 전 거리로 계산함.'})
+    if baseline_dataset is not None:
+        facts=retain_existing_facts(demos,facts,baseline_dataset,baseline_facts)
     write_json(OUT / 'demo_appeal_facts.json', {'schemaVersion': 1, 'generatedAt': datetime.now(timezone.utc).isoformat(),
                 'datasetSha256': hashlib.sha256(demo_bytes).hexdigest(), 'places': facts,
                 'rules': {'NEAR_SUBWAY': '역사 중심 직선거리 500m 이하',
@@ -360,10 +381,15 @@ def collect(offline=False, demo_path=None, output=OUT):
                'ui_or_database_changed': False, 'input_mode': 'offline_reuse' if offline else 'public_download', 'calculated_at': DATE,
                'designation_coverage': [dict(district=d['district'], referenceDate=d['referenceDate']) for d in model_sets],
                'missing_designation_coverage_means': 'unknown, not undesignated'}
+    if baseline_dataset is not None:
+        summary['retained_fact_places']=len(read_json(baseline_facts)['places'])
+        summary['retained_fact_policy']='Previously published facts and calculation dates retained unchanged'
+        summary['fact_calculation_dates']=dict(Counter(t['calculatedAt'] for p in facts for t in p['tags'] if t.get('calculatedAt')))
     write_json(OUT / 'summary.json', summary)
     tracked_inputs = [demo_path, PUBLIC/'busan_good_price_shops.csv', PUBLIC/'busan_places.csv',
                       PUBLIC/'raw/busan_standard_sources.json',designation_path,manual_path,
                       source_pack/'raw/busan_bus_stops.csv',source_pack/'raw/busan_railway_stations.csv']
+    if baseline_dataset is not None:tracked_inputs.extend([baseline_dataset,baseline_facts])
     tracked_inputs.extend(source_pack/d['path'] for d in read_json(designation_path)['sources'])
     write_json(OUT / 'checksums.json', {
         'inputs': {(p.relative_to(ROOT).as_posix() if p.is_relative_to(ROOT) else p.as_posix()):hashlib.sha256(p.read_bytes()).hexdigest() for p in tracked_inputs},
@@ -377,4 +403,6 @@ if __name__ == '__main__':
     parser.add_argument('--offline',action='store_true',help='Reuse checksum-verified published public inputs; no downloads')
     parser.add_argument('--dataset',type=Path,help='Staged complete place snapshot')
     parser.add_argument('--output',type=Path,default=OUT,help='Separate output fact-pack directory')
-    args=parser.parse_args();collect(args.offline,args.dataset,args.output)
+    parser.add_argument('--baseline-dataset',type=Path,help='Previously published retained place snapshot')
+    parser.add_argument('--baseline-facts',type=Path,help='Unchanged facts paired with the retained snapshot')
+    args=parser.parse_args();collect(args.offline,args.dataset,args.output,args.baseline_dataset,args.baseline_facts)

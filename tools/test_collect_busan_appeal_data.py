@@ -6,10 +6,25 @@ import unittest
 import tempfile
 from unittest.mock import patch
 from pathlib import Path
-from collect_busan_appeal_data import ROOT, OUT, distance, name_key, road_key, source_date, valid_point, read_lf_bytes, load_inputs
+from collect_busan_appeal_data import ROOT, OUT, distance, name_key, road_key, source_date, valid_point, read_lf_bytes, load_inputs, retain_existing_facts
 
 
 class AppealDataTest(unittest.TestCase):
+    def test_expansion_preserves_existing_fact_dates_and_rejects_changed_places(self):
+        place=dict(placeId='old',name='기존 장소',lat=35.15,details=dict(externalIds=dict(public='PUBLIC:old')))
+        existing=dict(placeId='old',publicPlaceId='PUBLIC:old',tags=[dict(tag='NEAR_BUS',calculatedAt='2026-11-16')])
+        fresh=[dict(existing,tags=[dict(tag='NEAR_BUS',calculatedAt='2026-11-23')]),dict(placeId='new',tags=[])]
+        with tempfile.TemporaryDirectory() as directory:
+            dataset=Path(directory)/'places.json';facts=Path(directory)/'facts.json'
+            dataset.write_text(json.dumps(dict(places=[place]))+'\n',encoding='utf-8',newline='\n')
+            prior=dict(schemaVersion=1,datasetSha256=hashlib.sha256(dataset.read_bytes()).hexdigest(),places=[existing])
+            facts.write_text(json.dumps(prior),encoding='utf-8')
+            self.assertEqual([existing,fresh[1]],retain_existing_facts([place],fresh,dataset,facts))
+            with self.assertRaises(ValueError):retain_existing_facts([dict(place,lat=35.16)],fresh,dataset,facts)
+            with self.assertRaises(ValueError):retain_existing_facts([],fresh,dataset,facts)
+            facts.write_text(json.dumps(dict(prior,datasetSha256='wrong')),encoding='utf-8')
+            with self.assertRaises(ValueError):retain_existing_facts([place],fresh,dataset,facts)
+
     def test_offline_inputs_reuse_verified_public_sources_without_network(self):
         with patch('urllib.request.urlopen',side_effect=AssertionError('Network is not allowed')):
             sources,rail,buses,stations,models,national=load_inputs(True)

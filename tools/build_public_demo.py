@@ -51,6 +51,10 @@ def load_policy(path):
         raise ValueError('Positive category limits are required')
     for name in ['preferredPerCuisine','preferredDesignated']:
         if type(policy.get(name))!=int or policy[name]<0:raise ValueError('Invalid preference count')
+    if 'spatialCellMeters' in policy:
+        size=policy['spatialCellMeters']
+        if isinstance(size,bool) or not isinstance(size,(int,float)) or not math.isfinite(size) or size<=0:
+            raise ValueError('Spatial cell size must be a positive finite distance')
     if 'district' in policy and (not isinstance(policy['district'],str) or not policy['district'].strip()):
         raise ValueError('A district must be a nonempty name')
     if 'pricePolicy' in policy:
@@ -58,6 +62,14 @@ def load_policy(path):
         if type(price.get('minimumSamples'))!=int or price['minimumSamples']<1 or not isinstance(price.get('allowedSubtypes'),list) or not all(isinstance(v,str) and v for v in price['allowedSubtypes']):
             raise ValueError('Invalid price cohort policy')
     return policy
+
+
+def spatial_cell(place,center,meters):
+    """가까운 번화가 편중을 줄이기 위한 지역 격자 좌표를 만든다."""
+    lat,lng=float(place['lat']),float(place['lon'])
+    y=math.radians(lat-center['lat'])*6371000
+    x=math.radians(lng-center['lng'])*6371000*math.cos(math.radians(center['lat']))
+    return math.floor(x/meters),math.floor(y/meters)
 
 
 def select_places(near,previous_ids,checked_ids,blocked,good,group,policy):
@@ -81,7 +93,11 @@ def select_places(near,previous_ids,checked_ids,blocked,good,group,policy):
     for p in [p for p in near if p['place_id'] in good][:policy['preferredDesignated']]:add(p)
     # Round-robin actual source subtypes, rather than filling one popular subtype first.
     pools=defaultdict(deque)
-    for p in near:pools[(p['category'],p['industry_name'])].append(p)
+    for p in near:
+        key=(p['category'],p['industry_name'])
+        if policy.get('spatialCellMeters'):
+            key+=spatial_cell(p,policy['center'],policy['spatialCellMeters'])
+        pools[key].append(p)
     while pools:
         for key in list(pools):
             pool=pools[key]
