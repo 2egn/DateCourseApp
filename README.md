@@ -51,7 +51,7 @@ IntelliJ 실행 진입점은 `com.datecourse.app.AppLauncher`이고 Working dire
 | 자동차 | 30km | 60km |
 | 대중교통 + 도보 | 20km | 40km |
 
-운영 공공 카탈로그는 **2,040곳**으로 확장했다. 내장 시연 386곳은 유지한다. [확장·보존 검증 결과](docs/busan-core-expansion-2026-11-23.md)와 [현재 기준본](data/places/expansion/current.json)을 참고한다.
+운영 공공 카탈로그는 중구 98곳 추가 후 **2,138곳**이다. 내장 시연 386곳은 유지한다. [확장·가격·보존 검증 결과](data/places/expansion/jung-gu-2026-11-25/README.md)와 [현재 기준본](data/places/expansion/current.json)을 참고한다.
 
 운영 DB는 비어 있는 이전 백업 8개 정리 후 15개 테이블이다. 원본·사용자·코스·변경 이력은 보존했다. [현재 DB 구조](docs/site/content/DB_구조와_빈_백업_정리_2026_11_24.md)와 [복원 SQL·검증 기록](archive/db-schema/2026-11-24-empty-backups/README.md)을 참고한다.
 

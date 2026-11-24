@@ -64,7 +64,9 @@ class DistrictExpansionTest(unittest.TestCase):
             if price['evidence']=='UNKNOWN':self.assertIsNone(price['minimum']);self.assertIsNone(price['maximum'])
             if price['evidence']=='SIMILAR_ESTIMATE':
                 self.assertIn(place['details']['subcategory'],policy['pricePolicy']['allowedSubtypes'])
-                self.assertIn('해당 매장 가격 확인값이 아님',price['basis'])
+                self.assertTrue('해당 매장 가격 확인값이 아님' in price['basis'] or '매장 실값 아님' in price['basis'])
+            if place['category']=='CAFE':
+                self.assertEqual(4118,price['minimum']);self.assertIn('mafra.go.kr',price['sourceUrl'])
         self.assertEqual(meta['datasetSha256'],hashlib.sha256((folder/'places.json').read_bytes()).hexdigest())
         self.assertEqual(meta['factsSha256'],hashlib.sha256((folder/'appeal/demo_appeal_facts.json').read_bytes()).hexdigest())
 

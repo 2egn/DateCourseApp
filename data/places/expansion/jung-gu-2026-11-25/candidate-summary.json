@@ -1,5 +1,5 @@
 {
-  "state": "prepared_not_imported",
+  "state": "applied_and_verified",
   "addedPlaces": 98,
   "addedCategories": {
     "MEAL": 40,
@@ -18,5 +18,8 @@
   "reviewCandidates": 57,
   "quarantinedNewSourceIds": 51,
   "sourceSnapshotOnly": true,
-  "liveBusinessOrMenuVerification": false
+  "liveBusinessOrMenuVerification": false,
+  "newPlacePricesReconciled": 43,
+  "regionalEstimateUpdates": 3,
+  "surveyEstimateUpdates": 40
 }

@@ -1,6 +1,6 @@
 {
   "inputs": {
-    "data/places/expansion/jung-gu-2026-11-25/places.json": "4b6cdeb7cd80cc9019860caa3cff01ad80db0407de885b60d1cdf708c6467cbd",
+    "data/places/expansion/jung-gu-2026-11-25/places.json": "d2202befd181086f347bed53f2ca67d03d34acc933ba4f8ea31b1d2ae64dfc34",
     "data/places/public/busan/busan_good_price_shops.csv": "03f12ee5f4b94474ce0bcef32cf67d781a642707e7ee24dbdfcf42578b5b00e1",
     "data/places/public/busan/busan_places.csv": "7e04410a6cdf57065a7b064407b9b4e992b29bb3cf3f43edf7de52cdad17c1f2",
     "data/places/public/busan/raw/busan_standard_sources.json": "b0191185be7562ebebda56c94ae39fa8d5cc99d71a67cde3bb44178aa0e9f9f4",
@@ -15,12 +15,19 @@
   "outputs": {
     "additional_facility_facts.json": "0e1e82aa8caf837935d9cb4de55b26b55afe3e9394b13e13e1954771fbfa4372",
     "busanjin_model_restaurants.csv": "1837a8ad89cc810e802b7d4ec91d9751f7ded64f7f0ade79015c91c5904bc1be",
-    "demo_appeal_facts.json": "91e3dd40e4884000b90e60e28e5ed0db88d046abaee24c8e7070997f64addd8d",
+    "demo_appeal_facts.json": "b9a00c007194561b7febea21ec5e1ff65dedd2cb7474474a73d7c40533c638b7",
     "demo_nearest_transit.csv": "dec71a935b38361a2cbbf338c6fccbda4c3555bb3306c33aa18bfd02c6e2a9aa",
     "designation_links.csv": "25be4e0f8b8c6b7b13bf0ab14151c751d829054b6eae43cc549f8cdabf6687b5",
     "designation_review_needed.json": "278fe3405f0f8b7fbb5e3fac293ae02bec957166465b8b6ac8218c8de750cfc8",
     "sources.json": "61b20fe41647a21dd2849cff494c9aecb9e316bf8757146f7b5dab6c04b390e6",
     "summary.json": "58fcc0e732763870d552e70a7de18df263d0bb08f028d39915ff3b117de22651",
     "threshold_comparison.json": "ca07d93146042f1a737364eb207a78982c146600c172dfaa6d67529a1c6d5083"
+  },
+  "priceSupplement": {
+    "baselineCommit": "dbb2507",
+    "previousDatasetSha256": "4b6cdeb7cd80cc9019860caa3cff01ad80db0407de885b60d1cdf708c6467cbd",
+    "previousFactsSha256": "91e3dd40e4884000b90e60e28e5ed0db88d046abaee24c8e7070997f64addd8d",
+    "review": "../price-review.json",
+    "note": "Price-only supplement updated the dataset binding and generated version; all place tags were retained."
   }
 }

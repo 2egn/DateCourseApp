@@ -1,6 +1,6 @@
 # 데이터 준비
 
-운영 공공 카탈로그는 **2,040곳**이며 2026-11-24에 통계 기반 가격 보완을 반영했다. 현재 전체 장소·속성 쌍과 지문은 [expansion/current.json](places/expansion/current.json), 가격 선택 규칙과 운영 검증은 [가격 보완 기록](places/pricing/2026-11-24/README.md)을 확인한다. [확장 기록](../docs/busan-core-expansion-2026-11-23.md)은 그 이전 단계다. 앱은 CSV가 아니라 DB를 읽는다.
+운영 공공 카탈로그는 **2,138곳**이며 2026-11-25에 [중구 98곳 추가와 신규 가격 보완](places/expansion/jung-gu-2026-11-25/README.md)을 검증했다. 기존 2,040곳은 그대로 보존했다. 현재 전체 장소·속성 쌍과 지문은 [expansion/current.json](places/expansion/current.json), 가격 선택 규칙과 운영 검증은 [가격 보완 기록](places/pricing/2026-11-24/README.md)을 확인한다. [확장 기록](../docs/busan-core-expansion-2026-11-23.md)은 그 이전 단계다. 앱은 CSV가 아니라 DB를 읽는다.
 
 고정된 미래 버전 시각은 [메타데이터 정정](places/pricing/clock-correction-2026-11-24/README.md)으로 바로잡았다. 장소·가격 payload와 태그는 동일하며, 현재 속성 파일과 버전은 current.json을 따른다.
 

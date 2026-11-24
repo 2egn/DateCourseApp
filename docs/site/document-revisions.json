@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "81b030f7db963cf033cad14134c6fae804b70f0b12b3c8e503bb8480aae89ef4",
-      "revision": 32,
+      "fingerprint": "09ad7bae2c76268fa66021a8d4f1ea73d71de6d4ca9081bf46e1138d0d640cb3",
+      "revision": 33,
       "updated": true,
       "present": true
     },
@@ -910,6 +910,12 @@
     "도보_설정과_지도_경로_동기화_2026_11_25.md": {
       "fingerprint": "f205c178b13d9c11b512ea2c7e298f878504d3ca37688cd8bab0d05293981181",
       "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "중구_98곳_추가와_가격_보완_2026_11_25.md": {
+      "fingerprint": "becd9e0c9a1b39537f6f5e14b888b6c3af4f76deda610aa427794a139525ef17",
+      "revision": 1,
       "updated": true,
       "present": true
     }

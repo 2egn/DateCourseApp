@@ -1,0 +1,1608 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-24T18:59:40.564296+00:00",
+  "baseline": "data/places/expansion/jung-gu-2026-11-25/places.json",
+  "baselineSha256": "4b6cdeb7cd80cc9019860caa3cff01ad80db0407de885b60d1cdf708c6467cbd",
+  "sourcesSha256": "04dab298040f8b339cc405cd4c7c53ef366bd4a1051d53eabac8a8ba6eb328d1",
+  "places": 2138,
+  "changed": 43,
+  "selected": {
+    "REGIONAL": 3,
+    "SURVEY": 40
+  },
+  "evidenceCounts": {
+    "SIMILAR_ESTIMATE": 1232,
+    "UNKNOWN": 889,
+    "REFERENCE": 17
+  },
+  "nonPriceFieldsPreserved": true,
+  "factsPreserved": true,
+  "changes": [
+    {
+      "publicPlaceId": "SBIZ:MA0101202507A0033654",
+      "before": {
+        "minimum": 7000,
+        "maximum": 7000,
+        "unit": "PER_PERSON",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 한식 고유 장소 115곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 9686,
+        "maximum": 9686,
+        "unit": "PER_PERSON",
+        "basis": "부산 지역별 외식비 · 비빔밥 · 2026-10 · 매장 실값 아님; 대표 메뉴 기준 추정",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+        "checkedAt": "2026-10"
+      },
+      "observations": [
+        {
+          "kind": "REGIONAL",
+          "region": "부산",
+          "menu": "비빔밥",
+          "unit": "PER_PERSON",
+          "amount": 9686,
+          "period": "2026-10",
+          "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+          "locator": "2026.10 · 부산 · 비빔밥",
+          "label": "부산 지역별 외식비",
+          "servingVerified": true
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202406A0153972",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220808440571",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0106202201A2363703",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202411A0111896",
+      "before": {
+        "minimum": 7000,
+        "maximum": 7000,
+        "unit": "PER_PERSON",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 한식 고유 장소 115곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 8071,
+        "maximum": 8071,
+        "unit": "PER_PERSON",
+        "basis": "부산 지역별 외식비 · 칼국수 · 2026-10 · 매장 실값 아님; 대표 메뉴 기준 추정",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+        "checkedAt": "2026-10"
+      },
+      "observations": [
+        {
+          "kind": "REGIONAL",
+          "region": "부산",
+          "menu": "칼국수",
+          "unit": "PER_PERSON",
+          "amount": 8071,
+          "period": "2026-10",
+          "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+          "locator": "2026.10 · 부산 · 칼국수",
+          "label": "부산 지역별 외식비",
+          "servingVerified": true
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220805420037",
+      "before": {
+        "minimum": 7000,
+        "maximum": 7000,
+        "unit": "PER_PERSON",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 한식 고유 장소 115곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 12000,
+        "maximum": 12000,
+        "unit": "PER_PERSON",
+        "basis": "부산 지역별 외식비 · 냉면 · 2026-10 · 매장 실값 아님; 대표 메뉴 기준 추정",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+        "checkedAt": "2026-10"
+      },
+      "observations": [
+        {
+          "kind": "REGIONAL",
+          "region": "부산",
+          "menu": "냉면",
+          "unit": "PER_PERSON",
+          "amount": 12000,
+          "period": "2026-10",
+          "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+          "locator": "2026.10 · 부산 · 냉면",
+          "label": "부산 지역별 외식비",
+          "servingVerified": true
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220807827382",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220813533355",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202406A0305874",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220810622114",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220800226975",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202512A0035247",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220806634376",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220805449198",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202411A0140925",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220811821192",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220813952367",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202406A0144790",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202603A0031595",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220810620543",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202305A0170152",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220810474816",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220806838186",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220810474207",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202607A0156845",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202406A0366073",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220806824520",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220814287799",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202406A0507075",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220813731829",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220803701830",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220813623275",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220810502438",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202607A0120656",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220810756627",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220801947101",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202303A0103796",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220804150475",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220811940704",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220812360853",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220801232073",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA010120220802672721",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    },
+    {
+      "publicPlaceId": "SBIZ:MA0101202603A0028400",
+      "before": {
+        "minimum": 2400,
+        "maximum": 2400,
+        "unit": "PER_DRINK",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
+        "checkedAt": "2026-09-30",
+        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+      },
+      "after": {
+        "minimum": 4118,
+        "maximum": 4118,
+        "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
+        "evidence": "SIMILAR_ESTIMATE",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
+      },
+      "observations": [
+        {
+          "kind": "SURVEY",
+          "region": "전국",
+          "menu": "커피",
+          "unit": "PER_DRINK",
+          "amount": 4118,
+          "period": "2025",
+          "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+          "locator": "2025 외식업체 경영실태 조사 통계보고서 · 표 85 · 인쇄 152쪽(PDF 162쪽) · 커피 전문점/커피",
+          "sampleCount": 530,
+          "label": "외식업체 조사",
+          "servingVerified": false,
+          "assumption": "대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인"
+        }
+      ]
+    }
+  ],
+  "baselineCommit": "dbb2507"
+}

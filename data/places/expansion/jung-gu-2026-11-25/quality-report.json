@@ -1043,5 +1043,8 @@
       "STD:15012890:c194c6afcaf74f0963177fb0",
       "STD:15021141:4cb5fb76f882e6a8be6716c8"
     ]
-  }
+  },
+  "prePriceSnapshotCommit": "dbb2507",
+  "finalDatasetSha256": "d2202befd181086f347bed53f2ca67d03d34acc933ba4f8ea31b1d2ae64dfc34",
+  "finalPriceReview": "price-review.json"
 }

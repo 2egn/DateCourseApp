@@ -66304,13 +66304,13 @@
       "lat": 35.0974028512087,
       "lng": 129.031180349993,
       "priceEstimate": {
-        "minimum": 7000,
-        "maximum": 7000,
+        "minimum": 9686,
+        "maximum": 9686,
         "unit": "PER_PERSON",
+        "basis": "부산 지역별 외식비 · 비빔밥 · 2026-10 · 매장 실값 아님; 대표 메뉴 기준 추정",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 한식 고유 장소 115곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+        "checkedAt": "2026-10"
       },
       "rating": 0,
       "details": {
@@ -66499,13 +66499,13 @@
       "lat": 35.0999997349252,
       "lng": 129.031628572989,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -66595,13 +66595,13 @@
       "lat": 35.0994967606794,
       "lng": 129.032065665299,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -66627,13 +66627,13 @@
       "lat": 35.100102865029,
       "lng": 129.031389895106,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -66851,13 +66851,13 @@
       "lat": 35.0993397651221,
       "lng": 129.032292038012,
       "priceEstimate": {
-        "minimum": 7000,
-        "maximum": 7000,
+        "minimum": 8071,
+        "maximum": 8071,
         "unit": "PER_PERSON",
+        "basis": "부산 지역별 외식비 · 칼국수 · 2026-10 · 매장 실값 아님; 대표 메뉴 기준 추정",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 한식 고유 장소 115곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+        "checkedAt": "2026-10"
       },
       "rating": 0,
       "details": {
@@ -67075,13 +67075,13 @@
       "lat": 35.0997875778472,
       "lng": 129.030844771153,
       "priceEstimate": {
-        "minimum": 7000,
-        "maximum": 7000,
+        "minimum": 12000,
+        "maximum": 12000,
         "unit": "PER_PERSON",
+        "basis": "부산 지역별 외식비 · 냉면 · 2026-10 · 매장 실값 아님; 대표 메뉴 기준 추정",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 한식 고유 장소 115곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://hamoni.mois.go.kr/portal/lcpr/indvSrcvEatoutCstList.do",
+        "checkedAt": "2026-10"
       },
       "rating": 0,
       "details": {
@@ -67619,13 +67619,13 @@
       "lat": 35.1005144718069,
       "lng": 129.03425111213,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -67683,13 +67683,13 @@
       "lat": 35.0998964485595,
       "lng": 129.026494240096,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -67715,13 +67715,13 @@
       "lat": 35.1008805232447,
       "lng": 129.026387017382,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -67747,13 +67747,13 @@
       "lat": 35.1045127106426,
       "lng": 129.029591271198,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -67779,13 +67779,13 @@
       "lat": 35.1048710236341,
       "lng": 129.034556779685,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -67907,13 +67907,13 @@
       "lat": 35.1046440665374,
       "lng": 129.037873817328,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -67971,13 +67971,13 @@
       "lat": 35.1061264354998,
       "lng": 129.025244827357,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68035,13 +68035,13 @@
       "lat": 35.1093377111328,
       "lng": 129.030983062151,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68099,13 +68099,13 @@
       "lat": 35.1092398293854,
       "lng": 129.036814843464,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68163,13 +68163,13 @@
       "lat": 35.1092522688647,
       "lng": 129.038218872114,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68227,13 +68227,13 @@
       "lat": 35.0992925169502,
       "lng": 129.031885151437,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68259,13 +68259,13 @@
       "lat": 35.0984698484579,
       "lng": 129.032040173687,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68291,13 +68291,13 @@
       "lat": 35.1003935094475,
       "lng": 129.031254557981,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68387,13 +68387,13 @@
       "lat": 35.1003872560881,
       "lng": 129.034313742832,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68419,13 +68419,13 @@
       "lat": 35.0995938407602,
       "lng": 129.026267442965,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68451,13 +68451,13 @@
       "lat": 35.1012842067391,
       "lng": 129.025958390601,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68483,13 +68483,13 @@
       "lat": 35.1049296780806,
       "lng": 129.031060088363,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68515,13 +68515,13 @@
       "lat": 35.104541939654,
       "lng": 129.035371043505,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68547,13 +68547,13 @@
       "lat": 35.1058180505566,
       "lng": 129.037727592848,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68611,13 +68611,13 @@
       "lat": 35.1053975938633,
       "lng": 129.023559948783,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68643,13 +68643,13 @@
       "lat": 35.1096388329228,
       "lng": 129.030760236997,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68675,13 +68675,13 @@
       "lat": 35.1098496066828,
       "lng": 129.036994521372,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68739,13 +68739,13 @@
       "lat": 35.1092614334444,
       "lng": 129.038745494972,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68803,13 +68803,13 @@
       "lat": 35.0988636240387,
       "lng": 129.031666167345,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68835,13 +68835,13 @@
       "lat": 35.0981619223934,
       "lng": 129.032131215835,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68867,13 +68867,13 @@
       "lat": 35.1007267982446,
       "lng": 129.030725522762,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68931,13 +68931,13 @@
       "lat": 35.1021958518566,
       "lng": 129.032330053677,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68963,13 +68963,13 @@
       "lat": 35.0991991365033,
       "lng": 129.026158985704,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -68995,13 +68995,13 @@
       "lat": 35.1015535315177,
       "lng": 129.02601988449,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -69027,13 +69027,13 @@
       "lat": 35.1056256744514,
       "lng": 129.030397463935,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -69059,13 +69059,13 @@
       "lat": 35.1045316285123,
       "lng": 129.035984878913,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -69091,13 +69091,13 @@
       "lat": 35.1065769309575,
       "lng": 129.037614894423,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -69155,13 +69155,13 @@
       "lat": 35.1054528393474,
       "lng": 129.022409876508,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -69187,13 +69187,13 @@
       "lat": 35.1097579575498,
       "lng": 129.030642560368,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -69219,13 +69219,13 @@
       "lat": 35.1103950378218,
       "lng": 129.037249367137,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -69251,13 +69251,13 @@
       "lat": 35.109574342489,
       "lng": 129.03835849369,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {
@@ -69283,13 +69283,13 @@
       "lat": 35.0989233675119,
       "lng": 129.031327729428,
       "priceEstimate": {
-        "minimum": 2400,
-        "maximum": 2400,
+        "minimum": 4118,
+        "maximum": 4118,
         "unit": "PER_DRINK",
+        "basis": "외식업체 조사 · 커피 · 2025 · 매장 실값 아님; 대표 메뉴 기준 추정 · 대표 커피 메뉴 1개를 1잔으로 가정; 종류·크기·매장별 차이는 미확인",
         "evidence": "SIMILAR_ESTIMATE",
-        "sourceUrl": "https://www.data.go.kr/data/3045247/fileData.do",
-        "checkedAt": "2026-09-30",
-        "basis": "부산 착한가격업소 카페 고유 장소 25곳 · 기준 메뉴를 장소별 중앙값으로 묶은 평균 · 1인분/1잔 가정. 일반 가게보다 낮을 수 있으며 해당 매장 가격 확인값이 아님."
+        "sourceUrl": "https://www.mafra.go.kr/bbs/home/798/595247/download.do",
+        "checkedAt": "2025"
       },
       "rating": 0,
       "details": {

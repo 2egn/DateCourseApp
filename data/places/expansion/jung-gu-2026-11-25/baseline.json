@@ -1,5 +1,5 @@
 {
-  "status": "prepared_not_imported",
+  "status": "applied_and_verified",
   "baselineDataset": "data/places/pricing/2026-11-24/staged/places.json",
   "baselineFacts": "data/places/pricing/clock-correction-2026-11-24/facts.json",
   "baselineDatasetSha256": "8441730f69b6d69fca74b7fca954b52818bcc4cb1208d386b9fa4125abc4b06b",
@@ -7,7 +7,10 @@
   "baselinePlaces": 2040,
   "preparedPlaces": 2138,
   "addedPlaces": 98,
-  "productionCatalogUpdated": false,
-  "datasetSha256": "4b6cdeb7cd80cc9019860caa3cff01ad80db0407de885b60d1cdf708c6467cbd",
-  "factsSha256": "91e3dd40e4884000b90e60e28e5ed0db88d046abaee24c8e7070997f64addd8d"
+  "productionCatalogUpdated": true,
+  "datasetSha256": "d2202befd181086f347bed53f2ca67d03d34acc933ba4f8ea31b1d2ae64dfc34",
+  "factsSha256": "b9a00c007194561b7febea21ec5e1ff65dedd2cb7474474a73d7c40533c638b7",
+  "originalExpandedDatasetSha256": "4b6cdeb7cd80cc9019860caa3cff01ad80db0407de885b60d1cdf708c6467cbd",
+  "originalExpandedFactsSha256": "91e3dd40e4884000b90e60e28e5ed0db88d046abaee24c8e7070997f64addd8d",
+  "originalExpansionCommit": "dbb2507"
 }
