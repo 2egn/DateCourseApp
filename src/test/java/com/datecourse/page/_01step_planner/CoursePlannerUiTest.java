@@ -1933,7 +1933,9 @@ class CoursePlannerUiTest {
         assertEquals(true,script(engine,"document.activeElement===document.getElementById('route-image-zoom-close')"));
         script(engine,"document.getElementById('route-image-zoom-close').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}))");
         assertEquals(true,script(engine,"document.activeElement===document.getElementById('route-image') && document.getElementById('route-image-zoom').hidden"));
-        script(engine,"document.getElementById('route-map-button').click()");
+        script(engine,"document.getElementById('route-image-button').focus();document.getElementById('route-image').click();document.getElementById('route-image-button').disabled=true;document.getElementById('route-image-zoom-close').click()");
+        assertEquals(true,script(engine,"document.activeElement===document.getElementById('route-image')"));
+        script(engine,"document.getElementById('route-image-button').disabled=false;document.getElementById('route-map-button').click()");
         assertEquals(true,script(engine,"document.getElementById('route-image-zoom').hidden && document.getElementById('route-image-overlay').hidden"));
     }
 
@@ -2554,7 +2556,9 @@ class CoursePlannerUiTest {
         script(engine,"document.getElementById('detail-close').click()");
         assertEquals(true,script(engine,"document.activeElement===opener"));
         assertEquals(1,((Number)script(engine,"detailCloses")).intValue());
-        script(engine,"opener.focus();window.openRoutePlace(1);opener.remove();document.getElementById('detail-close').click()");
+        script(engine,"opener.focus();window.openRoutePlace(1);opener.disabled=true;document.getElementById('detail-close').click()");
+        assertEquals(true,script(engine,"document.activeElement===document.getElementById('map-surface')"));
+        script(engine,"opener.disabled=false;opener.focus();window.openRoutePlace(1);opener.remove();document.getElementById('detail-close').click()");
         assertEquals(true,script(engine,"document.activeElement===document.getElementById('map-surface')"));
     }
 

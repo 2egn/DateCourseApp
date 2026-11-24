@@ -71,6 +71,11 @@
                     ? opener : !standalone && cards[index] ? cards[index] : surface;
                 if (target === surface) surface.tabIndex = -1;
                 target.focus({ preventScroll: true });
+                // 비활성화·숨김으로 focus()가 거부되어도 닫힌 상세에 남지 않는다.
+                if (document.activeElement !== target) {
+                    surface.tabIndex = -1;
+                    surface.focus({ preventScroll: true });
+                }
                 detailOpener = null;
                 if (options.onClose) options.onClose();
             }

@@ -301,7 +301,11 @@ class SavedCourseMapTest {
                         long imageVersion=(long)field(form.controller,"previewLoadVersion");
                         var table=(TableView<?>)field(form.controller,"placeTable");
                         var row=table.lookupAll(".table-row-cell").stream().filter(n->n instanceof TableRow<?> r&&!r.isEmpty()).map(n->(TableRow<?>)n).findFirst().orElseThrow();
-                        row.getOnMouseClicked().handle(null);
+                        clickRow(row,javafx.scene.input.MouseButton.SECONDARY);
+                        clickRow(row,javafx.scene.input.MouseButton.MIDDLE);
+                        assertFalse((boolean)field(form.controller,"mapSelected"));
+                        assertNull(field(form.controller,"pendingFocusPlace"));
+                        clickRow(row,javafx.scene.input.MouseButton.PRIMARY);
                         assertEquals(imageVersion,field(form.controller,"previewLoadVersion"));
                         assertFalse((boolean)field(form.controller,"showingMap"));
                         assertTrue(form.root.lookup("#mapLoadPrompt").isVisible());
@@ -404,7 +408,7 @@ class SavedCourseMapTest {
                         new Scene(form.root,1100,760);form.root.resize(1100,760);form.root.applyCss();form.root.layout();
                         var table=(TableView<?>)field(form.controller,"placeTable");
                         var row=(TableRow<?>)table.lookupAll(".table-row-cell").stream().filter(n->n instanceof TableRow<?> r&&!r.isEmpty()).findFirst().orElseThrow();
-                        row.getOnMouseClicked().handle(null);
+                        clickRow(row,javafx.scene.input.MouseButton.PRIMARY);
                         assertFalse((boolean)field(form.controller,"showingMap"));assertNull(field(form.map,"plan"));
                         assertTrue(form.root.lookup("#mapLoadPrompt").isVisible());assertTrue(((Button)field(form.controller,"mapLoadButton")).isDisabled());
                         invoke(form.controller,"onLoadMap",null,null);assertNull(field(form.map,"plan"));return null;
@@ -533,6 +537,11 @@ class SavedCourseMapTest {
                 return null;
             });
         } finally {fx(()->{form.controller.dispose();return null;});}
+    }
+
+    private static void clickRow(TableRow<?> row,javafx.scene.input.MouseButton button) {
+        row.fireEvent(new javafx.scene.input.MouseEvent(javafx.scene.input.MouseEvent.MOUSE_CLICKED,
+                4,4,4,4,button,1,false,false,false,false,false,false,false,false,false,true,null));
     }
 
     private static Object field(Object target,String name) throws Exception {var f=target.getClass().getDeclaredField(name);f.setAccessible(true);return f.get(target);}

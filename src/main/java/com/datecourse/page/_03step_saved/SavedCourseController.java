@@ -242,7 +242,7 @@ public class SavedCourseController extends BasePageController {
             TableRow<PlaceInfoRow> row = new TableRow<>();
             row.setCursor(javafx.scene.Cursor.HAND);
             row.setOnMouseClicked(event -> {
-                if (row.isEmpty()) return;
+                if (row.isEmpty() || event.getButton() != javafx.scene.input.MouseButton.PRIMARY) return;
                 placeTable.getSelectionModel().select(row.getIndex());
                 focusPlaceRow(row.getIndex());
             });
