@@ -9,6 +9,8 @@ reviewed_commit: b69d00e
 reviewed_at: 2026-11-15
 ---
 
+> **현재 변경 · 2026-11-24:** 아래 과거 발췌의 자동 생성 동작은 현재와 달라요. 기존 `initialize()` 계열은 구조 확인만 하며 생성·변경은 `maintenance.DatabaseSetup`으로 모았어요. [[DB_준비와_일반_실행_분리_2026_11_24|현재 준비 방법과 보존 범위]]를 확인하세요.
+
 # SavedCourseRepository
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.

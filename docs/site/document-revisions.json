@@ -218,8 +218,8 @@
       "present": true
     },
     "05_회원_DB/MemberRepository.md": {
-      "fingerprint": "6eda37c458c3101e3edf44a0102e048c33a8ce059946734fe4f1a1d4c70d2152",
-      "revision": 6,
+      "fingerprint": "efc392b4b3a57ece61e0ebe9f2a0600dda1bd82dc606f9265814c6f3cb64dfa5",
+      "revision": 7,
       "updated": true,
       "present": true
     },
@@ -500,14 +500,14 @@
       "present": true
     },
     "실행_및_테스트.md": {
-      "fingerprint": "4d3cfd786929dcb1348e3ae15961bc0e2fc3e39a66225625513570d94c3a8fa0",
-      "revision": 9,
+      "fingerprint": "2dae7cb7c77194ef4633a9f8f5e806f2198164885da63fda2f3d8d2ef9602c46",
+      "revision": 10,
       "updated": true,
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "58bc2baad206850d0c79a9ce264b153dad9ace0a53670bba52285e40c8ede766",
-      "revision": 19,
+      "fingerprint": "89f8fd8b4b545a16d5e77072ad307dbc3c9397c783d927b106a317540335963c",
+      "revision": 20,
       "updated": true,
       "present": true
     },
@@ -536,8 +536,8 @@
       "present": true
     },
     "05_회원_DB/SavedCourseRepository.md": {
-      "fingerprint": "a4a791ffbecc3051615b29dfdb288e1aef9e93ad60ab9cfb4f465611a6f92759",
-      "revision": 4,
+      "fingerprint": "231712abadda48b887cd06495f5c8833e35c5685a498dae73f63e24f893a6a6c",
+      "revision": 5,
       "updated": true,
       "present": true
     },
@@ -788,8 +788,8 @@
       "present": true
     },
     "05_회원_DB/InformationReportRepository.md": {
-      "fingerprint": "72db34ed6231cf86e5765e1328c3d448072e35621d21ffd69be0bc8e444ce533",
-      "revision": 2,
+      "fingerprint": "d40f98f5eedafe311492a64b6083d72d7283d29e4a31107cfc32d92e669d2947",
+      "revision": 3,
       "updated": true,
       "present": true
     },
@@ -800,8 +800,8 @@
       "present": true
     },
     "05_회원_DB/PlaceCatalogRepository.md": {
-      "fingerprint": "76fcfc1c0db5aa569759925e0f5031819675a218871da385626d659a016a5344",
-      "revision": 2,
+      "fingerprint": "1d6cd7a56c042af5f81645f21903531c780882ad63623b4f3f540d99e0d57dd1",
+      "revision": 3,
       "updated": true,
       "present": true
     },
@@ -862,6 +862,12 @@
     "패키지_통합과_구조_점검_2026_11_24.md": {
       "fingerprint": "1b85bf37d42f2ea1beb2071ddfddbef4886d270ef6604a29f57503b20b3b5fda",
       "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "DB_준비와_일반_실행_분리_2026_11_24.md": {
+      "fingerprint": "fffbd69d030a68a8bc27804965f111932e1655f18ea1a521cd565089f27e1f6a",
+      "revision": 1,
       "updated": true,
       "present": true
     }

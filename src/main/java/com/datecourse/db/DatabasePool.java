@@ -3,10 +3,10 @@ package com.datecourse.db;
 import com.zaxxer.hikari.HikariDataSource;
 
 /** Creates a lazy pool: the existing background initialization opens the first connection. */
-final class DatabasePool {
+public final class DatabasePool {
     private DatabasePool() {}
 
-    static HikariDataSource create(DbSettings settings) {
+    public static HikariDataSource create(DbSettings settings) {
         HikariDataSource pool = new HikariDataSource();
         pool.setPoolName("membership-db");
         pool.setJdbcUrl(settings.url());

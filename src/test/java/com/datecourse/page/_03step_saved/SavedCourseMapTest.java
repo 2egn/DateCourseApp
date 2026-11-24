@@ -322,6 +322,8 @@ class SavedCourseMapTest {
                 try(var reader=Files.newBufferedReader(Path.of("data/sql",name))){org.h2.tools.RunScript.execute(connection,reader);}
             connection.createStatement().executeUpdate("INSERT INTO members(member_id,email,password_hash,name) VALUES(7,'map@test.test','test-only','Demo')");
         }
+        com.datecourse.maintenance.DatabaseSetup.preparePreviews(pool);
+        com.datecourse.maintenance.DatabaseSetup.prepareTransport(pool);
         return pool;
     }
 

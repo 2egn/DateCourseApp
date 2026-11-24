@@ -20,6 +20,10 @@ class ExpansionAuditTest {
                 try(var reader=Files.newBufferedReader(Path.of("data/sql",file))){RunScript.execute(c,reader);}
             try(var s=c.createStatement()){s.execute("CREATE TABLE protected_example(note VARCHAR(30))");s.execute("INSERT INTO protected_example VALUES('must remain')");}
         }
+        com.datecourse.maintenance.DatabaseSetup.prepareReports(pool);
+        com.datecourse.maintenance.DatabaseSetup.prepareCatalog(pool);
+        com.datecourse.maintenance.DatabaseSetup.preparePreviews(pool);
+        com.datecourse.maintenance.DatabaseSetup.prepareTransport(pool);
         new InformationReportRepository(pool).initialize();
         baseline=PublicPlaceImport.batch(Path.of("data/places/expansion/suyeong-2026-11-16/places.json"),Path.of("data/places/expansion/suyeong-2026-11-16/appeal/demo_appeal_facts.json"));
         expanded=PublicPlaceImport.batch(Path.of("data/places/expansion/busan-core-2026-11-23/places.json"),Path.of("data/places/expansion/busan-core-2026-11-23/appeal/demo_appeal_facts.json"));

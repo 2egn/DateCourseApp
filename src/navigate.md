@@ -22,7 +22,7 @@ src/
 │  ├─ <a href="main/java/com/datecourse/service/">service/</a>                       추천·경로 조회·가격 계산·표현·캐시
 │  ├─ <a href="main/java/com/datecourse/db/">db/</a>                            회원·장소·저장 코스 저장소와 DB 설정
 │  ├─ <a href="main/java/com/datecourse/auth/">auth/</a>                          비밀번호 해시 생성·검증
-│  ├─ <a href="main/java/com/datecourse/maintenance/">maintenance/</a>                   명시적으로 실행하는 자료 교체 도구
+│  ├─ <a href="main/java/com/datecourse/maintenance/">maintenance/</a>                   DB 추가 구조 준비·자료 교체 명령
 │  └─ <a href="main/java/com/datecourse/demo/">demo/</a>                          단독 시연과 기존 검증·관리 명령
 ├─ <a href="main/resources/">main/resources/</a>                   화면 배치·스타일·지도 리소스
 │  ├─ <a href="main/resources/com/datecourse/page/">com/datecourse/page/</a>           Java 컨트롤러와 같은 페이지 경로의 FXML
@@ -39,6 +39,7 @@ src/
 
 | 기능 | 시작할 클래스 |
 |---|---|
+| DB 준비·일반 실행의 구조 확인 | [DatabaseSetup](main/java/com/datecourse/maintenance/DatabaseSetup.java) · [DatabaseSchema](main/java/com/datecourse/db/DatabaseSchema.java) |
 | 로그인과 화면 연결 | [MembershipApp](main/java/com/datecourse/page/account/MembershipApp.java) |
 | 출발 조건·확정 코스 | [CoursePlannerController](main/java/com/datecourse/page/_01step_planner/CoursePlannerController.java) |
 | 조건·후보·편집 초안 | [CourseEditorController](main/java/com/datecourse/page/_02step_editor/CourseEditorController.java) |

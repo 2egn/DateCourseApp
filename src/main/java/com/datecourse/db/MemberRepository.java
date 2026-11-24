@@ -10,7 +10,6 @@ import java.util.*;
 /** 가입과 관리자 기능에서 공통으로 사용하는 DB 코드입니다. */
 public class MemberRepository implements AutoCloseable {
     public static final String ADMIN_USERNAME = "a1234";
-    private static final String INITIAL_ADMIN_HASH = "pbkdf2-sha256$600000$VWNKiLVOeQPuuXhHV0lPKQ==$jo1T+y7gfBK3eGRNLyp9EBmnbbLaEe6czQss6sZVkpI=";
     public record Login(long memberId, String name, AdminSession adminSession) {}
     public record Member(long id, String email, String name, String phone, String status, String created) {}
     public record Profile(String email, String name, String phone) {}
@@ -59,25 +58,9 @@ public class MemberRepository implements AutoCloseable {
         pool.close();
     }
 
+    /** 시작 시 구조만 확인한다. 생성·변경은 maintenance.DatabaseSetup에서 명시적으로 수행한다. */
     public void initialize() throws SQLException {
-        try (Connection c = connect(); Statement s = c.createStatement()) {
-            // 기존 bcrypt 60자 값도 그대로 보존하면서 새 해시가 들어갈 공간을 확보합니다.
-            try (ResultSet r = s.executeQuery("SELECT CHARACTER_MAXIMUM_LENGTH FROM information_schema.columns "
-                    + "WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='members' AND COLUMN_NAME='password_hash'")) {
-                if (!r.next()) throw new SQLException("members 테이블이 없습니다. 02_create_tables.sql을 먼저 실행하세요.");
-                if (r.getInt(1) < 255) {
-                    try (Statement alter = c.createStatement()) {
-                        alter.executeUpdate("ALTER TABLE members MODIFY password_hash VARCHAR(255) NOT NULL");
-                    }
-                }
-            }
-            s.executeUpdate("CREATE TABLE IF NOT EXISTS app_admins (username VARCHAR(50) PRIMARY KEY, "
-                    + "password_hash VARCHAR(255) NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
-            try (PreparedStatement add = c.prepareStatement("INSERT INTO app_admins(username,password_hash) "
-                    + "VALUES (?,?) ON DUPLICATE KEY UPDATE username=VALUES(username)")) {
-                add.setString(1, ADMIN_USERNAME); add.setString(2, INITIAL_ADMIN_HASH); add.executeUpdate();
-            }
-        }
+        DatabaseSchema.requireMembership(pool);
     }
 
     public long register(String email, char[] password, String name, String phone) throws Exception {

@@ -42,6 +42,10 @@ class SavedCourseRepositoryTest {
         }
         execute("INSERT INTO members(member_id,email,password_hash,name) VALUES"
                 + "(7,'owner@example.test','test-only','Demo'),(8,'other@example.test','test-only','Other')");
+        com.datecourse.maintenance.DatabaseSetup.prepareReports(pool);
+        com.datecourse.maintenance.DatabaseSetup.prepareCatalog(pool);
+        com.datecourse.maintenance.DatabaseSetup.preparePreviews(pool);
+        com.datecourse.maintenance.DatabaseSetup.prepareTransport(pool);
         repository = new SavedCourseRepository(pool);
     }
 

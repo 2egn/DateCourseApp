@@ -1225,6 +1225,10 @@ class CoursePlannerUiTest {
                 }
                 connection.createStatement().execute("INSERT INTO members(member_id,email,password_hash,name) VALUES(7,'flow@test','test','Flow')");
             }
+        com.datecourse.maintenance.DatabaseSetup.prepareReports(pool);
+        com.datecourse.maintenance.DatabaseSetup.prepareCatalog(pool);
+        com.datecourse.maintenance.DatabaseSetup.preparePreviews(pool);
+        com.datecourse.maintenance.DatabaseSetup.prepareTransport(pool);
             var repository = new com.datecourse.db.SavedCourseRepository(pool);
             var session = new com.datecourse.model.UserSession(7, "Flow");
             var place = new com.datecourse.model.Place(11, "test-one", "미확인 식당", "MEAL", 35.158, 129.059,

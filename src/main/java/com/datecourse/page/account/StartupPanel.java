@@ -83,7 +83,7 @@ final class StartupPanel extends JPanel {
                     Thread.currentThread().interrupt();
                     showFailure();
                 } catch (ExecutionException failure) {
-                    showFailure();
+                    showFailure(failure.getCause());
                 }
             }
         };
@@ -92,9 +92,14 @@ final class StartupPanel extends JPanel {
         repaint();
     }
 
-    private void showFailure() {
+    private void showFailure() { showFailure(null); }
+
+    /** 구조 미준비는 접속 장애와 구분해 관리자에게 준비를 요청하도록 안내한다. */
+    private void showFailure(Throwable failure) {
         title.setText("로그인 서비스를 준비하지 못했어요");
         description.setText("<html><div style='text-align:center'>인터넷 연결과 DB 설정, 서버 상태를 확인한 뒤<br>다시 시도해 주세요.</div></html>");
+        if (failure instanceof com.datecourse.db.DatabaseSchema.SetupRequiredException)
+            description.setText("<html><div style='text-align:center'>DB 구조가 준비되지 않았어요.<br>관리자에게 DB 준비 작업을 요청한 뒤 다시 시도해 주세요.</div></html>");
         progress.setVisible(false);
         actions.setVisible(true);
         revalidate();

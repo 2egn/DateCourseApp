@@ -172,7 +172,7 @@ public final class SavedCourseRepository {
         boolean previewStorage = false;
         if (generatePreview) {
             try {
-                initializePreviews(); // DDL must run before opening the course transaction.
+                initializePreviews(); // 구조 확인은 코스 트랜잭션 전에 수행한다.
                 previewStorage = true;
                 preview = renderer.render(plan);
                 if (preview == null || preview.length == 0 || preview.length > com.datecourse.service.CoursePreviewImage.MAX_PNG_BYTES)
@@ -219,7 +219,7 @@ public final class SavedCourseRepository {
         }
     }
 
-    /** Additive setup, invoked on save or by the explicit setup command, never on list reads. */
+    /** 과거 코스 조회는 이동수단 테이블이 없어도 도보 기본값으로 유지한다. */
     private boolean transportTableExists(Connection connection)throws SQLException {
         for(String name:List.of("saved_course_transport","SAVED_COURSE_TRANSPORT"))
             try(var rows=connection.getMetaData().getTables(connection.getCatalog(),null,name,new String[]{"TABLE"})) {
@@ -234,14 +234,11 @@ public final class SavedCourseRepository {
                 +(modes?"LEFT JOIN saved_course_transport t ON t.course_id=c.course_id ":"")
                 +"LEFT JOIN saved_course_places p ON p.course_id=c.course_id WHERE c.member_id=? ORDER BY c.updated_at DESC,c.course_id DESC,p.visit_order";
     }
-    public synchronized void initializeTransport()throws SQLException {
-        if(transportSchemaReady)return;
-        try(var input=getClass().getResourceAsStream("/db/12_saved_course_transport.sql")) {
-            if(input==null)throw new SQLException("교통수단 저장 스키마가 없습니다.");
-            String sql=new String(input.readAllBytes(),java.nio.charset.StandardCharsets.UTF_8).replaceAll("(?m)^--.*$","");
-            try(var c=dataSource.getConnection();var statement=c.createStatement()){statement.executeUpdate(sql);}
-            transportSchemaReady=true;
-        }catch(IOException failure){throw new SQLException("교통수단 저장 구조를 준비하지 못했어요.");}
+    /** 저장 전에 필요한 구조만 확인한다. 생성은 setupDatabase에서 수행한다. */
+    public synchronized void initializeTransport() throws SQLException {
+        if (transportSchemaReady) return;
+        DatabaseSchema.requireTables(dataSource, "saved_course_transport");
+        transportSchemaReady = true;
     }
     private void replaceTransport(Connection c,long id,com.datecourse.model.TravelMode mode)throws SQLException {
         try(var remove=c.prepareStatement("DELETE FROM saved_course_transport WHERE course_id=?")){remove.setLong(1,id);remove.executeUpdate();}
@@ -256,16 +253,10 @@ public final class SavedCourseRepository {
         }
     }
 
+    /** 미리보기 구조가 없으면 기존의 이미지 없는 저장·조회 동작을 유지한다. */
     public synchronized void initializePreviews() throws SQLException, IOException {
         if (previewSchemaReady) return;
-        try (var input = getClass().getResourceAsStream("/db/11_saved_course_previews.sql")) {
-            if (input == null) throw new IOException("미리보기 스키마가 없습니다.");
-            String sql = new String(input.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8)
-                    .replaceAll("(?m)^--.*$", "");
-            try (var connection = dataSource.getConnection(); var statement = connection.createStatement()) {
-                statement.executeUpdate(sql);
-            }
-        }
+        DatabaseSchema.requireTables(dataSource, "saved_course_previews");
         previewSchemaReady = true;
     }
 

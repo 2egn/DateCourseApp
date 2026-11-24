@@ -68,16 +68,10 @@ public final class PlaceCatalogRepository implements PlaceSource {
         return new PreparedBatch(hash(JSON.writeValueAsString(payloads)), payloads);
     }
 
-    /** Explicit import setup only; normal reads never create tables. */
+    /** 적재 도구에서도 구조 생성은 별도 유지보수 명령으로 수행한다. */
     public void initialize() throws SQLException, IOException {
-        try (var input = getClass().getResourceAsStream("/db/10_place_catalog.sql")) {
-            if (input == null) throw new IOException("장소 카탈로그 스키마를 찾지 못했어요.");
-            String sql = new String(input.readAllBytes(), StandardCharsets.UTF_8).replaceAll("(?m)^--.*$", "");
-            try (var connection = pool.getConnection(); var statement = connection.createStatement()) {
-                for (String command : sql.split(";")) if (!command.isBlank()) statement.executeUpdate(command);
-                statement.executeUpdate("INSERT IGNORE INTO place_catalog_lock(lock_id) VALUES(1)");
-            }
-        }
+        DatabaseSchema.requireTables(pool, "place_catalog_lock", "place_catalog_sources", "place_catalog_imports",
+                "place_catalog_entries", "place_catalog_revisions");
     }
 
     public ImportResult synchronize(Batch batch) throws SQLException, IOException {

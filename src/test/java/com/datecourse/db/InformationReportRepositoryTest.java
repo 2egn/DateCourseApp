@@ -23,6 +23,10 @@ class InformationReportRepositoryTest {
                 try(var reader=Files.newBufferedReader(Path.of("data/sql",f))){RunScript.execute(c,reader);}
             try(var s=c.createStatement()){s.executeUpdate("INSERT INTO members(member_id,email,password_hash,name) VALUES (7,'demo@example.test','test','사용자')");}
         }
+        com.datecourse.maintenance.DatabaseSetup.prepareReports(pool);
+        com.datecourse.maintenance.DatabaseSetup.prepareCatalog(pool);
+        com.datecourse.maintenance.DatabaseSetup.preparePreviews(pool);
+        com.datecourse.maintenance.DatabaseSetup.prepareTransport(pool);
         reports=new InformationReportRepository(pool);
     }
     @AfterEach void close(){pool.close();}

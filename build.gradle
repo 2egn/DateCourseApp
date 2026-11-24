@@ -52,7 +52,7 @@ processResources {
     includeEmptyDirs = false
     doFirst { delete layout.buildDirectory.file('resources/main/db.properties').get().asFile }
     exclude 'map/kakao-config.js', 'db.properties'
-    from('data/sql') { include '10_place_catalog.sql', '11_saved_course_previews.sql', '12_saved_course_transport.sql'; into 'db' }
+    from('data/sql') { include '09_place_information_reports.sql', '10_place_catalog.sql', '11_saved_course_previews.sql', '12_saved_course_transport.sql'; into 'db' }
     from('data/places/demo') {
         include 'seomyeon-jeonpo-demo.json', 'seomyeon-public-estimates.json'
         into 'datasets'
@@ -94,7 +94,8 @@ tasks.register('setupInformationReports', JavaExec) {
     group = 'verification'
     description = 'Prepare additive information-report tables without changing existing records'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'com.datecourse.demo.InformationReportSetup'
+    mainClass = 'com.datecourse.maintenance.DatabaseSetup'
+    args '--reports'
 }
 
 // Provider keys are fetched at runtime, never copied into application resources.
@@ -161,7 +162,8 @@ tasks.register('setupCoursePreviews', JavaExec) {
     group = 'verification'
     description = 'Add the optional saved-course PNG table without modifying existing courses'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'com.datecourse.demo.CoursePreviewSetup'
+    mainClass = 'com.datecourse.maintenance.DatabaseSetup'
+    args '--previews'
 }
 
 // Uses the configured Kakao key, with no walking-route API or member DB calls.
@@ -200,4 +202,12 @@ tasks.register('verifyKakaoRoutes', JavaExec) {
     description = 'Verify live Kakao driving/transit route permissions and response geometry'
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'com.datecourse.demo.KakaoRouteProbe'
+}
+
+// 일반 앱 실행과 분리한 명시적 DB 추가 구조 준비 명령이다.
+tasks.register('setupDatabase', JavaExec) {
+    group = 'application'
+    description = 'Prepare additional DB schema explicitly, preserving existing user and course data'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.datecourse.maintenance.DatabaseSetup'
 }
