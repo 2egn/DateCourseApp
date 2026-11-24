@@ -13,7 +13,9 @@ try{
   return route.fulfill({body:fs.readFileSync(file),contentType:({'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json'})[path.extname(file)]||'application/octet-stream'});
  });
  await page.goto('https://board.test/dashboard/');await page.waitForLoadState('networkidle');
- assert.match(await page.locator('#implementation-status').innerText(),/334705d/);
+ const referenceText=await page.locator('#implementation-status').innerText();
+ assert.match(referenceText,/933fd85/);assert.match(referenceText,/기능 브랜치/);assert.match(referenceText,/master 미반영/);
+ assert.ok(await page.locator('[data-task-id="STRUCTURE-24"]').isVisible());
  const time=page.locator('[data-task-id="TIME-01"]');assert.equal(await time.locator('select').inputValue(),'done');
  assert.equal(data.tasks.find(t=>t.id==='CHECK-01').status,'todo');assert.equal(data.tasks.find(t=>t.id==='TIME-02').status,'todo');
  assert.ok(await page.locator('[data-task-id="MERGE-01"]').isVisible());await page.screenshot({path:'build/ui-preview/latest-dashboard-desktop.png'});
