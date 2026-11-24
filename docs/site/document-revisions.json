@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "a2f53a7e15c8140bf976d0c870ab7eee925f9f957adb4aee7c588302cd855721",
-      "revision": 35,
+      "fingerprint": "507747788d5707bafaeb325b6ed9055c584aeb8cc82970efda591af2222a2d6d",
+      "revision": 36,
       "updated": true,
       "present": true
     },
@@ -915,6 +915,12 @@
     },
     "중구_98곳_추가와_가격_보완_2026_11_25.md": {
       "fingerprint": "becd9e0c9a1b39537f6f5e14b888b6c3af4f76deda610aa427794a139525ef17",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "JavaFX21_유지보수_패치_2026_11_25.md": {
+      "fingerprint": "71c03e819b4baf1a5239a17c4272643d7bf662966bca049e38d7614df76d6647",
       "revision": 1,
       "updated": true,
       "present": true

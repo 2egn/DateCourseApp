@@ -40,7 +40,8 @@ dependencies {
 }
 
 javafx {
-    version = "21"
+    // Java 21 실행 기준은 유지하면서 같은 LTS 계열의 유지보수 패치를 사용한다.
+    version = "21.0.13.1"
     // FXML 디자인 및 WebView(카카오 지도) 모듈 포함
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.swing']
 }

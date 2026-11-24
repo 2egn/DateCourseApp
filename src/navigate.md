@@ -78,3 +78,5 @@ src/
 저장 경로 조회 버튼은 `CourseMapView.isRoutePending`의 실제 작업·대기 상태로 제어하고, 지연 이미지 확인 뒤 장소 이동은 `SavedCourseController.showMapPreview/focusPendingPlace`에서 연결한다. [후속 검증](../docs/review-2026-11-25.md).
 
 추천의 전체 범위·중복 대표 선택은 `PlaceSearchService.nearby`, 직전 장소 기준 거리 재계산과 조건 필터는 `NextPlaceService.matching`이 맡는다. [결과 보존 대조·로컬 측정](../docs/review-2026-11-25.md#추천-후보의-중복-계산-정리).
+
+JavaFX UI·WebView 유지보수 버전도 `build.gradle`의 `javafx.version`에서 고정한다. 현재 21.0.13.1이며 [같은 LTS 계열 비교 결과](../docs/site/content/JavaFX21_유지보수_패치_2026_11_25.md)를 참고한다.

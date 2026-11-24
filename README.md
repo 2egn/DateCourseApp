@@ -6,7 +6,7 @@
 
 ## 빠른 시작
 
-1. Gradle을 시작할 JDK 17 이상과 저장소의 Gradle Wrapper를 사용합니다. 설치된 JDK 21을 우선 사용하며, 없으면 운영체제·CPU에 맞는 21을 Gradle 개인 캐시에 자동 다운로드합니다. 최초 다운로드에는 인터넷 연결이 필요하고 JDK 파일은 저장소에 포함하지 않습니다. Gradle toolchain으로 컴파일·검사·앱 실행 JDK를 21로 고정하고 `--release 21`도 유지합니다. Gradle 자체 실행 JDK는 IDE·`JAVA_HOME` 설정을 따릅니다. JavaFX 21과 나머지 라이브러리는 명시한 버전을 사용합니다. IDE에서 직접 실행할 때도 Project SDK를 21로 지정합니다. 여러 JDK가 있어도 자동 검색·`JDK21_HOME`·`JAVA_HOME_21_X64`·`JAVA_HOME`에서 찾은 후보 중 21을 선택합니다. 일반 위치 밖에 설치한 21은 `JDK21_HOME`에 설치 경로를 지정합니다. [선택 규칙과 검색 실패 해결](docs/site/content/JDK21_자동_검색과_선택_2026_11_25.md)을 참고합니다.
+1. Gradle을 시작할 JDK 17 이상과 저장소의 Gradle Wrapper를 사용합니다. 설치된 JDK 21을 우선 사용하며, 없으면 운영체제·CPU에 맞는 21을 Gradle 개인 캐시에 자동 다운로드합니다. 최초 다운로드에는 인터넷 연결이 필요하고 JDK 파일은 저장소에 포함하지 않습니다. Gradle toolchain으로 컴파일·검사·앱 실행 JDK를 21로 고정하고 `--release 21`도 유지합니다. Gradle 자체 실행 JDK는 IDE·`JAVA_HOME` 설정을 따릅니다. JavaFX는 같은 21 계열의 유지보수판 **21.0.13.1**로 고정하고 나머지 라이브러리도 명시한 버전을 사용합니다. 처음 받는 PC에는 이 의존성을 내려받을 인터넷 연결이 필요합니다. IDE에서 직접 실행할 때도 Project SDK를 21로 지정합니다. 여러 JDK가 있어도 자동 검색·`JDK21_HOME`·`JAVA_HOME_21_X64`·`JAVA_HOME`에서 찾은 후보 중 21을 선택합니다. 일반 위치 밖에 설치한 21은 `JDK21_HOME`에 설치 경로를 지정합니다. [선택 규칙과 검색 실패 해결](docs/site/content/JDK21_자동_검색과_선택_2026_11_25.md)을 참고합니다.
 2. [공통 접속 키 안내](docs/공통_접속_키.md)에 따라 `.local/team-access.properties`를 준비합니다. 카카오 JavaScript·REST, TMAP, Google Places 키와 DB 접속 정보를 실행 시 받아옵니다.
 3. 카카오 JavaScript 키의 허용 도메인에 `http://localhost:8080`을 등록합니다. 로컬 지도 서버는 앱이 시작합니다.
 4. 프로젝트 루트에서 실행합니다.
