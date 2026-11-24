@@ -8,6 +8,7 @@ import java.util.List;
 public final class NextPlaceService {
     public static final int DEFAULT_CANDIDATES = NextPlaceCondition.DEFAULT_DISPLAY_LIMIT;
     private final PlaceSearchService search = new PlaceSearchService();
+    private final PlaceCalculationService calculation = new PlaceCalculationService();
 
     public List<PlaceSearchService.NearbyPlace> candidates(List<Place> places, List<Place> confirmed,
             double startLat, double startLng, int radius, String category,
@@ -39,11 +40,16 @@ public final class NextPlaceService {
         if (people < 1 || people > 20 || routeRadius < com.datecourse.model.TravelMode.MIN_RADIUS || routeRadius > com.datecourse.model.TravelMode.MAX_RADIUS || maxPricePerPerson < 0)
             throw new IllegalArgumentException("가격·인원·전체 반경을 확인해 주세요.");
         Place last = confirmed.isEmpty() ? null : confirmed.get(confirmed.size() - 1);
-        double lat = last == null ? startLat : last.lat();
-        double lng = last == null ? startLng : last.lng();
-        List<Place> inRouteRange = search.nearby(places, startLat, startLng, routeRadius, List.of(category))
-                .stream().map(PlaceSearchService.NearbyPlace::place).toList();
-        return search.nearby(inRouteRange, lat, lng, radius, List.of(category)).stream()
+        // 전체 범위에서 끝낸 유효성·중복 검사는 재사용하고, 필요한 거리만 다시 구한다.
+        var nearby = search.nearby(places, startLat, startLng, routeRadius, List.of(category)).stream();
+        if (last != null) nearby = nearby
+                .map(candidate -> new PlaceSearchService.NearbyPlace(candidate.place(),
+                        calculation.calculateDistance(last.lat(), last.lng(), candidate.place().lat(), candidate.place().lng())))
+                .filter(candidate -> candidate.distanceMeters() <= radius)
+                .sorted(java.util.Comparator.comparingDouble(PlaceSearchService.NearbyPlace::distanceMeters)
+                        .thenComparingLong(candidate -> candidate.place().recordId()));
+        else nearby = nearby.filter(candidate -> candidate.distanceMeters() <= radius);
+        return nearby
                 .filter(candidate -> candidate.place().priceEstimate().withinCap(maxPricePerPerson)
                     || includeUncertainPrice && !candidate.place().priceEstimate().finite()
                         && (!candidate.place().priceEstimate().usablePerPerson()

@@ -24,6 +24,23 @@ class NextPlaceServiceTest {
         assertEquals(List.of(next), result.stream().map(PlaceSearchService.NearbyPlace::place).toList());
     }
 
+    @Test void reusesAuthoritativeIdentitySelectionAndStableDistanceTiesFromBothOrigins() {
+        var detailsA=new com.datecourse.model.PlaceDetails("","","","","","","","",java.util.Map.of("public","A"));
+        var detailsB=new com.datecourse.model.PlaceDetails("","","","","","","","",java.util.Map.of("public","B"));
+        var a=new Place(10,"a","같은 이름","CAFE",35.158,129.06,com.datecourse.model.PriceEstimate.exact(5000),0,detailsA);
+        var b=new Place(11,"b","같은 이름","CAFE",35.158,129.06,com.datecourse.model.PriceEstimate.exact(4000),0,detailsB);
+        var alias=new Place(12,"alias","같은 이름","CAFE",35.158,129.06,com.datecourse.model.PriceEstimate.exact(1000),0,detailsA);
+        var legacy=place(14,"같은 이름",35.158,500);
+        var last=place(15,"직전 장소",35.159,5000);
+        for(var confirmed:List.of(List.<Place>of(),List.of(last))) {
+            var result=service.candidates(List.of(a,b,alias,legacy,last),confirmed,35.157,129.06,500,"카페",10000,2,2000);
+            assertEquals(List.of(11L,12L),result.stream().filter(p->p.place().recordId()!=15)
+                    .map(p->p.place().recordId()).toList());
+            assertEquals(result.get(0).distanceMeters(),new PlaceCalculationService().calculateDistance(
+                    confirmed.isEmpty()?35.157:35.159,129.06,result.get(0).place().lat(),result.get(0).place().lng()));
+        }
+    }
+
     @Test void appliesPerPersonCapWithoutTotalBudgetLimit() {
         Place first = place(1, "첫 장소", 35.157, 10000);
         Place affordable = place(2, "가능", 35.157, 5000);
