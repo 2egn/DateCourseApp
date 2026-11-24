@@ -1,7 +1,7 @@
 package com.datecourse.page.common.map;
 
-import com.datecourse.page.condition.CoursePlannerController;
-import com.datecourse.page.editor.CourseEditorController;
+import com.datecourse.page._01step_planner.CoursePlannerController;
+import com.datecourse.page._02step_editor.CourseEditorController;
 
 import com.datecourse.model.Place;
 import com.datecourse.model.RoutePlan;
@@ -46,7 +46,7 @@ class WalkingRouteLiveTest {
         var second=places.stream().filter(p->p.name().equals("카페이떼")).findFirst().orElseThrow();
         Context context=fx(()->{
             try {
-                FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/editor/route-editor-view.fxml"));Parent root=loader.load();
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/_02step_editor/route-editor-view.fxml"));Parent root=loader.load();
                 editor.set(loader.getController());
                 var field=CourseEditorController.class.getDeclaredField("map");field.setAccessible(true);
                 CourseMapView map=(CourseMapView)field.get(editor.get());
@@ -108,7 +108,7 @@ class WalkingRouteLiveTest {
         assertEquals("localhost", com.datecourse.service.MapPageServer.sharedPage().getHost());
         Context context=fx(() -> {
             try {
-                FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/condition/condition-view.fxml"));
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/_01step_planner/condition-view.fxml"));
                 Parent root=loader.load();
                 CoursePlannerController controller=loader.getController();
                 var member=CoursePlannerController.class.getDeclaredField("map");member.setAccessible(true);

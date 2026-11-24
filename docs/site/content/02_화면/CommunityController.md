@@ -1,5 +1,5 @@
 ---
-current_source: src/main/java/com/datecourse/page/community/CommunityController.java
+current_source: archive/legacy-ui/src/main/java/com/datecourse/page/community/CommunityController.java
 layout_updated: 2026-11-24
 readability_updated: 2026-11-13
 project: DateCourseApp
@@ -16,9 +16,12 @@ tags:
 title: CommunityController
 ---
 
+> 현재 앱에서 분리해 `archive/legacy-ui/src/main/java/com/datecourse/page/community/CommunityController.java`에 보관했어요. [[순서_넘버링과_미사용_정리_2026_11_24|보관·복원 안내]]를 확인하세요. 아래 코드 발췌는 당시 기록이에요.
+
+
 ## 현재 이름·경로 · 2026-11-24
 
-`CommunityController` → `src/main/java/com/datecourse/page/community/CommunityController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+`CommunityController` → `archive/legacy-ui/src/main/java/com/datecourse/page/community/CommunityController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
 
 
 > [!info] 개발 중인 코드

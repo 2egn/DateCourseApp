@@ -1,6 +1,7 @@
 ---
 title: CapsLockHintTest
 source: src/test/java/kr/ac/university/localdb/ui/CapsLockHintTest.java
+current_source: src/test/java/com/datecourse/page/common/swing/CapsLockHintTest.java
 source_commit: ea2242b
 source_sha256: 0a0431f55046d9b4135765b8d1da2d04874f7f44a5c6b31d15f04f3734e848c7
 readability_updated: 2026-11-14
@@ -14,4 +15,4 @@ readability_updated: 2026-11-14
 
 - `focusShowsCapsWarningAndFocusLossClearsItWithoutReadingPassword()`
 
-[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/kr/ac/university/localdb/ui/CapsLockHintTest.java) · [[현재_구현_흐름|현재 전체 흐름]]
+[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/com/datecourse/page/common/swing/CapsLockHintTest.java) · [[현재_구현_흐름|현재 전체 흐름]]

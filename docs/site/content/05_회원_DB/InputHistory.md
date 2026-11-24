@@ -6,6 +6,7 @@ package: kr.ac.university.localdb
 status: 현재 사용
 reviewed: 2026-11-11
 source: src/main/java/kr/ac/university/localdb/InputHistory.java
+current_source: src/main/java/com/datecourse/page/account/InputHistory.java
 source_sha256: af521a33f46d6b52beb5a1e972ac26854385deb40be92d9ad117d02bc11f0c14
 tags:
   - Java

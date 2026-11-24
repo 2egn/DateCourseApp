@@ -1,6 +1,7 @@
 ---
 title: SavedCourseRepositoryTest
 source: src/test/java/kr/ac/university/localdb/db/SavedCourseRepositoryTest.java
+current_source: src/test/java/com/datecourse/db/SavedCourseRepositoryTest.java
 source_commit: ea2242b
 source_sha256: 0a62987cc3bddb12a12eb13236eebce4d4ea68dfd53a71db898418094b6604d0
 readability_updated: 2026-11-14
@@ -25,4 +26,4 @@ readability_updated: 2026-11-14
 - `unknownRangeFreeAndPublicProvenanceRoundTripWithoutZeroDefaults()`
 - `oldUnverifiedZeroSnapshotDoesNotRestoreAsConfirmedFree()`
 
-[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/kr/ac/university/localdb/db/SavedCourseRepositoryTest.java) · [[현재_구현_흐름|현재 전체 흐름]]
+[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/com/datecourse/db/SavedCourseRepositoryTest.java) · [[현재_구현_흐름|현재 전체 흐름]]

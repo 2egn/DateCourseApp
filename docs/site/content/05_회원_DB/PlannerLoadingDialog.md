@@ -1,6 +1,7 @@
 ---
 title: PlannerLoadingDialog
 source: src/main/java/kr/ac/university/localdb/ui/PlannerLoadingDialog.java
+current_source: src/main/java/com/datecourse/page/account/PlannerLoadingDialog.java
 source_commit: ea2242b
 source_sha256: 6d886f43206e9fd6d4b9ecbce410fc74a509618eb3b3a79c3ce5fc8de92b82c1
 readability_updated: 2026-11-14
@@ -16,7 +17,7 @@ readability_updated: 2026-11-14
 
 ## 코드 읽기
 
-아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/kr/ac/university/localdb/ui/PlannerLoadingDialog.java)에서 확인해요.
+아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/com/datecourse/page/account/PlannerLoadingDialog.java)에서 확인해요.
 
 ```java
 final class PlannerLoadingDialog extends JDialog implements AutoCloseable {

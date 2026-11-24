@@ -2,8 +2,8 @@ package com.datecourse.demo;
 
 import com.datecourse.service.PublicDemoPlaceRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.ac.university.localdb.db.MemberRepository;
-import kr.ac.university.localdb.db.PlaceCatalogRepository;
+import com.datecourse.db.MemberRepository;
+import com.datecourse.db.PlaceCatalogRepository;
 import java.time.Instant;
 import java.io.ByteArrayInputStream;
 import java.nio.file.*;

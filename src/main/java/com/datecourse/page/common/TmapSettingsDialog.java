@@ -26,7 +26,7 @@ public final class TmapSettingsDialog {
         if (owner != null) dialog.initOwner(owner);
         dialog.setTitle("도보 경로 탐색 방식");
         dialog.setHeaderText("어떤 길로 걸을까요?");
-        com.datecourse.ui.DialogTheme.apply(dialog);
+        com.datecourse.page.common.controls.DialogTheme.apply(dialog);
         dialog.getDialogPane().getStyleClass().add("route-options-dialog");
         ToggleGroup choices = new ToggleGroup();
         VBox content = new VBox(10);

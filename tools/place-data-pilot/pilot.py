@@ -29,7 +29,7 @@ SAMPLE_IDS = [
 ]
 PROTECTED = [ROOT / 'data/places/current/integrated_places.csv',
              ROOT / 'data/sql/05_replace_integrated_data.sql',
-             ROOT / 'src/main/java/kr/ac/university/localdb/db/PlaceRepository.java',
+             ROOT / 'src/main/java/com/datecourse/db/PlaceRepository.java',
              *[SOURCE / n for n in ('busan_places.csv', 'busan_menu_prices.csv',
                                     'busan_good_price_shops.csv')]]
 

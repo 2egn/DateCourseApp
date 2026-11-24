@@ -1,6 +1,6 @@
 package com.datecourse.demo;
 
-import kr.ac.university.localdb.db.MemberRepository;
+import com.datecourse.db.MemberRepository;
 
 /** Adds only the optional PNG table, without touching saved courses. */
 public final class CoursePreviewSetup {

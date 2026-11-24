@@ -1,6 +1,7 @@
 ---
 title: CapsLockHint
 source: src/main/java/kr/ac/university/localdb/ui/CapsLockHint.java
+current_source: src/main/java/com/datecourse/page/common/swing/CapsLockHint.java
 source_commit: ea2242b
 source_sha256: af7b07a11e2aacc60ce198ef50b13b59091478c2bd198491fa8eb27355e56658
 readability_updated: 2026-11-14
@@ -16,7 +17,7 @@ readability_updated: 2026-11-14
 
 ## 코드 읽기
 
-아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/kr/ac/university/localdb/ui/CapsLockHint.java)에서 확인해요.
+아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/com/datecourse/page/common/swing/CapsLockHint.java)에서 확인해요.
 
 ```java
 final class CapsLockHint extends JLabel {

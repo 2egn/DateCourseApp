@@ -6,6 +6,7 @@ package: kr.ac.university.localdb.ui
 status: 현재 사용
 reviewed: 2026-11-11
 source: src/main/java/kr/ac/university/localdb/ui/StartupPanel.java
+current_source: src/main/java/com/datecourse/page/account/StartupPanel.java
 source_sha256: 7f51f9cfe99761a8423a97c482b2a307499ba9ef05bc1f31f98d324af1e08649
 tags:
   - Java

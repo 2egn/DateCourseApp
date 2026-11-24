@@ -1,6 +1,7 @@
 ---
 title: PlannerLoadingDialogTest
 source: src/test/java/kr/ac/university/localdb/ui/PlannerLoadingDialogTest.java
+current_source: src/test/java/com/datecourse/page/account/PlannerLoadingDialogTest.java
 source_commit: ea2242b
 source_sha256: 5aca7185e08a728070e96d6c51e60853e9b181e6242aa748bbcf3338ab74b069
 readability_updated: 2026-11-14
@@ -14,4 +15,4 @@ readability_updated: 2026-11-14
 
 - `loadingMessageAppearsAndClosingRestoresTheOwnerOnBothCompletionPaths()`
 
-[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/kr/ac/university/localdb/ui/PlannerLoadingDialogTest.java) · [[현재_구현_흐름|현재 전체 흐름]]
+[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/com/datecourse/page/account/PlannerLoadingDialogTest.java) · [[현재_구현_흐름|현재 전체 흐름]]

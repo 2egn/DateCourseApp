@@ -34,7 +34,7 @@
 | [build_public_demo / build](../tools/build_public_demo.py) | 공공 입력 지문 검증, 기존 장소 보존, 구별 선택 및 신규 가격 표본 정책을 적용한다. 기존 데모 재생성 결과는 유지한다. |
 | [collect_busan_appeal_data / collect](../tools/collect_busan_appeal_data.py) | 지정 출처·수동 확인을 파일로 분리하고 확대본의 속성을 별도 출력한다. 수동 확인일은 생성일로 바꾸지 않는다. |
 | 같은 파일 / NearestTransitIndex | 격자로 근접 후보를 좁히고 정확한 거리로 비교한다. 근처에 후보가 없으면 전체 비교하며 원본 순서로 동률을 처리한다. |
-| [PlaceCatalogRepository / synchronize](../src/main/java/kr/ac/university/localdb/db/PlaceCatalogRepository.java) | EXPANSION 모드는 기존 활성 장소가 빠진 입력을 트랜잭션 안에서 거부한다. 의도적인 전체 스냅샷 비활성화 동작은 별도로 유지한다. |
+| [PlaceCatalogRepository / synchronize](../src/main/java/com/datecourse/db/PlaceCatalogRepository.java) | EXPANSION 모드는 기존 활성 장소가 빠진 입력을 트랜잭션 안에서 거부한다. 의도적인 전체 스냅샷 비활성화 동작은 별도로 유지한다. |
 | [PublicPlaceImport / batch](../src/main/java/com/datecourse/demo/PublicPlaceImport.java) | 외부 장소/속성 파일 쌍을 실제 Java 모델로 검증한다. 운영 CLI는 확장 모드를 사용한다. |
 | [suyeong-policy.json](../data/places/expansion/suyeong-policy.json) | 구·상한·가격 표본 정책. 상한은 기존 장소를 포함한 전체 수다. district 선택에서는 반경 대신 행정구 필드를 사용한다. |
 

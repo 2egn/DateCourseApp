@@ -3,7 +3,7 @@ package com.datecourse.page.review;
 import com.datecourse.page.common.BasePageController;
 
 import com.datecourse.model.InformationReport;
-import kr.ac.university.localdb.db.MemberRepository;
+import com.datecourse.db.MemberRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -13,7 +13,7 @@ public final class InformationReviewController extends BasePageController {
     // ===== FXML 컴포넌트 (information-review-view.fxml의 위→아래 순서) =====
 
     // [상단] 상태 필터 / 새로고침
-    @FXML private ComboBox<kr.ac.university.localdb.db.InformationReportRepository.ReportFilter> filterBox;
+    @FXML private ComboBox<com.datecourse.db.InformationReportRepository.ReportFilter> filterBox;
     @FXML private Button refreshButton;
 
     // [중앙 왼쪽] 제보 목록
@@ -37,7 +37,7 @@ public final class InformationReviewController extends BasePageController {
     private int pageIndex;       // 현재 페이지 번호 (0부터)
     private Long nextCursor;     // 다음 페이지 커서 (없으면 null)
     private MemberRepository.AdminSession session;  // 관리자 로그인 세션
-    private kr.ac.university.localdb.db.InformationReportRepository.ReviewContext reviewContext;  // 선택한 제보의 최신 검토 정보
+    private com.datecourse.db.InformationReportRepository.ReviewContext reviewContext;  // 선택한 제보의 최신 검토 정보
     private long detailVersion;  // 상세 조회 요청 번호 (오래된 응답 무시용)
     private final java.util.function.BiPredicate<String,String> confirmation=this::confirm;  // 확인 창 (제목, 내용)
 
@@ -45,8 +45,8 @@ public final class InformationReviewController extends BasePageController {
 
     /** 화면 초기 설정: 필터, 목록 표시 방식, 선택 이벤트 연결 */
     @FXML private void initialize() {
-        filterBox.getItems().setAll(kr.ac.university.localdb.db.InformationReportRepository.ReportFilter.values());
-        filterBox.setValue(kr.ac.university.localdb.db.InformationReportRepository.ReportFilter.PENDING);
+        filterBox.getItems().setAll(com.datecourse.db.InformationReportRepository.ReportFilter.values());
+        filterBox.setValue(com.datecourse.db.InformationReportRepository.ReportFilter.PENDING);
         filterBox.valueProperty().addListener((o,a,b)->reload());
         reports.setPlaceholder(new Label("접수된 제보가 없어요."));
         reports.setCellFactory(v->new ListCell<>() {
@@ -146,7 +146,7 @@ public final class InformationReviewController extends BasePageController {
     private boolean confirm(String title,String message) {
         var dialog=new Alert(Alert.AlertType.CONFIRMATION,message,ButtonType.OK,ButtonType.CANCEL);
         if(reports.getScene()!=null)dialog.initOwner(reports.getScene().getWindow());
-        dialog.setTitle(title);dialog.setHeaderText(title);com.datecourse.ui.DialogTheme.apply(dialog);
+        dialog.setTitle(title);dialog.setHeaderText(title);com.datecourse.page.common.controls.DialogTheme.apply(dialog);
         return dialog.showAndWait().orElse(ButtonType.CANCEL)==ButtonType.OK;
     }
 

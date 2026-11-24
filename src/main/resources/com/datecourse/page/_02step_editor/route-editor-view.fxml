@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import com.datecourse.page.common.controls.FormScrollPane?>
+<?import com.datecourse.page.common.controls.PlaceFeatureSelector?>
+<?import com.datecourse.page.common.controls.ExpandableFilterPane?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
+<?import javafx.scene.shape.SVGPath?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.datecourse.page._02step_editor.CourseEditorController"
+            stylesheets="@/style.css" styleClass="condition-screen,route-editor-screen" prefWidth="1440" prefHeight="960" minHeight="0">
+
+ <!-- 상단 헤더 바 + '2명 · 출발지 중심' 아래 박스 추가 -->
+ <top>
+  <VBox spacing="10" styleClass="planner-header,editor-heading-bar">
+   <HBox alignment="CENTER_LEFT" spacing="16">
+    <Label text="02 · 장소를 하나씩 골라요" styleClass="planner-heading"/>
+    <Region HBox.hgrow="ALWAYS"/>
+    <Label text="이동 방법" styleClass="field-label"/>
+    <ComboBox fx:id="travelModeBox" accessibleText="코스 이동 방법" prefWidth="130" minHeight="38" prefHeight="38"/>
+    <Button fx:id="walkingSettingsButton" text="도보 설정" onAction="#onTmapSettings" styleClass="drawer-toggle" minHeight="38" prefHeight="38"/>
+   </HBox>
+
+   <!-- 요청하신 '2명 · 출발지 중심 2000m 범위' 전용 박스 -->
+   <HBox alignment="CENTER_LEFT" spacing="12" styleClass="origin-info-box">
+    <Label text="현재 설정 조건" styleClass="metric-caption"/>
+    <Label text="|" styleClass="planner-caption"/>
+    <Label fx:id="commonLabel" text="2명 · 출발지 중심 2000m 범위" styleClass="origin-info-value"/>
+    <Region HBox.hgrow="ALWAYS"/>
+   </HBox>
+  </VBox>
+ </top>
+
+ <!-- 중앙 2단 분할 -->
+ <center>
+  <GridPane hgap="16" minHeight="0" styleClass="editor-main-grid">
+   <columnConstraints>
+    <ColumnConstraints percentWidth="54"/>
+    <ColumnConstraints percentWidth="46"/>
+   </columnConstraints>
+   <rowConstraints>
+    <RowConstraints minHeight="0" percentHeight="100" vgrow="ALWAYS"/>
+   </rowConstraints>
+
+   <!-- 왼쪽: 지도 영역 -->
+   <VBox GridPane.columnIndex="0" spacing="8" minWidth="0" minHeight="0">
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="map-toolbar">
+     <Region HBox.hgrow="ALWAYS"/>
+     <Button fx:id="fitRouteButton" text="전체 코스" onAction="#onFitRoute" styleClass="drawer-toggle" minWidth="-Infinity" minHeight="36" prefHeight="36"/>
+     <Button text="두 범위 보기" onAction="#onFitRange" styleClass="drawer-toggle" minWidth="-Infinity" minHeight="36" prefHeight="36"/>
+    </HBox>
+    <WebView fx:id="editMapView" VBox.vgrow="ALWAYS" minHeight="0"/>
+   </VBox>
+
+   <!-- 오른쪽: 핵심 요약 대시보드 + 조건 설정 폼 -->
+   <BorderPane GridPane.columnIndex="1" minWidth="0" minHeight="0" styleClass="route-edit-form">
+    <top>
+     <VBox spacing="8" styleClass="route-sidebar-summary">
+      <HBox spacing="10" styleClass="editor-summary-bar">
+       <VBox spacing="4" HBox.hgrow="ALWAYS" styleClass="editor-summary-card">
+        <Label wrapText="true" minHeight="-Infinity" text="현재 교통수단" styleClass="metric-caption"/>
+        <Label wrapText="true" minHeight="-Infinity" fx:id="metricTransportLabel" text="도보" styleClass="metric-value"/>
+       </VBox>
+       <VBox spacing="4" HBox.hgrow="ALWAYS" styleClass="editor-summary-card">
+        <Label wrapText="true" minHeight="-Infinity" text="총 이동시간" styleClass="metric-caption"/>
+        <Label wrapText="true" minHeight="-Infinity" fx:id="metricTimeLabel" text="0분" styleClass="metric-value-accent"/>
+       </VBox>
+       <VBox spacing="4" HBox.hgrow="ALWAYS" styleClass="editor-summary-card">
+        <Label wrapText="true" minHeight="-Infinity" fx:id="metricPriceCaption" text="총 예상 가격 (0곳 · 2명)" styleClass="metric-caption"/>
+        <Label wrapText="true" minHeight="-Infinity" fx:id="metricPriceLabel" text="0원" styleClass="metric-value-accent"/>
+       </VBox>
+      </HBox>
+      <HBox spacing="8" alignment="CENTER_LEFT">
+       <Label fx:id="summaryLabel" wrapText="true" styleClass="planner-caption"/>
+       <Label text="·" styleClass="planner-caption"/>
+       <Label fx:id="walkingTimeLabel" text="장소를 추가하면 도보 시간을 계산해요." wrapText="true" styleClass="planner-caption"/>
+      </HBox>
+     </VBox>
+    </top>
+
+    <!-- 중앙 스크롤 영역 -->
+    <center>
+     <FormScrollPane fx:id="candidateScroll" fitToWidth="true" fitToHeight="true" minHeight="0" hbarPolicy="NEVER" styleClass="route-form-scroll">
+      <VBox spacing="12" styleClass="route-state-panels">
+
+       <!-- 1. 내 코스 보기 -->
+       <TitledPane fx:id="coursePane" text="내 코스 보기 · 0곳" expanded="false" animated="false" styleClass="compact-pane">
+        <content>
+         <VBox spacing="8">
+          <Label text="코스 이름은 저장할 때 정해요." styleClass="planner-caption"/>
+          <ListView fx:id="placeList" prefHeight="180" minHeight="144" maxHeight="240"/>
+          <FlowPane hgap="6" vgap="6">
+           <Button fx:id="upButton" text="↑ 위로" onAction="#onMoveUp" styleClass="drawer-toggle" minHeight="34" prefHeight="34"/>
+           <Button fx:id="downButton" text="↓ 아래로" onAction="#onMoveDown" styleClass="drawer-toggle" minHeight="34" prefHeight="34"/>
+           <Button fx:id="removeButton" text="삭제" onAction="#onRemove" styleClass="drawer-toggle" minHeight="34" prefHeight="34"/>
+           <Button fx:id="placeInfoButton" text="상세" onAction="#onPlaceDetail" disable="true" styleClass="drawer-toggle" minHeight="34" prefHeight="34"/>
+          </FlowPane>
+          <Label fx:id="selectedRadiusLabel" text="장소를 선택하면 이동 반경을 수정할 수 있어요." wrapText="true" styleClass="planner-caption"/>
+          <Slider fx:id="selectedRadiusSlider" min="200" max="2000" value="500" blockIncrement="100" majorTickUnit="100" minorTickCount="0" snapToTicks="true" disable="true" accessibleText="선택한 장소를 추가할 때 정한 직선 반경 수정"/>
+          <Button fx:id="recordRadiusButton" text="500m로 기록" onAction="#onUpdateSelectedRadius" visible="false" managed="false" styleClass="drawer-toggle" minHeight="34" prefHeight="34"/>
+         </VBox>
+        </content>
+       </TitledPane>
+
+       <!-- 2. 다음 장소의 조건 -->
+       <TitledPane fx:id="conditionPane" text="다음 장소의 조건" expanded="true" collapsible="true" animated="false" styleClass="compact-pane">
+        <content>
+         <VBox spacing="12">
+          <HBox spacing="12" alignment="TOP_LEFT">
+           <VBox spacing="6" HBox.hgrow="ALWAYS" minWidth="0" prefWidth="140">
+            <Label text="활동" styleClass="planner-caption"/>
+            <ComboBox fx:id="activityBox" maxWidth="500" minHeight="38" prefHeight="38"/>
+           </VBox>
+           <VBox spacing="6" HBox.hgrow="ALWAYS" minWidth="0" prefWidth="150">
+            <Label text="1인 가격 상한 (만원)" styleClass="planner-caption" wrapText="true"/>
+            <StackPane styleClass="place-count-stepper" minWidth="0">
+             <TextField fx:id="placePriceField" text="2" accessibleText="1인 가격 상한 만원" styleClass="place-count-editor" minWidth="0" prefColumnCount="4" minHeight="38" prefHeight="38"/>
+             <VBox StackPane.alignment="CENTER_RIGHT" prefWidth="28" maxWidth="28" maxHeight="36" styleClass="place-count-buttons">
+              <Button fx:id="priceUp" accessibleText="1인 가격 상한 천원 늘리기" maxWidth="500" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-up">
+               <graphic><SVGPath content="M 1 5 L 5 1 L 9 5" styleClass="place-count-chevron"/></graphic>
+              </Button>
+              <Button fx:id="priceDown" accessibleText="1인 가격 상한 천원 줄이기" maxWidth="500" VBox.vgrow="ALWAYS" styleClass="place-count-arrow,place-count-down">
+               <graphic><SVGPath content="M 1 1 L 5 5 L 9 1" styleClass="place-count-chevron"/></graphic>
+              </Button>
+             </VBox>
+            </StackPane>
+            <Label fx:id="priceWonLabel" text="20,000원 / 1인" maxWidth="500" minHeight="-Infinity" styleClass="metric-value-accent" wrapText="true"/>
+           </VBox>
+           <VBox spacing="6" HBox.hgrow="ALWAYS" minWidth="0" prefWidth="140">
+            <Label fx:id="radiusLabel" text="직선 반경 · 500m" styleClass="planner-caption" wrapText="true"/>
+            <Slider fx:id="radiusSlider" min="200" max="2000" value="500" minWidth="60" prefWidth="120"/>
+           </VBox>
+          </HBox>
+
+          <fx:define>
+           <VBox fx:id="typeFilterSection" spacing="12">
+            <VBox fx:id="subtypeField" spacing="5"><Label text="종류" styleClass="field-label"/><ComboBox fx:id="subtypeBox" maxWidth="500" minHeight="38" prefHeight="38"/></VBox>
+            <VBox spacing="5"><Label text="세부 업종" styleClass="field-label"/><ComboBox fx:id="detailTypeBox" maxWidth="500" minHeight="38" prefHeight="38"/></VBox>
+           </VBox>
+           <VBox fx:id="priceFilterSection" spacing="10">
+            <Label text="가격 정보 기준" styleClass="field-label"/>
+            <ComboBox fx:id="priceFilterBox" maxWidth="500" minHeight="38" prefHeight="38"/>
+            <Label fx:id="priceFilterDescription" wrapText="true" styleClass="planner-caption"/>
+           </VBox>
+           <VBox fx:id="tagField" spacing="5"><PlaceFeatureSelector fx:id="featureSelector"/></VBox>
+          </fx:define>
+
+          <ExpandableFilterPane fx:id="filterPane"/>
+
+          <FlowPane hgap="10" vgap="8" alignment="CENTER_LEFT">
+           <CheckBox fx:id="includeUncertainPrice" text="가격 미확인도 포함" selected="false" minWidth="-Infinity"/>
+           <HBox spacing="8" alignment="CENTER_LEFT">
+            <Label text="후보 수" styleClass="planner-caption" minWidth="-Infinity"/>
+            <ComboBox fx:id="conditionCandidateLimitBox" prefWidth="76" minWidth="-Infinity" minHeight="38" prefHeight="38" accessibleText="조건에 맞는 후보 표시 개수"/>
+           </HBox>
+           <Button fx:id="recommendNextButton" text="후보 검색" onAction="#onRecommendNext" styleClass="planner-primary" minWidth="104" minHeight="38" prefHeight="38"/>
+          </FlowPane>
+
+          <VBox fx:id="emptyResults" spacing="8" visible="false" managed="false" styleClass="search-empty-state">
+           <Label text="조건에 맞는 장소가 없어요" styleClass="section"/>
+           <Label fx:id="emptyResultMessage" wrapText="true"/>
+           <FlowPane hgap="8" vgap="8">
+            <Button fx:id="includeUnknownRecovery" text="가격 미확인 포함해서 검색" onAction="#onIncludeUnknownRecovery" styleClass="drawer-toggle" minHeight="36" prefHeight="36"/>
+            <Button fx:id="clearFacetsRecovery" text="세부 조건 없이 검색" onAction="#onClearFacetsRecovery" styleClass="drawer-toggle" minHeight="36" prefHeight="36"/>
+            <Button fx:id="expandRadiusRecovery" text="반경 넓혀 검색" onAction="#onExpandRadiusRecovery" styleClass="drawer-toggle" minHeight="36" prefHeight="36"/>
+            <Button fx:id="reviewPriceRecovery" text="가격 상한 수정" onAction="#onReviewPriceRecovery" styleClass="drawer-toggle" minHeight="36" prefHeight="36"/>
+           </FlowPane>
+          </VBox>
+         </VBox>
+        </content>
+       </TitledPane>
+
+       <!-- 3. 추천 후보 -->
+       <TitledPane fx:id="choicePane" text="추천 후보" expanded="false" collapsible="true" animated="false" styleClass="compact-pane">
+        <content>
+         <VBox spacing="6">
+          <HBox alignment="CENTER_LEFT" spacing="6">
+           <Label fx:id="candidateCount" text="추천 전" styleClass="metric-value"/>
+           <Region HBox.hgrow="ALWAYS"/>
+           <Label text="최대" styleClass="planner-caption"/>
+           <ComboBox fx:id="candidateLimitBox" prefWidth="76" minHeight="36" prefHeight="36"/>
+           <Label text="곳" styleClass="planner-caption"/>
+          </HBox>
+          <Label fx:id="candidateStatus" text="조건을 정하고 후보를 찾아 주세요." wrapText="true" styleClass="planner-caption"/>
+          <Label text="장소를 선택하면 상세 정보와 코스 추가를 확인할 수 있어요." wrapText="true" styleClass="planner-caption"/>
+          <ListView fx:id="candidateList" fixedCellSize="76" prefHeight="304" minHeight="152" maxHeight="380"/>
+         </VBox>
+        </content>
+       </TitledPane>
+
+      </VBox>
+     </FormScrollPane>
+    </center>
+
+    <!-- 오른쪽 하단 참고 안내 -->
+    <bottom>
+     <VBox spacing="5" styleClass="route-sidebar-note">
+      <Label fx:id="rangeWarning" text="" styleClass="error" wrapText="true"/>
+      <Label fx:id="editorError" text="" styleClass="error" wrapText="true"/>
+      <Label text="거리: 직선 기준 · 가격·평점: 참고 정보" styleClass="planner-caption" wrapText="true"/>
+     </VBox>
+    </bottom>
+   </BorderPane>
+  </GridPane>
+ </center>
+
+ <!-- 전체 하단 푸터 버튼 (높이 40px로 통일) -->
+ <bottom>
+  <HBox fx:id="editorFooter" alignment="CENTER_RIGHT" spacing="10" minHeight="72" prefHeight="72" maxHeight="72" styleClass="route-editor-footer">
+   <Label text="돌아가도 편집 초안은 유지돼요." styleClass="planner-caption" wrapText="true" HBox.hgrow="ALWAYS" maxWidth="500"/>
+   <MenuButton text="더보기" styleClass="drawer-toggle" minWidth="92" minHeight="40" prefHeight="40">
+    <items><MenuItem text="지도 다시 불러오기" onAction="#onReloadMap"/></items>
+   </MenuButton>
+   <Button fx:id="resetDraftButton" text="편집 초기화" onAction="#onResetDraft" styleClass="drawer-toggle" minWidth="104" minHeight="40" prefHeight="40"/>
+   <Button fx:id="cancelButton" text="돌아가기" onAction="#onCancel" styleClass="drawer-toggle" minWidth="96" minHeight="40" prefHeight="40"/>
+   <Button fx:id="finishButton" text="편집 완료" onAction="#onFinish" disable="true" styleClass="planner-primary" minWidth="104" minHeight="40" prefHeight="40"/>
+  </HBox>
+ </bottom>
+</BorderPane>

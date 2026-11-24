@@ -1,0 +1,21 @@
+{
+  "schemaVersion" : 1,
+  "startedAt" : "2026-11-23T17:39:01.453397100Z",
+  "tablesBefore" : 23,
+  "targets" : [ "categories_backup_1792419191558", "categories_backup_1792420513732", "categories_backup_1792420761552", "categories_backup_1792421410479", "data_records_backup_1792419191558", "data_records_backup_1792420513732", "data_records_backup_1792420761552", "data_records_backup_1792421410479" ],
+  "applied" : false,
+  "planSha256" : "e28095317cb7a389c65ac15bab55fd711d2c5e9fd93f9e3ea2205ef14df3fee8",
+  "emptyRowsUnderWriteLocks" : {
+    "categories_backup_1792419191558" : 0,
+    "categories_backup_1792420513732" : 0,
+    "categories_backup_1792420761552" : 0,
+    "categories_backup_1792421410479" : 0,
+    "data_records_backup_1792419191558" : 0,
+    "data_records_backup_1792420513732" : 0,
+    "data_records_backup_1792420761552" : 0,
+    "data_records_backup_1792421410479" : 0
+  },
+  "foreignKeysViewsTriggersChecked" : true,
+  "restoreSha256" : "d7de9b0bc6c5470017dae60cb33aae0541ca31d410fff7cbba18fc523682afc9",
+  "phase" : "PRECHECKED"
+}

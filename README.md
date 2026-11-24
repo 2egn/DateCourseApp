@@ -2,11 +2,11 @@
 
 출발지·인원·검색 범위를 정하고 장소를 하나씩 골라 코스를 만드는 Java 데스크톱 앱입니다. 도보·자동차·대중교통과 도보를 지원하며, 장소 가격의 참고값·추정값·미확인을 구분합니다.
 
-최근 검증: **2026-11-24**. 앱 Java 테스트 **367개**, 선택 유지보수 검사 **3개 통과**. 실제 API·운영 DB 검증은 자동 테스트와 별도로 기록합니다.
+최근 검증: **2026-11-24**. 앱 Java 테스트 **367개**, 선택 유지보수 검사 **3개 통과**. [전체 점검 결과](docs/review-2026-11-24.md)에서 수정·검증 범위와 남은 확인을 볼 수 있습니다. 실제 API·운영 DB 검증은 자동 테스트와 별도로 기록합니다.
 
 ## 빠른 시작
 
-1. JDK와 저장소의 Gradle Wrapper를 사용합니다. 검증 환경은 Temurin JDK 25와 Java 21, JavaFX 21, Gradle 9.6.0입니다. JavaFX 버전은 JDK 버전 설정과 별개이며 Gradle toolchain은 아직 고정하지 않았습니다.
+1. JDK 21 이상과 저장소의 Gradle Wrapper를 사용합니다. 컴파일 기준은 `--release 21`로 고정하며 JavaFX 21·Gradle 9.6.0을 사용합니다. Gradle 실행 JDK는 IDE·`JAVA_HOME` 설정을 따르고 자동 다운로드용 toolchain은 사용하지 않습니다.
 2. [공통 접속 키 안내](docs/공통_접속_키.md)에 따라 `.local/team-access.properties`를 준비합니다. 카카오 JavaScript·REST, TMAP, Google Places 키와 DB 접속 정보를 실행 시 받아옵니다.
 3. 카카오 JavaScript 키의 허용 도메인에 `http://localhost:8080`을 등록합니다. 로컬 지도 서버는 앱이 시작합니다.
 4. 프로젝트 루트에서 실행합니다.
@@ -41,23 +41,35 @@ IntelliJ 실행 진입점은 `com.datecourse.app.AppLauncher`이고 Working dire
 
 운영 공공 카탈로그는 **2,040곳**으로 확장했다. 내장 시연 386곳은 유지한다. [확장·보존 검증 결과](docs/busan-core-expansion-2026-11-23.md)와 [현재 기준본](data/places/expansion/current.json)을 참고한다.
 
+운영 DB는 비어 있는 이전 백업 8개 정리 후 15개 테이블이다. 원본·사용자·코스·변경 이력은 보존했다. [현재 DB 구조](docs/site/content/DB_구조와_빈_백업_정리_2026_11_24.md)와 [복원 SQL·검증 기록](archive/db-schema/2026-11-24-empty-backups/README.md)을 참고한다.
+
 가격 보완은 매장 참고값과 통계 추정을 구분한다. [지역 외식비·커피 조사 적용](data/places/pricing/2026-11-24/README.md)에서 근거·제약·적재 검증을 확인한다.
 
 카탈로그 갱신·비활성·변경 이력은 JDBC 배치로 처리한다. 신규 ID 생성은 기존 절차를 유지하며 운영 성능 수치는 아직 측정하지 않았다. [적재 도구 안내](tools/catalog-ops/README.md)를 참고한다.
 
 ## 코드와 문서 찾기
 
-JavaFX 컨트롤러와 FXML은 페이지별로 경로를 맞췄다. [페이지 구조와 이름 대응](docs/site/content/페이지_구조와_이름_2026_11_24.md)에서 이전 클래스명과 새 위치를 확인한다.
+주요 폴더·파일 이름을 누르면 해당 경로로 이동합니다. 코드 내부 구조는 [코드 탐색 안내](src/navigate.md)에서 확인합니다.
 
-| 위치 | 내용 |
-|---|---|
-| [아키텍처](docs/architecture.md) | 현재 책임 분담·상태와 비동기 처리·코드 읽는 순서 |
-| [에이전트 지침](AGENTS.md) | 변경 범위·호환성·검증 기준 |
-| [src 안내](src/README.md) | Java 클래스·FXML·지도·테스트 위치 |
-| [data 안내](data/README.md) | DB 생성·적재 SQL과 장소 자료 |
-| [docs 안내](docs/README.md) | 기능 문서·팀 사이트·과거 기록 |
-| [tools 안내](tools/README.md) | 앱과 분리된 데이터 검증 도구 |
-| [최신 구현 흐름](docs/site/content/현재_구현_흐름.md) | 팀 사이트용 사용 흐름 |
+<pre>
+DateCourseApp/
+├─ <a href="src/">src/</a>                 앱 코드·화면·지도·자동 테스트
+│  └─ <a href="src/navigate.md">navigate.md</a>        기능별 코드 위치와 읽는 순서
+├─ <a href="data/">data/</a>                장소 원본·가격 근거·DB 스키마
+│  └─ <a href="data/README.md">README.md</a>          자료 기준본과 DB 준비·적재 안내
+├─ <a href="docs/">docs/</a>                기능 설명·검토 기록·팀 문서 사이트
+│  ├─ <a href="docs/README.md">README.md</a>          문서 탐색과 팀 사이트 안내
+│  ├─ <a href="docs/architecture.md">architecture.md</a>    현재 책임 분담과 상태·비동기 처리 원칙
+│  └─ <a href="docs/site/content/">site/content/</a>      팀 사이트에 게시하는 문서 원본
+├─ <a href="tools/">tools/</a>               데이터 수집·검증·적재 보조 도구
+│  └─ <a href="tools/README.md">README.md</a>          도구별 용도와 실행 방법
+├─ <a href="archive/">archive/</a>             기본 빌드에서 제외한 예제·복원 자료
+├─ <a href="gradle/">gradle/</a>              Gradle Wrapper 실행 구성
+├─ <a href="build.gradle">build.gradle</a>         의존성·앱 실행·검사·관리 작업 정의
+└─ <a href="AGENTS.md">AGENTS.md</a>            변경·호환성·검증·문서 갱신 지침
+</pre>
+
+앱 코드는 `com.datecourse`로 통일했습니다. JavaFX 컨트롤러와 FXML은 같은 페이지 경로를 사용합니다. [페이지 이름 대응](docs/site/content/페이지_구조와_이름_2026_11_24.md) · [패키지 통합·구조 점검](docs/site/content/패키지_통합과_구조_점검_2026_11_24.md) · [현재 구현 흐름](docs/site/content/현재_구현_흐름.md)
 
 <details>
 <summary>개발 검증과 시연 명령</summary>
@@ -93,7 +105,7 @@ node --test docs/site/test/*.test.mjs
 - `db.properties`, 실제 지도 키, TMAP 키는 빌드 리소스·JAR에서 제외합니다. Git 제외와 배포 제외를 함께 유지합니다.
 - 현재 앱은 팀용으로 DB와 공급사 키를 실행 중 전달받습니다. 공개 사용자 배포를 위해서는 서버 경계 재설계가 필요합니다.
 - 실제 로그인·회원별 저장·관리자·공급사 경로의 최종 수동 시연과 부산 전체 데이터 품질 점검은 자동 테스트와 별도로 수행합니다.
-- 과거 `controller.Main`, `MyPage`, `CourseRecommend`, `FeedBack`, `login`, `UiTheme` 예제는 현재 master 통합 과정에서 제거됐습니다. 남은 데모와 이전 `MainApp`을 통합 앱 진입점으로 사용하지 않습니다.
+- 과거 `controller.Main`, `MyPage`, `CourseRecommend`, `FeedBack`, `login`, `UiTheme` 예제는 현재 master 통합 과정에서 제거됐습니다. 미연결 UI 예제는 `archive/legacy-ui`로 보관했고, 없는 로그인 화면을 여는 이전 `MainApp`은 삭제했습니다.
 - 팀 문서 게시 원본은 `docs/site/content`입니다. 저장소 문서 갱신과 운영 Worker 재배포는 별개입니다.
 
 </details>
@@ -101,3 +113,5 @@ node --test docs/site/test/*.test.mjs
 ## 브랜치 운영
 
 기능 브랜치에서 최신 master와의 병합 가능성·빌드·테스트를 확인한 뒤 master에 반영합니다. 팀원의 작업 폴더나 브랜치를 강제로 초기화하지 않습니다.
+
+대표 페이지는 `_01step_planner` → `_02step_editor` → `_03step_saved` 순서다. [미사용 코드 보관·삭제 내역](archive/legacy-ui/README.md)을 참고한다. 예제 전용 검사 2개도 함께 보관했으며, 실제 앱 검사와 기본 빌드에서는 제외한다.

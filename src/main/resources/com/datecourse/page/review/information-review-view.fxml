@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- JavaFX 클래스들 -->
-<?import com.datecourse.ui.ModernScrollPane?>
+<?import com.datecourse.page.common.controls.ModernScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>

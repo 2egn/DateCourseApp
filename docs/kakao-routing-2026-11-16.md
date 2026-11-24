@@ -44,7 +44,7 @@ kakao.rest.api.key=카카오디벨로퍼스_REST_API_키
 | [PlannerMap](../src/main/java/com/datecourse/controller/PlannerMap.java) | 수단을 요청 식별에 포함. 전환 시 취소하고 이전 수단의 늦은 응답을 무시 |
 | [ConditionController](../src/main/java/com/datecourse/controller/ConditionController.java), [RouteEditorController](../src/main/java/com/datecourse/controller/RouteEditorController.java) | 코스의 수단과 폼 선택을 동기화하고 수단별 시간/오류/설정 버튼 표시 |
 | [RoutePlan](../src/main/java/com/datecourse/model/RoutePlan.java) | 사용자 선택 `travelMode` 추가. 과거 생성자/누락 JSON 필드는 WALKING으로 호환 |
-| [SavedCourseRepository](../src/main/java/kr/ac/university/localdb/db/SavedCourseRepository.java) | 장소 스냅샷과 선택 수단을 같은 트랜잭션으로 저장. 기존 코스와 새 테이블이 없는 DB의 읽기는 도보로 처리 |
+| [SavedCourseRepository](../src/main/java/com/datecourse/db/SavedCourseRepository.java) | 장소 스냅샷과 선택 수단을 같은 트랜잭션으로 저장. 기존 코스와 새 테이블이 없는 DB의 읽기는 도보로 처리 |
 | [12_saved_course_transport.sql](../data/sql/12_saved_course_transport.sql) | 사용자 선택만 별도 테이블에 보관. 저장 시 최초 초기화하며 기존 코스 테이블을 변경하지 않음 |
 | [KakaoRouteProbe](../src/main/java/com/datecourse/demo/KakaoRouteProbe.java) | 키 등록 후 소량 실제 호출 검증 |
 

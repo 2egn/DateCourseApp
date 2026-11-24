@@ -6,6 +6,7 @@ package: kr.ac.university.localdb.ui
 status: 자동 테스트
 reviewed: 2026-11-11
 source: src/test/java/kr/ac/university/localdb/ui/PasswordFieldTest.java
+current_source: src/test/java/com/datecourse/page/common/swing/PasswordFieldTest.java
 source_sha256: 302b895272fae7a1652b662f61c8968460da22f68e10096b105272d5d557009b
 tags:
   - Java

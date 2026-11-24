@@ -1,6 +1,7 @@
 ---
 title: MemberAdminPanel
 source: src/main/java/kr/ac/university/localdb/ui/MemberAdminPanel.java
+current_source: src/main/java/com/datecourse/page/admin/MemberAdminPanel.java
 source_commit: b69d00e
 source_sha256: 16567581a228eae0a6f4395b98c679018832bf06163fa94766be9722b50c2a5f
 readability_updated: 2026-11-15

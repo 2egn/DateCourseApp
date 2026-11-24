@@ -6,6 +6,7 @@ package: kr.ac.university.localdb.db
 status: 자동 테스트
 reviewed: 2026-11-11
 source: src/test/java/kr/ac/university/localdb/db/DatabasePoolTest.java
+current_source: src/test/java/com/datecourse/db/DatabasePoolTest.java
 source_sha256: f3648d43f65217aabbfca9efd18f663a89406060dca66c77a39f289a1d1dc5be
 tags:
   - Java

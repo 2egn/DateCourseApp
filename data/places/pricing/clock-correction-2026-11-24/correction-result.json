@@ -1,0 +1,18 @@
+{
+  "schemaVersion" : 1,
+  "sourceKey" : "busan-public-places",
+  "oldGeneratedAt" : "2026-11-24T01:00:00Z",
+  "correctedGeneratedAt" : "2026-11-23T18:06:19.711594Z",
+  "payloadFingerprint" : "2bdc7e9da5ed99eb676be4a68000d48ad57f25d57221f6ed924f2bc19e3e62e9",
+  "places" : 2040,
+  "datasetSha256" : "8441730f69b6d69fca74b7fca954b52818bcc4cb1208d386b9fa4125abc4b06b",
+  "correctedFactsSha256" : "4e33ef99668fa67c7378526b51407febe75eabf8ecb896320ccd60dda269e85f",
+  "applied" : true,
+  "baselineMatchesDatabase" : true,
+  "payloadsUnchanged" : true,
+  "phase" : "VERIFIED",
+  "verifiedAt" : "2026-11-23T18:09:04.227429900Z",
+  "protectedTables" : [ "app_admins", "categories", "data_records", "members", "place_catalog_entries", "place_catalog_imports", "place_catalog_lock", "place_catalog_revisions", "place_information_overrides", "place_information_reports", "saved_course_places", "saved_course_previews", "saved_course_transport", "saved_courses" ],
+  "protectedRowsAndSchemasUnchanged" : true,
+  "activePointerUpdated" : true
+}

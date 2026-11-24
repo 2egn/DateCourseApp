@@ -1,6 +1,7 @@
 ---
 title: MembershipApp
 source: src/main/java/kr/ac/university/localdb/ui/MembershipApp.java
+current_source: src/main/java/com/datecourse/page/account/MembershipApp.java
 source_commit: ea2242b
 source_sha256: d737d81e8b5675f8103a47844304fefe4f0ce7936f5cb36dc4a5f6f70993a2d6
 readability_updated: 2026-11-14
@@ -28,7 +29,7 @@ Swing 로그인·가입과 JavaFX 홈 화면의 이동을 담당해요. DB 연�
 
 ## 코드 읽기
 
-아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/kr/ac/university/localdb/ui/MembershipApp.java)에서 확인해요.
+아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/com/datecourse/page/account/MembershipApp.java)에서 확인해요.
 
 ```java
 public class MembershipApp {

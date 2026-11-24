@@ -1,6 +1,7 @@
 ---
 title: ReplaceIntegratedDataTest
 source: src/test/java/kr/ac/university/localdb/ReplaceIntegratedDataTest.java
+current_source: src/test/java/com/datecourse/maintenance/ReplaceIntegratedDataTest.java
 source_commit: ea2242b
 source_sha256: bfb9083517dd43e25992e438b91db5048cb3a42290d02e456c4b4cd1af11d342
 readability_updated: 2026-11-14
@@ -18,4 +19,4 @@ readability_updated: 2026-11-14
 - `executesPartialBatchesBeforeOtherStatementsInOrder()`
 - `failingBatchCanRollBackEarlierBatchesAndDeletion()`
 
-[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/kr/ac/university/localdb/ReplaceIntegratedDataTest.java) · [[현재_구현_흐름|현재 전체 흐름]]
+[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/com/datecourse/maintenance/ReplaceIntegratedDataTest.java) · [[현재_구현_흐름|현재 전체 흐름]]

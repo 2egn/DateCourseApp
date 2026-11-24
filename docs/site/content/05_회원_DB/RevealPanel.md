@@ -6,6 +6,7 @@ package: kr.ac.university.localdb.ui
 status: 현재 사용
 reviewed: 2026-11-11
 source: src/main/java/kr/ac/university/localdb/ui/RevealPanel.java
+current_source: src/main/java/com/datecourse/page/common/swing/RevealPanel.java
 source_sha256: 79a1ec330f728aaa5d69cee459b8339bcb442362837a5a8273752ad3fbdfd1e2
 tags:
   - Java

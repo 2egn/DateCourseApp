@@ -1,6 +1,7 @@
 ---
 title: ReplaceIntegratedData
 source: src/main/java/kr/ac/university/localdb/ReplaceIntegratedData.java
+current_source: src/main/java/com/datecourse/maintenance/ReplaceIntegratedData.java
 source_commit: ea2242b
 source_sha256: 100d4fd37f6acecbf12d7efa9cc0278f352d5e8aca7f645792875a836e1e4ba7
 readability_updated: 2026-11-14
@@ -16,7 +17,7 @@ readability_updated: 2026-11-14
 
 ## 코드 읽기
 
-아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/kr/ac/university/localdb/ReplaceIntegratedData.java)에서 확인해요.
+아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/com/datecourse/maintenance/ReplaceIntegratedData.java)에서 확인해요.
 
 ```java
 public class ReplaceIntegratedData {

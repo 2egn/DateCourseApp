@@ -6,6 +6,7 @@ package: kr.ac.university.localdb.ui
 status: 현재 사용
 reviewed: 2026-11-11
 source: src/main/java/kr/ac/university/localdb/ui/SignupForm.java
+current_source: src/main/java/com/datecourse/page/account/SignupForm.java
 source_sha256: 19b178ced456c25753a06066eee2dec4a1724d9c7471abecf1d65a3ff9b26265
 tags:
   - Java

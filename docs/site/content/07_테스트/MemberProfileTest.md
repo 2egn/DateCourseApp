@@ -1,6 +1,7 @@
 ---
 title: MemberProfileTest
 source: src/test/java/kr/ac/university/localdb/db/MemberProfileTest.java
+current_source: src/test/java/com/datecourse/db/MemberProfileTest.java
 source_commit: ea2242b
 source_sha256: 331f6fcc088f35b597e5a24fe31ec7f8d2240c4e4052246424afdc00548a195c
 readability_updated: 2026-11-14
@@ -14,4 +15,4 @@ readability_updated: 2026-11-14
 
 - `readsOnlyRequestedActiveMemberWithoutPasswordFields()`
 
-[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/kr/ac/university/localdb/db/MemberProfileTest.java) · [[현재_구현_흐름|현재 전체 흐름]]
+[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/com/datecourse/db/MemberProfileTest.java) · [[현재_구현_흐름|현재 전체 흐름]]

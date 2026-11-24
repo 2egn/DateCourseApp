@@ -6,6 +6,7 @@ package: kr.ac.university.localdb.ui
 status: 자동 테스트
 reviewed: 2026-11-11
 source: src/test/java/kr/ac/university/localdb/ui/StartupPanelTest.java
+current_source: src/test/java/com/datecourse/page/account/StartupPanelTest.java
 source_sha256: 498f93cf94d2a9fc49f7500577a22db9b32660cfa91e71269904378519b1ab20
 tags:
   - Java

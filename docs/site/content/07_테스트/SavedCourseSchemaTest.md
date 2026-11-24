@@ -1,6 +1,7 @@
 ---
 title: SavedCourseSchemaTest
 source: src/test/java/kr/ac/university/localdb/db/SavedCourseSchemaTest.java
+current_source: src/test/java/com/datecourse/db/SavedCourseSchemaTest.java
 source_commit: ea2242b
 source_sha256: 8bebf79aba75558bdbc73abdcf7d1e4a32d5ca4fb5626a83f49573130a840d2e
 readability_updated: 2026-11-14
@@ -18,4 +19,4 @@ readability_updated: 2026-11-14
 - `emptyCourseAndSameIdUpdatesAreRepresentableAndSchemaCanBeAppliedAgain()`
 - `deletingCourseRemovesItsPlacesButMemberCannotBeDeletedWhileCoursesRemain()`
 
-[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/kr/ac/university/localdb/db/SavedCourseSchemaTest.java) · [[현재_구현_흐름|현재 전체 흐름]]
+[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/com/datecourse/db/SavedCourseSchemaTest.java) · [[현재_구현_흐름|현재 전체 흐름]]

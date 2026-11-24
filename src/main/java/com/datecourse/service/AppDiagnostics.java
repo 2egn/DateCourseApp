@@ -44,8 +44,7 @@ public final class AppDiagnostics {
         if(root!=null) {
             line+=" error="+root.getClass().getSimpleName();
             StackTraceElement location=null;
-            for(var frame:root.getStackTrace())if(frame.getClassName().startsWith("com.datecourse.")
-                    || frame.getClassName().startsWith("kr.ac.university.localdb.")){location=frame;break;}
+            for(var frame:root.getStackTrace())if(frame.getClassName().startsWith("com.datecourse.")){location=frame;break;}
             if(location!=null)line+=" location="+location.getClassName()+"."+location.getMethodName()+":"+location.getLineNumber();
         }
         if(root instanceof HttpFailure http)line+=" http_status="+http.status();

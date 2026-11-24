@@ -1,4 +1,4 @@
-package kr.ac.university.localdb.db;
+package com.datecourse.db;
 
 import com.datecourse.demo.PublicPlaceImport;
 import com.datecourse.model.*;

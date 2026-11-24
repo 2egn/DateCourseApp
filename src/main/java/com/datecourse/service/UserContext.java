@@ -1,8 +1,8 @@
 package com.datecourse.service;
 
 import com.datecourse.model.SavedCourse;
-import kr.ac.university.localdb.UserSession;
-import kr.ac.university.localdb.db.MemberRepository;
+import com.datecourse.model.UserSession;
+import com.datecourse.db.MemberRepository;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;

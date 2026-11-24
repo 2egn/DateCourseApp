@@ -6,6 +6,7 @@ package: kr.ac.university.localdb.ui
 status: 현재 사용
 reviewed: 2026-11-11
 source: src/main/java/kr/ac/university/localdb/ui/AppDialogs.java
+current_source: src/main/java/com/datecourse/page/common/swing/AppDialogs.java
 source_sha256: e263d16c3d822b8ac55eefa87731d285e899e06b3f3f9aca9d8fce41dace3d1b
 tags:
   - Java

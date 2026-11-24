@@ -14,6 +14,9 @@ tags:
 title: FakeReviewData
 ---
 
+> 2026-11-24 · 보관: `archive/legacy-ui/src/main/java/com/datecourse/demo/FakeReviewData.java`. [[순서_넘버링과_미사용_정리_2026_11_24|정리 내역]]을 확인하세요. 아래는 과거 기록이에요.
+
+
 > [!info] 개발 중인 코드
 > 2026-11-11 작업본 기준이다. 확정 설계가 아니며, 코드가 바뀌면 이 노트도 새 내용으로 바꿔요.
 

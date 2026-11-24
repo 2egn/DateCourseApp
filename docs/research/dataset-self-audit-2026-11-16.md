@@ -83,7 +83,7 @@
 | [build_public_demo / build](../../tools/build_public_demo.py) | 반경과 개수 설정은 분리되어 있다. 서면 표본 생성기이며 도시 전체 수집기 역할까지 맡기지 않는다. |
 | [collect_busan_appeal_data / collect](../../tools/collect_busan_appeal_data.py) | 부산진구 지정 자료, 고정 데모 경로, 특정 박물관 존재 가정 및 수동 근거를 분리한다. 지역·출처 설정과 수동 확인 자료 파일로 옮기는 정도면 충분하다. |
 | 같은 함수의 최근접 교통 계산 | 장소마다 역 135·정류장 10,046개를 전부 비교한다. 45,470곳이면 정류장만 약 4.57억 번 비교한다. 구역/격자로 후보를 좁힌 후 현재 거리 계산을 재사용할 수 있다. |
-| [PlaceCatalogRepository / findImported](../../src/main/java/kr/ac/university/localdb/db/PlaceCatalogRepository.java) | 활성 payload 전체를 읽고 해시 검사·JSON 복원한다. 위도·경도·업종·지역 조회 컬럼과 인덱스로 먼저 후보를 좁히고 Java에서 정확한 거리/조건을 검사한다. |
+| [PlaceCatalogRepository / findImported](../../src/main/java/com/datecourse/db/PlaceCatalogRepository.java) | 활성 payload 전체를 읽고 해시 검사·JSON 복원한다. 위도·경도·업종·지역 조회 컬럼과 인덱스로 먼저 후보를 좁히고 Java에서 정확한 거리/조건을 검사한다. |
 | 같은 클래스의 synchronize | 전체 스냅샷에 없는 기존 행을 비활성화한다. 같은 sourceKey에 구별 부분 묶음을 연속 투입하면 다른 구가 비활성화될 수 있다. 임시 적재→전체 검증→최종 발행을 구분하고 JDBC 배치를 검토한다. |
 | [10_place_catalog.sql](../../data/sql/10_place_catalog.sql) | 버전·이력·해시·원본/정정 분리는 유지한다. 현재 LONGTEXT payload 중심이며 지역 검색용 좌표/업종 컬럼·인덱스가 없다. |
 

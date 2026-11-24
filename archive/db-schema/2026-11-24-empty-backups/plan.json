@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Remove only the eight approved empty legacy backup tables",
+  "expectedRowsPerTable": 0,
+  "tables": [
+    "categories_backup_1792419191558",
+    "categories_backup_1792420513732",
+    "categories_backup_1792420761552",
+    "categories_backup_1792421410479",
+    "data_records_backup_1792419191558",
+    "data_records_backup_1792420513732",
+    "data_records_backup_1792420761552",
+    "data_records_backup_1792421410479"
+  ]
+}

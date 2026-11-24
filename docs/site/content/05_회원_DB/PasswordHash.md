@@ -6,6 +6,7 @@ package: kr.ac.university.localdb
 status: 현재 사용
 reviewed: 2026-11-11
 source: src/main/java/kr/ac/university/localdb/PasswordHash.java
+current_source: src/main/java/com/datecourse/auth/PasswordHash.java
 source_sha256: 47c095a3b1df5b12d33207001a327283b17a6612841247b09d252c1eca5605f1
 tags:
   - Java

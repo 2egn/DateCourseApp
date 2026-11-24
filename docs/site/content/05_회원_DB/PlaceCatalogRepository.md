@@ -1,6 +1,7 @@
 ---
 title: PlaceCatalogRepository
 source: src/main/java/kr/ac/university/localdb/db/PlaceCatalogRepository.java
+current_source: src/main/java/com/datecourse/db/PlaceCatalogRepository.java
 source_commit: b69d00e
 source_sha256: 3fdfdbb8c706a33225aa592030f16ce435d498443f8bc21c19b3e9e8da6ac1f6
 readability_updated: 2026-11-15

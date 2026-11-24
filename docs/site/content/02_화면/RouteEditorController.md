@@ -1,5 +1,5 @@
 ---
-current_source: src/main/java/com/datecourse/page/editor/CourseEditorController.java
+current_source: src/main/java/com/datecourse/page/_02step_editor/CourseEditorController.java
 layout_updated: 2026-11-24
 title: CourseEditorController (이전 RouteEditorController)
 source: src/main/java/com/datecourse/controller/RouteEditorController.java
@@ -12,7 +12,7 @@ reviewed_at: 2026-11-23
 
 ## 현재 이름·경로 · 2026-11-24
 
-`CourseEditorController` → `src/main/java/com/datecourse/page/editor/CourseEditorController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+`CourseEditorController` → `src/main/java/com/datecourse/page/_02step_editor/CourseEditorController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
 
 
 ## 현재 구현 · 2026-11-23

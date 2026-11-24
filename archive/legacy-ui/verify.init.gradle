@@ -1,0 +1,26 @@
+// 명시적으로 실행할 때만 보관 코드·검사를 별도 소스 집합에 연결한다.
+gradle.projectsEvaluated {
+    def app=gradle.rootProject
+    def stagedSources=app.layout.buildDirectory.dir('archived-ui-sources')
+    def stage=app.tasks.register('stageArchivedUi',Sync) {
+        from('archive/legacy-ui/src/main/java','archive/legacy-ui/src/test/java')
+        into(stagedSources)
+        // 보관 원본은 유지하고 검사 복사본의 DB 패키지만 현재 위치에 맞춘다.
+        filesMatching('**/*.java') {
+            filter { line -> line.replace('package kr.ac.university.localdb.db;', 'package com.datecourse.db;') }
+        }
+    }
+    def archived=app.sourceSets.create('archivedUi') {
+        java.srcDirs=[stagedSources]
+        resources.srcDirs=['archive/legacy-ui/src/main/resources']
+        compileClasspath+=app.sourceSets.main.output+app.configurations.testCompileClasspath
+        runtimeClasspath+=output+compileClasspath+app.configurations.testRuntimeClasspath
+    }
+    app.tasks.named(archived.compileJavaTaskName) { dependsOn(stage) }
+    app.tasks.register('verifyArchivedUi',Test) {
+        dependsOn app.tasks.named(archived.classesTaskName)
+        testClassesDirs=archived.output.classesDirs
+        classpath=archived.runtimeClasspath
+        useJUnitPlatform()
+    }
+}

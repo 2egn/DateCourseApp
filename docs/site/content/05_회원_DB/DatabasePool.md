@@ -6,6 +6,7 @@ package: kr.ac.university.localdb.db
 status: 현재 사용
 reviewed: 2026-11-11
 source: src/main/java/kr/ac/university/localdb/db/DatabasePool.java
+current_source: src/main/java/com/datecourse/db/DatabasePool.java
 source_sha256: e1e5043b2346773086e64e5cfcf31c7c1e2c468e8d73984e91e7d03f3b75d650
 tags:
   - Java

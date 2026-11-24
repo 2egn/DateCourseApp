@@ -1,5 +1,5 @@
 ---
-current_source: src/main/java/com/datecourse/page/condition/CoursePlannerController.java
+current_source: src/main/java/com/datecourse/page/_01step_planner/CoursePlannerController.java
 layout_updated: 2026-11-24
 title: CoursePlannerController (이전 ConditionController)
 source: src/main/java/com/datecourse/controller/ConditionController.java
@@ -12,7 +12,7 @@ reviewed_at: 2026-11-15
 
 ## 현재 이름·경로 · 2026-11-24
 
-`CoursePlannerController` → `src/main/java/com/datecourse/page/condition/CoursePlannerController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+`CoursePlannerController` → `src/main/java/com/datecourse/page/_01step_planner/CoursePlannerController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
 
 
 # ConditionController

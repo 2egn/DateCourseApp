@@ -1,0 +1,139 @@
+{
+  "inspectedAt": "2026-11-23T18:11:18.292189700Z",
+  "catalogVersion": [
+    {
+      "source_key": "busan-public-places",
+      "generated_at": "2026-11-23T18:06:19.711594Z",
+      "fingerprint": "2bdc7e9da5ed99eb676be4a68000d48ad57f25d57221f6ed924f2bc19e3e62e9"
+    }
+  ],
+  "catalogSummary": [
+    {
+      "total": 2040,
+      "activeCount": 2040,
+      "missingRecordIds": 0,
+      "validJsonPayloads": 2040
+    }
+  ],
+  "dataRecordSummary": [
+    {
+      "total": 8179,
+      "catalogLinked": 2040,
+      "otherSourceRows": 6139
+    }
+  ],
+  "integrity": {
+    "coursesWithoutMembers": [
+      {
+        "problems": 0
+      }
+    ],
+    "saved_course_placesWithoutCourse": [
+      {
+        "problems": 0
+      }
+    ],
+    "saved_course_previewsWithoutCourse": [
+      {
+        "problems": 0
+      }
+    ],
+    "saved_course_transportWithoutCourse": [
+      {
+        "problems": 0
+      }
+    ],
+    "invalidTransportModes": [
+      {
+        "problems": 0
+      }
+    ],
+    "invalidSavedJson": [
+      {
+        "problems": 0
+      }
+    ],
+    "overridesWithoutActivePlace": [
+      {
+        "problems": 0
+      }
+    ]
+  },
+  "tables": [
+    {
+      "TABLE_NAME": "app_admins",
+      "ENGINE": "InnoDB",
+      "rows": 1
+    },
+    {
+      "TABLE_NAME": "categories",
+      "ENGINE": "InnoDB",
+      "rows": 4
+    },
+    {
+      "TABLE_NAME": "data_records",
+      "ENGINE": "InnoDB",
+      "rows": 8179
+    },
+    {
+      "TABLE_NAME": "members",
+      "ENGINE": "InnoDB",
+      "rows": 18
+    },
+    {
+      "TABLE_NAME": "place_catalog_entries",
+      "ENGINE": "InnoDB",
+      "rows": 2040
+    },
+    {
+      "TABLE_NAME": "place_catalog_imports",
+      "ENGINE": "InnoDB",
+      "rows": 10
+    },
+    {
+      "TABLE_NAME": "place_catalog_lock",
+      "ENGINE": "InnoDB",
+      "rows": 1
+    },
+    {
+      "TABLE_NAME": "place_catalog_revisions",
+      "ENGINE": "InnoDB",
+      "rows": 3024
+    },
+    {
+      "TABLE_NAME": "place_catalog_sources",
+      "ENGINE": "InnoDB",
+      "rows": 1
+    },
+    {
+      "TABLE_NAME": "place_information_overrides",
+      "ENGINE": "InnoDB",
+      "rows": 1
+    },
+    {
+      "TABLE_NAME": "place_information_reports",
+      "ENGINE": "InnoDB",
+      "rows": 2
+    },
+    {
+      "TABLE_NAME": "saved_course_places",
+      "ENGINE": "InnoDB",
+      "rows": 34
+    },
+    {
+      "TABLE_NAME": "saved_course_previews",
+      "ENGINE": "InnoDB",
+      "rows": 9
+    },
+    {
+      "TABLE_NAME": "saved_course_transport",
+      "ENGINE": "InnoDB",
+      "rows": 8
+    },
+    {
+      "TABLE_NAME": "saved_courses",
+      "ENGINE": "InnoDB",
+      "rows": 12
+    }
+  ]
+}

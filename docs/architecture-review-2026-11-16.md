@@ -25,7 +25,7 @@
 
 - [Place](../src/main/java/com/datecourse/model/Place.java), [PriceEstimate](../src/main/java/com/datecourse/model/PriceEstimate.java), [SourceEvidence](../src/main/java/com/datecourse/model/SourceEvidence.java)는 장소 자체와 가격/근거를 나눈다. 미확인·추정·참고값 구분은 추천 신뢰도의 토대다.
 - [RoutePlan](../src/main/java/com/datecourse/model/RoutePlan.java)은 저장 가능한 사용자 계획, [TravelRoute](../src/main/java/com/datecourse/model/TravelRoute.java)는 현재 조회한 공급사 경로를 맡는다. 경로 API 응답을 코스 DB에 넣지 않는 경계는 유지한다.
-- [InformationReportRepository](../src/main/java/kr/ac/university/localdb/db/InformationReportRepository.java)는 정정을 원본 위의 별도 적용값으로 관리한다. 원본·관리자 정정·저장 코스의 과거 스냅샷을 혼합하지 않는 방향이 좋다.
+- [InformationReportRepository](../src/main/java/com/datecourse/db/InformationReportRepository.java)는 정정을 원본 위의 별도 적용값으로 관리한다. 원본·관리자 정정·저장 코스의 과거 스냅샷을 혼합하지 않는 방향이 좋다.
 - [UserContext](../src/main/java/com/datecourse/service/UserContext.java)는 사용자 정보와 저장 코스의 캐시/무효화를 맡는다. [BasePageController](../src/main/java/com/datecourse/controller/BasePageController.java)는 공통 UI 피드백에 한정한다. 사용자와 DB를 모든 폼의 베이스 클래스에 밀어 넣지 않은 현재 구성이 적절하다.
 - [PlacePresenter](../src/main/java/com/datecourse/service/PlacePresenter.java), [SavedCoursePresenter](../src/main/java/com/datecourse/service/SavedCoursePresenter.java)가 표시 문구를 Java 쪽에서 생성한다. JavaScript는 지도·DOM 표시와 이벤트를 맡는 방향을 유지한다.
 - 불변 record와 조합, 작은 서비스는 이 프로젝트에 잘 맞는다. 장소 종류마다 상속 클래스를 만들거나 모든 클래스 앞에 인터페이스를 추가할 필요는 없다. 실제 교체 지점인 저장소·외부 API·실행 작업에 경계를 두면 된다.
@@ -76,7 +76,7 @@ Java의 경로 요청 상태를 `RouteRequestCoordinator` 같은 작은 객체�
 - 착한가격업소 표본의 편향과 문화 가격 미확인을 유지해서 설명한다. 저렴한 평균값으로 예산 충족을 보장하지 않는다.
 - [PlaceDetails](../src/main/java/com/datecourse/model/PlaceDetails.java)는 legacy tags와 typed attributeFacts를 함께 갖는다. 현재는 typed 상태를 우선하는 읽기 규칙이 있어 곧바로 충돌한다고 볼 근거는 없다. 장기적으로는 typed facts를 기준으로 하고 legacy 변환을 입력 경계에 모으면 변경이 쉬워진다.
 - `Place`의 안정적인 원본 ID와 검토된 동일 장소 관계는 서로 다른 책임이다. ID를 유지하되 별칭/이전/합병의 검토 이력을 별도로 연결한다.
-- [PlaceCatalogRepository.findImported](../src/main/java/kr/ac/university/localdb/db/PlaceCatalogRepository.java)는 전체 활성 payload를 읽고 해시/JSON을 복원한다. 도시 규모에서는 좌표·업종·지역 조회 컬럼과 인덱스로 먼저 후보를 줄인다.
+- [PlaceCatalogRepository.findImported](../src/main/java/com/datecourse/db/PlaceCatalogRepository.java)는 전체 활성 payload를 읽고 해시/JSON을 복원한다. 도시 규모에서는 좌표·업종·지역 조회 컬럼과 인덱스로 먼저 후보를 줄인다.
 - 적재는 기존 장소를 유지하는 전체 스냅샷 보호가 있다. 도시 전체 확대 전에는 JDBC 배치/임시 적재/최종 발행을 개선하고 실제 시간을 측정한다.
 - 공개 시연 목록 386과 운영 866의 차이는 의도된 것이지만 기본 생성·적재 명령과 현재 운영본의 위치가 분리돼 있다. 현재 dataset/facts/policy/version을 가리키는 작은 활성 manifest가 있으면 운영 실수를 줄일 수 있다.
 
@@ -87,14 +87,14 @@ Java의 경로 요청 상태를 `RouteRequestCoordinator` 같은 작은 객체�
 
 **공개 사용자에게 배포하기 전의 필수 변경**
 
-[TeamApiKeys.database](../src/main/java/com/datecourse/service/TeamApiKeys.java)와 [DbSettings.load](../src/main/java/kr/ac/university/localdb/db/DbSettings.java)는 공통 접속 키로 받은 DB 자격증명을 데스크톱에서 사용한다. Worker의 [app-keys](site/src/app-keys.mjs)는 같은 자격으로 공급사 키도 내려준다.
+[TeamApiKeys.database](../src/main/java/com/datecourse/service/TeamApiKeys.java)와 [DbSettings.load](../src/main/java/com/datecourse/db/DbSettings.java)는 공통 접속 키로 받은 DB 자격증명을 데스크톱에서 사용한다. Worker의 [app-keys](site/src/app-keys.mjs)는 같은 자격으로 공급사 키도 내려준다.
 따라서 secret 등록은 Git/리소스에 키를 넣지 않게 하지만, 실행 중인 클라이언트가 자격증명을 받는다는 사실은 유지된다. 클라이언트 SQL의 소유자 조건만을 불특정 사용자에 대한 서버 권한 경계로 삼을 수 없다.
 
 팀원만 사용하는 시연 범위를 명확히 유지한다면 당장 모든 UI를 갈아엎을 이유는 없다. 공개 서비스 단계에서는 Java 서버의 인증된 API가 회원별 소유권과 관리자 권한을 검증하고 DB/외부 키를 소유하도록 바꾸는 것이 적절하다. 데스크톱은 필요한 기능 API를 호출한다.
 
 **운영 작업을 사용자 저장과 분리**
 
-[SavedCourseRepository.persist](../src/main/java/kr/ac/university/localdb/db/SavedCourseRepository.java)는 최초 저장에서 교통수단/미리보기 테이블을 준비한다. DDL을 트랜잭션 전에 실행한 것은 좋지만 실제 사용자 저장에 스키마 준비 책임이 들어 있다. 배포/초기화 명령으로 옮기면 앱 계정 권한과 실패 원인이 단순해진다.
+[SavedCourseRepository.persist](../src/main/java/com/datecourse/db/SavedCourseRepository.java)는 최초 저장에서 교통수단/미리보기 테이블을 준비한다. DDL을 트랜잭션 전에 실행한 것은 좋지만 실제 사용자 저장에 스키마 준비 책임이 들어 있다. 배포/초기화 명령으로 옮기면 앱 계정 권한과 실패 원인이 단순해진다.
 현재 교통수단 저장은 H2 회귀 검증이 있으며 최근 실제 지도 검증은 운영 코스를 저장하지 않았다. 신규 수단의 실제 MySQL 저장→재실행→복원은 다음 통합 확인 항목이다.
 
 **현재 릴리스 기준 확정**

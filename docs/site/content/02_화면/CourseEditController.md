@@ -1,5 +1,5 @@
 ---
-current_source: src/main/java/com/datecourse/demo/courseeditor/RecommendedCourseEditorController.java
+current_source: archive/legacy-ui/src/main/java/com/datecourse/demo/courseeditor/RecommendedCourseEditorController.java
 layout_updated: 2026-11-24
 readability_updated: 2026-11-13
 project: DateCourseApp
@@ -16,9 +16,12 @@ tags:
 title: RecommendedCourseEditorController (이전 CourseEditController)
 ---
 
+> 현재 앱에서 분리해 `archive/legacy-ui/src/main/java/com/datecourse/demo/courseeditor/RecommendedCourseEditorController.java`에 보관했어요. [[순서_넘버링과_미사용_정리_2026_11_24|보관·복원 안내]]를 확인하세요. 아래 코드 발췌는 당시 기록이에요.
+
+
 ## 현재 이름·경로 · 2026-11-24
 
-`RecommendedCourseEditorController` → `src/main/java/com/datecourse/demo/courseeditor/RecommendedCourseEditorController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
+`RecommendedCourseEditorController` → `archive/legacy-ui/src/main/java/com/datecourse/demo/courseeditor/RecommendedCourseEditorController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.
 
 추천 코스 편집 시연용이에요. 통합 앱의 실제 코스 편집은 `CourseEditorController`가 맡아요.
 

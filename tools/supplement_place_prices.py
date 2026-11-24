@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 import re
+from datetime import datetime, timezone
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -153,10 +154,10 @@ def main():
     parser.add_argument('--facts', type=Path, required=True)
     parser.add_argument('--sources', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--generated-at', required=True)
+    parser.add_argument('--generated-at', help='재현용 UTC 생성 시각. 생략하면 현재 UTC를 사용한다.')
     args = parser.parse_args()
     report = stage(args.dataset, args.facts, args.sources, load_menus(ROOT / 'data/places/public/busan'),
-                   args.output, args.generated_at)
+                   args.output, args.generated_at or datetime.now(timezone.utc).isoformat())
     print(json.dumps({k: v for k, v in report.items() if k != 'changes'}, ensure_ascii=False))
 
 

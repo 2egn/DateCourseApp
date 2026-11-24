@@ -1,6 +1,7 @@
 ---
 title: PlaceRepositoryPriceTest
 source: src/test/java/kr/ac/university/localdb/db/PlaceRepositoryPriceTest.java
+current_source: src/test/java/com/datecourse/db/PlaceRepositoryPriceTest.java
 source_commit: ea2242b
 source_sha256: 899bccdc40b881b8230c4b66b998c3b308146f04c9db0a6f8ca2858aa46e0b43
 readability_updated: 2026-11-14
@@ -14,4 +15,4 @@ readability_updated: 2026-11-14
 
 - `legacyZeroNullAndMissingPricesRemainUnknown()`
 
-[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/kr/ac/university/localdb/db/PlaceRepositoryPriceTest.java) · [[현재_구현_흐름|현재 전체 흐름]]
+[검사 코드](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/test/java/com/datecourse/db/PlaceRepositoryPriceTest.java) · [[현재_구현_흐름|현재 전체 흐름]]

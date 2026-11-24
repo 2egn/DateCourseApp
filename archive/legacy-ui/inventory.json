@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-11-24",
+  "files": [
+    {
+      "originalPath": "src/main/java/com/datecourse/page/admin/AdminController.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/page/admin/AdminController.java",
+      "sha256": "6e0ca879d15f0d657df95f522e37e5616540dbfc64496bd7623725b71c7d0a9b"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/page/community/CommunityController.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/page/community/CommunityController.java",
+      "sha256": "30a746c65ecf24679cca5ee9b5dbdf03c1f4d668764836244aa925b51edc8609"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/courseeditor/RecommendedCourseEditorController.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/courseeditor/RecommendedCourseEditorController.java",
+      "sha256": "31113f5f3bd712b7445262ca4a321acd8263e616b402d0c3c2c84ed02ce6c6cb"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/model/Course.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/model/Course.java",
+      "sha256": "8105641c4677455e9626cb1c93f0f622dc2ea28685748808bb7874425e640880"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/model/CoursePlace.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/model/CoursePlace.java",
+      "sha256": "7e3135e28648e14cbf2df556c0fd9ee3e57018c7b1576638fc27836449c9a9fa"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/model/Review.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/model/Review.java",
+      "sha256": "cd869fea83503f119db9eeb44882db2f3d9f15c27eb806eeb0cee9c52310ae86"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/service/RecommendedCourseMapper.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/service/RecommendedCourseMapper.java",
+      "sha256": "80dc73caf51a548a79ddfa5580c9db9c06787cf014bea65c6945c21b3e2e2af7"
+    },
+    {
+      "originalPath": "src/main/java/kr/ac/university/localdb/db/PlaceQueryDemo.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/kr/ac/university/localdb/db/PlaceQueryDemo.java",
+      "sha256": "64bb6c3008f65349b9b6cd4ccb9557cf17b111068b7063c47e8825a164db75ae"
+    },
+    {
+      "originalPath": "src/main/resources/com/datecourse/page/admin/admin-view.fxml",
+      "archivedPath": "archive/legacy-ui/src/main/resources/com/datecourse/page/admin/admin-view.fxml",
+      "sha256": "30fa5acc351d123002dd609483d7e3d7ada94fd9f2ddd4190fc9701d45d6f42c"
+    },
+    {
+      "originalPath": "src/main/resources/com/datecourse/page/community/community-view.fxml",
+      "archivedPath": "archive/legacy-ui/src/main/resources/com/datecourse/page/community/community-view.fxml",
+      "sha256": "634915489fb545c750c192d46b94e8aad020273783905b7db0cb5e3af33f3483"
+    },
+    {
+      "originalPath": "src/main/resources/com/datecourse/demo/courseeditor/recommended-course-editor-view.fxml",
+      "archivedPath": "archive/legacy-ui/src/main/resources/com/datecourse/demo/courseeditor/recommended-course-editor-view.fxml",
+      "sha256": "7b2db32a430b4a4613782185f4621b6a8bb4813635cb89fdcaa8a9abae35a0c0"
+    },
+    {
+      "originalPath": "src/test/java/com/datecourse/service/RecommendedCourseMapperTest.java",
+      "archivedPath": "archive/legacy-ui/src/test/java/com/datecourse/service/RecommendedCourseMapperTest.java",
+      "sha256": "b90d6683a5f2a8a7141c1b00a9b644634f616881e4ddac008d534169bfc46c8d"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/AdminLauncher.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/AdminLauncher.java",
+      "sha256": "0f3e51bcef2ea2357d044e75e2a9e750c85c525eab9f1c76c4ba27034bc28158"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/AdminTestApp.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/AdminTestApp.java",
+      "sha256": "98cb3e916d7505a211a93657e355d284e9ad8d49f43647fbc81dafc9b22bd362"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/CommunityLauncher.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/CommunityLauncher.java",
+      "sha256": "4d0c1cd7b449f1f9a9510307168e45f8a82bdbdcfa4db21278701c22710876d5"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/CommunityTestApp.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/CommunityTestApp.java",
+      "sha256": "910e817c4290d7b5c238f8dbf3befc7b6deb1da527e8d8e1b91a8efc312d2a13"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/CourseEditLauncher.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/CourseEditLauncher.java",
+      "sha256": "5274b1d59d59819e5eeb75017a491bc43ab81a36169562f8334cac831cda2c4a"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/CourseEditTestApp.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/CourseEditTestApp.java",
+      "sha256": "672449a93f6abfcbf1675cc1df6a9c8c55c08cce058b72afb383e9ad93a768e0"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/SavedCourseLauncher.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/SavedCourseLauncher.java",
+      "sha256": "7895b4cb18800db3f84b1bad91ff8c3fc885d46867b25c8749bc4ae8aeca535c"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/SavedCourseTestApp.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/SavedCourseTestApp.java",
+      "sha256": "a7c73055959562670dadffb2eb7b40f52894579535ef2d2b6b1bc853e2094d13"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/FakeCourseData.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/FakeCourseData.java",
+      "sha256": "99b3310d7e36a21375632f775261d3d42e16b54fd09f58349323f27872379689"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/FakeMemberData.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/FakeMemberData.java",
+      "sha256": "d19ed7b4f0d4c493c9ac2c01177a98396390412f3a298f483820879b8b092ea2"
+    },
+    {
+      "originalPath": "src/main/java/com/datecourse/demo/FakeReviewData.java",
+      "archivedPath": "archive/legacy-ui/src/main/java/com/datecourse/demo/FakeReviewData.java",
+      "sha256": "3be8275f474a29a278183c08613e412f0db97907c298e579aea3f33972c9435b"
+    },
+    {
+      "originalPath": "src/test/java/com/datecourse/page/_01step_planner/CoursePlannerUiTest.java#recommendationOpensInEditorWithEditablePlacesInOrder",
+      "archivedPath": "archive/legacy-ui/src/test/java/com/datecourse/demo/courseeditor/RecommendedCourseEditorUiTest.java",
+      "sha256": "b3dbb5c669112cbf3ba8bc605e1c8761154d9a1e1e7e3408f70e1122a7a07f46",
+      "note": "예제 전용 검사 1개를 독립 클래스로 분리"
+    },
+    {
+      "deletedPath": "src/main/java/com/datecourse/app/MainApp.java",
+      "sha256": "664eb475a1cefd409202e8e02a39a9c3ed951a2d25dc69db7636a4a392347450",
+      "recoveryCommit": "879679e"
+    },
+    {
+      "deletedPath": "src/main/java/com/datecourse/demo/FakeMapData.java",
+      "sha256": "7a3ee88c61e8549d075afacde30f55e07a8328b87851bbae48e23acce5acf140",
+      "recoveryCommit": "879679e"
+    },
+    {
+      "deletedPath": "src/main/java/com/datecourse/service/PlaceCountService.java",
+      "sha256": "a8342d53c73eddf20aef36033824a359c3f0061a51307bd784a0973e06d0090c",
+      "recoveryCommit": "879679e"
+    }
+  ]
+}

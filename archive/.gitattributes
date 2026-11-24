@@ -1,0 +1,4 @@
+# 보관 원본의 바이트 지문을 체크아웃·커밋 때도 보존한다.
+legacy-ui/src/** -text
+*.json text eol=lf
+*.sql text eol=lf

@@ -1,6 +1,7 @@
 ---
 title: InformationReportRepository
 source: src/main/java/kr/ac/university/localdb/db/InformationReportRepository.java
+current_source: src/main/java/com/datecourse/db/InformationReportRepository.java
 source_commit: b69d00e
 source_sha256: 25a94701284327ca9c9278b94cc968a4dead547faadb12ddb4ac7c31ca556e2c
 readability_updated: 2026-11-15

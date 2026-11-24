@@ -1,7 +1,7 @@
 package com.datecourse.service;
 
-import kr.ac.university.localdb.UserSession;
-import kr.ac.university.localdb.db.MemberRepository;
+import com.datecourse.model.UserSession;
+import com.datecourse.db.MemberRepository;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;

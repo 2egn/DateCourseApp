@@ -1,6 +1,7 @@
 ---
 title: PlaceRepository
 source: src/main/java/kr/ac/university/localdb/db/PlaceRepository.java
+current_source: src/main/java/com/datecourse/db/PlaceRepository.java
 source_commit: ea2242b
 source_sha256: 13a54923ef903f27dbb004eb5d64ca5b82caea38105a70f85069841692a0a9c3
 readability_updated: 2026-11-14
@@ -16,7 +17,7 @@ readability_updated: 2026-11-14
 
 ## 코드 읽기
 
-아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/kr/ac/university/localdb/db/PlaceRepository.java)에서 확인해요.
+아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/com/datecourse/db/PlaceRepository.java)에서 확인해요.
 
 ```java
 public class PlaceRepository implements PlaceSource {

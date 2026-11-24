@@ -1,5 +1,9 @@
 # 현재 아키텍처
 
+현재 앱과 검사는 `com.datecourse` 아래에 있다. DB는 `db`, 회원 화면은 `page.account`, 관리 화면은 `page.admin`, 공용 부품은 `page.common.controls`(JavaFX)·`page.common.swing`에 둔다. `UserSession`은 `model`, `PasswordHash`는 `auth`다. [패키지 통합과 남은 구조 점검](site/content/패키지_통합과_구조_점검_2026_11_24.md)을 참고한다.
+
+운영 DB는 빈 백업 8개 정리 후 **15개 테이블**이다. [역할별 DB 구조·장소 저장 위치·보존 검증](site/content/DB_구조와_빈_백업_정리_2026_11_24.md)을 참고한다.
+
 구조 정리 기준 **9e59289 · 2026-11-23**, 가격 보완 반영 **2026-11-24**. Java 모델·서비스를 중심으로 Swing 인증 화면과 JavaFX 코스 화면을 연결한다. 지도 DOM과 이벤트는 WebView 안의 JavaScript가 처리한다.
 
 ## 주요 책임
@@ -54,6 +58,8 @@
 
 </details>
 
-검증 기준은 앱 Java 테스트 **367개와 선택 유지보수 검사 3개 통과**다. 실제 API·운영 DB·배포 사이트의 현재 상태는 별도 검증 대상이다. 과거 분석·제안은 [11월 16일 구조 검토](architecture-review-2026-11-16.md), 실행·변경 지침은 [README](../README.md)와 [AGENTS](../AGENTS.md)를 참고한다.
+검증 기준은 앱 Java 테스트 **367개와 선택 유지보수 검사 3개 통과**다. [11월 24일 전체 점검](review-2026-11-24.md)에서 Java 21 호환·미래 버전 차단·실제 DB 검증을 확인한다. 과거 분석·제안은 [11월 16일 구조 검토](architecture-review-2026-11-16.md), 실행·변경 지침은 [README](../README.md)와 [AGENTS](../AGENTS.md)를 참고한다.
 
 화면 Java·FXML은 `com/datecourse/page/<페이지>` 경로를 공유한다. 공통 지도는 `page/common/map`, 공통 로딩·알림은 `page/common`에 둔다. [이전 이름·경로 대응](site/content/페이지_구조와_이름_2026_11_24.md)을 참고한다. `RoutePlan` 등 모델 이름과 JavaScript 콜백은 유지했다.
+
+가짜 관리자·커뮤니티·추천 편집 화면과 전용 모델은 [archive/legacy-ui](../archive/legacy-ui/README.md)에 보관했다. 실제 회원 관리·정정 검토와 운영 데이터·SQL·유지보수 도구는 유지한다. 앱 Java 367개와 유지보수 검사 3개를 확인하며, 보관한 예제 전용 검사 2개는 이 수에 포함하지 않는다.

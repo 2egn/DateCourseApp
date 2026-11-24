@@ -5,7 +5,7 @@ gradle.projectsEvaluated {
         group = 'verification'
         dependsOn app.tasks.testClasses
         classpath = app.sourceSets.test.runtimeClasspath
-        mainClass = 'kr.ac.university.localdb.db.ExpansionAudit'
+        mainClass = 'com.datecourse.db.ExpansionAudit'
         ['placeBaseline','placeBaselineFacts','placeDataset','placeFacts','placeReport'].each { key ->
             if (!app.hasProperty(key)) throw new GradleException("${key} is required")
         }
@@ -20,7 +20,7 @@ gradle.projectsEvaluated {
         group='verification'
         dependsOn app.tasks.testClasses
         classpath=app.sourceSets.test.runtimeClasspath
-        mainClass='kr.ac.university.localdb.db.ExpansionRehearsal'
+        mainClass='com.datecourse.db.ExpansionRehearsal'
         args app.property('placeBaseline'),app.property('placeBaselineFacts'),app.property('placeDataset'),app.property('placeFacts'),app.property('placeScenarios'),app.property('placeReport')
         if(app.findProperty('placeRehearsalMode')=='price-update') args 'price-update'
     }

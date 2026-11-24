@@ -5,7 +5,7 @@ import com.datecourse.page.common.PageFeedback;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import kr.ac.university.localdb.db.MemberRepository;
+import com.datecourse.db.MemberRepository;
 import com.datecourse.service.UserContext;
 
 /** Reuses the base loading and notices; account storage stays with the login application. */

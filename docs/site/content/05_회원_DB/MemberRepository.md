@@ -1,6 +1,7 @@
 ---
 title: MemberRepository
 source: src/main/java/kr/ac/university/localdb/db/MemberRepository.java
+current_source: src/main/java/com/datecourse/db/MemberRepository.java
 source_commit: ea2242b
 source_sha256: 81da193d44c06490b324e3dcbf00df28330540f52a79a20d51a1658ac41efd82
 readability_updated: 2026-11-14
@@ -28,7 +29,7 @@ reviewed_at: 2026-11-15
 
 ## 코드 읽기
 
-아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/kr/ac/university/localdb/db/MemberRepository.java)에서 확인해요.
+아래 선언부터 읽고 함수표의 순서로 찾아보세요. 전체 코드는 [기준 커밋의 원본](https://github.com/2egn/DateCourseApp/blob/ea2242b/src/main/java/com/datecourse/db/MemberRepository.java)에서 확인해요.
 
 ```java
 public class MemberRepository implements AutoCloseable {

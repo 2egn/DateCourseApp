@@ -3,13 +3,15 @@ DateCourseApp 폴더 안내
 src     : 앱 만들기 — 자바 코드, 화면, 지도, 자동 테스트
 data    : 데이터 준비 — DB용 SQL과 장소 자료
 docs    : 문서 읽기 — 팀 문서 사이트, 조사 결과, 이전 자료
+archive : 현재 빌드에서 제외한 미연결 예제와 복원 자료
 tools   : 별도 도구 — 장소 데이터 검증 실험
 gradle  : 빌드 도구 — 앱을 실행하고 테스트하기 위한 도구
 build   : 생성 결과 — 빌드 결과와 임시 검증 파일
 
 data 안쪽
   sql             : DB 생성·초기화·저장용 SQL
-  places/current  : 현재 앱에 적재하는 장소 원본
+  places/expansion/current.json : 현재 운영 장소·속성 기준본 위치
+  places/current  : 초기 장소 원본 자료
   places/public   : 수집한 공공 장소 자료
   places/pilot    : 기존 자료와 분리한 테스트용 자료
   places/demo     : 앱에서 선택하는 자체 ID 기반 시연 목록
@@ -25,3 +27,6 @@ docs 안쪽
 앱 실행 : 최상단에서 .\gradlew.bat run
 앱 검사 : 최상단에서 .\gradlew.bat test
 자세한 설명은 각 폴더의 README.md 참고
+
+화면 읽기 순서 : page/_01step_planner -> _02step_editor -> _03step_saved
+Java와 FXML은 같은 페이지 경로로 대응합니다. 보관/삭제 근거는 archive/legacy-ui/README.md를 확인하세요.

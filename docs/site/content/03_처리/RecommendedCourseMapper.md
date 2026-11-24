@@ -6,6 +6,9 @@ source_sha256: ed57289784d3346d7af0faebaafd130e0d048617674f803920f3d51c570b7891
 readability_updated: 2026-11-14
 ---
 
+> 2026-11-24 · 보관: `archive/legacy-ui/src/main/java/com/datecourse/service/RecommendedCourseMapper.java`. [[순서_넘버링과_미사용_정리_2026_11_24|정리 내역]]을 확인하세요. 아래는 과거 기록이에요.
+
+
 # RecommendedCourseMapper
 
 > 개발 중인 코드예요. `ea2242b` 기준이며, 후속 커밋에서 동작이 바뀔 수 있어요.

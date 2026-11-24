@@ -1,6 +1,6 @@
 package com.datecourse.demo;
 
-import kr.ac.university.localdb.db.MemberRepository;
+import com.datecourse.db.MemberRepository;
 
 /** Prepares only additive reporting tables using the existing team DB settings. */
 public final class InformationReportSetup {

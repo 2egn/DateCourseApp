@@ -6,6 +6,7 @@ package: kr.ac.university.localdb
 status: 현재 사용
 reviewed: 2026-11-11
 source: src/main/java/kr/ac/university/localdb/UserSession.java
+current_source: src/main/java/com/datecourse/model/UserSession.java
 source_sha256: 0192a57589c144bf1dc5c914a3436fb4d1c6696c68cdd4ec2363cf3d1167ca38
 tags:
   - Java
