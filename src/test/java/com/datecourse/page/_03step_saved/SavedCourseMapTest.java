@@ -219,9 +219,12 @@ class SavedCourseMapTest {
                         assertTrue(started.await(5,TimeUnit.SECONDS));
                         fx(()->{form.controller.configure(repository,context,c->{});return null;});
                         awaitFx(()->!((boolean)field(form.controller,"busy")));
-                        fx(()->{form.controller.clear();return null;});release.countDown();pending.get(5,TimeUnit.SECONDS);
-                        // Wait for the decoding callback as well as the original BLOB read.
-                        ((CompletableFuture<?>)fx(()->field(form.controller,"previewTask"))).handle((v,e)->null).get(5,TimeUnit.SECONDS);
+                        var conversion=(CompletableFuture<?>)fx(()->field(form.controller,"previewTask"));
+                        fx(()->{form.controller.clear();assertNull(field(form.controller,"previewTask"));return null;});
+                        assertTrue(conversion.isCancelled());assertFalse(pending.isCancelled());
+                        release.countDown();assertArrayEquals(png,pending.get(5,TimeUnit.SECONDS).orElseThrow());
+                        // 취소한 화면 변환과 공유 BLOB 조회의 수명을 구분한다.
+                        conversion.handle((v,e)->null).get(5,TimeUnit.SECONDS);
                         fx(()->{assertNull(((javafx.scene.image.ImageView)field(form.controller,"coursePreview")).getImage());
                             assertNull(field(form.controller,"previewCourse"));assertFalse(form.view.isVisible());return null;});
                     } finally {release.countDown();}

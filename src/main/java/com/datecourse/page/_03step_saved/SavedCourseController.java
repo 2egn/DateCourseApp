@@ -465,6 +465,9 @@ public class SavedCourseController extends BasePageController {
     /** 선택한 코스를 지도에 표시한다. */
     private void showPreview(SavedCourse course) {
         long version = ++previewLoadVersion;
+        // 화면 전용 변환만 취소하고 UserContext의 공유 이미지 조회는 유지한다.
+        if (previewTask != null) previewTask.cancel(false);
+        previewTask = null;
         previewVersion++;
         previewCourse = course;
         previewLoading = course != null;
