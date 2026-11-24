@@ -1,0 +1,13 @@
+{
+  "status": "prepared_not_imported",
+  "baselineDataset": "data/places/pricing/2026-11-24/staged/places.json",
+  "baselineFacts": "data/places/pricing/clock-correction-2026-11-24/facts.json",
+  "baselineDatasetSha256": "8441730f69b6d69fca74b7fca954b52818bcc4cb1208d386b9fa4125abc4b06b",
+  "baselineFactsSha256": "4e33ef99668fa67c7378526b51407febe75eabf8ecb896320ccd60dda269e85f",
+  "baselinePlaces": 2040,
+  "preparedPlaces": 2138,
+  "addedPlaces": 98,
+  "productionCatalogUpdated": false,
+  "datasetSha256": "4b6cdeb7cd80cc9019860caa3cff01ad80db0407de885b60d1cdf708c6467cbd",
+  "factsSha256": "91e3dd40e4884000b90e60e28e5ed0db88d046abaee24c8e7070997f64addd8d"
+}

@@ -1,0 +1,22 @@
+{
+  "state": "prepared_not_imported",
+  "addedPlaces": 98,
+  "addedCategories": {
+    "MEAL": 40,
+    "CAFE": 40,
+    "CULTURE": 18
+  },
+  "addedPriceEvidence": {
+    "SIMILAR_ESTIMATE": 56,
+    "UNKNOWN": 42
+  },
+  "addedTags": {
+    "GOOD_PRICE": 10,
+    "NEAR_SUBWAY": 71,
+    "NEAR_BUS": 83
+  },
+  "reviewCandidates": 57,
+  "quarantinedNewSourceIds": 51,
+  "sourceSnapshotOnly": true,
+  "liveBusinessOrMenuVerification": false
+}

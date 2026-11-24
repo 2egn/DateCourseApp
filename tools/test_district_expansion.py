@@ -35,6 +35,39 @@ class DistrictExpansionTest(unittest.TestCase):
             if price['evidence']=='SIMILAR_ESTIMATE':self.assertIn(place['details']['subcategory'],reports[0]['pricePolicy']['allowedSubtypes'])
             if price['evidence']=='UNKNOWN':self.assertIsNone(price['minimum']);self.assertIsNone(price['maximum'])
 
+    def test_jung_gu_candidate_pack_preserves_active_baseline_and_unknown_prices(self):
+        import hashlib
+        from build_public_demo import read
+        folder=ROOT/'data/places/expansion/jung-gu-2026-11-25'
+        meta=json.loads((folder/'baseline.json').read_text(encoding='utf-8'))
+        before_path=ROOT/meta['baselineDataset'];before_facts=ROOT/meta['baselineFacts']
+        self.assertEqual(meta['baselineDatasetSha256'],hashlib.sha256(before_path.read_bytes()).hexdigest())
+        self.assertEqual(meta['baselineFactsSha256'],hashlib.sha256(before_facts.read_bytes()).hexdigest())
+        places=json.loads((folder/'places.json').read_text(encoding='utf-8'))['places']
+        before=json.loads(before_path.read_text(encoding='utf-8'))['places']
+        self.assertEqual(2138,len(places));self.assertTrue(before==places[:len(before)])
+        self.assertEqual(len(places),len({p['recordId'] for p in places}))
+        self.assertEqual(len(places),len({p['placeId'] for p in places}))
+        facts=json.loads((folder/'appeal/demo_appeal_facts.json').read_text(encoding='utf-8'))
+        self.assertEqual(hashlib.sha256((folder/'places.json').read_bytes()).hexdigest(),facts['datasetSha256'])
+        index={p['placeId']:p for p in facts['places']}
+        self.assertEqual(len(places),len(index))
+        self.assertTrue(all(p==index[p['placeId']] for p in json.loads(before_facts.read_text(encoding='utf-8'))['places']))
+        source={p['place_id']:p for p in read('busan_places.csv')}
+        policy=json.loads((folder/'policy.json').read_text(encoding='utf-8'))
+        report=json.loads((folder/'quality-report.json').read_text(encoding='utf-8'))
+        for place in places[len(before):]:
+            pid=place['details']['externalIds']['public']
+            self.assertEqual('중구',source[pid]['district']);self.assertNotIn(pid,report['quality']['quarantinedIds'])
+            self.assertEqual(0,place['rating']);price=place['priceEstimate']
+            self.assertIn(price['evidence'],['UNKNOWN','SIMILAR_ESTIMATE','REFERENCE'])
+            if price['evidence']=='UNKNOWN':self.assertIsNone(price['minimum']);self.assertIsNone(price['maximum'])
+            if price['evidence']=='SIMILAR_ESTIMATE':
+                self.assertIn(place['details']['subcategory'],policy['pricePolicy']['allowedSubtypes'])
+                self.assertIn('해당 매장 가격 확인값이 아님',price['basis'])
+        self.assertEqual(meta['datasetSha256'],hashlib.sha256((folder/'places.json').read_bytes()).hexdigest())
+        self.assertEqual(meta['factsSha256'],hashlib.sha256((folder/'appeal/demo_appeal_facts.json').read_bytes()).hexdigest())
+
     def test_suspected_duplicates_are_quarantined_but_existing_records_are_retained(self):
         rows=[self.row('old'),self.row('new',lat='35.1501',address='도로 2'),self.row('other',name='다른 가게'),self.row('bad',name='좌표 없음',lat='')]
         report=screen(rows,['old'])
