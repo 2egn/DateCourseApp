@@ -7,7 +7,7 @@ test('Nov25 adds verified records once while preserving every existing task and 
  const board=new TaskBoard({storage:{sql,transactionSync(fn){db.exec('BEGIN');try{const result=fn();db.exec('COMMIT');return result;}catch(error){db.exec('ROLLBACK');throw error;}}}});
  const response=await board.fetch(new Request('https://board.test/api/board',{headers:{'X-Board-User':'fixture'}}));
  assert.deepEqual((await response.json()).implementation,IMPLEMENTATION_REFERENCE);
- assert.equal(IMPLEMENTATION_REFERENCE.commit,'64d93e3');assert.equal(IMPLEMENTATION_REFERENCE.scope,'feature');
+ assert.equal(IMPLEMENTATION_REFERENCE.commit,'64d93e3');assert.equal(IMPLEMENTATION_REFERENCE.scope,'master');
  db.prepare('DELETE FROM board_meta WHERE key=?').run(NOV25_VERSION);
  db.prepare('DELETE FROM tasks WHERE id=?').run('JDK21-25');
  db.prepare('UPDATE tasks SET description=?,status=?,assignee=?,priority=?,dependencies=?,archived=1,updatedBy=? WHERE id=?').run('팀원 수정','progress','teammate','high','DB-01','teammate','INPUT-FIXES-25');

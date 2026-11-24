@@ -1,6 +1,6 @@
-// 검증된 기능 브랜치 기록만 추가하며 기존 카드·담당자·선행 작업은 변경하지 않는다.
-export const NOV25_VERSION='implementation-feature-64d93e3-2026-11-25-v1';
-export const IMPLEMENTATION_REFERENCE={commit:'64d93e3',reviewedAt:'2026-11-25',scope:'feature',branch:'data/busan-core-expansion-20261123'};
+// 검증된 master 통합 기록만 추가하며 기존 카드·담당자·선행 작업은 변경하지 않는다.
+export const NOV25_VERSION='implementation-master-64d93e3-2026-11-25-v1';
+export const IMPLEMENTATION_REFERENCE={commit:'64d93e3',reviewedAt:'2026-11-25',scope:'master',branch:'master'};
 export const NOV25_ADDITIONS=[
  ['UI-VISIBILITY-25','작은 창 배치와 글자 가독성 확인','frontend','review','좁은 편집 합계·저장 상세 표를 재배치하고 대비·선택·스크롤·알림 위치를 개선했어요. Windows 배율별 최종 시연은 남아 있어요.','자동 배치 검사 통과, 실제 배율·창 크기 수동 확인은 후속','/화면_가독성과_작은_창_배치_2026_11_24.html'],
  ['MAP-BUFFER-25','지도 여유 렌더링과 경계 표시 확인','frontend','review','SDK 지도를 화면보다 넓게 렌더링하고 입력·카메라·이미지 캡처를 보정했어요. 실제 타일 속도와 경계 소실 개선은 아직 확정하지 않아요.','모의 SDK 좌표·경계·출처 배치 검사, 실제 SDK 시연은 후속','/지도_렌더링_여유_영역_2026_11_24.html'],
@@ -16,7 +16,7 @@ export function applyNov25(sql){
  for(const [id,title,area,status,evidence,acceptance,relatedNote]of NOV25_ADDITIONS){
   if(sql.exec('SELECT id FROM tasks WHERE id=?',id).toArray().length){report.skipped.push(id);continue;}
   sql.exec('INSERT INTO tasks(id,title,area,status,priority,description,acceptance,dependencies,relatedNote,createdAt,updatedAt,updatedBy) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',
-   id,title,area,status,'normal','[기능 브랜치 64d93e3 · master 미반영]\n'+evidence,acceptance,'',relatedNote,now,now,'구현 동기화 (2026-11-25)');
+   id,title,area,status,'normal','[master 통합 · 앱 64d93e3]\n'+evidence,acceptance,'',relatedNote,now,now,'구현 동기화 (2026-11-25)');
   report.added.push(id);
  }
  sql.exec('INSERT INTO board_meta(key,value) VALUES(?,?)',NOV25_VERSION,JSON.stringify(report));
