@@ -256,7 +256,7 @@ class CoursePlannerUiTest {
     @Test void radiusDragUpdatesCircleWithoutZoomingInAndFitsOnRelease() throws Exception {
         WebEngine engine=loadMap(1100,720);
         script(engine,"""
-            testMap.getProjection=function(){
+            window.mapViewport.setBuffered(false);testMap.relayout();testMap.getProjection=function(){
                 var unit=100000*Math.pow(2,5-testMap.getLevel()),element=document.getElementById('map');
                 return {containerPointFromCoords:function(p){var c=testMap.getCenter();return {
                     x:(p.getLng()-c.getLng())*unit+element.clientWidth/2,
@@ -277,7 +277,7 @@ class CoursePlannerUiTest {
     @Test void addedLegFocusExcludesRangesAndOlderStopsButIncludesItsWalkingGeometry() throws Exception {
         WebEngine engine=loadMap(1100,720);
         script(engine,"""
-            testMap.getProjection=function(){
+            window.mapViewport.setBuffered(false);testMap.relayout();testMap.getProjection=function(){
                 var unit=100000*Math.pow(2,5-testMap.getLevel()),element=document.getElementById('map');
                 return {containerPointFromCoords:function(p){var c=testMap.getCenter();return {
                     x:(p.getLng()-c.getLng())*unit+element.clientWidth/2,
@@ -349,7 +349,7 @@ class CoursePlannerUiTest {
             window.releasePin=pins.find(p=>p.coursePin && p.attached);
             window.pressTarget=document.createElement('div');window.releaseTarget=document.createElement('div');
             document.getElementById('map').appendChild(pressTarget);document.getElementById('map').appendChild(releaseTarget);
-            window.gesturePoint=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(releasePlace.lat,releasePlace.lng));
+            window.gesturePoint=window.mapViewport.projection().containerPointFromCoords(new kakao.maps.LatLng(releasePlace.lat,releasePlace.lng));
             var viewport=document.getElementById('map'),rect=viewport.getBoundingClientRect();
             window.gestureX=rect.left+gesturePoint.x*rect.width/viewport.clientWidth;
             window.gestureY=rect.top+(gesturePoint.y-30)*rect.height/viewport.clientHeight;
@@ -376,7 +376,7 @@ class CoursePlannerUiTest {
             testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));
             window.dragPin=pins.find(p=>p.coursePin && p.attached);
             var viewport=document.getElementById('map'),rect=viewport.getBoundingClientRect();
-            var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(dragPlace.lat,dragPlace.lng));
+            var point=window.mapViewport.projection().containerPointFromCoords(new kakao.maps.LatLng(dragPlace.lat,dragPlace.lng));
             var x=rect.left+point.x*rect.width/viewport.clientWidth,y=rect.top+(point.y-30)*rect.height/viewport.clientHeight;
             viewport.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,button:0,buttons:1,clientX:x,clientY:y}));
             viewport.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:1,clientX:x+40,clientY:y}));
@@ -400,7 +400,7 @@ class CoursePlannerUiTest {
             document.getElementById('map').appendChild(clickShield);
             window.dispatchAtPin=function(place,type,target,offsetX){
                 var mapElement=document.getElementById('map'),rect=mapElement.getBoundingClientRect();
-                var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(place.lat,place.lng));
+                var point=window.mapViewport.projection().containerPointFromCoords(new kakao.maps.LatLng(place.lat,place.lng));
                 (target||clickShield).dispatchEvent(new MouseEvent(type,{bubbles:true,cancelable:true,button:0,detail:type==='click'?1:0,
                     clientX:rect.left+(point.x+(offsetX||0))*rect.width/mapElement.clientWidth,
                     clientY:rect.top+(point.y-30)*rect.height/mapElement.clientHeight}));
@@ -432,7 +432,7 @@ class CoursePlannerUiTest {
             window.coordinatePin=pins.find(p=>p.coursePin && p.attached);
             window.movePinPointer=function(place,dx,dy,target){
                 var element=document.getElementById('map'),rect=element.getBoundingClientRect();
-                var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(place.lat,place.lng));
+                var point=window.mapViewport.projection().containerPointFromCoords(new kakao.maps.LatLng(place.lat,place.lng));
                 (target||element).dispatchEvent(new MouseEvent('mousemove',{bubbles:true,clientX:rect.left+(point.x+dx)*rect.width/element.clientWidth,
                     clientY:rect.top+(point.y+dy)*rect.height/element.clientHeight}));
             };
@@ -459,7 +459,7 @@ class CoursePlannerUiTest {
             document.getElementById('map').style.transform='scale(1.1)';
             window.moveCoordinates=function(place,dx,dy){
                 var element=document.getElementById('map'),rect=element.getBoundingClientRect();
-                var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(place.lat,place.lng));
+                var point=window.mapViewport.projection().containerPointFromCoords(new kakao.maps.LatLng(place.lat,place.lng));
                 element.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,clientX:rect.left+(point.x+dx)*rect.width/element.clientWidth,
                     clientY:rect.top+(point.y+dy)*rect.height/element.clientHeight}));
             };
@@ -491,7 +491,7 @@ class CoursePlannerUiTest {
         script(engine,"paddedPins[1].onclick();paddedPins[1].onmouseover()");
         assertEquals(true,script(engine,"paddedPins[1].image===paddedPins[1].activeImage && paddedPins[1].image.size.width===56"));
     }
-    @Test void briefPinExitDoesNotFlickerAndOldLeaveCannotCloseAnotherPreview() throws Exception {
+    @Test void pinExitImmediatelyHidesHoverAndOldLeaveCannotCloseAnotherPreview() throws Exception {
         WebEngine engine=loadMap(850,720);
         script(engine,"""
             window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[
@@ -501,7 +501,7 @@ class CoursePlannerUiTest {
             window.stablePreview=routeOverlays.find(p=>p.options.content.classList.contains('place-pin-preview'));
             hoverPins[0].onmouseout();
             """);
-        assertEquals(true,script(engine,"stablePreview.attached"));
+        assertEquals(false,script(engine,"stablePreview.attached"));
         Thread.sleep(50);script(engine,"hoverPins[0].onmouseover()");Thread.sleep(220);
         assertEquals(true,script(engine,"stablePreview.attached"));
         script(engine,"hoverPins[0].onmouseout();hoverPins[1].onmouseover();hoverPins[0].onmouseout()");Thread.sleep(220);
@@ -583,7 +583,7 @@ class CoursePlannerUiTest {
         assertEquals(false,script(engine,"document.getElementById('place-detail').hidden"));
         assertEquals(false,script(engine,"routeOverlays.some(p=>p.attached && p.options.content.classList.contains('walking-route-tooltip'))"));
         script(engine,"routeLines.find(p=>p.onclick).onclick()");
-        assertEquals(true,script(engine,"routeOverlays.some(p=>p.attached && p.options.content.classList.contains('is-detailed'))"));
+        assertEquals(true,script(engine,"!document.getElementById('walking-details').hidden && document.getElementById('detail-title').textContent.startsWith('1구간')"));
     }
     @Test void removedPinCannotReopenPreviewAndOldMouseoutCannotHideNewPin() throws Exception {
         WebEngine engine=loadMap(420,680);
@@ -686,8 +686,7 @@ class CoursePlannerUiTest {
         });
     }
 
-    @Test
-    void clickedWalkingPopupSurvivesMouseoutAndRouteClicksDoNotMoveOrigin() throws Exception {
+    @Test void routeFocusSurvivesHoverAndMovesOnlyOnClickWithoutMovingOrigin() throws Exception {
         WebEngine engine=loadMap();
         script(engine,"""
             window.blocked=0;javaMapBridge.onOriginChangeBlocked=function(){blocked++;};
@@ -697,21 +696,18 @@ class CoursePlannerUiTest {
               {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:80,paths:testPath,steps:[]},
               {from:{name:'첫 장소'},to:{name:'둘째 장소'},distance:100,time:80,paths:testPath,steps:[]}
             ]},'',false);
-            routeLines[1].onclick({latLng:new kakao.maps.LatLng(35.158,129.059)});
-            testMap.onclick({latLng:new kakao.maps.LatLng(35.158,129.059)});
-            routeLines[1].onmouseout();routeLines[3].onmouseover({latLng:new kakao.maps.LatLng(35.158,129.059)});
             """);
-        assertEquals(true,script(engine,"blocked===0 && routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('1구간')"));
-        assertEquals(true,script(engine,"routeLines[3].zIndex===12 && routeLines[1].zIndex===4"));
+        assertEquals(true,script(engine,"routeLines[1].options.strokeOpacity===.55 && routeLines[3].options.strokeOpacity===.55"));
+        script(engine,"routeLines[1].onclick();testMap.onclick({latLng:new kakao.maps.LatLng(35.158,129.059)});routeLines[1].onmouseout();routeLines[3].onmouseover()");
+        assertEquals(true,script(engine,"blocked===0 && routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('2구간')"));
+        assertEquals(true,script(engine,"routeLines[1].options.strokeOpacity===1 && routeLines[3].options.strokeOpacity===1"));
         script(engine,"routeLines[3].onmouseout()");
-        assertEquals(true,script(engine,"routeLines[1].zIndex===12 && routeLines[3].zIndex===4 && routeOverlays[0].attached"));
+        assertEquals(true,script(engine,"routeLines[1].options.strokeOpacity===1 && routeLines[3].options.strokeOpacity===.55 && !routeOverlays[0].attached"));
         script(engine,"routeLines[3].onclick();routeLines[3].onmouseout()");
-        assertEquals(true,script(engine,"routeOverlays[0].attached && routeOverlays[0].options.content.textContent.includes('2구간')"));
+        assertEquals(true,script(engine,"routeLines[1].options.strokeOpacity===.55 && routeLines[3].options.strokeOpacity===1 && document.getElementById('detail-title').textContent.startsWith('2구간')"));
         Thread.sleep(50);
         script(engine,"testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
-        assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
-        script(engine,"routeLines[1].onmouseover();testMap.onclick({latLng:new kakao.maps.LatLng(35.16,129.06)})");
-        assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0"));
+        assertEquals(true,script(engine,"!routeOverlays[0].attached && blocked===0 && routeLines[3].options.strokeOpacity===.55"));
     }
 
     @Test void accountPagesSharePrefetchedDataAndDoNotQueryOnRepeatedVisits() throws Exception {
@@ -857,7 +853,32 @@ class CoursePlannerUiTest {
         assertEquals("[[35.16,129.06]]",script(engine,"JSON.stringify(bridgeSelections)"));
     }
 
-    @Test void numberedBadgeHoverHighlightsItsLegAndKeepsClickedDetailsPinned() throws Exception {
+    @Test void overlappingPinWinsRouteHoverAndClickAndOnlyOneTooltipExists() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[
+                {recordId:1,placeId:'a',name:'겹친 장소',lat:35.158,lng:129.06}]},null,500,true,false,[]);
+            window.path=[[{lat:35.1578,lng:129.06},{lat:35.158,lng:129.06}]];
+            window.showWalkingRoute({totalDistance:100,totalTime:80,legs:[
+                {from:{name:'출발'},to:{name:'겹친 장소'},distance:100,time:80,paths:path,steps:[]}
+            ]},'',false);
+            window.pin=pins.find(p=>p.coursePin && p.attached);
+            testMap.setCenter(new kakao.maps.LatLng(35.158,129.06));
+            window.point=window.mapViewport.projection().containerPointFromCoords(new kakao.maps.LatLng(35.158,129.06));
+            window.rect=document.getElementById('map').getBoundingClientRect();
+            document.getElementById('map').dispatchEvent(new MouseEvent('mousemove',{bubbles:true,clientX:rect.left+point.x,clientY:rect.top+point.y-20}));
+            routeLines[1].onmouseover();routeLines[1].onclick();
+            """);
+        assertEquals(true,script(engine,"pin.image===pin.activeImage && document.getElementById('place-detail').hidden && document.getElementById('walking-details').hidden"));
+        assertEquals(1,((Number)script(engine,"routeOverlays.filter(o=>o.attached && (o.options.content.classList.contains('place-pin-preview') || o.options.content.classList.contains('walking-route-tooltip'))).length")).intValue());
+        assertEquals(true,script(engine,"document.getElementById('map-surface').classList.contains('map-interactive')"));
+        script(engine,"pin.onclick();document.getElementById('map').dispatchEvent(new MouseEvent('mousemove',{bubbles:true,clientX:rect.left+10,clientY:rect.top+10}));routeLines[1].onclick()");
+        assertEquals(true,script(engine,"pin.image===pin.normalImage && routeLines[1].options.strokeOpacity===1 && document.getElementById('detail-title').textContent.startsWith('1구간')"));
+        script(engine,"pin.onclick()");
+        assertEquals(true,script(engine,"pin.image===pin.activeImage && routeLines[1].options.strokeOpacity===.55 && document.getElementById('detail-title').textContent==='겹친 장소'"));
+    }
+
+    @Test void numberedBadgeHoverIsBriefAndClickedDetailsStayInCards() throws Exception {
         WebEngine engine=loadMap(640,600);
         script(engine,"""
             window.path=[[{lat:35,lng:129},{lat:35.001,lng:129}]];
@@ -865,22 +886,16 @@ class CoursePlannerUiTest {
                 {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:60,paths:path,steps:[]},
                 {from:{name:'첫 장소'},to:{name:'둘째 장소'},distance:100,time:60,paths:path,steps:[]}
             ]},'',false);
-            window.badges=routeOverlays.filter(function(o){return o.options.content.className==='walking-leg-badge';});
-            window.popup=routeOverlays[0].options.content;
+            window.badges=routeOverlays.filter(o=>o.options.content.className==='walking-leg-badge');
             badges[1].options.content.dispatchEvent(new Event('mouseenter'));
             """);
-        assertEquals(true,script(engine,"routeLines[3].options.strokeWeight===6 && routeLines[1].options.strokeWeight===4 && routeOverlays[0].attached && popup.textContent.includes('2구간') && popup.querySelector('.walking-tooltip-steps').hidden"));
+        assertEquals(true,script(engine,"routeLines[3].options.strokeOpacity===1 && routeLines[1].options.strokeOpacity===.55 && routeOverlays[0].attached"));
         script(engine,"badges[1].options.content.dispatchEvent(new Event('mouseleave'))");
-        assertEquals(true,script(engine,"routeLines[1].options.strokeWeight===6 && routeLines[3].options.strokeWeight===4"));
-        Thread.sleep(170);
-        assertEquals(false,script(engine,"routeOverlays[0].attached"));
-        script(engine,"badges[1].options.content.dispatchEvent(new Event('focus'))");
-        assertEquals(true,script(engine,"routeOverlays[0].attached && popup.textContent.includes('2구간')"));
-        script(engine,"badges[1].options.content.click();badges[1].options.content.dispatchEvent(new Event('blur'));badges[0].options.content.dispatchEvent(new Event('mouseenter'))");
-        assertEquals(true,script(engine,"routeOverlays[0].attached && popup.textContent.includes('2구간') && !popup.querySelector('.walking-tooltip-steps').hidden"));
+        assertEquals(true,script(engine,"!routeOverlays[0].attached && routeLines[3].options.strokeOpacity===.55"));
+        script(engine,"badges[1].options.content.click();badges[0].options.content.dispatchEvent(new Event('mouseenter'))");
+        assertEquals(true,script(engine,"document.getElementById('detail-title').textContent.startsWith('2구간') && !document.getElementById('walking-details').hidden && routeOverlays[0].options.content.textContent.includes('1구간')"));
         script(engine,"badges[0].options.content.dispatchEvent(new Event('mouseleave'))");
-        Thread.sleep(170);
-        assertEquals(true,script(engine,"routeOverlays[0].attached && routeLines[3].options.strokeWeight===6"));
+        assertEquals(true,script(engine,"!routeOverlays[0].attached && routeLines[3].options.strokeOpacity===1 && routeLines[1].options.strokeOpacity===.55"));
     }
 
     @Test void routeBadgeUsesHalfDistanceAndBlankMapDismissesBothCards() throws Exception {
@@ -900,9 +915,9 @@ class CoursePlannerUiTest {
             """);
         assertEquals(35.005,((Number)script(engine,"badge.options.position.getLat()")).doubleValue(),0.0000001);
         assertEquals(0.5,((Number)script(engine,"badge.options.yAnchor")).doubleValue());
-        assertEquals(true,script(engine,"popup.querySelector('.walking-tooltip-steps').hidden && popup.style.width==='280px'"));
+        assertEquals(true,script(engine,"!popup.querySelector('.walking-tooltip-steps') && popup.style.width==='260px'"));
         script(engine,"routeLines[1].onclick()");
-        assertEquals(true,script(engine,"!popup.querySelector('.walking-tooltip-steps').hidden && popup.style.width==='360px'"));
+        assertEquals(true,script(engine,"!routeOverlays[0].attached && document.getElementById('detail-extra').textContent.includes('도착 가게까지 직진하세요.')"));
         script(engine,"window.openRoutePlace(1)");
         assertEquals("false",script(engine,"document.getElementById('place-detail').getAttribute('aria-hidden')"));
         Thread.sleep(50);
@@ -914,7 +929,7 @@ class CoursePlannerUiTest {
         script(engine,"routeLines[1].onmouseover();routeLines[1].onmouseout()");
         Thread.sleep(170);
         assertEquals(false,script(engine,"routeOverlays[0].attached"));
-        script(engine,"routeLines[1].onclick();popup.querySelector('.walking-tooltip-close').click()");
+        script(engine,"routeLines[1].onclick();document.getElementById('detail-close').click()");
         assertEquals(false,script(engine,"routeOverlays[0].attached"));
     }
 
@@ -984,7 +999,7 @@ class CoursePlannerUiTest {
     }
 
     @Test
-    void routeDescriptionLivesInHoverPopupAndPlacePinsOpenDetails() throws Exception {
+    void routeHoverShowsSummaryAndClicksOpenRouteOrPlaceCards() throws Exception {
         WebEngine engine = loadMap(640,600);
         script(engine,"""
             window.presentRoute({startLat:35.1579,startLng:129.059,radius:1000,people:2,places:[
@@ -998,7 +1013,7 @@ class CoursePlannerUiTest {
             ]},'',false);
             routeLines[3].onclick();
             """);
-        assertEquals(true,script(engine,"document.getElementById('walking-details').hidden"));
+        assertEquals(false,script(engine,"document.getElementById('walking-details').hidden"));
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
         script(engine,"pins.filter(p=>p.coursePin && p.attached)[0].onclick()");
         assertEquals(true,script(engine,"document.getElementById('walking-details').hidden"));
@@ -1015,9 +1030,9 @@ class CoursePlannerUiTest {
             """);
         assertEquals("두 번째 장소",script(engine,"document.getElementById('detail-title').textContent"));
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.startsWith('2구간')"));
-        assertEquals(280,((Number)script(engine,"tooltip.getBoundingClientRect().width")).intValue());
+        assertEquals(260,((Number)script(engine,"tooltip.getBoundingClientRect().width")).intValue());
         assertEquals(true,script(engine,"tooltip.getBoundingClientRect().height<180 && tooltip.querySelector('.walking-tooltip-facts').textContent.includes('분')"));
-        assertEquals(true,script(engine,"tooltip.querySelector('.walking-tooltip-steps').textContent.includes('둘째 구간 안내') && !tooltip.querySelector('.walking-tooltip-steps').textContent.includes('첫 구간 안내')"));
+        assertEquals(true,script(engine,"!tooltip.querySelector('.walking-tooltip-steps') && getComputedStyle(tooltip).pointerEvents==='none'"));
         // Show the test scene briefly: WebKit may skip painting in a detached Scene.
         var previewWindow = fx(() -> {
             var window = new javafx.stage.Stage();window.setScene(previewView.getScene());window.show();return window;
@@ -1467,9 +1482,9 @@ class CoursePlannerUiTest {
             e.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),java.util.List.of(a,b),p->{},()->{});
             invoke(e,"onRecommendNext");assertEquals(0,calls.get());invoke(e,"onAddCandidate");return e;
         });
-        awaitEditorTime(editor,"누적 도보 약 2분");assertEquals(1,calls.get());
+        awaitEditorTime(editor,"도보 · 약 2분");assertEquals(1,calls.get());
         fx(()->{invoke(editor,"onRecommendNext");assertEquals(1,calls.get());invoke(editor,"onAddCandidate");return null;});
-        awaitEditorTime(editor,"누적 도보 약 3분");assertEquals(2,calls.get());
+        awaitEditorTime(editor,"도보 · 약 3분");assertEquals(2,calls.get());
         fx(()->{
             var description=CourseEditorController.class.getDeclaredMethod("walkingDescription",int.class);description.setAccessible(true);
             assertTrue(description.invoke(editor,0).toString().contains("도보 약 2분 · 누적 약 2분"));
@@ -1501,11 +1516,11 @@ class CoursePlannerUiTest {
             return e;
         });
         try {
-            awaitEditorTime(editor,"누적 도보");
+            awaitEditorTime(editor,"도보 · 약 1분");
             fx(()->{((javafx.scene.control.ComboBox<com.datecourse.model.TravelMode>)field(editor,"travelModeBox")).setValue(com.datecourse.model.TravelMode.DRIVING);return null;});
             assertTrue(drivingStarted.await(5,TimeUnit.SECONDS));
             fx(()->{((javafx.scene.control.ComboBox<com.datecourse.model.TravelMode>)field(editor,"travelModeBox")).setValue(com.datecourse.model.TravelMode.TRANSIT);return null;});
-            awaitEditorTime(editor,"누적 대중교통");releaseDriving.countDown();
+            awaitEditorTime(editor,"대중교통 + 도보 · 약 1분");releaseDriving.countDown();
             fx(()->{
                 assertEquals(com.datecourse.model.TravelMode.TRANSIT,editor.draftSnapshot().travelMode());
                 assertEquals(com.datecourse.model.TravelMode.TRANSIT,((com.datecourse.model.TravelRoute)field(editor,"walkingRoute")).mode());
@@ -1519,7 +1534,7 @@ class CoursePlannerUiTest {
     private static void awaitEditorTime(CourseEditorController editor,String text) throws Exception {
         long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(5);
         while(System.nanoTime()<end) {
-            if(fx(()->((javafx.scene.control.Label)field(editor,"walkingTimeLabel")).getText().contains(text)))return;
+            if(fx(()->(((javafx.scene.control.Label)field(editor,"metricTransportLabel")).getText()+" · "+((javafx.scene.control.Label)field(editor,"metricTimeLabel")).getText()+" · "+((javafx.scene.control.Label)field(editor,"walkingTimeLabel")).getText()).contains(text)))return;
             Thread.sleep(20);
         }
         fail("Missing editor walking status: "+text);
@@ -1582,56 +1597,38 @@ class CoursePlannerUiTest {
         });
     }
 
-    @Test void clickedRouteInstructionsCanBeReadAndScrolledWithoutShowingOtherLegs() throws Exception {
+    @Test void clickedRouteInstructionsScrollInLeftCardAndHoverNeverHoldsThem() throws Exception {
         WebEngine engine=loadMap(640,600);
         script(engine,"""
             window.path=[[{lat:35.157,lng:129.06},{lat:35.158,lng:129.06}]];
             window.showWalkingRoute({totalDistance:200,totalTime:120,legs:[
-                {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:60,paths:path,steps:Array.from({length:30},function(_,i){return {description:'첫 구간 안내 '+i+' · 횡단보도를 건넌 후 왼쪽 보행자 도로를 따라 350m 이동하세요. 아주긴공백없는장소이름도영역밖으로잘리지않아야합니다.'};})},
+                {from:{name:'출발'},to:{name:'첫 장소'},distance:100,time:60,paths:path,steps:Array.from({length:30},(_,i)=>({description:'첫 구간 안내 '+i+' · 횡단보도를 건넌 후 왼쪽 보행자 도로를 따라 350m 이동하세요.'}))},
                 {from:{name:'첫 장소'},to:{name:'둘째 장소'},distance:100,time:60,paths:path,steps:[{description:'둘째 구간 전용 안내'}]}
             ]},'',false);
             routeLines[1].onmouseover();window.popup=routeOverlays[0].options.content;
-            window.summaryOnly=popup.querySelector('.walking-tooltip-steps').hidden && !popup.querySelector('.walking-tooltip-hint').hidden;
-            routeLines[1].onclick();
-            document.getElementById('map').appendChild(popup);popup.style.position='absolute';popup.style.top='100px';
-            routeLines[1].onmouseout();popup.dispatchEvent(new Event('mouseenter'));
-            window.zoomBeforePopup=zoomCalls.length;
-            window.popupWheel=new WheelEvent('wheel',{deltaY:120,bubbles:true,cancelable:true});
-            popup.querySelector('.walking-tooltip-steps').dispatchEvent(popupWheel);
+            routeLines[1].onclick();routeLines[1].onmouseout();popup.dispatchEvent(new Event('mouseenter'));
             """);
-        Thread.sleep(170);
-        assertEquals(true,script(engine,"summaryOnly && !popup.querySelector('.walking-tooltip-steps').hidden && popup.querySelector('.walking-tooltip-hint').hidden"));
-        assertEquals(true,script(engine,"routeOverlays[0].attached && popup.querySelector('.walking-tooltip-steps').children.length===30"));
-        assertEquals(true,script(engine,"popup.querySelector('.walking-tooltip-steps').scrollHeight>popup.querySelector('.walking-tooltip-steps').clientHeight"));
-        assertEquals(false,script(engine,"popup.textContent.includes('둘째 구간 전용 안내')"));
-        assertEquals(true,script(engine,"zoomCalls.length===zoomBeforePopup && !popupWheel.defaultPrevented"));
-        assertEquals(true,script(engine,"Array.from(popup.querySelectorAll('li')).every(function(li){return li.scrollWidth<=li.clientWidth+1;})"));
-        script(engine,"popup.querySelector('.walking-tooltip-steps').scrollTop=120;routeLines[1].onmousemove()");
-        assertEquals(120,((Number)script(engine,"popup.querySelector('.walking-tooltip-steps').scrollTop")).intValue());
+        assertEquals(false,script(engine,"routeOverlays[0].attached"));
+        assertEquals(30,((Number)script(engine,"document.querySelectorAll('#detail-extra li').length")).intValue());
+        assertEquals("none",script(engine,"getComputedStyle(document.querySelector('.detail-actions')).display"));
         var previewWindow=fx(()->{var stage=new javafx.stage.Stage();stage.setScene(previewView.getScene());stage.show();return stage;});
         try {
             Thread.sleep(150);
-            fx(()->{
-                Path preview=Path.of("build/ui-preview/walking-tooltip-readable.png");Files.createDirectories(preview.getParent());
-                ImageIO.write(SwingFXUtils.fromFXImage(previewView.snapshot(null,null),null),"png",preview.toFile());return null;
-            });
+            fx(()->{var path=Path.of("build/ui-preview/route-left-detail.png");Files.createDirectories(path.getParent());
+                ImageIO.write(SwingFXUtils.fromFXImage(previewView.snapshot(null,null),null),"png",path.toFile());return null;});
         } finally {fx(()->{previewWindow.close();return null;});}
-        script(engine,"""
-            var surface=document.getElementById('map');surface.style.flex='none';surface.style.width='280px';surface.style.height='240px';
-            surface.style.whiteSpace='nowrap';surface.style.color='blue';
-            routeLines[1].onclick({latLng:new kakao.maps.LatLng(90,180)});
-            window.popupPoint=testMap.getProjection().containerPointFromCoords(routeOverlays[0].position);
-            """);
-        assertEquals(true,script(engine,"popup.offsetWidth<=256 && popup.offsetHeight<=216 && popup.scrollWidth<=popup.clientWidth+1"));
-        assertEquals(true,script(engine,"popupPoint.x-popup.offsetWidth/2>=11 && popupPoint.x+popup.offsetWidth/2<=269 && popupPoint.y-popup.offsetHeight>=11 && popupPoint.y<=229"),script(engine,"JSON.stringify({x:popupPoint.x,y:popupPoint.y,w:popup.offsetWidth,h:popup.offsetHeight,mw:document.getElementById('map').clientWidth,mh:document.getElementById('map').clientHeight})").toString());
-        assertEquals("rgb(37, 50, 68)",script(engine,"getComputedStyle(popup.querySelector('li')).color"));
-        assertEquals("normal",script(engine,"getComputedStyle(popup.querySelector('li')).whiteSpace"));
-        script(engine,"popup.dispatchEvent(new Event('mouseleave'))");Thread.sleep(170);
-        assertEquals(true,script(engine,"routeOverlays[0].attached"));
+
+        assertEquals(false,script(engine,"document.getElementById('detail-extra').textContent.includes('둘째 구간 전용 안내')"));
+        assertEquals(true,script(engine,"document.getElementById('place-detail').getBoundingClientRect().left<30 && document.getElementById('place-detail').getBoundingClientRect().bottom<=window.innerHeight"));
+        assertEquals(true,script(engine,"document.getElementById('place-detail').scrollHeight>document.getElementById('place-detail').clientHeight"));
+        assertEquals("13px",script(engine,"getComputedStyle(document.getElementById('detail-extra')).fontSize"));
+        script(engine,"document.getElementById('place-detail').scrollTop=120");
+        assertTrue(((Number)script(engine,"document.getElementById('place-detail').scrollTop")).intValue()>0);
+
         script(engine,"routeLines[3].onmouseover()");
-        assertEquals(true,script(engine,"popup.textContent.includes('첫 구간 안내')"));
+        assertEquals(true,script(engine,"document.getElementById('detail-extra').textContent.includes('첫 구간 안내') && !popup.querySelector('ol')"));
         script(engine,"routeLines[3].onclick()");
-        assertEquals(true,script(engine,"popup.textContent.includes('둘째 구간 전용 안내') && !popup.textContent.includes('첫 구간 안내')"));
+        assertEquals(true,script(engine,"document.getElementById('detail-extra').textContent.includes('둘째 구간 전용 안내') && !document.getElementById('detail-extra').textContent.includes('첫 구간 안내')"));
     }
 
     @Test void mapSelectionFocusesCandidateAndCardAdditionUsesTheSameValidatedFlow() throws Exception {
@@ -1841,7 +1838,7 @@ class CoursePlannerUiTest {
             testMap.setCenter(new kakao.maps.LatLng(35.1578,129.06));
             window.moveToRange=function(meters,buttons){
                 var viewport=document.getElementById('map'),rect=viewport.getBoundingClientRect();
-                var point=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(35.1578+meters/6378137*180/Math.PI,129.06));
+                var point=window.mapViewport.projection().containerPointFromCoords(new kakao.maps.LatLng(35.1578+meters/6378137*180/Math.PI,129.06));
                 viewport.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:buttons||0,
                     clientX:rect.left+point.x*rect.width/viewport.clientWidth,
                     clientY:rect.top+point.y*rect.height/viewport.clientHeight}));
@@ -1971,7 +1968,7 @@ class CoursePlannerUiTest {
             """);
         assertEquals(true,script(engine,"routeLines.filter(l=>l.attached&&l.options.zIndex===4).map(l=>l.options.strokeStyle).join(',')==='shortdash,solid'"));
         assertEquals(true,script(engine,"document.getElementById('walking-summary').textContent.includes('대중교통 + 도보')"));
-        script(engine,"routeLines[1].onmouseover({});routeLines[1].onclick({});document.querySelector('.walking-leg-button').click();");
+        script(engine,"routeLines[1].onmouseover({});routeLines[1].onclick({});");
         assertEquals(true,script(engine,"document.getElementById('walking-detail-facts').textContent.includes('도보 약 2분 → 버스 약 8분')"));
         assertEquals(true,script(engine,"document.getElementById('walking-detail-facts').textContent.includes('1,550원')"));
         assertEquals(true,script(engine,"!document.getElementById('walking-details').hidden && document.getElementById('walking-details').open"));
@@ -2053,6 +2050,12 @@ class CoursePlannerUiTest {
             Path preview=Path.of("build","ui-preview","route-editor.png");Files.createDirectories(preview.getParent());
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",preview.toFile());
             root.resize(960,680);root.applyCss();root.layout();
+            root.layout();
+            var compactSummary=(javafx.scene.control.Label)field(editor,"compactSummaryLabel");
+            assertTrue(compactSummary.isVisible());
+            assertFalse(((javafx.scene.layout.HBox)field(editor,"editorSummaryBar")).isManaged());
+            assertTrue(compactSummary.getWidth()>300);
+            assertTrue(compactSummary.getText().contains("30,000원"));
             WebView editMap=(WebView)field(editor,"editMapView");
             assertTrue(editMap.getWidth() >= root.getLayoutBounds().getWidth() * .4);
             assertTrue(editMap.getHeight() >= root.getLayoutBounds().getHeight() / 2, "지도 높이: " + editMap.getHeight());
@@ -2515,6 +2518,76 @@ class CoursePlannerUiTest {
         return task.get(10, TimeUnit.SECONDS);
     }
 
+    @Test void mapControlsWinPointerInputWhenTheyOverlapMarkers() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.presentRoute({startLat:35.1796,startLng:129.0756,radius:1000,places:[]},null,500,true,false,[]);
+            window.setRouteViewVisible(true);window.imageRequests=0;javaMapBridge.requestRouteImage=function(){imageRequests++;};
+            var target=document.getElementById('route-image-button'),button=target.getBoundingClientRect(),view=document.getElementById('map').getBoundingClientRect();
+            var x=button.left+button.width/2,y=button.top+button.height/2;
+            var coords=mapViewport.projection().coordsFromContainerPoint(new kakao.maps.Point(x-view.left,y-view.top+30));
+            window.presentRoute({startLat:35.1796,startLng:129.0756,radius:1000,places:[{recordId:1,placeId:'under-button',name:'버튼 아래 마커',lat:coords.getLat(),lng:coords.getLng()}]},null,500,true,false,[]);
+            ['mousemove','mousedown','mouseup','click'].forEach(type=>target.dispatchEvent(new MouseEvent(type,{bubbles:true,cancelable:true,button:0,detail:1,clientX:x,clientY:y})));
+            """);
+        assertEquals(1,((Number)script(engine,"imageRequests")).intValue());
+        assertEquals(true,script(engine,"document.getElementById('place-detail').hidden"));
+        assertEquals(false,script(engine,"routeOverlays.some(o=>o.attached && o.options.content.classList.contains('place-pin-preview'))"));
+    }
+
+    @Test void routeDetailsRestoreKeyboardCloseAfterReopening() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.showWalkingRoute({totalDistance:100,totalTime:60,legs:[{from:{name:'출발'},to:{name:'도착'},distance:100,time:60,
+                paths:[[{lat:35.1796,lng:129.0756},{lat:35.18,lng:129.0756}]],steps:[{description:'직진'}]}]},'',false);
+            routeLines[1].onclick();
+            """);
+        assertEquals(0,((Number)script(engine,"document.getElementById('detail-close').tabIndex")).intValue());
+        script(engine,"document.getElementById('detail-close').focus();document.getElementById('detail-close').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}))");
+        assertEquals("true",script(engine,"document.getElementById('place-detail').getAttribute('aria-hidden')"));
+        script(engine,"routeLines[1].onclick();document.getElementById('detail-close').focus()");
+        assertEquals(true,script(engine,"document.activeElement===document.getElementById('detail-close') && document.getElementById('detail-close').tabIndex===0"));
+        script(engine,"document.getElementById('detail-close').click()");
+        assertEquals("true",script(engine,"document.getElementById('place-detail').getAttribute('aria-hidden')"));
+    }
+
+    @Test void bufferedMapKeepsEdgeCoordinatesAndNativeCopyrightInsideVisibleViewport() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.viewport=document.getElementById('map');window.canvas=document.getElementById('map-canvas');
+            testMap.setCenter(new kakao.maps.LatLng(35.158,129.06));
+            window.edge=mapViewport.projection().coordsFromContainerPoint(new kakao.maps.Point(viewport.clientWidth-8,viewport.clientHeight/2));
+            window.presentRoute({startLat:35.158,startLng:129.06,radius:1000,places:[
+                {recordId:9,placeId:'edge',name:'경계 장소',lat:edge.getLat(),lng:edge.getLng()}]},null,500,true,false,[]);
+            window.footer=document.createElement('div');footer.textContent='Kakao · 지도 출처';
+            Object.assign(footer.style,{position:'absolute',bottom:'0px',right:'0px',width:'160px',height:'20px'});canvas.appendChild(footer);
+            window.tileLayer=document.createElement('div');Object.assign(tileLayer.style,{position:'absolute',top:'0px',bottom:'0px'});canvas.appendChild(tileLayer);
+            """);
+        Thread.sleep(60);
+        assertEquals(true,script(engine,"canvas.clientWidth>viewport.clientWidth && canvas.clientHeight>viewport.clientHeight && getComputedStyle(viewport).overflow==='hidden'"));
+        assertEquals(true,script(engine,"(function(){var visible=viewport.getBoundingClientRect(),copy=footer.getBoundingClientRect();return copy.right<=visible.right+1 && copy.bottom<=visible.bottom+1 && copy.left>=visible.left && footer.parentElement===canvas && !tileLayer.style.marginBottom;})()"));
+        script(engine,"""
+            window.p=mapViewport.projection().containerPointFromCoords(edge);window.rect=viewport.getBoundingClientRect();
+            viewport.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,clientX:rect.left+p.x,clientY:rect.top+p.y-20}));
+            window.pin=pins.find(p=>p.coursePin && p.attached);
+            """);
+        assertEquals(true,script(engine,"pin.image===pin.activeImage && Math.abs(p.x-(viewport.clientWidth-8))<1"));
+        script(engine,"pin.onclick();testMap.onbounds_changed()");
+        assertEquals("경계 장소",script(engine,"document.getElementById('detail-title').textContent"));
+        assertEquals(true,script(engine,"pin.image===pin.activeImage && (function(){var raw=testMap.getProjection().containerPointFromCoords(edge);return raw.x>0 && raw.x<canvas.clientWidth;})()"));
+    }
+
+    @Test void resizingBufferedMapPreservesCenterAndZoomAndFitsVisibleArea() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            testMap.setCenter(new kakao.maps.LatLng(35.158,129.06));
+            document.getElementById('map').style.width='400px';document.getElementById('map').style.height='280px';
+            window.dispatchEvent(new Event('resize'));
+            """);
+        Thread.sleep(180);
+        assertEquals(true,script(engine,"testMap.getCenter().getLat()===35.158 && testMap.getCenter().getLng()===129.06 && testMap.getLevel()===5"));
+        assertEquals(true,script(engine,"(function(){var state=mapViewport.inspect(),point=mapViewport.projection().containerPointFromCoords(testMap.getCenter()),camera=inspectMapCamera();return state.width===400 && state.height===280 && state.renderWidth>400 && state.renderHeight>280 && camera.width===400 && camera.height===280 && Math.abs(point.x-200)<1 && Math.abs(point.y-140)<1;})()"));
+    }
+
     @Test void cachedMapTilesCanBeCapturedWithoutANewTilesLoadedEvent() throws Exception {
         WebEngine engine=loadMap();
         fx(()->{
@@ -2536,12 +2609,14 @@ class CoursePlannerUiTest {
                 if(captured)break;Thread.sleep(50);
             }
             assertTrue(captured,"이미 캐시된 타일에는 새 tilesloaded 이벤트가 없어도 준비 판정이 필요합니다.");
+            assertEquals(true,script(engine,"mapViewport.inspect().padX===0 && mapViewport.inspect().padY===0"));
             // An incomplete tile must still block capture.
             fx(()->{
                 engine.executeScript("var pending=new Image();pending.src='data:image/png;base64,broken';document.getElementById('map').appendChild(pending)");
                 assertEquals(false,engine.executeScript("window.courseCaptureReady()"));return null;
             });
         } finally {fx(()->{engine.executeScript("window.endCourseCapture()");return null;});}
+        assertEquals(true,script(engine,"mapViewport.inspect().padX>0 && mapViewport.inspect().padY>0"));
     }
 
     @Test void closingTheWindowChecksUnsavedChangesAndBlocksAnActiveSave() throws Exception {
@@ -2720,6 +2795,10 @@ class CoursePlannerUiTest {
             html = html.replace("<script src=\"./pin-pointer-gesture.js\"></script>",
                     "<script>" + new String(gesture.readAllBytes(), StandardCharsets.UTF_8) + "</script>");
         }
+        try (var viewport = getClass().getResourceAsStream("/map/map-viewport.js")) {
+            html = html.replace("<script src=\"./map-viewport.js\"></script>",
+                    "<script>" + new String(viewport.readAllBytes(), StandardCharsets.UTF_8) + "</script>");
+        }
         try (var camera = getClass().getResourceAsStream("/map/camera-motion.js")) {
             html = html.replace("<script src=\"./camera-motion.js\"></script>",
                     "<script>" + new String(camera.readAllBytes(), StandardCharsets.UTF_8) + "</script>");
@@ -2809,7 +2888,7 @@ class CoursePlannerUiTest {
         script(engine,"""
             window.mapElement=document.getElementById('map');window.bounds=mapElement.getBoundingClientRect();
             window.oldPinCount=pins.length;window.oldLines=routeLines.length;
-            window.expectedAnchor=testMap.getProjection().coordsFromContainerPoint(new kakao.maps.Point(100,120));
+            window.expectedAnchor=window.mapViewport.projection().coordsFromContainerPoint(new kakao.maps.Point(100,120));
             window.sendWheel=function(delta){mapElement.dispatchEvent(new WheelEvent('wheel',{deltaY:delta,clientX:bounds.left+100,clientY:bounds.top+120,bubbles:true,cancelable:true}));};
             sendWheel(-120);
             """);
@@ -2829,7 +2908,7 @@ class CoursePlannerUiTest {
         assertEquals(true, script(engine, "typeof window.disposeMapZoom==='undefined' && typeof window.resetMapZoom==='undefined'"));
         assertEquals(true, script(engine, """
             (function(){
-                var element=document.getElementById('map');
+                var element=document.getElementById('map-canvas');
                 var wheel=new WheelEvent('wheel',{deltaY:-120,bubbles:true,cancelable:true});
                 element.dispatchEvent(wheel);
                 var dbl=new MouseEvent('dblclick',{bubbles:true,cancelable:true});
@@ -2860,7 +2939,7 @@ class CoursePlannerUiTest {
         WebEngine engine=loadMap(1100,720);
         script(engine,"""
             window.mapElement=document.getElementById('map');
-            testMap.getProjection=function(){
+            window.mapViewport.setBuffered(false);testMap.relayout();testMap.getProjection=function(){
                 var unit=100000*Math.pow(2,5-testMap.getLevel());
                 return {containerPointFromCoords:function(p){var c=testMap.getCenter();return {
                     x:(p.getLng()-c.getLng())*unit+mapElement.clientWidth/2,
@@ -2902,7 +2981,7 @@ class CoursePlannerUiTest {
                 disposeMapZoom();
                 window.controlIds=['place-search','range-tooltip','map-status','place-detail'];
                 window.controlSizes=controlIds.map(function(id){var r=document.getElementById(id).getBoundingClientRect();return [r.width,r.height];});
-                testMap.getProjection=function(){
+                window.mapViewport.setBuffered(false);testMap.relayout();testMap.getProjection=function(){
                     var unit=100000*Math.pow(2,5-testMap.getLevel());
                     return {
                         containerPointFromCoords:function(p){var c=testMap.getCenter();return {x:(p.getLng()-c.getLng())*unit+mapElement.clientWidth/2,y:(c.getLat()-p.getLat())*unit+mapElement.clientHeight/2};},
@@ -2910,11 +2989,11 @@ class CoursePlannerUiTest {
                     };
                 };
                 window.mapElement=document.getElementById('map');
-                window.originalAnchor=testMap.getProjection().coordsFromContainerPoint(new kakao.maps.Point(100,120));
+                window.originalAnchor=window.mapViewport.projection().coordsFromContainerPoint(new kakao.maps.Point(100,120));
                 window.coursePins=pins.length;
                 disposeMapZoom=installInstantZoom(mapElement,testMap,{fractional:true});
                 window.microWheel=function(delta){var b=mapElement.getBoundingClientRect();mapElement.dispatchEvent(new WheelEvent('wheel',{deltaY:delta,clientX:b.left+100,clientY:b.top+120,bubbles:true,cancelable:true}));};
-                window.anchorError=function(){var p=testMap.getProjection().containerPointFromCoords(originalAnchor);var b=mapElement.getBoundingClientRect();return Math.abs(p.x*b.width/mapElement.clientWidth-100)+Math.abs(p.y*b.height/mapElement.clientHeight-120);};
+                window.anchorError=function(){var p=window.mapViewport.projection().containerPointFromCoords(originalAnchor);var b=mapElement.getBoundingClientRect();return Math.abs(p.x*b.width/mapElement.clientWidth-100)+Math.abs(p.y*b.height/mapElement.clientHeight-120);};
                 microWheel(-120);
                 """);
             assertEquals(5, ((Number) engine.executeScript("testMap.getLevel()")).intValue());
@@ -3058,11 +3137,11 @@ class CoursePlannerUiTest {
         assertEquals(1, ((Number) script(engine, "mapPans.length")).intValue());
         assertEquals(true, script(engine, """
             (function(){var map=document.getElementById('map').getBoundingClientRect(), detail=document.getElementById('place-detail').getBoundingClientRect();
-            var p=testMap.getProjection().containerPointFromCoords(new kakao.maps.LatLng(testCourse[1].lat,testCourse[1].lng));
+            var p=window.mapViewport.projection().containerPointFromCoords(new kakao.maps.LatLng(testCourse[1].lat,testCourse[1].lng));
             var rail=document.getElementById('itinerary-rail').getBoundingClientRect();
-            return p.x>20 && p.x+map.left<detail.left-15 && detail.left>map.left && detail.right<rail.left && rail.width===railBefore.width && rail.left===railBefore.left;})()
+            return p.x+map.left>detail.right+15 && p.x+map.left<rail.left && detail.left>map.left && detail.left<map.left+30 && detail.right<rail.left && rail.width===railBefore.width && rail.left===railBefore.left;})()
             """));
-        assertEquals(true, script(engine, "pins.filter(function(p){return p.visitId && p.zIndex===6;}).length===1"));
+        assertEquals(true, script(engine, "pins.filter(function(p){return p.visitId && p.zIndex===36;}).length===1"));
         script(engine, "window.showResultPlaces(testCourse,true)");
         assertEquals(true, script(engine, "pins.length===pinCount && routeLines.length===lineCount"));
         script(engine, "document.getElementById('detail-close').click()");

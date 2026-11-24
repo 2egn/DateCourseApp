@@ -43,7 +43,7 @@ src/
 | 로그인과 화면 연결 | [MembershipApp](main/java/com/datecourse/page/account/MembershipApp.java) |
 | 출발 조건·확정 코스 | [CoursePlannerController](main/java/com/datecourse/page/_01step_planner/CoursePlannerController.java) |
 | 조건·후보·편집 초안 | [CourseEditorController](main/java/com/datecourse/page/_02step_editor/CourseEditorController.java) |
-| 저장 목록·미리보기 | [SavedCourseController](main/java/com/datecourse/page/_03step_saved/SavedCourseController.java) |
+| 저장 목록·이미지/지도 전환·준비 상태 | [SavedCourseController](main/java/com/datecourse/page/_03step_saved/SavedCourseController.java) |
 | 장소 검색·추천 | [NextPlaceService](main/java/com/datecourse/service/NextPlaceService.java) · [PlaceSearchService](main/java/com/datecourse/service/PlaceSearchService.java) |
 | 지도·이동 경로 | [CourseMapView](main/java/com/datecourse/page/common/map/CourseMapView.java) · [TravelRouteService](main/java/com/datecourse/service/TravelRouteService.java) |
 | 장소·저장 코스 DB | [PlaceCatalogRepository](main/java/com/datecourse/db/PlaceCatalogRepository.java) · [SavedCourseRepository](main/java/com/datecourse/db/SavedCourseRepository.java) |
@@ -56,3 +56,15 @@ src/
 실행은 프로젝트 루트에서 `.\gradlew.bat run`, 검사는 `.\gradlew.bat test`를 사용합니다. 단독 시연은 통합 앱 흐름과 구분합니다. 미연결 예제는 [archive/legacy-ui](../archive/legacy-ui/README.md)에 보관하며 기본 빌드에서 제외합니다.
 
 [아키텍처](../docs/architecture.md) · [변경 지침](../AGENTS.md) · [페이지 이름 대응](../docs/site/content/페이지_구조와_이름_2026_11_24.md) · [패키지 구조 점검](../docs/site/content/패키지_통합과_구조_점검_2026_11_24.md)
+
+지도 호버·포커스는 `map/map.js`, 왼쪽 상세 카드는 `map/itinerary-rail.js`에서 관리한다. 저장 지도 준비 상태는 `UserContext.isMapPrepared/markMapPrepared`에서 로그인 세션 안에만 기억한다. [상세 흐름](../docs/site/content/지도_선택과_저장_지도_준비_2026_11_24.md).
+
+작은 창의 편집 합계는 `CourseEditorController.configureResponsiveSummary`, 저장 표는 `SavedCourseController.configureResponsiveDetails/layoutDetailTables`에서 배치한다. 알림 위치는 `PageFeedback`, 글자·선택·스크롤 표시는 공통 CSS와 지도 테마를 확인한다. [화면 가독성 안내](../docs/site/content/화면_가독성과_작은_창_배치_2026_11_24.md).
+
+지도 이동의 렌더링 여유는 [map-viewport.js](main/resources/map/map-viewport.js)가 관리한다. 보이는 창과 내부 SDK 크기를 분리하고 `camera-motion.js`·`instant-zoom.js`·`map.js`에서 좌표를 보정한다. [설계와 검증 범위](../docs/site/content/지도_렌더링_여유_영역_2026_11_24.md).
+
+마우스 입력 우선순위는 `map.js.pointerFrom`, 경로 상세의 키보드 접근은 `itinerary-rail.js.openRouteDetails`, 저장 이미지 확인 중 전환은 `SavedCourseController.previewLoading`에서 관리한다. [수정과 추가 UX 검토](../docs/site/content/마우스_키보드_입력_점검_2026_11_24.md).
+
+컴파일·테스트·실행 JDK는 루트 [build.gradle](../build.gradle)의 Java 21 toolchain, 설치 검색은 [gradle.properties](../gradle.properties)에서 확인한다. 개인 JDK 경로는 공유 파일에 넣지 않는다.
+
+로컬 JDK 21이 없을 때의 자동 다운로드 저장소는 루트 [settings.gradle](../settings.gradle)에 고정 버전으로 등록한다. 다운로드는 개인 Gradle 캐시에서 관리한다.

@@ -11,6 +11,35 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserContextTest {
+    @Test void preparedMapsSurviveNavigationButClearWithCourseInvalidationAndLogout() {
+        var plan=new com.datecourse.model.RoutePlan(35,129,2,1000,"",List.of());
+        var saved=new com.datecourse.model.SavedCourse(1,7,plan);
+        var context=new UserContext(new UserSession(7,"owner"),null,List::of);
+        assertFalse(context.isMapPrepared(saved));
+        assertTrue(context.markMapPrepared(saved));
+        assertTrue(context.isMapPrepared(new com.datecourse.model.SavedCourse(1,7,plan)));
+        context.invalidateCourses();
+        assertFalse(context.isMapPrepared(saved));
+        assertTrue(context.markMapPrepared(saved));
+        context.close();
+        assertFalse(context.isMapPrepared(saved));
+        assertFalse(context.markMapPrepared(saved));
+    }
+
+    @Test void preparedMapsAreIsolatedFromOtherMembersAndNewLoginSessions() {
+        var plan=new com.datecourse.model.RoutePlan(35,129,2,1000,"",List.of());
+        var saved=new com.datecourse.model.SavedCourse(1,7,plan);
+        try(var context=new UserContext(new UserSession(7,"owner"),null,List::of);
+            var nextLogin=new UserContext(new UserSession(7,"owner"),null,List::of)) {
+            assertTrue(context.markMapPrepared(saved));
+            assertFalse(nextLogin.isMapPrepared(saved));
+            var foreign=new com.datecourse.model.SavedCourse(1,8,plan);
+            assertFalse(context.markMapPrepared(foreign));
+            assertFalse(context.isMapPrepared(foreign));
+            assertTrue(context.isMapPrepared(saved));
+        }
+    }
+
     @Test void preloadAndRepeatedReadsShareOneQueryIncludingEmptyResults() throws Exception {
         var profiles = new AtomicInteger();
         var courses = new AtomicInteger();

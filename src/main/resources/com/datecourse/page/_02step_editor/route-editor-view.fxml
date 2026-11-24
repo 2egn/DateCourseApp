@@ -56,8 +56,8 @@
    <!-- 오른쪽: 핵심 요약 대시보드 + 조건 설정 폼 -->
    <BorderPane GridPane.columnIndex="1" minWidth="0" minHeight="0" styleClass="route-edit-form">
     <top>
-     <VBox spacing="8" styleClass="route-sidebar-summary">
-      <HBox spacing="10" styleClass="editor-summary-bar">
+     <VBox fx:id="editorSummary" spacing="8" styleClass="route-sidebar-summary">
+      <HBox fx:id="editorSummaryBar" spacing="10" styleClass="editor-summary-bar">
        <VBox spacing="4" HBox.hgrow="ALWAYS" styleClass="editor-summary-card">
         <Label wrapText="true" minHeight="-Infinity" text="현재 교통수단" styleClass="metric-caption"/>
         <Label wrapText="true" minHeight="-Infinity" fx:id="metricTransportLabel" text="도보" styleClass="metric-value"/>
@@ -71,9 +71,10 @@
         <Label wrapText="true" minHeight="-Infinity" fx:id="metricPriceLabel" text="0원" styleClass="metric-value-accent"/>
        </VBox>
       </HBox>
+      <Label fx:id="compactSummaryLabel" wrapText="true" maxWidth="Infinity" styleClass="editor-compact-summary" visible="false" managed="false"/>
       <HBox spacing="8" alignment="CENTER_LEFT">
-       <Label fx:id="summaryLabel" wrapText="true" styleClass="planner-caption"/>
-       <Label text="·" styleClass="planner-caption"/>
+       <Label fx:id="summaryLabel" wrapText="true" styleClass="planner-caption" visible="false" managed="false"/>
+
        <Label fx:id="walkingTimeLabel" text="장소를 추가하면 도보 시간을 계산해요." wrapText="true" styleClass="planner-caption"/>
       </HBox>
      </VBox>
@@ -96,7 +97,7 @@
            <Button fx:id="removeButton" text="삭제" onAction="#onRemove" styleClass="drawer-toggle" minHeight="34" prefHeight="34"/>
            <Button fx:id="placeInfoButton" text="상세" onAction="#onPlaceDetail" disable="true" styleClass="drawer-toggle" minHeight="34" prefHeight="34"/>
           </FlowPane>
-          <Label fx:id="selectedRadiusLabel" text="장소를 선택하면 이동 반경을 수정할 수 있어요." wrapText="true" styleClass="planner-caption"/>
+          <Label wrapText="true" minHeight="-Infinity" maxWidth="Infinity" fx:id="selectedRadiusLabel" text="장소를 선택하면 이동 반경을 수정할 수 있어요." styleClass="planner-caption"/>
           <Slider fx:id="selectedRadiusSlider" min="200" max="2000" value="500" blockIncrement="100" majorTickUnit="100" minorTickCount="0" snapToTicks="true" disable="true" accessibleText="선택한 장소를 추가할 때 정한 직선 반경 수정"/>
           <Button fx:id="recordRadiusButton" text="500m로 기록" onAction="#onUpdateSelectedRadius" visible="false" managed="false" styleClass="drawer-toggle" minHeight="34" prefHeight="34"/>
          </VBox>

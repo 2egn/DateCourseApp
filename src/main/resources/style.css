@@ -247,9 +247,9 @@
 }
 
 .planner-caption {
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: normal;
-    -fx-text-fill: #8C7379;
+    -fx-text-fill: #65545A;
 }
 
 .profile-card {
@@ -371,7 +371,7 @@
     -fx-border-width: 1.2;
     -fx-text-fill: #4A1827;
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-padding: 6 12 6 12;
     -fx-background-radius: 16;
     -fx-border-radius: 16;
@@ -392,7 +392,7 @@
     -fx-background-color: #E9DFD2;
     -fx-text-fill: #4A1827;
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-padding: 5 10 5 10;
     -fx-background-radius: 14;
     -fx-border-color: transparent;
@@ -406,7 +406,7 @@
 .filter-pane .hyperlink {
     -fx-text-fill: #7A263A;
     -fx-font-weight: bold;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-border-color: transparent;
     -fx-underline: false;
     -fx-cursor: hand;
@@ -446,9 +446,9 @@
 }
 
 .metric-caption {
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: normal;
-    -fx-text-fill: #8C7379;
+    -fx-text-fill: #65545A;
 }
 
 .metric-value {
@@ -589,7 +589,7 @@
 .feedback-close {
     -fx-background-color: #F8F5EF;
     -fx-text-fill: #7A263A;
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-padding: 0;
     -fx-min-width: 22;
@@ -665,9 +665,9 @@
 }
 
 .muted {
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: normal;
-    -fx-text-fill: #8C7379;
+    -fx-text-fill: #65545A;
 }
 
 /* --- 레이아웃(여백/간격) : FXML의 Insets, spacing을 옮긴 것 --- */
@@ -816,10 +816,8 @@
     -fx-font-weight: bold;
 }
 
-/* --- 스크롤바 숨기기 (마우스 휠/터치패드 스크롤은 그대로 동작) --- */
-.saved-course-table .scroll-bar:vertical,
+/* 가로 스크롤만 숨기고 긴 목록·표의 세로 스크롤은 드러낸다. */
 .saved-course-table .scroll-bar:horizontal,
-.saved-course-list .scroll-bar:vertical,
 .saved-course-list .scroll-bar:horizontal {
     -fx-opacity: 0;
     -fx-padding: 0;
@@ -1103,3 +1101,26 @@
 }
 /* Keep default single-line inputs aligned; individual compact forms may override these sizes. */
 .text-field, .combo-box { -fx-pref-height: 44; }
+
+/* 현재 페이지는 호버보다 진한 배경과 밑줄로 구분한다. */
+.app-header .button:active {
+    -fx-background-color: #D5C3B0;
+    -fx-text-fill: #4A1827;
+    -fx-border-color: transparent transparent #7A263A transparent;
+    -fx-border-width: 0 0 3 0;
+}
+.app-header .button:active:hover { -fx-background-color: #CBB69F; }
+.saved-course-travel { -fx-text-fill: #334155; -fx-font-size: 13px; -fx-font-weight: bold; }
+.saved-view-switch { -fx-background-color: #F0E8DE; -fx-padding: 4; -fx-background-radius: 10; }
+.saved-view-switch .toggle-button:selected { -fx-background-color: #D5C3B0; -fx-text-fill: #4A1827; }
+
+.saved-view-switch .button:active { -fx-background-color: #D5C3B0; -fx-text-fill: #4A1827; }
+
+/* 좁은 화면의 합계와 목록 선택은 색·테두리로 구분한다. */
+.editor-compact-summary { -fx-padding: 10 14; -fx-background-color: #FFFFFF; -fx-background-radius: 10; -fx-border-color: #D5C3B0; -fx-border-radius: 10; -fx-font-size: 14px; -fx-text-fill: #4A1827; -fx-line-spacing: 4; }
+.route-edit-form .list-cell:filled:selected, .route-edit-form .list-cell:filled:selected:hover {
+    -fx-background-color: #F0E1E5; -fx-border-color: #7A263A; -fx-border-width: 0 0 0 4;
+}
+.route-edit-form .list-cell:filled:selected .label, .route-edit-form .list-cell:filled:selected { -fx-text-fill: #4A1827; }
+.saved-info-scroll, .saved-info-scroll > .viewport { -fx-background-color: transparent; }
+.saved-info-scroll { -fx-padding: 0; }

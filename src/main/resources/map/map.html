@@ -286,10 +286,10 @@
         #place-detail .detail-facts {
             margin: 0 0 6px 0 !important;
             gap: 4px 10px !important;
-            font-size: 12px !important;
+            font-size: 13px !important;
         }
         #place-detail .detail-facts dt {
-            color: #8C7379 !important;
+            color: #65545A !important;
             font-weight: normal !important;
         }
         #place-detail .detail-facts dd {
@@ -299,10 +299,10 @@
 
         /* 부가 설명 문구 간격 축소 */
         #place-detail .detail-extra {
-            font-size: 11.5px !important;
-            color: #6b7684 !important;
+            font-size: 13px !important;
+            color: #475569 !important;
             margin: 4px 0 8px 0 !important;
-            line-height: 1.4 !important;
+            line-height: 1.6 !important;
         }
 
         /* 하단 액션 버튼 영역 ('코스에 추가', '카카오맵에서 보기') */
@@ -315,8 +315,9 @@
         /* 분홍색으로 튀던 '코스에 추가' 버튼 -> 메인 버건디(#7A263A)로 통일 */
         #place-detail .detail-add {
             flex: 1 !important;
-            height: 34px !important;
-            padding: 0 12px !important;
+            min-height: 36px !important;
+            height: auto !important;
+            padding: 8px 10px !important;
             background: #7A263A !important;
             color: #FFFFFF !important;
             border: none !important;
@@ -331,14 +332,16 @@
         /* '카카오맵에서 보기' 버튼 -> 연베이지 보조 버튼으로 통일 */
         #place-detail .detail-map-link {
             flex: 1 !important;
-            height: 34px !important;
-            line-height: 34px !important;
-            padding: 0 12px !important;
+            min-height: 36px !important;
+            height: auto !important;
+            line-min-height: 36px !important;
+            height: auto !important;
+            padding: 8px 10px !important;
             background: #E9DFD2 !important;
             color: #4A1827 !important;
             border: none !important;
             border-radius: 9px !important;
-            font-size: 12px !important;
+            font-size: 13px !important;
             font-weight: bold !important;
             text-align: center !important;
             text-decoration: none !important;
@@ -358,7 +361,7 @@
             display: inline-block !important;
             margin: 6px 0 0 8px !important;
             font-size: 11px !important;
-            color: #8C7379 !important;
+            color: #65545A !important;
         }
 
         /* 지도 상단 검색 버튼(#search-submit)도 분홍색 대신 버건디로 통일 */
@@ -390,7 +393,7 @@
     </div>
 </section>
 <div id="map-surface">
-    <div id="map"></div>
+    <div id="map"><div id="map-canvas"></div></div>
     <section id="route-controls" hidden aria-label="지도 보기와 구간 안내">
         <div id="route-view-toolbar" aria-label="코스 보기 방식">
             <div class="route-view-buttons">
@@ -679,6 +682,7 @@
 <script src="./itinerary-rail.js"></script>
 <script src="./instant-zoom.js"></script>
 <script src="./pin-pointer-gesture.js"></script>
+<script src="./map-viewport.js"></script>
 <script src="./camera-motion.js"></script>
 <script src="./map.js"></script>
 <script>
@@ -742,8 +746,11 @@
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape' && !zoom.hidden) closeZoom();
         });
+        let externalViewControls=false,routeControlsVisible=false;
+        window.refreshRouteControls=function(){controls.hidden=!routeControlsVisible || externalViewControls && document.getElementById('walking-panel').hidden;};
+        window.setExternalRouteViewControls=function(enabled){externalViewControls=!!enabled;toolbar.hidden=!!enabled;controls.style.top=enabled?'58px':'';window.refreshRouteControls();};
         window.setRouteViewVisible = function (visible) {
-            controls.hidden = !visible;
+            routeControlsVisible=!!visible; window.refreshRouteControls();
             if (!visible) invalidateImage();
         };
         window.prepareRouteImageCapture = function () {

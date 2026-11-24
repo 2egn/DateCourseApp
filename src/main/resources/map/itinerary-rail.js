@@ -136,10 +136,14 @@
             const index = visits.findIndex(function (v) { return v.visitId === id; });
             if (index < 0) return;
             activate(id, true);
+            if (options.onFocus) options.onFocus(id);
+            document.querySelector('.detail-actions').hidden = false;
             const place = visits[index];
             expandedPlaceId = id;
             clearTimeout(closeTimer);
             document.getElementById('detail-title').textContent = place.name;
+            const oldTravel=detail.querySelector('.detail-travel');if(oldTravel)oldTravel.remove();
+            if(options.travelInfo){const travel=document.createElement('div');travel.className='detail-travel';travel.textContent=options.travelInfo(place);document.getElementById('detail-title').after(travel);}
             document.getElementById('detail-category').textContent = (place.candidateRank ? '추천 ' + place.candidateRank + '위 · '
                     : activeTab === 'nearby' ? '주변 장소 · ' : (index + 1) + '번째 방문 · ') + category(place.category);
             const facts = document.getElementById('detail-facts');
@@ -216,6 +220,7 @@
         }
         function select(id, expand) {
             activate(id, !!expand); center(id, false);
+            if (options.onFocus) options.onFocus(id);
             if (expand) openDetail(id);
         }
         viewport.addEventListener('scroll', function () {
@@ -323,6 +328,30 @@
                 return visits;
             },
             openVisit: function (id) { select(id, true); },
+            /** 경로 클릭의 상세는 지도 위 호버 대신 왼쪽 카드에서 표시한다. */
+            openRouteDetails: function (leg, index, travelLabel) {
+                closeDetail(false);
+                expandedPlaceId = 'route:' + index;
+                detail.querySelector('.detail-note').hidden=true;
+                const oldTravel=detail.querySelector('.detail-travel');if(oldTravel)oldTravel.remove();
+                document.getElementById('detail-title').textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
+                document.getElementById('detail-category').textContent = travelLabel + ' 이동 안내';
+                document.getElementById('detail-facts').textContent = '';
+                fact('이동수단', travelLabel);
+                fact('이동시간', '약 ' + Math.ceil(leg.time / 60) + '분');
+                fact('이동거리', leg.distance >= 1000 ? (leg.distance / 1000).toFixed(2) + 'km' : leg.distance + 'm');
+                const extra = document.getElementById('detail-extra'); extra.textContent = '';
+                const steps = document.createElement('ol');
+                (leg.steps || []).forEach(function (step) { const li=document.createElement('li'); li.textContent=step.description; steps.appendChild(li); });
+                if (!steps.children.length) { const li=document.createElement('li'); li.textContent='상세 안내가 없어요.'; steps.appendChild(li); }
+                extra.appendChild(steps);
+                document.querySelector('.detail-actions').hidden = true;
+                document.getElementById('detail-report').hidden = true;
+                clearTimeout(closeTimer); detail.hidden=false; detail.setAttribute('aria-hidden','false');
+                closeButton.tabIndex = 0;
+                if (standalone) closeButton.focus({preventScroll: true});
+                surface.classList.add('has-detail'); detail.classList.add('is-open');
+            },
             refreshActions: refreshActions,
             activatePlace: function (recordId) {
                 const visit = visits.find(function (v) { return String(v.recordId) === String(recordId); });

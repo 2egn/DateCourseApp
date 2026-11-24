@@ -265,12 +265,12 @@ class SavedCourseMapTest {
             fx(()->{form.map.setRouteRouter((stops,mode)->{fail("Window layout must not request routes");return null;});select(form);return null;});
             awaitPreview(form);
             fx(()->{
-                new Scene(form.root,920,620);
+                var scene=new Scene(form.root,920,620);scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
                 invoke(form.controller,"showMapError",String.class,"지도를 불러오지 못했어요. 네트워크 연결을 확인한 뒤 다시 시도해 주세요.");
                 for(int[] size:List.of(new int[]{920,620},new int[]{1100,760},new int[]{1600,1000})) {
                     form.root.resize(size[0],size[1]);form.root.applyCss();form.root.layout();form.root.layout();
                     assertTrue(retry(form).getWidth()>=retry(form).prefWidth(-1)-1,"Retry label at "+size[0]);
-                    for(String id:List.of("#mapPane","#bottomInfo","#toggleMapButton","#mapRetry","#openButton")) {
+                    for(String id:List.of("#mapPane","#bottomScroll","#toggleMapButton","#mapRetry","#openButton")) {
                         var node=form.root.lookup(id);var bounds=node.localToScene(node.getBoundsInLocal());
                         assertTrue(bounds.getMinX()>=0&&bounds.getMaxX()<=size[0]+1,id+" at "+size[0]);
                         assertTrue(bounds.getMinY()>=0&&bounds.getMaxY()<=size[1]+1,id+" at "+size[1]);
@@ -296,12 +296,16 @@ class SavedCourseMapTest {
                     fx(()->{
                         assertTrue((boolean)field(form.controller,"storedPreview"));assertFalse(form.view.isVisible());
                         invoke(form.controller,"onNewCourseClick",null,null);assertEquals(1,newCourses.get());
-                        new Scene(form.root,1100,760);form.root.resize(1100,760);form.root.applyCss();form.root.layout();
+                        var scene=new Scene(form.root,1100,760);scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());form.root.resize(1100,760);form.root.applyCss();form.root.layout();
                         long imageVersion=(long)field(form.controller,"previewLoadVersion");
                         var table=(TableView<?>)field(form.controller,"placeTable");
                         var row=table.lookupAll(".table-row-cell").stream().filter(n->n instanceof TableRow<?> r&&!r.isEmpty()).map(n->(TableRow<?>)n).findFirst().orElseThrow();
                         row.getOnMouseClicked().handle(null);
                         assertEquals(imageVersion,field(form.controller,"previewLoadVersion"));
+                        assertFalse((boolean)field(form.controller,"showingMap"));
+                        assertTrue(form.root.lookup("#mapLoadPrompt").isVisible());
+                        assertTrue(form.root.lookup("#previewViewControls").isVisible());
+                        invoke(form.controller,"onLoadMap",null,null);
                         assertTrue((boolean)field(form.controller,"showingMap"));assertEquals(PLAN,field(form.map,"plan"));
                         ((MapEventBridge)field(form.map,"bridge")).onMapReady();
                         assertEquals(1,((Number)form.view.getEngine().executeScript("window.focusedPlace")).intValue());
@@ -312,6 +316,75 @@ class SavedCourseMapTest {
                 } finally {fx(()->{form.controller.dispose();return null;});}
             }
         }
+    }
+
+    @Test void imageOnlyCourseNeedsExplicitLoadAndPreparedStateSurvivesReselection() throws Exception {
+        try(var pool=pool()) {
+            var repository=new com.datecourse.db.SavedCourseRepository(pool);var owner=new UserSession(7,"Demo");
+            var saved=repository.saveWithPreview(owner,null,PLAN,new com.datecourse.service.CoursePreviewImage().render(PLAN));
+            try(var context=new UserContext(owner,null,()->List.of(saved))) {
+                context.courses().get(5,TimeUnit.SECONDS);Form form=form();
+                try {
+                    fx(()->{form.controller.configure(repository,context,c->{});return null;});awaitPreview(form);
+                    fx(()->{
+                        assertTrue(form.root.lookup("#previewViewControls").isVisible());
+                        invoke(form.controller,"onSelectMap",null,null);
+                        assertTrue(form.root.lookup("#mapLoadPrompt").isVisible());
+                        assertNull(field(form.map,"plan"));
+                        invoke(form.controller,"onSelectImage",null,null);
+                        assertFalse(form.root.lookup("#mapLoadPrompt").isVisible());
+                        invoke(form.controller,"onSelectMap",null,null);invoke(form.controller,"onLoadMap",null,null);ready(form);
+                        return null;
+                    });
+                    awaitFx(()->(boolean)field(form.controller,"mapPrepared"));
+                    assertTrue(context.isMapPrepared(saved));
+                    fx(()->{var list=(ListView<?>)field(form.controller,"courseList");list.getSelectionModel().clearSelection();list.getSelectionModel().selectFirst();return null;});
+                    awaitPreview(form);
+                    fx(()->{
+                        assertTrue((boolean)field(form.controller,"mapPrepared"));
+                        invoke(form.controller,"onSelectMap",null,null);
+                        assertFalse(form.root.lookup("#mapLoadPrompt").isVisible());
+                        assertTrue((boolean)field(form.controller,"showingMap"));
+                        assertEquals(PLAN,field(form.map,"plan"));return null;
+                    });
+                } finally {fx(()->{form.controller.dispose();return null;});}
+            }
+        }
+    }
+
+    @Test void delayedPreviewDoesNotBypassExplicitMapLoading() throws Exception {
+        var release=new CountDownLatch(1);var started=new CountDownLatch(1);
+        try(var pool=pool()) {
+            var repository=new com.datecourse.db.SavedCourseRepository(pool);var owner=new UserSession(7,"Demo");
+            var png=new com.datecourse.service.CoursePreviewImage().render(PLAN);
+            var saved=repository.saveWithPreview(owner,null,PLAN,png);
+            try(var context=new UserContext(owner,null,()->List.of(saved))) {
+                context.courses().get(5,TimeUnit.SECONDS);
+                context.preview(saved,()->{started.countDown();release.await(10,TimeUnit.SECONDS);return Optional.of(png);});
+                assertTrue(started.await(5,TimeUnit.SECONDS));Form form=form();
+                try {
+                    fx(()->{form.controller.configure(repository,context,c->{});return null;});
+                    awaitFx(()->field(form.controller,"previewCourse")!=null);
+                    fx(()->{
+                        new Scene(form.root,1100,760);form.root.resize(1100,760);form.root.applyCss();form.root.layout();
+                        var table=(TableView<?>)field(form.controller,"placeTable");
+                        var row=(TableRow<?>)table.lookupAll(".table-row-cell").stream().filter(n->n instanceof TableRow<?> r&&!r.isEmpty()).findFirst().orElseThrow();
+                        row.getOnMouseClicked().handle(null);
+                        assertFalse((boolean)field(form.controller,"showingMap"));assertNull(field(form.map,"plan"));
+                        assertTrue(form.root.lookup("#mapLoadPrompt").isVisible());assertTrue(((Button)field(form.controller,"mapLoadButton")).isDisabled());
+                        invoke(form.controller,"onLoadMap",null,null);assertNull(field(form.map,"plan"));return null;
+                    });
+                    release.countDown();awaitPreview(form);
+                    fx(()->{
+                        assertFalse((boolean)field(form.controller,"showingMap"));
+                        assertFalse(((Button)field(form.controller,"mapLoadButton")).isDisabled());
+                        invoke(form.controller,"onLoadMap",null,null);ready(form);
+                        assertEquals(PLAN,field(form.map,"plan"));
+                        assertEquals(1,((Number)form.view.getEngine().executeScript("window.focusedPlace")).intValue());return null;
+                    });
+                } finally {release.countDown();fx(()->{form.controller.dispose();return null;});}
+            }
+        } finally {release.countDown();}
     }
 
     private static com.zaxxer.hikari.HikariDataSource pool() throws Exception {
@@ -333,13 +406,23 @@ class SavedCourseMapTest {
             fx(()->{form.map.setRouteRouter((stops,mode)->route(stops));select(form);return null;});
             awaitPreview(form);
             fx(()->{
-                new Scene(form.root,1100,760);form.root.resize(1100,760);form.root.applyCss();form.root.layout();
+                var scene=new Scene(form.root,1100,760);scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());form.root.resize(1100,760);form.root.applyCss();form.root.layout();
                 var map=form.root.lookup("#mapPane").localToScene(form.root.lookup("#mapPane").getBoundsInLocal());
-                var info=form.root.lookup("#bottomInfo").localToScene(form.root.lookup("#bottomInfo").getBoundsInLocal());
+                var info=form.root.lookup("#bottomScroll").localToScene(form.root.lookup("#bottomScroll").getBoundsInLocal());
                 assertTrue(map.getHeight()>=180);assertTrue(map.getWidth()>400);
                 assertTrue(map.getMaxX()<=1100);
                 assertTrue(map.getMaxY()<=info.getMinY());assertTrue(info.getMaxY()<760);
                 assertTrue(form.root.lookup("#summaryTable").isVisible());assertTrue(form.root.lookup("#placeTable").isVisible());
+                assertEquals(0,javafx.scene.layout.GridPane.getRowIndex(form.root.lookup("#placeTable")));
+                assertEquals(1,javafx.scene.layout.GridPane.getRowIndex(form.root.lookup("#summaryTable")));
+                var places=form.root.lookup("#placeTable").localToScene(form.root.lookup("#placeTable").getBoundsInLocal());
+                assertTrue(places.getWidth()>600);
+                var scroll=(ScrollPane)form.root.lookup("#bottomScroll");
+                scroll.setVvalue(1);form.root.layout();
+                var summary=form.root.lookup("#summaryTable").localToScene(form.root.lookup("#summaryTable").getBoundsInLocal());
+                assertTrue(summary.getMaxY()<=info.getMaxY()+1,"요약 표는 아래로 스크롤해서 읽을 수 있어야 함");
+                scroll.setVvalue(0);form.root.layout();
+
                 var screenshot=Path.of("build/ui-preview/saved-preview-policy.png");Files.createDirectories(screenshot.getParent());
                 javax.imageio.ImageIO.write(javafx.embed.swing.SwingFXUtils.fromFXImage(form.root.snapshot(null,null),null),"png",screenshot.toFile());
                 return null;

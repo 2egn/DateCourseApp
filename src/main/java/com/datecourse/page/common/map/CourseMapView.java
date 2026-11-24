@@ -52,7 +52,9 @@ public final class CourseMapView {
     private Consumer<Place> reportPlace = place -> {};
     private Consumer<Long> addCandidate = id -> {};
     private boolean candidateActionsEnabled=true;
-    private boolean coursePreviewMode;
+    private boolean coursePreviewMode, externalViewControls;
+    /** 저장 화면의 보기 전환은 WebView 밖에서 항상 표시한다. */
+    public void setExternalViewControls(boolean enabled) { externalViewControls=enabled; }
     /** 저장 코스용 직선 연결 미리보기 모드를 설정한다. */
     public void setCoursePreviewMode(boolean enabled) { coursePreviewMode = enabled; }
 
@@ -384,6 +386,7 @@ public final class CourseMapView {
             }
             view.getEngine().executeScript("if(window.setRouteViewVisible)window.setRouteViewVisible(" +
                     (plan != null && !plan.places().isEmpty()) + ")");
+            view.getEngine().executeScript("if(window.setExternalRouteViewControls)window.setExternalRouteViewControls("+externalViewControls+")");
             if (plan == null) return;
             setRangeAdjusting(rangeAdjusting);
             sendOriginLock();

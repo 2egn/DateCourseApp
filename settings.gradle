@@ -1,1 +1,6 @@
+// 설치된 JDK 21이 없을 때만 Gradle 개인 캐시에 내려받는다.
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
 rootProject.name = 'DateCourseApp'

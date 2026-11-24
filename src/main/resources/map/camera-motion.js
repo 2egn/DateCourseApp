@@ -16,7 +16,7 @@
         check();
     };
     // SDK adapter only: movement decisions belong to CameraMotionPolicy in Java.
-    window.createMapCamera = function (map, element, decide) {
+    window.createMapCamera = function (map, element, decide, viewport) {
         const padding = CAMERA_PADDING;
         let moving = false, pending = null, last = null, active = null;
         let layoutWidth = 0, layoutHeight = 0, resizeFrame = null, disposed = false, updatingLayout = false;
@@ -26,6 +26,7 @@
             // A hidden/unfinished viewport cannot fit content inside the camera's padding.
             if (width <= padding * 2 || height <= padding * 2) return false;
             if (width !== layoutWidth || height !== layoutHeight) {
+                if (viewport) viewport.resize();
                 const center = map.getCenter();
                 if (moving && !pending) pending = active;
                 moving = false; active = null;
@@ -45,7 +46,7 @@
             });
         }
         function measure(goal) {
-            const projection = map.getProjection(), width = element.clientWidth, height = element.clientHeight;
+            const projection = viewport ? viewport.projection() : map.getProjection(), width = element.clientWidth, height = element.clientHeight;
             const halfW = Math.max(1, width / 2 - padding), halfH = Math.max(1, height / 2 - padding);
             let center = goal.center || map.getCenter(), fitLevel = map.getLevel(), overflow = 0;
             if (goal.points && goal.points.length) {

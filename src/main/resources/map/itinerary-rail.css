@@ -26,7 +26,7 @@
 .planner-tabs button:focus-visible { outline: 2px solid #2563eb; }
 .itinerary-empty { padding: 20px 16px; font-size: 12px; line-height: 1.7; color: #64748b; }
 .itinerary-viewport { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; touch-action: pan-y; scroll-snap-type: y proximity; scrollbar-width: none; border-radius: 0 0 16px 16px; }
-.itinerary-viewport::-webkit-scrollbar, .place-detail::-webkit-scrollbar { display: none; width: 0; height: 0; }
+.itinerary-viewport::-webkit-scrollbar { display: none; width: 0; height: 0; }
 .itinerary-viewport.is-centering { scroll-snap-type: none; }
 .itinerary-list { position: relative; list-style: none; margin: 0; padding: 0 10px; display: flex; flex-direction: column; gap: 8px; }
 .itinerary-list li { flex: 0 0 78px; height: 78px; scroll-snap-align: center; }
@@ -40,7 +40,7 @@
 .visit-meta { display: block; margin-top: 5px; font-size: 10px; color: #64748b; }
 .visit-current { display: none; margin-left: 5px; font-weight: bold; color: #ab2851; }
 [aria-selected="true"] .visit-current { display: inline; }
-.place-detail { right: 232px; top: 50%; width: 264px; max-height: calc(100% - 92px); overflow-y: auto; scrollbar-width: none; background: #ffffff; padding: 18px; opacity: 0; transform: translate(8px,-50%); transition: opacity 200ms, transform 200ms; pointer-events: none; }
+.place-detail { left: 16px; right: auto; top: 50%; width: 264px; max-height: calc(100% - 92px); overflow-y: auto; scrollbar-width: thin; background: #ffffff; padding: 18px; opacity: 0; transform: translate(8px,-50%); transition: opacity 200ms, transform 200ms; pointer-events: none; }
 .place-detail.is-open { opacity: 1; transform: translate(0,-50%); pointer-events: auto; }
 .detail-topline { color: #b6345d; font-size: 11px; font-weight: bold; padding-right: 25px; }
 .detail-close { position: absolute; right: 8px; top: 7px; width: 34px; height: 34px; border: 0; border-radius: 10px; color: #526174; background: transparent; font-size: 23px; }
@@ -76,7 +76,7 @@
     .mini-place-card, .place-detail { transition: none; }
 }
 /* 현재 루트 화면은 카드 레일 없이 상세창만 사용한다. */
-.route-presentation .place-detail { right: 16px; }
+.route-presentation .place-detail { left: 16px; right: auto; }
 .route-presentation .detail-topline { color: #475569; }
 .route-presentation .detail-map-link { background: #e9edf1; color: #334155; }
 @media (max-width: 760px) {
@@ -97,3 +97,27 @@
 
 
 #range-tooltip { position: absolute; z-index: 30; pointer-events: none; max-width: calc(100% - 24px); padding: 7px 10px; border: 1px solid #dce3eb; border-radius: 8px; background: #fff; color: #334155; box-shadow: 0 3px 12px #26334d24; font-size: 12px; white-space: nowrap; }
+
+/* 호버는 클릭을 가로채지 않고 상세는 왼쪽 카드에서 다룬다. */
+.walking-route-tooltip, .place-pin-preview { pointer-events: none !important; }
+.map-interactive #map, .map-interactive #map * { cursor: pointer !important; }
+.detail-travel { display: block; margin: 8px 0; padding: 9px 10px; border-radius: 8px; background: #e9f0f8; color: #1e3a5f; font-size: 13px; font-weight: 700; }
+@media (max-width: 760px) {
+ .route-presentation .place-detail { left: 12px; right: auto; width: min(264px, calc(100% - 24px)); max-height: calc(100% - 92px); }
+}
+
+#route-view-toolbar[hidden] { display:none; }
+
+/* 테마의 display 지정도 실제 숨김 상태를 따라야 한다. */
+#place-detail .detail-actions[hidden], #place-detail .detail-report[hidden], #place-detail .detail-note[hidden] { display: none !important; }
+
+/* 긴 상세 안내의 스크롤 가능성을 드러내고 본문 대비를 높인다. */
+.place-detail::-webkit-scrollbar { width: 7px; }
+.place-detail::-webkit-scrollbar-thumb { background: #9B7F88; border-radius: 5px; }
+.place-detail::-webkit-scrollbar-track { background: #F3ECEE; }
+#place-detail .detail-facts, #place-detail .detail-report { font-size: 13px !important; }
+.visit-meta, .place-pin-preview-facts { font-size: 12px; color: #475569; }
+
+/* 보이는 창은 유지하고 SDK의 타일·오버레이 경계를 바깥으로 확장한다. */
+#map-surface #map { overflow: hidden; }
+#map-canvas { position: absolute; }

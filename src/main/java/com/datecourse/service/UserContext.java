@@ -22,6 +22,7 @@ public final class UserContext implements AutoCloseable {
                     return size() > MAX_PREVIEW_CACHE_ENTRIES;
                 }
             };
+    private final java.util.Set<Long> preparedMaps = new java.util.HashSet<>();
     private volatile boolean closed;
 
     public UserContext(UserSession session, Callable<MemberRepository.Profile> profileLoader,
@@ -36,7 +37,7 @@ public final class UserContext implements AutoCloseable {
     public CompletableFuture<MemberRepository.Profile> profile() { return profile.get(); }
     public CompletableFuture<List<SavedCourse>> courses() { return courses.get(); }
     public void invalidateProfile() { profile.invalidate(); }
-    public synchronized void invalidateCourses() { courses.invalidate(); previews.clear(); }
+    public synchronized void invalidateCourses() { courses.invalidate(); previews.clear(); preparedMaps.clear(); }
 
     public synchronized CompletableFuture<java.util.Optional<byte[]>> preview(
             SavedCourse course, Callable<java.util.Optional<byte[]>> loader) {
@@ -44,6 +45,18 @@ public final class UserContext implements AutoCloseable {
             return CompletableFuture.failedFuture(new IllegalStateException("현재 회원의 미리보기만 조회할 수 있어요."));
         var key = new PreviewKey(course.courseId(), CoursePreviewImage.fingerprint(course.plan()));
         return previews.computeIfAbsent(key, ignored -> new CachedValue<>(loader)).get();
+    }
+
+    /** 지도 준비 여부는 로그인 세션 안에서만 코스별로 기억한다. */
+    public synchronized boolean isMapPrepared(SavedCourse course) {
+        return !closed && course.memberId() == session.memberId() && preparedMaps.contains(course.courseId());
+    }
+
+    /** 닫힌 세션이나 다른 회원의 코스에는 준비 상태를 기록하지 않는다. */
+    public synchronized boolean markMapPrepared(SavedCourse course) {
+        if (closed || course.memberId() != session.memberId()) return false;
+        preparedMaps.add(course.courseId());
+        return true;
     }
 
     /** Background prefetch: it does not block navigation or display a loading overlay. */
@@ -57,6 +70,7 @@ public final class UserContext implements AutoCloseable {
         profile.invalidate();
         courses.invalidate();
         previews.clear();
+        preparedMaps.clear();
     }
 
     private final class CachedValue<T> {

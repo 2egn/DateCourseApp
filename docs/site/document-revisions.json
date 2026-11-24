@@ -62,14 +62,14 @@
       "present": true
     },
     "02_화면/RouteEditorController.md": {
-      "fingerprint": "e1607595261e13d6b86c3ac645c6c27963ae752afc7a9b47217a860d2adb62b8",
-      "revision": 8,
+      "fingerprint": "5aed9c86fe5492705dfa2149c470a6a93d75b80263057ea92f893b4c15b67a8d",
+      "revision": 9,
       "updated": true,
       "present": true
     },
     "02_화면/SavedCourseController.md": {
-      "fingerprint": "bb4e7e545a3c589529116319c97642518be7f21c11abb049c1d0caec12308c2b",
-      "revision": 6,
+      "fingerprint": "d3495792933191fd76480730c4dc93f23b40e8d453f95cb0b486ef0aaca117b6",
+      "revision": 10,
       "updated": true,
       "present": true
     },
@@ -86,8 +86,8 @@
       "present": true
     },
     "03_처리/MapPageServer.md": {
-      "fingerprint": "47c5e00647cc3202e624eecc42284a996083f1958dfd19922e49755206b5c2d7",
-      "revision": 4,
+      "fingerprint": "7e916afc83a08cbb2e71eba814dc72cc1856d7de77e9743ce00fd6224303e6d3",
+      "revision": 5,
       "updated": true,
       "present": true
     },
@@ -452,8 +452,8 @@
       "present": true
     },
     "08_지도_보충/instant-zoom.js.md": {
-      "fingerprint": "400d4068456c1ee500fc94658095d60bafbf7b8084a437bcb420982bb4c5711a",
-      "revision": 3,
+      "fingerprint": "5a434fc1373f8038fd9b1be03bc2ea354f2ba2d0e57273e5e079095972ef1aea",
+      "revision": 4,
       "updated": true,
       "present": true
     },
@@ -464,8 +464,8 @@
       "present": true
     },
     "08_지도_보충/map.js.md": {
-      "fingerprint": "5f5ee9e22a42e09761759c6438a1f91617b5635c08231e4a8bd442c0f39a76b7",
-      "revision": 5,
+      "fingerprint": "bc6751c12f2029fd75c058b01716d3da6f30caeb996745455ce92a22d3c63b12",
+      "revision": 6,
       "updated": true,
       "present": true
     },
@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "89f8fd8b4b545a16d5e77072ad307dbc3c9397c783d927b106a317540335963c",
-      "revision": 20,
+      "fingerprint": "b62f79f03775b5b5432bf1c3af1d66cb2241790cec0575289d6d895fad4bb6d1",
+      "revision": 27,
       "updated": true,
       "present": true
     },
@@ -537,7 +537,7 @@
     },
     "05_회원_DB/SavedCourseRepository.md": {
       "fingerprint": "231712abadda48b887cd06495f5c8833e35c5685a498dae73f63e24f893a6a6c",
-      "revision": 5,
+      "revision": 8,
       "updated": true,
       "present": true
     },
@@ -560,8 +560,8 @@
       "present": true
     },
     "02_화면/PageFeedback.md": {
-      "fingerprint": "a077213c8e98c8943e25e6ae7f3083e16d29671559ed2c8f70739111e9c18f20",
-      "revision": 2,
+      "fingerprint": "2f38771e1b00b6f259c9b13a7e71aec75d67ace26a8632f45c80d3fd82a45d51",
+      "revision": 3,
       "updated": true,
       "present": true
     },
@@ -686,8 +686,8 @@
       "present": true
     },
     "현재_구현_흐름.md": {
-      "fingerprint": "1e4782627397a527b24a6b91a894316513c6ae2ce3d9002f973214be5f480392",
-      "revision": 7,
+      "fingerprint": "1c16d8f52dec8715fad9f7eddbab2f0ecc43740a9a67dd84c17c086107893199",
+      "revision": 8,
       "updated": true,
       "present": true
     },
@@ -722,8 +722,8 @@
       "present": true
     },
     "저장_미리보기와_복구.md": {
-      "fingerprint": "5913fd1c42ab8c08b11c5251304602216e6b6ad7502fefe8b2c9acd2b35be6f5",
-      "revision": 3,
+      "fingerprint": "38c142bdded81b5f33f703f0d139c9e84998a7ca1f38018d8ae7b1a21e3a3431",
+      "revision": 4,
       "updated": true,
       "present": true
     },
@@ -776,8 +776,8 @@
       "present": true
     },
     "03_처리/UserContext.md": {
-      "fingerprint": "648d3c2c9afc25888e1fd68a34c13ed70351e2213281d80b291239e36b2456b4",
-      "revision": 2,
+      "fingerprint": "d18a19b5c821803187af1a2a22242233573a3643df78375969216aca689b8e5e",
+      "revision": 3,
       "updated": true,
       "present": true
     },
@@ -868,6 +868,36 @@
     "DB_준비와_일반_실행_분리_2026_11_24.md": {
       "fingerprint": "fffbd69d030a68a8bc27804965f111932e1655f18ea1a521cd565089f27e1f6a",
       "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "지도_선택과_저장_지도_준비_2026_11_24.md": {
+      "fingerprint": "60114f82a162e4afc4937c9d71101d8a378790d9992975000cda753df4839a4e",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "화면_가독성과_작은_창_배치_2026_11_24.md": {
+      "fingerprint": "e30f7df9a93bb373e02beb6f79f5a2fe300035c3b6fadb9ba932e65feca6f99b",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "지도_렌더링_여유_영역_2026_11_24.md": {
+      "fingerprint": "ebb481c3bf13a331d188b2b1c6992a8c22dadf36c72587fcf80e4f504f821aa8",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "마우스_키보드_입력_점검_2026_11_24.md": {
+      "fingerprint": "7a2be4aa4493c539de8d74939ed38d6cbd95e43920aaa3ec803e52921601512a",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "JDK21_자동_검색과_선택_2026_11_25.md": {
+      "fingerprint": "e10977874d997ecbceea3f77b3475c4f3ce8721ed3d69571bec6b7e0923629eb",
+      "revision": 3,
       "updated": true,
       "present": true
     }

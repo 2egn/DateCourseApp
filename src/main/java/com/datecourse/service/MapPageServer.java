@@ -24,7 +24,7 @@ public final class MapPageServer implements AutoCloseable {
     private static final Pattern KEY_ASSIGNMENT = Pattern.compile(
             "window\\.KAKAO_MAP_KEY\\s*=\\s*([\"'])([A-Za-z0-9_-]*)\\1");
     private static final Map<String, String> ASSETS = Map.of(
-            "/map.html", "text/html", "/map.js", "application/javascript",
+            "/map-viewport.js", "application/javascript", "/map.html", "text/html", "/map.js", "application/javascript",
             "/itinerary-rail.js", "application/javascript", "/instant-zoom.js", "application/javascript",
             "/itinerary-rail.css", "text/css", "/pin-pointer-gesture.js", "application/javascript",
             "/camera-motion.js", "application/javascript", "/camera-motion-demo.html", "text/html", "/camera-motion-demo.js", "application/javascript");

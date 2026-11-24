@@ -10,6 +10,10 @@ reviewed_commit: 9e59289
 reviewed_at: 2026-11-23
 ---
 
+## 가독성 개선 · 2026-11-24
+
+[[화면_가독성과_작은_창_배치_2026_11_24|작은 창의 배치·정보 역할·글자 대비·알림 위치]]를 반영했어요. 아래 날짜가 붙은 발췌는 당시 기록이에요.
+
 ## 현재 이름·경로 · 2026-11-24
 
 `CourseEditorController` → `src/main/java/com/datecourse/page/_02step_editor/CourseEditorController.java`. [[페이지_구조와_이름_2026_11_24|페이지별 배치]]를 확인하세요. 아래 원본 링크·코드 발췌는 기존 `source_commit`의 기록이며 이름 변경 전 코드예요.

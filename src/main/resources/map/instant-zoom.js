@@ -23,7 +23,8 @@
             const point = new kakao.maps.Point(
                 Math.max(0, Math.min(element.clientWidth, (request.x - rect.left) * element.clientWidth / rect.width)),
                 Math.max(0, Math.min(element.clientHeight, (request.y - rect.top) * element.clientHeight / rect.height)));
-            const anchor = map.getProjection().coordsFromContainerPoint(point);
+            const projection = options && options.projection ? options.projection() : map.getProjection();
+            const anchor = projection.coordsFromContainerPoint(point);
             const animate = motion === 'off' || (motion !== 'on' && reducedMotion.matches) ? false : {duration: duration};
             map.setLevel(level, { anchor: anchor, animate: animate });
             lastApplied = performance.now();

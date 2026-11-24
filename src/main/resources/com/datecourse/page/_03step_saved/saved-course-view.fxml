@@ -40,15 +40,23 @@
 
             <!-- 3-1. 상세 제목 -->
             <Label fx:id="detailTitle" text="코스를 선택해주세요" styleClass="subtitle"/>
+            <Label fx:id="travelSummaryLabel" styleClass="saved-course-travel" wrapText="true"/>
 
             <!-- 3-2. 지도 영역 (지도 위에 안내 문구/재시도 버튼이 겹쳐서 표시됨) -->
             <StackPane fx:id="mapPane" minWidth="0" minHeight="180" prefHeight="420" maxHeight="Infinity" VBox.vgrow="ALWAYS">
                 <WebView fx:id="previewMap" visible="false"/>
                 <ImageView fx:id="coursePreview" preserveRatio="true" mouseTransparent="true" accessibleText="저장한 코스의 지도 또는 장소 연결도"/>
+                <VBox fx:id="mapLoadPrompt" alignment="CENTER" spacing="12" maxWidth="300" maxHeight="-Infinity" visible="false" managed="false">
+                    <Label fx:id="mapLoadDescription" text="이 코스는 이미지로 저장되어 있어요." wrapText="true"/>
+                    <Button fx:id="mapLoadButton" text="지도 불러오기" onAction="#onLoadMap" styleClass="primary"/>
+                </VBox>
+                <HBox fx:id="previewViewControls" spacing="6" maxWidth="-Infinity" maxHeight="-Infinity" StackPane.alignment="TOP_RIGHT" styleClass="saved-view-switch">
+                    <Button fx:id="imageViewButton" text="이미지" onAction="#onSelectImage"/>
+                    <Button fx:id="toggleMapButton" text="지도" onAction="#onSelectMap"/>
+                </HBox>
             </StackPane>
             <HBox alignment="CENTER_LEFT" spacing="8">
                 <Label fx:id="previewCaption" wrapText="true" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="muted"/>
-                <Button fx:id="toggleMapButton" text="지도 보기" onAction="#onToggleMap" styleClass="secondary"/>
                 <Button fx:id="requestRouteButton" text="이동 경로 조회" onAction="#onRequestRoute" styleClass="secondary"/>
             </HBox>
             <HBox fx:id="mapNotice" alignment="CENTER_LEFT" spacing="8">
@@ -57,11 +65,12 @@
             </HBox>
 
             <!-- 3-3. 하단 정보 표 (왼쪽: 코스 요약 / 오른쪽: 장소 목록) -->
-            <HBox fx:id="bottomInfo" styleClass="saved-course-bottom"
-                  minHeight="170" prefHeight="210" maxHeight="260">
+            <ScrollPane fx:id="bottomScroll" fitToWidth="true" hbarPolicy="NEVER" minHeight="140" prefHeight="230" maxHeight="280" styleClass="saved-info-scroll">
+            <content>
+            <GridPane fx:id="bottomInfo" hgap="12" vgap="12" minWidth="0" styleClass="saved-course-bottom">
                 <!-- 왼쪽: 코스 요약 정보 표 -->
-                <TableView fx:id="summaryTable" styleClass="saved-course-table"
-                           minWidth="230" prefWidth="310" minHeight="120" prefHeight="210"
+                <TableView fx:id="summaryTable" GridPane.columnIndex="0" styleClass="saved-course-table"
+                           minWidth="0" prefWidth="310" minHeight="170" prefHeight="210"
                            maxHeight="Infinity" HBox.hgrow="NEVER">
                     <columns>
                         <TableColumn fx:id="summaryLabelColumn" text="장소 정보" prefWidth="96" minWidth="82" maxWidth="120"/>
@@ -69,17 +78,20 @@
                     </columns>
                 </TableView>
                 <!-- 오른쪽: 코스에 포함된 장소 표 -->
-                <TableView fx:id="placeTable" styleClass="saved-course-table"
-                           minWidth="360" prefWidth="500" minHeight="120" prefHeight="210"
+                <TableView fx:id="placeTable" GridPane.columnIndex="1" styleClass="saved-course-table"
+                           minWidth="0" prefWidth="500" minHeight="100" prefHeight="210"
                            maxHeight="Infinity" HBox.hgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="placeOrderColumn" text="순서" prefWidth="52" minWidth="46" maxWidth="60"/>
-                        <TableColumn fx:id="placeNameColumn" text="장소" prefWidth="140" minWidth="90"/>
-                        <TableColumn fx:id="placePriceColumn" text="가격" prefWidth="140" minWidth="95"/>
-                        <TableColumn fx:id="placeAddressColumn" text="주소" prefWidth="220" minWidth="100"/>
+                        <TableColumn fx:id="placeNameColumn" text="장소" prefWidth="180" minWidth="140"/>
+                        <TableColumn fx:id="placePriceColumn" text="가격" prefWidth="140" minWidth="110"/>
+                        <TableColumn fx:id="placeTravelColumn" text="이동수단·시간" prefWidth="160" minWidth="130"/>
+                        <TableColumn fx:id="placeAddressColumn" text="주소" prefWidth="180" minWidth="140"/>
                     </columns>
                 </TableView>
-            </HBox>
+            </GridPane>
+            </content>
+            </ScrollPane>
 
             <!-- 3-4. 처리 중 / 오류 안내 메시지 -->
             <Label fx:id="messageLabel" styleClass="muted"/>

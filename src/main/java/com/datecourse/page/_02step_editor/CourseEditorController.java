@@ -80,7 +80,9 @@ public final class CourseEditorController extends BasePageController {
     @FXML private Label metricTransportLabel, metricTimeLabel, metricPriceCaption, metricPriceLabel;
     @FXML private Label radiusLabel, summaryLabel, editorError, commonLabel;
     @FXML private TextField originSearchField;
-    @FXML private Label walkingTimeLabel;
+    @FXML private Label walkingTimeLabel, compactSummaryLabel;
+    @FXML private javafx.scene.layout.VBox editorSummary;
+    @FXML private javafx.scene.layout.HBox editorSummaryBar;
     @FXML private ComboBox<com.datecourse.model.TravelMode> travelModeBox;
     private boolean restoringTravelMode;
     /** 편집 코스의 이동수단을 반환하며 코스가 없으면 도보를 사용한다. */
@@ -114,6 +116,7 @@ public final class CourseEditorController extends BasePageController {
     /** 편집 화면의 표시·입력·지도·목록 연결을 순서대로 준비한다. */
     @FXML
     private void initialize() {
+        configureResponsiveSummary();
         configureVisibilityAndFilters();
         configureMapAndTravelMode();
         configureConditionInputs();
@@ -123,6 +126,19 @@ public final class CourseEditorController extends BasePageController {
         configureEditorNavigation();
         updateButtons();
         setState(EditorState.CONDITION);
+    }
+
+    /** 좁은 보조 패널에서는 합계를 두 줄로 모아 편집 영역을 확보한다. */
+    private void configureResponsiveSummary() {
+        compactSummaryLabel.textProperty().bind(javafx.beans.binding.Bindings.concat(
+                metricTransportLabel.textProperty(), " · 총 이동시간 ", metricTimeLabel.textProperty(),
+                "\n", metricPriceLabel.textProperty()));
+        var compact = editorSummary.widthProperty().lessThan(560);
+        compactSummaryLabel.visibleProperty().bind(compact);
+        compactSummaryLabel.managedProperty().bind(compact);
+        editorSummaryBar.visibleProperty().bind(compact.not());
+        editorSummaryBar.managedProperty().bind(compact.not());
+        walkingTimeLabel.managedProperty().bind(walkingTimeLabel.visibleProperty());
     }
 
     /** 조건 패널의 표시 규칙과 필터 구성을 연결한다. */
@@ -566,17 +582,18 @@ public final class CourseEditorController extends BasePageController {
 
     /** 경로 결과와 조회 상태에 맞춰 총 이동시간을 표시한다. */
     private void refreshWalkingSummary() {
+        walkingTimeLabel.setVisible(true);
         if(draftPlaces.isEmpty()){
             walkingTimeLabel.setText("장소를 추가하면 "+travelMode().label()+" 시간을 계산해요.");
             if (metricTimeLabel != null) metricTimeLabel.setText("0분");
             return;
         }
         if(walkingRoute!=null&&walkingRoute.legs().size()==draftPlaces.size()) {
-            long last=walkingRoute.legs().getLast().time();
-            walkingTimeLabel.setText("최근 이동 "+minutes(last)+" · 누적 "+travelMode().label()+" "+minutes(walkingRoute.totalTime())+" · "+travelMode().timeNote()+(walkingRoute.provider().isBlank()?"":" · 경로 "+walkingRoute.provider()));
-            if (metricTimeLabel != null) metricTimeLabel.setText("총 " + minutes(walkingRoute.totalTime()));
+            walkingTimeLabel.setText(travelMode().timeNote()+(walkingRoute.provider().isBlank()?"":" · 경로 "+walkingRoute.provider()));
+            if (metricTimeLabel != null) metricTimeLabel.setText(minutes(walkingRoute.totalTime()));
         } else {
             boolean loading = walkingMessage.contains("중")||walkingMessage.contains("준비");
+            walkingTimeLabel.setVisible(!loading);
             walkingTimeLabel.setText(loading ? travelMode().label()+" 이동시간 조회 중…" : travelMode().label()+" 시간 미확인"+(walkingMessage.isBlank()?"":" · "+walkingMessage));
             if (metricTimeLabel != null) metricTimeLabel.setText(loading ? "계산 중…" : "미확인");
         }
@@ -623,7 +640,7 @@ public final class CourseEditorController extends BasePageController {
             recordRadiusButton.setVisible(missing);
             recordRadiusButton.setManaged(missing);
             selectedRadiusLabel.setText(leg == null ? "장소를 선택하면 추가 당시의 ‘다음 장소의 조건’ 반경을 수정할 수 있어요."
-                    : String.format("%s → %s · 직선 %.0fm · 설정 반경 %s\n이 장소를 추가할 때 ‘다음 장소의 조건’에서 정한 반경이에요. 아래에서 이 구간의 반경만 수정해요.",
+                    : String.format("%s → %s · 직선 %.0fm · 설정 반경 %s\n‘다음 장소의 조건’에서 정한 값이에요. 슬라이더로 이 구간만 조정해요.",
                     leg.from(), leg.to().name(), leg.distanceMeters(),
                     leg.radius() == null ? "미기록 (조절하거나 500m로 기록)" : leg.radius() + "m"));
         } finally { syncingSelectedRadius = false; }

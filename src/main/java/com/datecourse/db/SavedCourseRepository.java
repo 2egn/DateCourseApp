@@ -290,28 +290,7 @@ public final class SavedCourseRepository {
         try(var connection=dataSource.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                RoutePlan header;
-                try(var query=connection.prepareStatement("SELECT * FROM saved_courses WHERE course_id=? AND member_id=? FOR UPDATE")) {
-                    query.setLong(1,expected.courseId());query.setLong(2,session.memberId());
-                    try(var row=query.executeQuery()) {
-                        if(!row.next())throw new IllegalStateException("코스를 찾지 못했어요. 목록을 새로고침해 주세요.");
-                        header=new RoutePlan(row.getDouble("start_lat"),row.getDouble("start_lng"),row.getInt("people"),
-                                row.getInt("radius_m"),row.getString("title"),List.of());
-                    }
-                }
-                header=header.withTravelMode(readTransport(connection,expected.courseId()));
-                var places=new ArrayList<Place>();var radii=new LinkedHashMap<Long,Integer>();
-                try(var query=connection.prepareStatement("SELECT * FROM saved_course_places WHERE course_id=? ORDER BY visit_order")) {
-                    query.setLong(1,expected.courseId());
-                    try(var rows=query.executeQuery()) {
-                        while(rows.next()) {
-                            Place place=readPlaceSnapshot(rows);places.add(place);
-                            Integer radius=rows.getObject("arrival_radius_m",Integer.class);
-                            if(radius!=null)radii.put(place.recordId(),radius);
-                        }
-                    }
-                }
-                var current=new RoutePlan(header.startLat(),header.startLng(),header.people(),header.radius(),header.title(),places,radii,header.travelMode());
+                var current=readCurrentPlan(connection,session,expected.courseId());
                 if(!com.datecourse.service.CoursePreviewImage.fingerprint(current).equals(
                         com.datecourse.service.CoursePreviewImage.fingerprint(expected.plan())))
                     throw new IllegalStateException("코스가 변경됐어요. 목록을 새로고침한 뒤 다시 시도해 주세요.");
@@ -322,6 +301,33 @@ public final class SavedCourseRepository {
                 throw failure;
             }
         }
+    }
+
+    /** 잠금 안에서 현재 소유 코스와 장소를 읽어 늦은 이미지 응답을 대조한다. */
+    private RoutePlan readCurrentPlan(Connection connection,UserSession session,long courseId) throws SQLException {
+        RoutePlan header;
+        try(var query=connection.prepareStatement("SELECT * FROM saved_courses WHERE course_id=? AND member_id=? FOR UPDATE")) {
+            query.setLong(1,courseId);query.setLong(2,session.memberId());
+            try(var row=query.executeQuery()) {
+                if(!row.next())throw new IllegalStateException("코스를 찾지 못했어요. 목록을 새로고침해 주세요.");
+                header=new RoutePlan(row.getDouble("start_lat"),row.getDouble("start_lng"),row.getInt("people"),
+                        row.getInt("radius_m"),row.getString("title"),List.of());
+            }
+        }
+        header=header.withTravelMode(readTransport(connection,courseId));
+        var places=new ArrayList<Place>();var radii=new LinkedHashMap<Long,Integer>();
+        try(var query=connection.prepareStatement("SELECT * FROM saved_course_places WHERE course_id=? ORDER BY visit_order")) {
+            query.setLong(1,courseId);
+            try(var rows=query.executeQuery()) {
+                while(rows.next()) {
+                    Place place=readPlaceSnapshot(rows);places.add(place);
+                    Integer radius=rows.getObject("arrival_radius_m",Integer.class);
+                    if(radius!=null)radii.put(place.recordId(),radius);
+                }
+            }
+        }
+        var current=new RoutePlan(header.startLat(),header.startLng(),header.people(),header.radius(),header.title(),places,radii,header.travelMode());
+        return current;
     }
 
     /** Fetches one optional BLOB, checking both ownership and the selected snapshot revision. */

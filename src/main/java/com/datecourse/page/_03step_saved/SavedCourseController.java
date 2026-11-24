@@ -51,13 +51,18 @@ public class SavedCourseController extends BasePageController {
     @FXML private Label mapStatus;
     @FXML private Button mapRetry, toggleMapButton, requestRouteButton;
     @FXML private javafx.scene.image.ImageView coursePreview;
-    @FXML private Label previewCaption;
+    @FXML private Label previewCaption, travelSummaryLabel, mapLoadDescription;
+    @FXML private Button imageViewButton, mapLoadButton;
+    @FXML private javafx.scene.layout.HBox previewViewControls;
+    @FXML private javafx.scene.layout.VBox mapLoadPrompt;
 
     // [가운데] 하단 정보 표
+    @FXML private javafx.scene.layout.GridPane bottomInfo;
+    @FXML private ScrollPane bottomScroll;
     @FXML private TableView<CourseDetailRow> summaryTable;
     @FXML private TableColumn<CourseDetailRow, String> summaryLabelColumn, summaryValueColumn;
     @FXML private TableView<PlaceInfoRow> placeTable;
-    @FXML private TableColumn<PlaceInfoRow, String> placeOrderColumn, placeNameColumn, placePriceColumn, placeAddressColumn;
+    @FXML private TableColumn<PlaceInfoRow, String> placeOrderColumn, placeNameColumn, placePriceColumn, placeAddressColumn, placeTravelColumn;
 
     // [가운데] 안내 메시지
     @FXML private Label messageLabel;
@@ -78,15 +83,17 @@ public class SavedCourseController extends BasePageController {
     private long previewVersion;                   // 지도 미리보기 요청 번호 (오래된 응답 무시용)
 
     private SavedCourse previewCourse;
+    private com.datecourse.model.Place pendingFocusPlace;
     private long previewLoadVersion;
-    private boolean showingMap, selectedPreviewView, storedPreview, routeRequested;
+    private boolean showingMap, selectedPreviewView, storedPreview, routeRequested, mapSelected, mapPrepared, previewLoading;
+    private final java.util.Map<SavedCourse,com.datecourse.model.TravelRoute> routeSummaries=new java.util.HashMap<>();
     private java.util.concurrent.CompletableFuture<PreviewImage> previewTask;
     private record PreviewImage(javafx.scene.image.Image image, boolean stored) {}
     private String mapFailure = "", routeFailure = "", routeMessage = "";
 
     // 표의 한 줄을 나타내는 데이터
     private record CourseDetailRow(String label, String value) {}
-    private record PlaceInfoRow(String order, String name, String price, String address) {}
+    private record PlaceInfoRow(String order, String name, String price, String address, String travel) {}
 
     // =====================================================================
     // 2. 초기화
@@ -97,6 +104,7 @@ public class SavedCourseController extends BasePageController {
         configureCourseList();
         configurePreviewMap();
         configureDetailTables();
+        configureResponsiveDetails();
         configureMessages();
         // ----- 초기 화면 상태 -----
         showDetail(null);                       // 아무것도 선택하지 않은 상태로 시작
@@ -118,14 +126,15 @@ public class SavedCourseController extends BasePageController {
             private final Label titleLabel = new Label();
             private final Label summaryLabel = new Label();
             private final Label updatedLabel = new Label();
+            private final Label travelLabel = new Label();
             private final javafx.scene.layout.VBox box =
-                    new javafx.scene.layout.VBox(3, titleLabel, summaryLabel, updatedLabel);
+                    new javafx.scene.layout.VBox(3, titleLabel, travelLabel, summaryLabel, updatedLabel);
 
             {   // 초기화 블록: 셀이 만들어질 때 한 번 실행됨
                 titleLabel.getStyleClass().add("saved-course-title");
                 summaryLabel.getStyleClass().add("saved-course-summary");
                 updatedLabel.getStyleClass().add("saved-course-updated");
-                for (Label label : java.util.List.of(titleLabel, summaryLabel, updatedLabel)) {
+                for (Label label : java.util.List.of(titleLabel, travelLabel, summaryLabel, updatedLabel)) {
                     label.setWrapText(true);                 // 길면 줄바꿈
                     label.setMaxWidth(Double.MAX_VALUE);
                 }
@@ -144,6 +153,7 @@ public class SavedCourseController extends BasePageController {
                     return;
                 }
                 titleLabel.setText(title(course));
+                travelLabel.setText(travelText(course)); travelLabel.getStyleClass().setAll("saved-course-travel");
                 summaryLabel.setText(course.plan().places().size() + "곳 · " + presenter.costSummary(course));
                 updatedLabel.setText("최근 수정 " + updatedText(course));
                 setText(null);
@@ -166,6 +176,7 @@ public class SavedCourseController extends BasePageController {
         map.setCandidateActionsEnabled(false);
         map.setAutomaticWalking(false);
         map.setCoursePreviewMode(true);
+        map.setExternalViewControls(true);
         coursePreview.fitWidthProperty().bind(mapPane.widthProperty().subtract(8));
         coursePreview.fitHeightProperty().bind(mapPane.heightProperty().subtract(8));
         map.setOnRouteError(message -> { routeFailure = message; refreshMapNotice(); });
@@ -173,10 +184,19 @@ public class SavedCourseController extends BasePageController {
         map.setWalkingResultListener((route, message) -> {
             routeMessage = route == null && message != null ? message : "";
             routeFailure = "";
+            if (route != null && previewCourse != null) {
+                routeSummaries.put(previewCourse,route); courseList.refresh();
+            }
+            refreshTravelInformation();
             refreshMapNotice();
         });
         // 지도가 준비되면 안내 문구와 재시도 버튼을 숨김
-        map.setOnReady(() -> { mapFailure = ""; refreshMapNotice(); });
+        map.setOnReady(() -> {
+            mapFailure = "";
+            rememberMapPrepared();
+            focusPendingPlace();
+            refreshMapNotice();
+        });
     }
 
     /** 코스 요약·장소 표와 장소 클릭 시 지도 이동을 설정한다. */
@@ -201,8 +221,9 @@ public class SavedCourseController extends BasePageController {
         placeOrderColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().order()));
         placeNameColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().name()));
         placePriceColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().price()));
+        placeTravelColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().travel()));
         placeAddressColumn.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().address()));
-        for (TableColumn<PlaceInfoRow, String> column : java.util.List.of(placeOrderColumn, placeNameColumn, placePriceColumn, placeAddressColumn)) {
+        for (TableColumn<PlaceInfoRow, String> column : java.util.List.of(placeOrderColumn, placeNameColumn, placePriceColumn, placeAddressColumn, placeTravelColumn)) {
             column.setSortable(false);
             column.setReorderable(false);
             setWrappingCellFactory(column);
@@ -217,12 +238,42 @@ public class SavedCourseController extends BasePageController {
                 int index = row.getIndex();
                 if (selected == null || index < 0 || index >= selected.plan().places().size()) return;
                 selectedPreviewView = true;
-                if (!showingMap) showMapPreview();
+                pendingFocusPlace=selected.plan().places().get(index);
+                if (!mapSelected || !showingMap) { onSelectMap(); if (!showingMap) return; }
                 previewVersion++;
                 map.focusPlace(selected.plan().places().get(index));
+                if(map.isReady())pendingFocusPlace=null;
             });
             return row;
         });
+    }
+
+    /** 좁은 상세 영역에서는 장소 표를 먼저 보여주고 요약을 아래에 둔다. */
+    private void configureResponsiveDetails() {
+        bottomScroll.viewportBoundsProperty().addListener((o, before, bounds) -> layoutDetailTables(bounds.getWidth()));
+        layoutDetailTables(0);
+    }
+
+    private void layoutDetailTables(double width) {
+        boolean stacked = width < 900;
+        placeTable.setPrefHeight(stacked ? Math.clamp(42 + placeTable.getItems().size() * 44, 100, 240) : 210);
+        bottomInfo.getColumnConstraints().clear();
+        if (stacked) {
+            var column = new javafx.scene.layout.ColumnConstraints(); column.setPercentWidth(100);
+            bottomInfo.getColumnConstraints().add(column);
+            javafx.scene.layout.GridPane.setColumnIndex(placeTable, 0);
+            javafx.scene.layout.GridPane.setRowIndex(placeTable, 0);
+            javafx.scene.layout.GridPane.setColumnIndex(summaryTable, 0);
+            javafx.scene.layout.GridPane.setRowIndex(summaryTable, 1);
+        } else {
+            var summary = new javafx.scene.layout.ColumnConstraints(); summary.setPercentWidth(29);
+            var places = new javafx.scene.layout.ColumnConstraints(); places.setPercentWidth(71);
+            bottomInfo.getColumnConstraints().addAll(summary, places);
+            javafx.scene.layout.GridPane.setColumnIndex(summaryTable, 0);
+            javafx.scene.layout.GridPane.setRowIndex(summaryTable, 0);
+            javafx.scene.layout.GridPane.setColumnIndex(placeTable, 1);
+            javafx.scene.layout.GridPane.setRowIndex(placeTable, 0);
+        }
     }
 
     /** 메시지 표시 여부와 오류 알림을 연결한다. */
@@ -260,6 +311,7 @@ public class SavedCourseController extends BasePageController {
         onOpen = null;
         onNewCourse = null;
         busy = false;
+        routeSummaries.clear();
         courseList.getItems().clear();
         showDetail(null);
     }
@@ -390,6 +442,8 @@ public class SavedCourseController extends BasePageController {
             configurePlaceRows(summary.places());
         }
         showPreview(course);
+        refreshTravelInformation();
+        layoutDetailTables(bottomScroll.getViewportBounds().getWidth());
         updateButtons();
     }
 
@@ -400,7 +454,9 @@ public class SavedCourseController extends BasePageController {
         long version = ++previewLoadVersion;
         previewVersion++;
         previewCourse = course;
-        showingMap = selectedPreviewView = storedPreview = routeRequested = false;
+        previewLoading = course != null;
+        pendingFocusPlace=null;
+        showingMap = selectedPreviewView = storedPreview = routeRequested = mapSelected = mapPrepared = false;
         mapFailure = routeFailure = routeMessage = "";
         map.reset();
         coursePreview.setImage(null);
@@ -436,11 +492,14 @@ public class SavedCourseController extends BasePageController {
         });
         previewTask.whenComplete((preview, failure) -> javafx.application.Platform.runLater(() -> {
             if (version != previewLoadVersion || context != userContext || context != null && context.isClosed()) return;
+            previewLoading = false;
             if (failure == null) {
                 coursePreview.setImage(preview.image());
                 storedPreview = preview.stored();
+                mapPrepared = context != null && context.isMapPrepared(course);
             }
-            if (!selectedPreviewView && !storedPreview) showMapPreview();
+            boolean openMap = mapSelected ? mapPrepared || !storedPreview : !selectedPreviewView && !storedPreview;
+            if (!showingMap && openMap) showMapPreview();
             refreshMapNotice();
         }));
     }
@@ -448,7 +507,7 @@ public class SavedCourseController extends BasePageController {
     /** 선택한 코스를 지도에 표시하고 늦은 화면 맞춤 요청을 구분한다. */
     private void showMapPreview() {
         if (previewCourse == null) return;
-        showingMap = true;
+        showingMap = mapSelected = true;
         mapFailure = "";
         map.setOriginLocked(true);
         map.presentCourse(previewCourse.plan(), true);
@@ -460,20 +519,61 @@ public class SavedCourseController extends BasePageController {
             if (previewVersion == version && previewCourse == course && showingMap) map.fitCourse();
         });
         fitAfterLayout.play();
+        if(map.isReady())rememberMapPrepared();
         refreshMapNotice();
+    }
+
+    /** 이미지 전용 코스는 지도 탭에서 준비 버튼을 먼저 보여준다. */
+    @FXML private void onSelectMap() {
+        if (previewCourse==null) return;
+        selectedPreviewView=mapSelected=true;
+        if (!showingMap && !previewLoading && (mapPrepared || !storedPreview)) showMapPreview();
+        refreshMapNotice();
+    }
+    @FXML private void onSelectImage() {
+        if (previewCourse==null) return;
+        selectedPreviewView=true; mapSelected=false;
+        refreshMapNotice();
+    }
+    @FXML private void onLoadMap() {
+        if (previewCourse==null || !mapSelected || showingMap || previewLoading) return;
+        showMapPreview();
+        if (map.isReady()) focusPendingPlace();
+    }
+    /** 불러오기 전에 선택한 장소를 열고 늦은 전체 화면 맞춤을 취소한다. */
+    private void focusPendingPlace() {
+        if (pendingFocusPlace == null) return;
+        previewVersion++;
+        map.focusPlace(pendingFocusPlace);
+        pendingFocusPlace = null;
+    }
+
+    /** SDK 준비 완료는 현재 로그인 세션에만 기록한다. */
+    private void rememberMapPrepared() {
+        if (previewCourse == null || userContext == null || !showingMap || !map.isReady()) return;
+        mapPrepared = userContext.markMapPrepared(previewCourse);
+    }
+    private String travelText(SavedCourse course) {
+        var route=routeSummaries.get(course);
+        return course.plan().travelMode().label()+" · "+(route==null?"이동시간 조회 전":com.datecourse.model.TravelRoute.durationText(route.totalTime()));
+    }
+    /** 공급사 응답이 있는 구간만 시간을 표시하며 미조회 시간을 추정하지 않는다. */
+    private void refreshTravelInformation() {
+        travelSummaryLabel.setText(previewCourse==null?"":travelText(previewCourse));
+        if (previewCourse==null) return;
+        var route=routeSummaries.get(previewCourse);
+        for (int index=0;index<placeTable.getItems().size();index++) {
+            var row=placeTable.getItems().get(index);
+            String travel=previewCourse.plan().travelMode().label()+" · "+(route!=null && index<route.legs().size()
+                    ?com.datecourse.model.TravelRoute.durationText(route.legs().get(index).time()):"조회 전");
+            placeTable.getItems().set(index,new PlaceInfoRow(row.order(),row.name(),row.price(),row.address(),travel));
+        }
     }
 
     /** 사용자가 선택한 이미지·지도 보기 방식으로 전환한다. */
     @FXML private void onToggleMap() {
-        if (previewCourse == null) return;
-        selectedPreviewView = true;
-        previewVersion++;
-        if (showingMap) {
-            showingMap = routeRequested = false;
-            mapFailure = routeFailure = routeMessage = "";
-            map.reset();
-        } else showMapPreview();
-        refreshMapNotice();
+        if (mapSelected) onSelectImage();
+        else onSelectMap();
     }
 
     /** 사용자가 요청한 경우에만 선택 코스의 이동 경로를 조회한다. */
@@ -494,26 +594,32 @@ public class SavedCourseController extends BasePageController {
     /** 지도·이미지 상태에 맞춰 미리보기와 안내를 갱신한다. */
     private void refreshMapNotice() {
         boolean hasCourse = previewCourse != null;
-        boolean readyMap = showingMap && map.isReady() && mapFailure.isBlank();
+        boolean readyMap = mapSelected && showingMap && map.isReady() && mapFailure.isBlank();
         updatePreviewControls(hasCourse, readyMap);
         previewCaption.setText(buildPreviewCaption(hasCourse, readyMap));
         String message = buildMapNotice(hasCourse);
         mapStatus.setText(message);
         mapStatus.setVisible(!message.isBlank());
         mapRetry.setDisable(false);
-        mapRetry.setVisible(hasCourse && showingMap && (!mapFailure.isBlank() || !routeFailure.isBlank()));
+        mapRetry.setVisible(hasCourse && mapSelected && showingMap && (!mapFailure.isBlank() || !routeFailure.isBlank()));
         mapRetry.setText(mapFailure.isBlank() && map.isReady() ? "이동 경로 다시 조회" : "지도 다시 불러오기");
     }
 
     /** 미리보기 화면과 지도 전환·경로 조회 버튼의 상태를 맞춘다. */
     private void updatePreviewControls(boolean hasCourse, boolean readyMap) {
-        previewMap.setVisible(hasCourse && showingMap);
-        coursePreview.setVisible(hasCourse && !readyMap);
-        toggleMapButton.setVisible(hasCourse);
-        toggleMapButton.setManaged(hasCourse);
-        toggleMapButton.setText(showingMap ? "이미지 보기" : "지도 보기");
-        requestRouteButton.setVisible(hasCourse && showingMap);
-        requestRouteButton.setManaged(hasCourse && showingMap);
+        boolean waiting=hasCourse && mapSelected && !showingMap;
+        previewMap.setVisible(hasCourse && mapSelected && showingMap);
+        coursePreview.setVisible(hasCourse && (!mapSelected || showingMap && !readyMap));
+        mapLoadPrompt.setVisible(waiting);mapLoadPrompt.setManaged(waiting);
+        mapLoadButton.setDisable(previewLoading);
+        mapLoadDescription.setText(previewLoading ? "저장된 미리보기를 확인하고 있어요…" : "이 코스는 이미지로 저장되어 있어요.");
+        previewViewControls.setVisible(hasCourse);previewViewControls.setManaged(hasCourse);
+        toggleMapButton.setDisable(hasCourse && coursePreview.getImage()==null && !showingMap);
+        var active=javafx.css.PseudoClass.getPseudoClass("active");
+        toggleMapButton.pseudoClassStateChanged(active,mapSelected);
+        imageViewButton.pseudoClassStateChanged(active,!mapSelected);
+        requestRouteButton.setVisible(hasCourse && mapSelected && showingMap);
+        requestRouteButton.setManaged(hasCourse && mapSelected && showingMap);
         boolean pendingRoute = routeRequested && !routeMessage.isBlank() && routeFailure.isBlank();
         requestRouteButton.setDisable(!readyMap || pendingRoute || !hasCourse || previewCourse.plan().places().isEmpty());
         requestRouteButton.setText(routeRequested && routeMessage.isBlank() ? "이동 경로 새로 조회" : "이동 경로 조회");
@@ -522,6 +628,7 @@ public class SavedCourseController extends BasePageController {
     /** 현재 미리보기가 저장 이미지인지 지도·경로인지 짧게 설명한다. */
     private String buildPreviewCaption(boolean hasCourse, boolean readyMap) {
         if (!hasCourse) return "";
+        if (mapSelected && !showingMap) return previewLoading ? "저장된 미리보기를 확인하고 있어요…" : "지도 불러오기를 누르면 이 코스를 지도에서 볼 수 있어요.";
         if (!readyMap) return storedPreview ? "저장된 미리보기 · 생성 시점의 정보예요" : "장소 연결도 · 실제 이동 경로와 다를 수 있어요";
         if (routeRequested && routeMessage.isBlank()) return "현재 조회한 이동 경로 · 저장 시점과 다를 수 있어요";
         return "직선 장소 연결 · 실제 이동 경로와 다를 수 있어요";
@@ -530,7 +637,7 @@ public class SavedCourseController extends BasePageController {
     /** 미리보기 로딩과 지도·경로 오류 중 현재 필요한 안내를 고른다. */
     private String buildMapNotice(boolean hasCourse) {
         if (!hasCourse) return "";
-        if (!showingMap) return coursePreview.getImage() == null ? "미리보기를 불러오고 있어요…" : "";
+        if (!mapSelected || !showingMap) return coursePreview.getImage() == null ? "미리보기를 불러오고 있어요…" : "";
         if (!mapFailure.isBlank()) return mapFailure + " · 기본 미리보기를 대신 표시해요.";
         if (!map.isReady()) return "지도를 불러오고 있어요. 미리보기와 코스 정보는 계속 볼 수 있어요…";
         if (!routeFailure.isBlank()) return routeFailure + " · 직선 장소 연결을 유지해요.";
@@ -587,7 +694,7 @@ public class SavedCourseController extends BasePageController {
         String name = separator > 0 ? first.substring(separator + 2) : first;
         String price = lines.length > 1 ? lines[1].replaceFirst("^가격:\\s*", "") : "가격 정보 없음";
         String address = lines.length > 2 ? lines[2].replaceFirst("^주소:\\s*", "") : "주소 정보 없음";
-        return new PlaceInfoRow(order, name, price, address);
+        return new PlaceInfoRow(order, name, price, address, "조회 전");
     }
 
     /** 표의 열이 긴 글을 자동 줄바꿈해서 보여주도록 설정한다. */

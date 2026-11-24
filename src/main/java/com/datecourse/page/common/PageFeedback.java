@@ -57,8 +57,8 @@ public final class PageFeedback {
         toast.getChildren().addAll(body, remaining);
         toast.setMaxSize(390, Region.USE_PREF_SIZE);
         toast.setVisible(false);
-        StackPane.setAlignment(toast, Pos.TOP_RIGHT);
-        StackPane.setMargin(toast, new Insets(82, 24, 0, 24));
+        StackPane.setAlignment(toast, Pos.BOTTOM_LEFT);
+        StackPane.setMargin(toast, new Insets(0, 24, 82, 24));
         layer.getChildren().addAll(busy, toast);
         host.getChildren().add(layer);
         countdown = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(remaining.progressProperty(), 1)),

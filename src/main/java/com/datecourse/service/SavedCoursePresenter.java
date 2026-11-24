@@ -59,6 +59,6 @@ public final class SavedCoursePresenter {
             }
             rows.add(row);
         }
-        return new Summary(plan.places().size()+"곳 · "+plan.people()+"명 · "+costSummary(course),details,rows);
+        return new Summary(plan.places().size()+"곳 · "+plan.people()+"명 · "+plan.travelMode().label()+" · "+costSummary(course),details,rows);
     }
 }

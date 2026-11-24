@@ -12,6 +12,14 @@ tasks.withType(JavaCompile).configureEach {
     options.release = 21
 }
 
+// 컴파일·검사·앱 실행은 설치된 JDK 21 도구를 사용한다.
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(21) }
+}
+tasks.withType(JavaExec).configureEach {
+    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(21) }
+}
+
 repositories {
     mavenCentral()
 }
@@ -19,7 +27,7 @@ repositories {
 dependencies {
     implementation 'com.zaxxer:HikariCP:7.1.0'
     testImplementation 'com.h2database:h2:2.3.232'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
 
     // MySQL JDBC 드라이버
     implementation 'com.mysql:mysql-connector-j:8.3.0'

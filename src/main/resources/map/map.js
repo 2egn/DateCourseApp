@@ -34,6 +34,8 @@
     });
 
     let map;
+    const mapViewport = window.createBufferedMapViewport(document.getElementById("map"), document.getElementById("map-canvas"));
+    window.mapViewport = mapViewport;
     let marker;
     let circle;
     let circleOutline;
@@ -337,7 +339,7 @@
         else if (ready) {
             if (USE_INSTANT_ZOOM && !zoomInstalled) {
                 window.disposeMapZoom = window.installInstantZoom(document.getElementById('map'), map,
-                    {motion: 'auto', fractional: USE_FRACTIONAL_ZOOM});
+                    {motion: 'auto', fractional: USE_FRACTIONAL_ZOOM, projection: mapViewport.projection});
                 zoomInstalled = true;
             }
             window.javaMapBridge.onMapReady();
@@ -527,6 +529,18 @@
         return lookup;
     }
 
+    let focusedPlaceId = null, hoveredPin = null, originFocused = false;
+    window.clearMapRouteFocus = function () {};
+    window.hideRouteHover = function () {};
+    function pointerCursor(active) {
+        document.getElementById('map-surface').classList.toggle('map-interactive', !!active);
+    }
+    function focusPlace(id) {
+        focusedPlaceId = id; originFocused=false;
+        if(marker && marker.setOpacity)marker.setOpacity(0.55);
+        window.clearMapRouteFocus(); window.hideRouteHover();
+        highlightVisit(id);
+    }
     function highlightVisit(id) {
         if (!renderingResults && currentPanelManaged && !currentCourseTab) {
             resultMarkers = resultMarkers.filter(function (pin) {
@@ -544,13 +558,13 @@
                 createResultPin(visits[index], index, visits, false, true);
         }
         resultMarkers.forEach(function (pin) {
-            const active = pin.visitId === id;
+            const active = pin.visitId === focusedPlaceId || pin === hoveredPin;
             const image = active ? pin.activeImage : pin.normalImage;
             if (pin.displayedImage !== image) {
                 pin.setImage(image);
                 pin.displayedImage = image;
             }
-            pin.setZIndex(active ? 6 : 3);
+            pin.setZIndex(active ? 36 : 30);
         });
     }
 
@@ -584,6 +598,15 @@
             if (window.javaMapBridge && typeof window.javaMapBridge.addCandidate === 'function') window.javaMapBridge.addCandidate(String(id));
         },
         onActive: highlightVisit,
+        onFocus: focusPlace,
+        travelInfo: function(place) {
+            const list=routePresentation ? routePresentation.places : plannerCourse;
+            const index=list.findIndex(function(p){return samePlace(p,place);});
+            const mode=routePresentation && routePresentation.travelMode || displayedWalkingRoute && displayedWalkingRoute.mode || 'WALKING';
+            const label=({WALKING:'도보',DRIVING:'자동차',TRANSIT:'대중교통 + 도보'})[mode] || '도보';
+            const leg=displayedWalkingRoute && displayedWalkingRoute.legs[index];
+            return label+' · '+(leg?'약 '+Math.ceil(leg.time/60)+'분':'이동시간 조회 전');
+        },
         onOpen: function (place, detailBounds, railBounds) {
             placePinPreview.hide();
             if (!ready) return;
@@ -592,11 +615,11 @@
             const bounds = document.getElementById('map').getBoundingClientRect();
             const narrow = window.matchMedia('(max-width: 760px)').matches;
             // The Swing/JavaFX option panel lies outside this map viewport already.
-            const standalone = !!routePresentation;
-            const freeRight = (narrow && !standalone ? railBounds.left : detailBounds.left) - bounds.left - 16;
-            const targetX = Math.max(40, freeRight / 2);
+            const freeLeft=detailBounds.right-bounds.left+16;
+            const freeRight=railBounds.width ? railBounds.left-bounds.left-16 : bounds.width-16;
+            const targetX=freeRight>freeLeft ? (freeLeft+freeRight)/2 : bounds.width/2;
             const targetY = narrow ? Math.max(40, (detailBounds.top - bounds.top) / 2) : bounds.height / 2;
-            const projection = map.getProjection();
+            const projection = mapViewport.projection();
             const point = projection.containerPointFromCoords(new kakao.maps.LatLng(place.lat, place.lng));
             const center = projection.coordsFromContainerPoint(new kakao.maps.Point(
                 point.x + (bounds.width / 2 - targetX) * document.getElementById('map').clientWidth / bounds.width,
@@ -627,7 +650,7 @@
     };
 
     function markerImage(label, origin, active, nearby) {
-        const opacity = nearby && !active ? 0.55 : 1;
+        const opacity = active ? 1 : 0.55;
         const svg = origin
             ? '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" viewBox="0 0 48 46"><rect x="2" y="1" width="44" height="22" rx="11" fill="#2563eb" stroke="white" stroke-width="2"/><text x="24" y="16" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="white">출발</text><circle cx="24" cy="35" r="9" fill="white" stroke="white" stroke-width="3"/><circle cx="24" cy="35" r="6" fill="#2563eb"/></svg>'
             : '<svg xmlns="http://www.w3.org/2000/svg" width="38" height="48" viewBox="0 0 38 48"><g opacity="' + opacity + '"><path d="M19 46C15 39 2 28 2 19a17 17 0 1 1 34 0c0 9-13 20-17 27z" fill="#e54870" stroke="white" stroke-width="2"/><text x="19" y="25" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="white">' + label + '</text></g></svg>';
@@ -662,15 +685,13 @@
             leaveTimer = null;
             if (!pin || pin === pinnedPin) pinnedPin = null;
             activePin = null;
+            hoveredPin = null; pointerCursor(false); highlightVisit(focusedPlaceId);
             if (overlay) overlay.setMap(null);
         }
 
         function scheduleLeave(pin) {
-            if (!pin || pin !== activePin || leaveTimer !== null
-                || gesture.heldPin === pin || pinnedPin === pin) return;
-            leaveTimer = setTimeout(function () {
-                hide(pin);
-            }, PIN_INPUT.leaveDelay);
+            if (!pin || pin !== activePin) return;
+            hide(pin);
         }
 
         function hitTest(pointer) {
@@ -680,10 +701,10 @@
                 || pointer.y < rect.top || pointer.y > rect.bottom) return null;
             const x = (pointer.x - rect.left) * viewport.clientWidth / rect.width;
             const y = (pointer.y - rect.top) * viewport.clientHeight / rect.height;
-            const projection = map.getProjection();
+            const projection = mapViewport.projection();
             let nearest = null, active = null;
             resultMarkers.forEach(function (pin) {
-                if (!pin.coursePin || !pin.previewPlace) return;
+                if (!pin.previewPlace) return;
                 const place = pin.previewPlace;
                 const point = projection.containerPointFromCoords(new kakao.maps.LatLng(place.lat, place.lng));
                 const dx = x - point.x, dy = y - point.y;
@@ -705,6 +726,16 @@
             return nearest ? nearest.pin : null;
         }
 
+        function hitOrigin() {
+            if (!pointer || pointer.blocked || !selectedPosition || !ready) return false;
+            const viewport=document.getElementById('map'),rect=viewport.getBoundingClientRect();
+            if (!rect.width || !rect.height) return false;
+            const point=mapViewport.projection().containerPointFromCoords(selectedPosition);
+            const x=(pointer.x-rect.left)*viewport.clientWidth/rect.width-point.x;
+            const y=(pointer.y-rect.top)*viewport.clientHeight/rect.height-point.y;
+            return x>=-24 && x<=24 && y>=-35 && y<=11;
+        }
+
         function reconcilePointer() {
             if (gesture.heldPin) return;
             const pin = hitTest(pointer);
@@ -719,14 +750,13 @@
             }
         }
 
+        // 지도 위 조작 부품은 마커보다 우선하며 지도 밖 입력은 가로채지 않는다.
         function pointerFrom(event) {
             const target = event.target;
-            return {
-                x: event.clientX,
-                y: event.clientY,
-                blocked: event.type === 'mousemove' && !!event.buttons || !!(target.closest
-                    && target.closest('.place-detail,.itinerary-rail,#place-search,#walking-panel,.walking-route-tooltip,.walking-leg-badge'))
-            };
+            const onMap = target && target.closest && target.closest('#map');
+            const control = target && target.closest && target.closest('button,a,input,select,textarea,[role="button"]');
+            return {x: event.clientX, y: event.clientY,
+                blocked: event.type === 'mousemove' && !!event.buttons || !onMap || !!control};
         }
 
         function enter(pin, place, label) {
@@ -743,8 +773,7 @@
                 return item.coursePin && item.previewPlace && String(item.previewPlace.recordId) === String(recordId);
             });
             if (!pin) return false;
-            pinnedPin = pin;
-            show(pin, pin.previewPlace, pin.previewLabel);
+            pin.openDetails();
             return true;
         }
 
@@ -760,6 +789,7 @@
                 return;
             }
             const point = pointerFrom(event);
+            if (point.blocked) { gesture.reset(); return; }
             gesture.begin(point, hitTest(point));
             if (gesture.heldPin) {
                 clearTimeout(leaveTimer);
@@ -769,6 +799,7 @@
         document.addEventListener('mouseup', function (event) {
             if (event.button !== 0) return;
             const point = pointerFrom(event);
+            if (point.blocked) { gesture.reset(); return; }
             const pin = gesture.finish(point, target => !point.blocked && resultMarkers.includes(target));
             // Deliver the command directly; SDK notifications are separately deduplicated by gesture identity.
             if (pin && pin.openDetails) pin.openDetails();
@@ -776,6 +807,7 @@
         document.addEventListener('click', function (event) {
             if (event.button !== 0 || event.defaultPrevented || event.detail === 0 && event.clientX === 0 && event.clientY === 0) return;
             const point = pointerFrom(event);
+            if (point.blocked) { gesture.reset(); return; }
             if (gesture.consumesClick(point)) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
@@ -815,11 +847,12 @@
                 body.setAttribute('role', 'tooltip');
                 overlay = new kakao.maps.CustomOverlay({content: body, xAnchor: .5, yAnchor: 1, zIndex: 45});
             }
-            activePin = pin;
+            window.hideRouteHover(); rangeTooltip.hide();
+            activePin = pin; hoveredPin = pin; pointerCursor(true); highlightVisit(focusedPlaceId);
             body.textContent = '';
             const eyebrow = document.createElement('div');
             eyebrow.className = 'place-pin-preview-category';
-            eyebrow.textContent = label + '번째 장소';
+            eyebrow.textContent = Number.isInteger(label) ? label + '번째 장소' : '후보 장소';
             const title = document.createElement('strong');
             title.className = 'place-pin-preview-title';
             title.textContent = place.name;
@@ -842,7 +875,7 @@
             overlay.setPosition(new kakao.maps.LatLng(place.lat, place.lng));
             overlay.setMap(map);
             // Keep the preview readable at map edges without panning or changing selection.
-            const point = map.getProjection().containerPointFromCoords(new kakao.maps.LatLng(place.lat, place.lng));
+            const point = mapViewport.projection().containerPointFromCoords(new kakao.maps.LatLng(place.lat, place.lng));
             const width = body.offsetWidth || 240, height = body.offsetHeight || 110;
             const viewport = document.getElementById('map');
             const shiftX = Math.max(12 + width / 2 - point.x, Math.min(0, viewport.clientWidth - 12 - width / 2 - point.x));
@@ -852,7 +885,8 @@
         }
 
         return {enter: enter, hide: hide, leave: leave, showForPlace: showForPlace, isVisible: () => activePin !== null,
-            shouldIgnoreClick: pin => gesture.blocksSdkClick(pin)};
+            shouldIgnoreClick: pin => gesture.blocksSdkClick(pin),
+            hasPointerPin: () => !!hitTest(pointer) || hitOrigin()};
     }());
 
     // Screen-space hit testing keeps the tolerance stable while zooming and scaling the map.
@@ -863,7 +897,7 @@
         const hitTolerance = 8, gap = 12;
         function hide() { body.hidden = true; }
         function borderDistance(range, point, scaleX, scaleY) {
-            const projection = map.getProjection();
+            const projection = mapViewport.projection();
             const center = projection.containerPointFromCoords(new kakao.maps.LatLng(range.lat, range.lng));
             const edges = circlePoints(range.lat, range.lng, range.radius).map(p => projection.containerPointFromCoords(p));
             const rx = Math.abs(edges[1].x - edges[0].x) / 2 * scaleX;
@@ -925,7 +959,7 @@
         const label = nearby ? (routePresentation ? candidateRank : '·') : panelManaged && !connectRoute ? courseIndex + 1 : index + 1;
         const pin = new kakao.maps.Marker({
             position: point, title: (nearby ? '추천 후보' : label) + '. ' + item.name,
-            image: markerImage(label, false, false, nearby), zIndex: 3
+            image: markerImage(label, false, false, nearby), zIndex: 30
         });
         pin.setMap(map);
         pin.normalImage = markerImage(label, false, false, nearby);
@@ -947,11 +981,11 @@
             kakao.maps.event.addListener(pin, 'click', pin.visitClick);
         }
         pin.coursePin = courseIndex >= 0;
-        if (pin.coursePin) {
+        {
             pin.previewPlace = item;
-            pin.previewLabel = courseIndex + 1;
+            pin.previewLabel = courseIndex >= 0 ? courseIndex + 1 : null;
             pin.visitEnter = function () {
-                placePinPreview.enter(pin, item, courseIndex + 1);
+                placePinPreview.enter(pin, item, pin.previewLabel);
             };
             pin.visitLeave = function () {
                 placePinPreview.leave(pin);
@@ -1002,7 +1036,7 @@
                 requestAnimationFrame(showAfterFocus);
                 return;
             }
-            placePinPreview.showForPlace(recordId);
+            itinerary.openPlace(recordId);
         }
         requestAnimationFrame(showAfterFocus);
     };
@@ -1030,6 +1064,7 @@
         });
         placePinPreview.hide();
         document.body.classList.add('course-capture');
+        mapViewport.setBuffered(false);
         map.relayout();
         const stops = [{lat: plan.startLat, lng: plan.startLng, name: '출발지'}].concat(plan.places);
         const path = stops.map(function (p) {
@@ -1133,6 +1168,7 @@
             item[0].setMap(item[1]);
         });
         document.body.classList.remove('course-capture');
+        mapViewport.setBuffered(true);
         map.relayout();
         map.setLevel(state.level);
         map.setCenter(state.center);
@@ -1155,7 +1191,7 @@
         });
         if (path.length > 1) {
             previewConnection = new kakao.maps.Polyline({path:path, strokeWeight:3,
-                strokeColor:'#e54870', strokeOpacity:0.7, strokeStyle:'dash', zIndex:2});
+                strokeColor:'#e54870', strokeOpacity:0.55, strokeStyle:'dash', zIndex:2});
             previewConnection.setMap(map);
         }
         status.textContent = '직선 장소 연결 · 실제 이동 경로는 별도로 조회할 수 있어요.';
@@ -1267,6 +1303,7 @@
         searchInput.value = '';
         locationVersion++;
         clearTimeout(locationNameTimer);
+        focusedPlaceId=null; hoveredPin=null; originFocused=false; pointerCursor(false);
         selectedPosition = null;
         selectedPlaceName = '';
         originLocked = false;
@@ -1409,6 +1446,9 @@
         document.getElementById('walking-panel').hidden = !walkingExplanationOpen || !displayedWalkingRoute;
     };
     window.showWalkingRoute = function (route, message, fit) {
+        if(walkingPinnedSelection>=0)itinerary.dismissDetail();
+        walkingPinnedSelection=-1;
+        window.clearMapRouteFocus=function(){}; window.hideRouteHover=function(){};
         document.getElementById('map-surface').classList.remove('has-route-popup');
         rangeTooltip.hide();
         displayedWalkingRoute = route;
@@ -1435,6 +1475,7 @@
         directions.textContent = '';
         legList.textContent = '';
         panel.hidden = !route || !route.legs || !route.legs.length;
+        if(window.refreshRouteControls)window.refreshRouteControls();
         details.hidden = true;
         details.open = false;
         if (!route || !ready) {
@@ -1471,130 +1512,40 @@
         let selected = Math.min(walkingSelection, Math.max(0, route.legs.length - 1));
         let emphasized = -1;
         const popupBody = document.createElement('div');
-        popupBody.className = 'walking-route-tooltip';
-        const popupTitle = document.createElement('div');
-        popupTitle.className = 'walking-tooltip-title';
-        popupTitle.setAttribute('role', 'heading');
-        popupTitle.setAttribute('aria-level', '3');
-        const popupFacts = document.createElement('div');
-        popupFacts.className = 'walking-tooltip-facts';
-        const popupHint = document.createElement('div');
-        popupHint.className = 'walking-tooltip-hint';
-        popupHint.textContent = '클릭하면 상세 이동 안내';
-        const popupClose = document.createElement('button');
-        popupClose.className = 'walking-tooltip-close';
-        popupClose.type = 'button';
-        popupClose.textContent = '×';
-        popupClose.setAttribute('aria-label', '경로 안내 닫기');
-        const popupSteps = document.createElement('ol');
-        popupSteps.className = 'walking-tooltip-steps';
-        popupSteps.tabIndex = 0;
-        popupSteps.setAttribute('aria-label', '이 구간의 ' + travelLabel + ' 안내');
-        popupBody.appendChild(popupTitle);
-        popupBody.appendChild(popupFacts);
-        popupBody.appendChild(popupHint);
-        popupBody.appendChild(popupClose);
-        popupBody.appendChild(popupSteps);
-        const popup = new kakao.maps.CustomOverlay({content: popupBody, yAnchor: 1, zIndex: 40});
-        let popupVisible = false;
-        let popupIndex = -1;
+        popupBody.className = 'walking-route-tooltip'; popupBody.setAttribute('role','tooltip');
+        const popupTitle=document.createElement('div'); popupTitle.className='walking-tooltip-title';
+        const popupFacts=document.createElement('div'); popupFacts.className='walking-tooltip-facts';
+        popupBody.appendChild(popupTitle); popupBody.appendChild(popupFacts);
+        const popup=new kakao.maps.CustomOverlay({content:popupBody,yAnchor:1,zIndex:40});
+        let popupVisible=false;
         walkingShapes.push(popup);
-        window.dismissWalkingPopup = function () {
-            clearTimeout(walkingPopupHide);
-            const visible = popupVisible;
-            walkingPinnedSelection = -1;
-            popup.setMap(null);
-            popupVisible = false;
+        function hidePopup() {
+            popup.setMap(null); popupVisible=false;
             document.getElementById('map-surface').classList.remove('has-route-popup');
-            return visible;
+        }
+        window.hideRouteHover = hidePopup;
+        window.dismissWalkingPopup = function () { const visible=popupVisible; hidePopup(); return visible; };
+        window.clearMapRouteFocus = function () {
+            walkingPinnedSelection=-1; emphasized=-2; emphasize(-1);
+            details.hidden=true; details.open=false;
         };
-
         function showPopup(index, position) {
-            clearTimeout(walkingPopupHide);
-            const detailed = walkingPinnedSelection >= 0;
-            if (detailed && index !== walkingPinnedSelection) return;
-            popupBody.classList.toggle('is-detailed', detailed);
-            popupBody.setAttribute('aria-label', detailed ? '구간 상세 이동 안내' : '구간 요약');
-            popupSteps.hidden = !detailed;
-            popupClose.hidden = !detailed;
-            popupHint.hidden = detailed;
-            const leg = route.legs[index];
-            if (popupIndex !== index) {
-                popupIndex = index;
-                popupTitle.textContent = (index + 1) + '구간 · ' + leg.from.name + ' → ' + leg.to.name;
-                popupFacts.textContent = legFacts(leg);
-                popupSteps.textContent = '';
-                (leg.steps || []).forEach(function (step) {
-                    if (!step.description) return;
-                    const item = document.createElement('li');
-                    item.textContent = step.description;
-                    popupSteps.appendChild(item);
-                });
-                if (!popupSteps.children.length) {
-                    const item = document.createElement('li');
-                    item.textContent = '상세 안내가 없어요.';
-                    popupSteps.appendChild(item);
-                }
-                popupSteps.scrollTop = 0;
-                popupBody.scrollTop = 0;
-            }
-            const surface = document.getElementById('map');
-            const width = Math.max(1, Math.min(detailed ? 360 : 280, surface.clientWidth - 24));
-            popupBody.style.width = width + 'px';
-            popupBody.style.maxHeight = Math.max(1, Math.min(420, surface.clientHeight - 24)) + 'px';
-            popup.setMap(map);
-            popupVisible = true;
-            document.getElementById('map-surface').classList.add('has-route-popup');
-            const projection = map.getProjection();
-            const point = projection.containerPointFromCoords(position || groups[index].anchor);
-            const height = popupBody.offsetHeight || 80;
+            if (placePinPreview.hasPointerPin() || placePinPreview.isVisible()) { hidePopup(); return; }
+            rangeTooltip.hide();
+            const leg=route.legs[index];
+            popupTitle.textContent=(index+1)+'구간 · '+travelLabel;
+            popupFacts.textContent=legFacts(leg)+' · 클릭해서 상세 보기';
+            const width=Math.max(1,Math.min(260,document.getElementById('map').clientWidth-24));
+            popupBody.style.width=width+'px'; popup.setMap(map);
+            const viewport=document.getElementById('map'),projection=mapViewport.projection();
+            const point=projection.containerPointFromCoords(position || groups[index].anchor);
+            const height=popupBody.offsetHeight || 70;
             popup.setPosition(projection.coordsFromContainerPoint(new kakao.maps.Point(
-                Math.max(width / 2 + 12, Math.min(surface.clientWidth - width / 2 - 12, point.x)),
-                Math.max(height + 12, Math.min(surface.clientHeight - 12, point.y - 12)))));
+                Math.max(width/2+12,Math.min(viewport.clientWidth-width/2-12,point.x)),
+                Math.max(height+12,Math.min(viewport.clientHeight-12,point.y-12)))));
+            popupVisible=true; document.getElementById('map-surface').classList.add('has-route-popup');
         }
-
-        function restorePopup() {
-            clearTimeout(walkingPopupHide);
-            if (walkingPinnedSelection >= 0) return;
-            walkingPopupHide = setTimeout(function () {
-                if (walkingPinnedSelection >= 0) showPopup(walkingPinnedSelection);
-                else {
-                    popup.setMap(null);
-                    popupVisible = false;
-                    document.getElementById('map-surface').classList.remove('has-route-popup');
-                }
-            }, 120);
-        }
-
-        popupBody.addEventListener('mouseenter', function () {
-            clearTimeout(walkingPopupHide);
-        });
-        popupBody.addEventListener('mouseleave', restorePopup);
-        popupBody.addEventListener('focusin', function () {
-            clearTimeout(walkingPopupHide);
-        });
-        popupBody.addEventListener('focusout', restorePopup);
-        ['mousedown', 'pointerdown', 'wheel', 'touchstart'].forEach(function (type) {
-            popupBody.addEventListener(type, function (e) {
-                e.stopPropagation();
-            });
-        });
-        popupBody.addEventListener('click', function (e) {
-            claimMapObjectClick();
-            e.stopPropagation();
-            if (walkingPinnedSelection < 0) choose(popupIndex);
-        });
-        popupClose.addEventListener('click', function (e) {
-            claimMapObjectClick();
-            e.stopPropagation();
-            window.dismissWalkingPopup();
-        });
-        popupBody.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                e.stopPropagation();
-                window.dismissWalkingPopup();
-            }
-        });
+        function restorePopup() { hidePopup(); pointerCursor(placePinPreview.isVisible()); }
 
         function listen(target, event, callback) {
             kakao.maps.event.addListener(target, event, callback);
@@ -1608,12 +1559,14 @@
             if (emphasized === index) return;
             emphasized = index;
             groups.forEach(function (group, number) {
-                const active = number === index;
+                const active = number === index || number === walkingPinnedSelection;
                 group.lines.forEach(function (line) {
                     line.setOptions({strokeWeight: active ? 6 : 4, strokeOpacity: active ? 1 : 0.55});
                     line.setZIndex(active ? 12 : 4);
                 });
+                if (group.badge) group.badge.style.opacity = active ? 1 : 0.55;
                 group.outlines.forEach(function (line) {
+                    line.setOptions({strokeOpacity: active ? 0.95 : 0.35});
                     line.setZIndex(active ? 11 : 3);
                 });
             });
@@ -1632,9 +1585,10 @@
                 item.hidden = number !== index;
             });
             if (pinPopup !== false && groups[index].anchor) {
-                walkingPinnedSelection = index;
-                claimMapObjectClick();
-                showPopup(index, position);
+                focusedPlaceId=null; originFocused=false; if(marker && marker.setOpacity)marker.setOpacity(.55); highlightVisit(null); placePinPreview.hide(); hidePopup();
+                walkingPinnedSelection=index; emphasized=-2; emphasize(index); claimMapObjectClick();
+                details.hidden=false; details.open=true;
+                itinerary.openRouteDetails(leg,index,travelLabel);
             }
             return true;
         }
@@ -1658,7 +1612,7 @@
                     details.hidden = true;
                     return;
                 }
-                choose(index, null, false);
+                choose(index);
                 details.hidden = false;
                 details.open = true;
             });
@@ -1666,7 +1620,7 @@
                 emphasize(index);
             });
             button.addEventListener('mouseleave', function () {
-                emphasize(selected);
+                emphasize(walkingPinnedSelection);
             });
             legList.appendChild(button);
             const group = {lines: [], outlines: [], button: button};
@@ -1696,11 +1650,11 @@
                 if (!badgePosition) badgePosition = path[Math.floor(path.length / 2)];
                 const outline = new kakao.maps.Polyline({
                     path: path, strokeWeight: 7, strokeColor: '#ffffff',
-                    strokeOpacity: 0.95, strokeStyle: 'solid', zIndex: 3
+                    strokeOpacity: 0.55, strokeStyle: 'solid', zIndex: 3
                 });
                 const line = new kakao.maps.Polyline({
                     path: path, strokeWeight: 4, strokeColor: color,
-                    strokeOpacity: 0.95, strokeStyle: segment.walking ? 'shortdash' : 'solid', zIndex: 4
+                    strokeOpacity: 0.55, strokeStyle: segment.walking ? 'shortdash' : 'solid', zIndex: 4
                 });
                 outline.setMap(map);
                 line.setMap(map);
@@ -1709,8 +1663,8 @@
                 group.outlines.push(outline);
 
                 function show(event) {
-                    emphasize(index);
-                    if (walkingPinnedSelection >= 0) return;
+                    if (placePinPreview.hasPointerPin()) { hidePopup(); return; }
+                    pointerCursor(true); emphasize(index);
                     showPopup(index, event && event.latLng ? event.latLng : path[0]);
                 }
 
@@ -1718,9 +1672,10 @@
                 listen(line, 'mousemove', show);
                 listen(line, 'mouseout', function () {
                     restorePopup();
-                    emphasize(selected);
+                    emphasize(walkingPinnedSelection);
                 });
                 listen(line, 'click', function (event) {
+                    if (placePinPreview.hasPointerPin()) return;
                     choose(index, event && event.latLng);
                 });
             });
@@ -1730,18 +1685,19 @@
                 const badge = document.createElement('button');
                 badge.type = 'button';
                 badge.className = 'walking-leg-badge';
+                group.badge=badge; badge.style.opacity=0.55;
                 badge.textContent = String(index + 1);
                 badge.style.backgroundColor = color;
                 badge.setAttribute('aria-label', caption + ' · ' + facts);
 
                 function previewBadge() {
-                    emphasize(index);
-                    if (walkingPinnedSelection < 0) showPopup(index, badgePosition);
+                    if (placePinPreview.hasPointerPin()) return;
+                    pointerCursor(true); emphasize(index); showPopup(index,badgePosition);
                 }
 
                 function leaveBadge() {
                     restorePopup();
-                    emphasize(selected);
+                    emphasize(walkingPinnedSelection);
                 }
 
                 badge.addEventListener('mouseenter', previewBadge);
@@ -1749,6 +1705,7 @@
                 badge.addEventListener('focus', previewBadge);
                 badge.addEventListener('blur', leaveBadge);
                 badge.addEventListener('click', function () {
+                    if (placePinPreview.hasPointerPin()) return;
                     choose(index, badgePosition);
                 });
                 const marker = new kakao.maps.CustomOverlay({
@@ -1771,8 +1728,7 @@
         });
         window.selectWalkingLeg = choose;
         choose(selected, null, false);
-        if (walkingPinnedSelection >= 0 && groups[walkingPinnedSelection] && groups[walkingPinnedSelection].anchor)
-            showPopup(walkingPinnedSelection);
+        emphasized=-2; emphasize(walkingPinnedSelection);
         if (fit && points) camera.request({intent: 'FIT', points: boundsPoints});
     };
 
@@ -1806,12 +1762,14 @@
             clearTimeout(sdkTimeout);
             window.whenMapViewportReady(document.getElementById('map'), function () {
                 try {
-                    map = new kakao.maps.Map(document.getElementById("map"), {
+                    mapViewport.resize();
+                    map = new kakao.maps.Map(document.getElementById("map-canvas"), {
                         center: new kakao.maps.LatLng(35.1796, 129.0756), level: 5,
                         disableDoubleClickZoom: USE_INSTANT_ZOOM
                     });
 
-                    camera = window.createMapCamera(map, document.getElementById('map'), decideCamera);
+                    mapViewport.attach(map);
+                    camera = window.createMapCamera(map, document.getElementById('map'), decideCamera, mapViewport);
                     marker = new kakao.maps.Marker({
                         image: markerImage('', true),
                         title: '출발 위치 · 탐색 반경 중심',
@@ -1828,11 +1786,19 @@
                         strokeStyle: "solid", fillOpacity: 0, zIndex: -1
                     });
 
+                    if(marker.setOpacity)marker.setOpacity(.55);
+                    marker.setZIndex(38);
+                    kakao.maps.event.addListener(marker,'mouseover',function(){placePinPreview.hide();window.hideRouteHover();rangeTooltip.hide();pointerCursor(true);if(marker.setOpacity)marker.setOpacity(1);});
+                    kakao.maps.event.addListener(marker,'mouseout',function(){pointerCursor(false);if(marker.setOpacity)marker.setOpacity(originFocused?1:.55);});
+                    kakao.maps.event.addListener(marker,'click',function(){claimMapObjectClick();placePinPreview.hide();window.hideRouteHover();focusedPlaceId=null;hoveredPin=null;originFocused=true;highlightVisit(null);window.clearMapRouteFocus();itinerary.dismissDetail();if(marker.setOpacity)marker.setOpacity(1);});
+
                     function select(event) {
                         if (mapObjectClick) return;
                         placePinPreview.hide();
                         const closedWalking = window.dismissWalkingPopup();
                         const closedDetail = itinerary.dismissDetail();
+                        focusedPlaceId=null;originFocused=false;hoveredPin=null;highlightVisit(null);window.clearMapRouteFocus();
+                        if(marker && marker.setOpacity)marker.setOpacity(.55);
                         if (closedWalking || closedDetail) return;
                         if (routeLocked) return;
                         dismissSearch();
