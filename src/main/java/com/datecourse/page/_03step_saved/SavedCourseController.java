@@ -257,9 +257,7 @@ public class SavedCourseController extends BasePageController {
         selectedPreviewView = true;
         pendingFocusPlace = selected.plan().places().get(index);
         if (!mapSelected || !showingMap) { onSelectMap(); if (!showingMap) return; }
-        previewVersion++;
-        map.focusPlace(selected.plan().places().get(index));
-        if (map.isReady()) pendingFocusPlace = null;
+        focusPendingPlace();
     }
 
     /** 좁은 상세 영역에서는 장소 표를 먼저 보여주고 요약을 아래에 둔다. */
@@ -534,7 +532,10 @@ public class SavedCourseController extends BasePageController {
             if (previewVersion == version && previewCourse == course && showingMap) map.fitCourse();
         });
         fitAfterLayout.play();
-        if(map.isReady())rememberMapPrepared();
+        if(map.isReady()) {
+            rememberMapPrepared();
+            focusPendingPlace();
+        }
         refreshMapNotice();
     }
 
@@ -643,7 +644,7 @@ public class SavedCourseController extends BasePageController {
         imageViewButton.pseudoClassStateChanged(active,!mapSelected);
         requestRouteButton.setVisible(hasCourse && mapSelected && showingMap);
         requestRouteButton.setManaged(hasCourse && mapSelected && showingMap);
-        boolean pendingRoute = routeRequested && !routeMessage.isBlank() && routeFailure.isBlank();
+        boolean pendingRoute = map.isRoutePending();
         requestRouteButton.setDisable(!readyMap || pendingRoute || !hasCourse || previewCourse.plan().places().isEmpty());
         requestRouteButton.setText(routeRequested && routeMessage.isBlank() ? "이동 경로 새로 조회" : "이동 경로 조회");
     }

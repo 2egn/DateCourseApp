@@ -45,7 +45,7 @@ class SavedCourseMapTest {
                 window.presentRoute=function(){};window.showWalkingRoute=function(){};
                 window.resetPlannerMap=function(){};window.setOriginLocked=function(){};
                 window.setCandidateActionsEnabled=function(){};
-                window.focusCoursePlace=function(id){window.focusedPlace=id;};
+                window.focusCoursePlace=function(id){window.focusedPlace=id;window.focusCalls=(window.focusCalls||0)+1;};
                 window.fitConfirmedCourseView=function(){window.fitCalls=(window.fitCalls||0)+1;};
                 </script></html>
                 """);
@@ -417,6 +417,54 @@ class SavedCourseMapTest {
                         assertEquals(PLAN,field(form.map,"plan"));
                         assertEquals(1,((Number)form.view.getEngine().executeScript("window.focusedPlace")).intValue());return null;
                     });
+                } finally {release.countDown();fx(()->{form.controller.dispose();return null;});}
+            }
+        } finally {release.countDown();}
+    }
+
+    @Test void changedWalkingPreferencesLeaveExplicitRouteButtonAvailable(@org.junit.jupiter.api.io.TempDir Path root) throws Exception {
+        Form form=form();var calls=new AtomicInteger();
+        try {
+            fx(()->{form.map.setRouteRouter((stops,mode)->{calls.incrementAndGet();return route(stops);});select(form);return null;});
+            awaitPreview(form);fx(()->{request(form);return null;});awaitFx(()->field(form.map,"walkingRoute")!=null);
+            var save=com.datecourse.service.TmapSettings.class.getDeclaredMethod("saveSearchOption",Path.class,int.class);
+            save.setAccessible(true);save.invoke(null,root,10);
+            fx(()->{
+                form.map.presentCourse(PLAN,true);
+                assertNull(field(form.map,"walkingRoute"));assertFalse(form.map.isRoutePending());
+                var button=(Button)field(form.controller,"requestRouteButton");
+                assertFalse(button.isDisabled());assertEquals(1,calls.get());button.fire();return null;
+            });awaitFx(()->field(form.map,"walkingRoute")!=null);
+            fx(()->{assertFalse(form.map.isRoutePending());assertFalse(((Button)field(form.controller,"requestRouteButton")).isDisabled());return null;});
+            assertEquals(2,calls.get());
+        } finally {fx(()->{form.controller.dispose();return null;});}
+    }
+
+    @Test void delayedMissingPreviewKeepsSelectedPlaceOnAnAlreadyReadyMap() throws Exception {
+        var started=new CountDownLatch(1);var release=new CountDownLatch(1);
+        try(var pool=pool()) {
+            var repository=new SavedCourseRepository(pool);var owner=new UserSession(7,"Demo");
+            var saved=repository.saveWithoutPreview(owner,null,PLAN);
+            try(var context=new UserContext(owner,null,()->List.of(saved))) {
+                context.courses().get(5,TimeUnit.SECONDS);
+                context.preview(saved,()->{started.countDown();release.await(10,TimeUnit.SECONDS);return Optional.empty();});
+                assertTrue(started.await(5,TimeUnit.SECONDS));Form form=form();
+                try {
+                    fx(()->{ready(form);form.controller.configure(repository,context,c->{});return null;});
+                    awaitFx(()->field(form.controller,"previewCourse")!=null);
+                    fx(()->{
+                        new Scene(form.root,1100,760);form.root.resize(1100,760);form.root.applyCss();form.root.layout();
+                        var table=(TableView<?>)field(form.controller,"placeTable");table.getSelectionModel().selectFirst();
+                        table.fireEvent(new javafx.scene.input.KeyEvent(javafx.scene.input.KeyEvent.KEY_PRESSED,"","",javafx.scene.input.KeyCode.ENTER,false,false,false,false));
+                        assertFalse((boolean)field(form.controller,"showingMap"));return null;
+                    });release.countDown();awaitPreview(form);
+                    fx(()->{assertTrue((boolean)field(form.controller,"showingMap"));
+                        assertEquals(1,((Number)form.view.getEngine().executeScript("window.focusedPlace")).intValue());
+                        assertNull(field(form.controller,"pendingFocusPlace"));
+                        assertEquals(1,((Number)form.view.getEngine().executeScript("window.focusCalls")).intValue());return null;});
+                    int fits=fx(()->((Number)form.view.getEngine().executeScript("window.fitCalls||0")).intValue());
+                    Thread.sleep(220);
+                    assertEquals(fits,fx(()->((Number)form.view.getEngine().executeScript("window.fitCalls||0")).intValue()));
                 } finally {release.countDown();fx(()->{form.controller.dispose();return null;});}
             }
         } finally {release.countDown();}

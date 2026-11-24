@@ -74,3 +74,5 @@ src/
 도보 옵션 저장 이력은 `TmapSettings.preferencesVersion`, 지도 경로 유효성은 `CourseMapView.synchronizeWalkingRoute/isCurrentRouteRequest`에서 확인한다. [다른 지도와의 동기화](../docs/site/content/도보_설정과_지도_경로_동기화_2026_11_25.md).
 
 지도 상세를 닫은 뒤 JavaFX 조작 위치로 돌아오는 연결은 `MapEventBridge.onDetailClosed` → `CourseMapView.restoreDetailFocus`다. 코스 초기화·폐기 때는 보관한 포커스와 이전 콜백을 무효화한다.
+
+저장 경로 조회 버튼은 `CourseMapView.isRoutePending`의 실제 작업·대기 상태로 제어하고, 지연 이미지 확인 뒤 장소 이동은 `SavedCourseController.showMapPreview/focusPendingPlace`에서 연결한다. [후속 검증](../docs/review-2026-11-25.md).

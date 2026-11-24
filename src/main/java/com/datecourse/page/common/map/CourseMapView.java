@@ -78,6 +78,9 @@ public final class CourseMapView {
     /** 코스 변경에 따른 이동 경로 자동 조회 여부를 설정한다. */
     public void setAutomaticWalking(boolean enabled) { automaticWalking=enabled; }
 
+    /** 안내 문구와 별개로 실제 조회 작업·지도 준비 대기가 있는지 확인한다. */
+    public boolean isRoutePending() { return walkingPending || walkingTask != null; }
+
     /** 경로 결과와 상태 메시지를 받을 처리기를 등록한다. */
     public void setWalkingResultListener(BiConsumer<TravelRoute,String> listener) { walkingResult=listener; }
 
@@ -361,6 +364,7 @@ public final class CourseMapView {
         walkingPending = false;
         walkingVersion++;
         if (walkingTask != null) walkingTask.cancel();
+        walkingTask = null;
         ready = false;
         view.getEngine().getLoadWorker().cancel();
         view.getEngine().load(null);
@@ -602,12 +606,12 @@ public final class CourseMapView {
         var requestedMode=mode();
         walkingRoute = null;
         walkingMessage = mode().label()+" 이동시간을 확인하는 중… (" + (stops.size() - 1) + "구간)";
-        publishWalking();
-        renderWalkingRoute(false);
         Task<TravelRoute> task = new Task<>() {
             @Override protected TravelRoute call() throws Exception { return routeRouter.route(stops,requestedMode); }
         };
         walkingTask = task;
+        publishWalking();
+        renderWalkingRoute(false);
         Runnable finishLoading = fitResult ? loadingUi.apply(mode().label()+" 경로를 조회하고 있어요") : () -> {};
         task.setOnCancelled(event -> finishLoading.run());
         task.setOnSucceeded(event -> {
