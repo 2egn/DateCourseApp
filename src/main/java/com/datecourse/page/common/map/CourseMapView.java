@@ -654,9 +654,10 @@ public final class CourseMapView {
                 com.datecourse.service.AppDiagnostics.Stage.PROVIDER_REQUEST,task.getException());
         walkingRoute = null;
         walkingTask=null;
-        walkingMessage = task.getException() instanceof java.io.IOException
-                || task.getException() instanceof IllegalArgumentException ? task.getException().getMessage()
-                : mode().label()+" 경로를 불러오지 못했어요. 다시 조회해 주세요.";
+        String message = task.getException().getMessage();
+        walkingMessage = (task.getException() instanceof java.io.IOException
+                || task.getException() instanceof IllegalArgumentException) && message != null && !message.isBlank()
+                ? message : mode().label()+" 경로를 불러오지 못했어요. 다시 조회해 주세요.";
         publishWalking();
         renderWalkingRoute(false);
         routeError.accept(walkingMessage);

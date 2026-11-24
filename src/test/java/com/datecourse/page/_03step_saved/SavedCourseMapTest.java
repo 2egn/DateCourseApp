@@ -143,6 +143,17 @@ class SavedCourseMapTest {
         } finally {fx(()->{form.controller.dispose();return null;});}
     }
 
+    @Test void routeFailureWithoutMessageStillAllowsRetry() throws Exception {
+        Form form=form();
+        try {
+            fx(()->{form.map.setRouteRouter((stops,mode)->{throw new java.io.IOException();});select(form);return null;});
+            awaitPreview(form);fx(()->{request(form);return null;});
+            awaitFx(()->!((String)field(form.controller,"routeFailure")).isBlank());
+            fx(()->{assertTrue(status(form).getText().contains("다시 조회"));assertTrue(retry(form).isVisible());
+                assertFalse(((Button)field(form.controller,"requestRouteButton")).isDisabled());return null;});
+        } finally {fx(()->{form.controller.dispose();return null;});}
+    }
+
     @Test void logoutClosesSavedMapAndCancelsPendingRoute() throws Exception {
         var started=new CountDownLatch(1);var release=new CountDownLatch(1);var returned=new CountDownLatch(1);
         CoursePlannerController main=fx(()->{
