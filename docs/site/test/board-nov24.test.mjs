@@ -1,5 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';
 import {TaskBoard} from '../src/board-store.mjs';
+import {IMPLEMENTATION_REFERENCE as LATEST_REFERENCE} from '../src/board-nov25.mjs';
 import {applyNov24,NOV24_VERSION,NOV24_ADDITIONS,IMPLEMENTATION_REFERENCE} from '../src/board-nov24.mjs';
 
 test('feature branch sync preserves human changes and incomplete work, and runs only once',async()=>{
@@ -7,7 +8,7 @@ test('feature branch sync preserves human changes and incomplete work, and runs 
  const ctx={storage:{sql,transactionSync(fn){db.exec('BEGIN');try{const result=fn();db.exec('COMMIT');return result;}catch(error){db.exec('ROLLBACK');throw error;}}}};
  const board=new TaskBoard(ctx);
  const response=await board.fetch(new Request('https://board.test/api/board',{headers:{'X-Board-User':'fixture'}}));
- assert.deepEqual((await response.json()).implementation,IMPLEMENTATION_REFERENCE);assert.equal(IMPLEMENTATION_REFERENCE.scope,'feature');
+ assert.deepEqual((await response.json()).implementation,LATEST_REFERENCE);assert.equal(IMPLEMENTATION_REFERENCE.scope,'feature');
  const template=db.prepare('SELECT * FROM tasks WHERE id=?').get('TIME-01');
  for(const id of ['DATA-01','T-DD5B5813','T-6E4E5509','T-B5F06FB3']){
   if(db.prepare('SELECT id FROM tasks WHERE id=?').get(id))continue;

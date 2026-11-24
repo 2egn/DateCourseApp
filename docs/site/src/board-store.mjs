@@ -1,5 +1,6 @@
 import {applyNov16} from './board-nov16.mjs';
-import {applyNov24,IMPLEMENTATION_REFERENCE} from './board-nov24.mjs';
+import {applyNov24} from './board-nov24.mjs';
+import {applyNov25,IMPLEMENTATION_REFERENCE} from './board-nov25.mjs';
 import {COPY_VERSION,TASK_COPY} from './board-copy.mjs';
 import {AUDIT_VERSION,AUDIT_TASKS,AUDIT_ADDITIONS} from './board-audit.mjs';
 import {taskTree} from '../web/dashboard/task-tree.js';
@@ -123,6 +124,7 @@ export class TaskBoard {
    applyNov14(this.sql);
    applyNov16(this.sql);
    applyNov24(this.sql);
+   applyNov25(this.sql);
   });
  }
  async fetch(request){

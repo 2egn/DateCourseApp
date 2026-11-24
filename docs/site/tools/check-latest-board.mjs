@@ -14,8 +14,11 @@ try{
  });
  await page.goto('https://board.test/dashboard/');await page.waitForLoadState('networkidle');
  const referenceText=await page.locator('#implementation-status').innerText();
- assert.match(referenceText,/933fd85/);assert.match(referenceText,/기능 브랜치/);assert.match(referenceText,/master 미반영/);
+ assert.match(referenceText,/64d93e3/);assert.match(referenceText,/기능 브랜치/);assert.match(referenceText,/master 미반영/);
  assert.ok(await page.locator('[data-task-id="STRUCTURE-24"]').isVisible());
+ assert.ok(await page.locator('[data-task-id="INPUT-FIXES-25"]').isVisible());
+ assert.equal(data.tasks.find(t=>t.id==='KEYBOARD-UX-25').status,'todo');
+ assert.equal(data.tasks.find(t=>t.id==='MAP-BUFFER-25').status,'review');
  const time=page.locator('[data-task-id="TIME-01"]');assert.equal(await time.locator('select').inputValue(),'done');
  assert.equal(data.tasks.find(t=>t.id==='CHECK-01').status,'todo');assert.equal(data.tasks.find(t=>t.id==='TIME-02').status,'todo');
  assert.ok(await page.locator('[data-task-id="MERGE-01"]').isVisible());await page.screenshot({path:'build/ui-preview/latest-dashboard-desktop.png'});
