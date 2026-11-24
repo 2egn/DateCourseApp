@@ -597,6 +597,9 @@
         onAdd: function (id) {
             if (window.javaMapBridge && typeof window.javaMapBridge.addCandidate === 'function') window.javaMapBridge.addCandidate(String(id));
         },
+        onClose: function () {
+            if (window.javaMapBridge && typeof window.javaMapBridge.onDetailClosed === 'function') window.javaMapBridge.onDetailClosed();
+        },
         onActive: highlightVisit,
         onFocus: focusPlace,
         travelInfo: function(place) {

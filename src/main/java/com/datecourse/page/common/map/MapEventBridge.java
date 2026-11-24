@@ -15,6 +15,10 @@ public final class MapEventBridge {
     private final Runnable originChangeBlocked;
     private Consumer<Long> reportPlace = ignored -> {};
     private Consumer<Long> addCandidate = ignored -> {};
+    private Runnable detailClosed = () -> {};
+    /** 지도 상세를 사용자 조작으로 닫았을 때 JavaFX 조작 위치로 돌아간다. */
+    public void setOnDetailClosed(Runnable listener) { detailClosed = listener == null ? () -> {} : listener; }
+    public void onDetailClosed() { detailClosed.run(); }
     private Runnable routeImageRequested = () -> {};
     public void setOnRouteImageRequested(Runnable listener) { routeImageRequested = listener == null ? () -> {} : listener; }
     public void requestRouteImage() { routeImageRequested.run(); }

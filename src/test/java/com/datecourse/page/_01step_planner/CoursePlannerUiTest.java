@@ -2546,12 +2546,14 @@ class CoursePlannerUiTest {
         script(engine,"""
             window.presentRoute({startLat:35.157,startLng:129.06,radius:1000,places:[
                 {recordId:1,placeId:'a',name:'식당',category:'MEAL',price:9000,lat:35.158,lng:129.06}]},null,500,true,true);
+            window.detailCloses=0;javaMapBridge.onDetailClosed=function(){detailCloses++;};
             window.opener=document.createElement('button');opener.textContent='상세 열기';document.getElementById('map-surface').appendChild(opener);
             opener.focus();window.openRoutePlace(1);
             """);
         assertEquals(true,script(engine,"document.activeElement===document.getElementById('detail-close')"));
         script(engine,"document.getElementById('detail-close').click()");
         assertEquals(true,script(engine,"document.activeElement===opener"));
+        assertEquals(1,((Number)script(engine,"detailCloses")).intValue());
         script(engine,"opener.focus();window.openRoutePlace(1);opener.remove();document.getElementById('detail-close').click()");
         assertEquals(true,script(engine,"document.activeElement===document.getElementById('map-surface')"));
     }

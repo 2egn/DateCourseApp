@@ -110,6 +110,8 @@ public final class CourseMapView {
     private Place candidate;
     private List<Place> candidates = List.of();
     private Place pendingDetail;
+    private javafx.scene.Node detailFocusOwner;
+    private long detailFocusVersion;
     private Consumer<Long> placeSelected = ignored -> {};
     private int radius = 500;
     private boolean locked;
@@ -161,6 +163,10 @@ public final class CourseMapView {
             worker.start();
         }, id -> Platform.runLater(()->placeSelected.accept(id)), () -> originChangeBlocked.run());
         bridge.setOnRouteImageRequested(this::captureRouteImage);
+        bridge.setOnDetailClosed(() -> {
+            long version = detailFocusVersion;
+            Platform.runLater(() -> { if (version == detailFocusVersion) restoreDetailFocus(); });
+        });
         bridge.setOnAddCandidate(id -> Platform.runLater(()->{
             if(candidateActionsEnabled && candidates.stream().anyMatch(p->p.recordId()==id))addCandidate.accept(id);
         }));
@@ -346,6 +352,8 @@ public final class CourseMapView {
 
     /** 이미지·경로 요청과 지도 수명주기를 정리한다. */
     public void dispose() {
+        detailFocusOwner = null;
+        detailFocusVersion++;
         routeImageVersion++;
         cancelCapture.run();
         pageLoadPending = false;
@@ -423,6 +431,8 @@ public final class CourseMapView {
         candidate = null;
         candidates = List.of();
         pendingDetail = null;
+        detailFocusOwner = null;
+        detailFocusVersion++;
         editingLegIndex = editingLegRadius = null;
         radius = 500;
         locked = false;
@@ -479,9 +489,23 @@ public final class CourseMapView {
 
     /** 지도가 준비되면 지정한 장소의 상세 카드를 연다. */
     public void showDetail(Place place) {
+        var scene = view.getScene();
+        if (scene != null && scene.getFocusOwner() != view) detailFocusOwner = scene.getFocusOwner();
+        detailFocusVersion++;
         view.requestFocus();
         pendingDetail = place;
         if (ready) render(false);
+    }
+
+    /** 사용자가 다른 곳으로 이동했거나 이전 화면이 숨겨졌으면 포커스를 빼앗지 않는다. */
+    private void restoreDetailFocus() {
+        var target = detailFocusOwner;
+        detailFocusOwner = null;
+        var scene = view.getScene();
+        if (target == null || scene == null || target.getScene() != scene || scene.getFocusOwner() != view) return;
+        for (javafx.scene.Node node = target; node != null; node = node.getParent())
+            if (!node.isVisible() || node.isDisabled()) return;
+        target.requestFocus();
     }
 
     /** 지도에서 장소를 선택할 때 실행할 동작을 등록한다. */

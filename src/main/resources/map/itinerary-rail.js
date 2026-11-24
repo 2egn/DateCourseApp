@@ -72,6 +72,7 @@
                 if (target === surface) surface.tabIndex = -1;
                 target.focus({ preventScroll: true });
                 detailOpener = null;
+                if (options.onClose) options.onClose();
             }
         }
         function activate(id, preserveDetail) {

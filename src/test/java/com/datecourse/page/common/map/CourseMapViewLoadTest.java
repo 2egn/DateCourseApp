@@ -99,6 +99,35 @@ class CourseMapViewLoadTest {
         }finally{fx(()->{context.map().dispose();context.stage().close();return null;});server.stop(0);}
     }
 
+    @Test void nativeDetailOpenerIsRestoredOnlyWhileMapStillOwnsFocus() throws Exception {
+        record Form(CourseMapView map,WebView view,javafx.scene.control.Button opener,
+                    javafx.scene.control.Button other,javafx.scene.Scene scene) {}
+        Form form=fx(()->{
+            WebView view=new WebView();var opener=new javafx.scene.control.Button("상세");
+            var other=new javafx.scene.control.Button("다른 동작");
+            var scene=new javafx.scene.Scene(new javafx.scene.layout.VBox(opener,other,view),800,600);
+            var map=new CourseMapView(view,(lat,lng)->{},message->{});
+            return new Form(map,view,opener,other,scene);
+        });
+        var place=new com.datecourse.model.Place(1,"a","장소","CAFE",35.158,129.06,5000,4);
+        java.util.function.Consumer<CourseMapView> close=map->{
+            try {var f=CourseMapView.class.getDeclaredField("bridge");f.setAccessible(true);((MapEventBridge)f.get(map)).onDetailClosed();}
+            catch(ReflectiveOperationException failure){throw new AssertionError(failure);}
+        };
+        try {
+            fx(()->{form.opener.requestFocus();assertEquals(form.opener,form.scene.getFocusOwner());
+                form.map.showDetail(place);assertEquals(form.view,form.scene.getFocusOwner());close.accept(form.map);return null;});
+            fx(()->{assertEquals(form.opener,form.scene.getFocusOwner());
+                form.map.showDetail(place);form.other.requestFocus();close.accept(form.map);return null;});
+            fx(()->{assertEquals(form.other,form.scene.getFocusOwner());
+                form.opener.requestFocus();form.map.showDetail(place);form.opener.setVisible(false);close.accept(form.map);return null;});
+            fx(()->{assertEquals(form.view,form.scene.getFocusOwner());
+                form.opener.setVisible(true);form.opener.requestFocus();form.map.showDetail(place);
+                close.accept(form.map);form.map.reset();return null;});
+            fx(()->{assertEquals(form.view,form.scene.getFocusOwner());return null;});
+        } finally {fx(()->{form.map.dispose();return null;});}
+    }
+
     private void awaitPresented(WebView view) throws Exception {
         long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
         while (System.nanoTime() < deadline) {

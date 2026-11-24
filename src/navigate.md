@@ -72,3 +72,5 @@ src/
 목록 키보드 조작은 `SavedCourseController.focusPlaceRow`·`CourseEditorController.configureEditorNavigation`, 상세 포커스 복귀는 `itinerary-rail.js.rememberDetailOpener`·`map.html.closeZoom`에서 관리한다. [현재 동작·검증 범위](../docs/site/content/키보드_조작과_포커스_복귀_2026_11_25.md).
 
 도보 옵션 저장 이력은 `TmapSettings.preferencesVersion`, 지도 경로 유효성은 `CourseMapView.synchronizeWalkingRoute/isCurrentRouteRequest`에서 확인한다. [다른 지도와의 동기화](../docs/site/content/도보_설정과_지도_경로_동기화_2026_11_25.md).
+
+지도 상세를 닫은 뒤 JavaFX 조작 위치로 돌아오는 연결은 `MapEventBridge.onDetailClosed` → `CourseMapView.restoreDetailFocus`다. 코스 초기화·폐기 때는 보관한 포커스와 이전 콜백을 무효화한다.
