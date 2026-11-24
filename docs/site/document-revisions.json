@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "8e38d71765f23608e6f646bc827075b64a2418a716c1e492ad789f1b67d7ecf5",
-      "revision": 29,
+      "fingerprint": "373dc82a5cc3ac3a70d1b00452345c0ae5e7e61c41a85f9f57318ad81cb49b87",
+      "revision": 30,
       "updated": true,
       "present": true
     },
@@ -890,14 +890,20 @@
       "present": true
     },
     "마우스_키보드_입력_점검_2026_11_24.md": {
-      "fingerprint": "7a2be4aa4493c539de8d74939ed38d6cbd95e43920aaa3ec803e52921601512a",
-      "revision": 1,
+      "fingerprint": "844b36f1932eb08db4b7f3c87ffcb529bf3cd16b315913cdfebc903a3c1bb347",
+      "revision": 2,
       "updated": true,
       "present": true
     },
     "JDK21_자동_검색과_선택_2026_11_25.md": {
       "fingerprint": "e10977874d997ecbceea3f77b3475c4f3ce8721ed3d69571bec6b7e0923629eb",
       "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "키보드_조작과_포커스_복귀_2026_11_25.md": {
+      "fingerprint": "3d3294e70304877573293b2ff657537dd63a85e89fafdeb325aeb0a01af476e4",
+      "revision": 1,
       "updated": true,
       "present": true
     }

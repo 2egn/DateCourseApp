@@ -16,6 +16,12 @@
         let linkVersion = 0;
         let panelManaged = false, activeTab = 'course', collections = { course: [], nearby: [] };
         let standalone = false;
+        let detailOpener = null;
+        // 상세 내부를 갱신할 때는 처음 열었던 조작 위치를 유지한다.
+        function rememberDetailOpener() {
+            const focused = document.activeElement;
+            if (!detail.contains(focused)) detailOpener = focused;
+        }
         const courseTab = document.getElementById('course-tab'), nearbyTab = document.getElementById('nearby-tab');
         function switchTab(tab, user) {
             activeTab = tab;
@@ -60,7 +66,12 @@
             closeTimer = setTimeout(function () { detail.hidden = true; }, reduced.matches ? 0 : 200);
             if (returnFocus) {
                 const index = visits.findIndex(function (v) { return v.visitId === activePlaceId; });
-                if (!standalone && cards[index]) cards[index].focus({ preventScroll: true });
+                const opener = detailOpener;
+                const target = opener && opener !== document.body && opener.isConnected && opener.getClientRects().length
+                    ? opener : !standalone && cards[index] ? cards[index] : surface;
+                if (target === surface) surface.tabIndex = -1;
+                target.focus({ preventScroll: true });
+                detailOpener = null;
             }
         }
         function activate(id, preserveDetail) {
@@ -135,6 +146,7 @@
         function openDetail(id) {
             const index = visits.findIndex(function (v) { return v.visitId === id; });
             if (index < 0) return;
+            rememberDetailOpener();
             activate(id, true);
             if (options.onFocus) options.onFocus(id);
             document.querySelector('.detail-actions').hidden = false;
@@ -330,6 +342,7 @@
             openVisit: function (id) { select(id, true); },
             /** 경로 클릭의 상세는 지도 위 호버 대신 왼쪽 카드에서 표시한다. */
             openRouteDetails: function (leg, index, travelLabel) {
+                rememberDetailOpener();
                 closeDetail(false);
                 expandedPlaceId = 'route:' + index;
                 detail.querySelector('.detail-note').hidden=true;

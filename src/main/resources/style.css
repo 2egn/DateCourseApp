@@ -1124,3 +1124,13 @@
 .route-edit-form .list-cell:filled:selected .label, .route-edit-form .list-cell:filled:selected { -fx-text-fill: #4A1827; }
 .saved-info-scroll, .saved-info-scroll > .viewport { -fx-background-color: transparent; }
 .saved-info-scroll { -fx-padding: 0; }
+
+/* 키보드 위치를 버튼 배경과 무관하게 표시하고 기존 배치를 유지한다. */
+.button:focused, .toggle-button:focused, .menu-button:focused {
+    -fx-effect: dropshadow(gaussian, #2870A8, 5, 0.75, 0, 0);
+}
+.saved-place-table .table-row-cell:filled:selected {
+    -fx-background-color: #F0E1E5;
+    -fx-table-cell-border-color: #D5B9C1;
+}
+.saved-place-table .table-row-cell:filled:selected .table-cell { -fx-text-fill: #4A1827; }

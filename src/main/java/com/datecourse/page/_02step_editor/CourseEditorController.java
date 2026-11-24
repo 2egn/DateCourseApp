@@ -339,6 +339,10 @@ public final class CourseEditorController extends BasePageController {
         candidateList.setOnKeyPressed(event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) { onCandidateDetail(); event.consume(); }
         });
+        placeList.setOnKeyPressed(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ENTER) { onPlaceDetail(); event.consume(); }
+        });
+        placeList.setAccessibleHelp("방향키로 장소 선택, Enter로 상세 보기");
         wirePane(coursePane, EditorState.COURSE);
         wirePane(conditionPane, EditorState.CONDITION);
         wirePane(choicePane, EditorState.CHOICE);

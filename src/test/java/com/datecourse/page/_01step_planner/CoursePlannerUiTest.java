@@ -1926,9 +1926,14 @@ class CoursePlannerUiTest {
             """);
         assertEquals(1,((Number)script(engine,"imageRequests")).intValue());
         assertEquals(true,script(engine,"!document.getElementById('route-controls').hidden && !document.getElementById('route-image-overlay').hidden"));
-        script(engine,"document.getElementById('route-image').click()");
+        script(engine,"document.getElementById('route-image').focus();document.getElementById('route-image').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}))");
         assertEquals(false,script(engine,"document.getElementById('route-image-zoom').hidden"));
-        script(engine,"document.getElementById('route-image-zoom-close').click();document.getElementById('route-map-button').click()");
+        assertEquals(true,script(engine,"document.activeElement===document.getElementById('route-image-zoom-close')"));
+        script(engine,"document.getElementById('route-image-zoom-close').dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',shiftKey:true,bubbles:true,cancelable:true}))");
+        assertEquals(true,script(engine,"document.activeElement===document.getElementById('route-image-zoom-close')"));
+        script(engine,"document.getElementById('route-image-zoom-close').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}))");
+        assertEquals(true,script(engine,"document.activeElement===document.getElementById('route-image') && document.getElementById('route-image-zoom').hidden"));
+        script(engine,"document.getElementById('route-map-button').click()");
         assertEquals(true,script(engine,"document.getElementById('route-image-zoom').hidden && document.getElementById('route-image-overlay').hidden"));
     }
 
@@ -2414,7 +2419,9 @@ class CoursePlannerUiTest {
             invoke(editor,"onAddCandidate");
             assertEquals(java.util.List.of(places.get(3)),confirmed.getItems());
             assertTrue(candidates.getItems().isEmpty());
-            confirmed.getSelectionModel().selectFirst();invoke(editor,"onPlaceDetail");
+            confirmed.getSelectionModel().selectFirst();
+            confirmed.fireEvent(new javafx.scene.input.KeyEvent(javafx.scene.input.KeyEvent.KEY_PRESSED,"","",
+                    javafx.scene.input.KeyCode.ENTER,false,false,false,false));
             assertEquals("[4,4]",engine.executeScript("JSON.stringify(detailCalls)"));
             return null;
         });Platform.runLater(task);task.get(10,TimeUnit.SECONDS);
@@ -2532,6 +2539,21 @@ class CoursePlannerUiTest {
         assertEquals(1,((Number)script(engine,"imageRequests")).intValue());
         assertEquals(true,script(engine,"document.getElementById('place-detail').hidden"));
         assertEquals(false,script(engine,"routeOverlays.some(o=>o.attached && o.options.content.classList.contains('place-pin-preview'))"));
+    }
+
+    @Test void standaloneDetailsReturnFocusToOpenerOrVisibleMapWhenOpenerDisappears() throws Exception {
+        WebEngine engine=loadMap(850,720);
+        script(engine,"""
+            window.presentRoute({startLat:35.157,startLng:129.06,radius:1000,places:[
+                {recordId:1,placeId:'a',name:'식당',category:'MEAL',price:9000,lat:35.158,lng:129.06}]},null,500,true,true);
+            window.opener=document.createElement('button');opener.textContent='상세 열기';document.getElementById('map-surface').appendChild(opener);
+            opener.focus();window.openRoutePlace(1);
+            """);
+        assertEquals(true,script(engine,"document.activeElement===document.getElementById('detail-close')"));
+        script(engine,"document.getElementById('detail-close').click()");
+        assertEquals(true,script(engine,"document.activeElement===opener"));
+        script(engine,"opener.focus();window.openRoutePlace(1);opener.remove();document.getElementById('detail-close').click()");
+        assertEquals(true,script(engine,"document.activeElement===document.getElementById('map-surface')"));
     }
 
     @Test void routeDetailsRestoreKeyboardCloseAfterReopening() throws Exception {

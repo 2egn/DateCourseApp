@@ -6,6 +6,7 @@ import com.datecourse.page._01step_planner.CoursePlannerController;
 
 import com.datecourse.model.*;
 import com.datecourse.service.UserContext;
+import com.datecourse.db.SavedCourseRepository;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -346,6 +347,40 @@ class SavedCourseMapTest {
                         assertFalse(form.root.lookup("#mapLoadPrompt").isVisible());
                         assertTrue((boolean)field(form.controller,"showingMap"));
                         assertEquals(PLAN,field(form.map,"plan"));return null;
+                    });
+                } finally {fx(()->{form.controller.dispose();return null;});}
+            }
+        }
+    }
+
+    @Test void keyboardSelectionRequiresEnterAndStillRespectsExplicitMapLoad() throws Exception {
+        var second = new Place(2,"b","두 번째 장소","CAFE",35.159,129.061,5000,4);
+        var plan = new RoutePlan(PLAN.startLat(),PLAN.startLng(),2,1000,"키보드",List.of(PLAN.places().get(0),second));
+        try(var pool=pool()) {
+            var repository=new SavedCourseRepository(pool);var owner=new UserSession(7,"Demo");
+            var saved=repository.saveWithPreview(owner,null,plan,new com.datecourse.service.CoursePreviewImage().render(plan));
+            try(var context=new UserContext(owner,null,()->List.of(saved))) {
+                context.courses().get(5,TimeUnit.SECONDS);Form form=form();var calls=new AtomicInteger();
+                try {
+                    fx(()->{form.map.setRouteRouter((stops,mode)->{calls.incrementAndGet();return route(stops);});
+                        form.controller.configure(repository,context,c->{});return null;});
+                    awaitPreview(form);
+                    fx(()->{
+                        new Scene(form.root,1100,760);form.root.resize(1100,760);form.root.applyCss();form.root.layout();
+                        var table=(TableView<?>)field(form.controller,"placeTable");
+                        table.getSelectionModel().selectFirst();
+                        table.fireEvent(new javafx.scene.input.KeyEvent(javafx.scene.input.KeyEvent.KEY_PRESSED,"","",
+                                javafx.scene.input.KeyCode.DOWN,false,false,false,false));
+                        assertEquals(1,table.getSelectionModel().getSelectedIndex());
+                        assertNull(field(form.map,"plan"));assertNull(field(form.controller,"pendingFocusPlace"));
+                        table.fireEvent(new javafx.scene.input.KeyEvent(javafx.scene.input.KeyEvent.KEY_PRESSED,"","",
+                                javafx.scene.input.KeyCode.ENTER,false,false,false,false));
+                        assertFalse((boolean)field(form.controller,"showingMap"));
+                        assertEquals(second,field(form.controller,"pendingFocusPlace"));
+                        assertTrue(form.root.lookup("#mapLoadPrompt").isVisible());
+                        invoke(form.controller,"onLoadMap",null,null);ready(form);
+                        assertEquals(2,((Number)form.view.getEngine().executeScript("window.focusedPlace")).intValue());
+                        assertEquals(0,calls.get());return null;
                     });
                 } finally {fx(()->{form.controller.dispose();return null;});}
             }

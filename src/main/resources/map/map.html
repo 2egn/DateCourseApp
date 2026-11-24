@@ -695,7 +695,7 @@
         const zoomedImage = document.getElementById('route-image-zoomed');
         const mapButton = document.getElementById('route-map-button');
         const imageButton = document.getElementById('route-image-button');
-        let courseKey = null;
+        let courseKey = null, zoomOpener = null;
         window.routeImageRequestVersion = 0;
         function invalidateImage() {
             window.routeImageRequestVersion++;
@@ -714,7 +714,7 @@
             overlay.hidden = !isImage;
             mapButton.setAttribute('aria-pressed', String(!isImage));
             imageButton.setAttribute('aria-pressed', String(isImage));
-            if (!isImage) zoom.hidden = true;
+            if (!isImage) closeZoom(false);
         }
         mapButton.addEventListener('click', function () {
             window.routeImageRequestVersion++;
@@ -729,11 +729,23 @@
         });
         function openZoom() {
             if (!image.src) return;
+            zoomOpener = document.activeElement;
             zoomedImage.src = image.src;
             zoom.hidden = false;
             document.getElementById('route-image-zoom-close').focus();
         }
-        function closeZoom() { zoom.hidden = true; }
+        // 확대 창을 닫으면 숨은 닫기 버튼 대신 원래 이미지로 돌아간다.
+        function closeZoom(returnFocus) {
+            if (zoom.hidden) return;
+            const focusedInside = zoom.contains(document.activeElement);
+            zoom.hidden = true;
+            if (returnFocus !== false) {
+                const target = zoomOpener && zoomOpener !== document.body && zoomOpener.isConnected
+                    && zoomOpener.getClientRects().length ? zoomOpener : image;
+                target.focus();
+            } else if (focusedInside) mapButton.focus();
+            zoomOpener = null;
+        }
         image.addEventListener('click', openZoom);
         image.addEventListener('keydown', function (event) {
             if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openZoom(); }
@@ -741,7 +753,11 @@
         zoom.addEventListener('click', closeZoom);
         document.getElementById('route-image-zoom-close').addEventListener('click', closeZoom);
         zoom.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') closeZoom();
+            if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeZoom(); }
+            if (event.key === 'Tab') {
+                event.preventDefault();
+                document.getElementById('route-image-zoom-close').focus();
+            }
         });
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape' && !zoom.hidden) closeZoom();

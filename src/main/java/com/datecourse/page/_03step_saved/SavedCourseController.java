@@ -109,7 +109,6 @@ public class SavedCourseController extends BasePageController {
         // ----- 초기 화면 상태 -----
         showDetail(null);                       // 아무것도 선택하지 않은 상태로 시작
         summaryTable.setSelectionModel(null);   // 표는 줄 선택 불가 (읽기 전용)
-        placeTable.setSelectionModel(null);
     }
 
     /** 저장한 코스 목록의 폭과 재사용 셀, 선택 동작을 설정한다. */
@@ -228,24 +227,38 @@ public class SavedCourseController extends BasePageController {
             column.setReorderable(false);
             setWrappingCellFactory(column);
         }
-        // 장소 줄을 클릭하면 지도가 그 장소로 이동
+        placeTable.getStyleClass().add("saved-place-table");
+        placeTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        placeTable.setAccessibleHelp("방향키로 장소 선택, Enter로 지도에서 보기");
+        placeTable.setOnKeyPressed(event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+                focusPlaceRow(placeTable.getSelectionModel().getSelectedIndex());
+                event.consume();
+            }
+        });
+        // 마우스와 키보드는 같은 지도 준비 규칙을 사용한다.
         placeTable.setRowFactory(table -> {
             TableRow<PlaceInfoRow> row = new TableRow<>();
             row.setCursor(javafx.scene.Cursor.HAND);
             row.setOnMouseClicked(event -> {
                 if (row.isEmpty()) return;
-                SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
-                int index = row.getIndex();
-                if (selected == null || index < 0 || index >= selected.plan().places().size()) return;
-                selectedPreviewView = true;
-                pendingFocusPlace=selected.plan().places().get(index);
-                if (!mapSelected || !showingMap) { onSelectMap(); if (!showingMap) return; }
-                previewVersion++;
-                map.focusPlace(selected.plan().places().get(index));
-                if(map.isReady())pendingFocusPlace=null;
+                placeTable.getSelectionModel().select(row.getIndex());
+                focusPlaceRow(row.getIndex());
             });
             return row;
         });
+    }
+
+    /** 선택만으로 지도를 불러오지 않고, 명시적으로 연 장소만 포커스한다. */
+    private void focusPlaceRow(int index) {
+        SavedCourse selected = courseList.getSelectionModel().getSelectedItem();
+        if (selected == null || index < 0 || index >= selected.plan().places().size()) return;
+        selectedPreviewView = true;
+        pendingFocusPlace = selected.plan().places().get(index);
+        if (!mapSelected || !showingMap) { onSelectMap(); if (!showingMap) return; }
+        previewVersion++;
+        map.focusPlace(selected.plan().places().get(index));
+        if (map.isReady()) pendingFocusPlace = null;
     }
 
     /** 좁은 상세 영역에서는 장소 표를 먼저 보여주고 요약을 아래에 둔다. */
