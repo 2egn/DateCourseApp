@@ -119,7 +119,9 @@ class CourseMapCaptureLiveTest {
     /** 실제 SDK에서 크롭 복원 뒤 경계 마커·호버·짧은 카메라 이동과 출처 위치를 확인한다. */
     private void verifyBufferedEdgeAndAttribution(Context context,RoutePlan plan) throws Exception {
         String payload=new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(plan);
+        String expectedScale=System.getProperty("datecourse.preview.expectedScale");
         fx(()->{
+            if(expectedScale!=null)assertEquals(Double.parseDouble(expectedScale),context.stage.getOutputScaleX(),0.01,"검사 배율이 실제 창에 적용되어야 합니다.");
             context.view.getEngine().executeScript("window.livePlan="+payload+";");
             context.view.getEngine().executeScript("""
                 window.livePins=[];window.liveImageSources=new WeakMap();
@@ -162,8 +164,19 @@ class CourseMapCaptureLiveTest {
             var point=(netscape.javascript.JSObject)context.view.getEngine().executeScript("mapViewport.projection().containerPointFromCoords(liveEdge)");
             assertTrue(((Number)point.getMember("x")).doubleValue()>context.view.getWidth()-100);
             assertTrue(((Number)point.getMember("x")).doubleValue()<context.view.getWidth());
-            var snapshot=context.view.snapshot(null,null);var target=Path.of("build/ui-preview/map-buffer-edge-live.png");
+            String suffix=expectedScale==null?"":"-scale-"+expectedScale.replace('.', '_');
+            var snapshot=context.view.snapshot(null,null);var target=Path.of("build/ui-preview/map-buffer-edge-live"+suffix+".png");
             javax.imageio.ImageIO.write(javafx.embed.swing.SwingFXUtils.fromFXImage(snapshot,null),"png",target.toFile());
+            var scaleReport=new LinkedHashMap<String,Object>();
+            scaleReport.put("javaVersion",System.getProperty("java.version"));
+            scaleReport.put("javafxVersion",System.getProperty("javafx.runtime.version"));
+            scaleReport.put("expectedScale",expectedScale==null?"native":expectedScale);
+            scaleReport.put("outputScaleX",context.stage.getOutputScaleX());scaleReport.put("outputScaleY",context.stage.getOutputScaleY());
+            scaleReport.put("renderScaleX",context.stage.getRenderScaleX());scaleReport.put("renderScaleY",context.stage.getRenderScaleY());
+            scaleReport.put("webViewWidth",context.view.getWidth());scaleReport.put("webViewHeight",context.view.getHeight());
+            scaleReport.put("webDevicePixelRatio",context.view.getEngine().executeScript("window.devicePixelRatio"));
+            new com.fasterxml.jackson.databind.ObjectMapper().writerWithDefaultPrettyPrinter()
+                    .writeValue(Path.of("build/ui-preview/map-buffer-edge-live"+suffix+".json").toFile(),scaleReport);
             return null;
         });
     }

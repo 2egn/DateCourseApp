@@ -80,3 +80,5 @@ src/
 추천의 전체 범위·중복 대표 선택은 `PlaceSearchService.nearby`, 직전 장소 기준 거리 재계산과 조건 필터는 `NextPlaceService.matching`이 맡는다. [결과 보존 대조·로컬 측정](../docs/review-2026-11-25.md#추천-후보의-중복-계산-정리).
 
 JavaFX UI·WebView 유지보수 버전도 `build.gradle`의 `javafx.version`에서 고정한다. 현재 21.0.13.1이며 [같은 LTS 계열 비교 결과](../docs/site/content/JavaFX21_유지보수_패치_2026_11_25.md)를 참고한다.
+
+실제 지도 선택 검사의 Windows 배율 재현은 `CourseMapCaptureLiveTest.verifyBufferedEdgeAndAttribution`과 `build.gradle`의 `coursePreviewLiveTest`에서 관리한다. [125%·150% 실행법과 확인 범위](../docs/site/content/지도_렌더링_여유_영역_2026_11_24.md).

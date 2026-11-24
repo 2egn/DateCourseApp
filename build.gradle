@@ -184,6 +184,12 @@ tasks.register('coursePreviewLiveTest', Test) {
     include '**/CourseMapCaptureLiveTest.class'
     useJUnitPlatform()
     environment 'RUN_COURSE_PREVIEW_LIVE_TEST', 'true'
+    // Windows 배율은 선택 검사 프로세스에만 적용한다.
+    def previewUiScale = providers.gradleProperty('previewUiScale')
+    if (previewUiScale.isPresent()) {
+        systemProperty 'glass.win.uiScale', previewUiScale.get()
+        systemProperty 'datecourse.preview.expectedScale', previewUiScale.get()
+    }
 }
 
 // Explicit maintenance: password entry is local and masked, never a command-line argument.
