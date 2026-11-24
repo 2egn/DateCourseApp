@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "district": "연제구",
+  "center": {
+    "lat": 35.1857417568794,
+    "lng": 129.082422278294
+  },
+  "radiusMeters": 2000,
+  "categoryLimits": {
+    "MEAL": 2540,
+    "CAFE": 2060,
+    "CULTURE": 538
+  },
+  "preferredPerCuisine": 0,
+  "preferredDesignated": 0,
+  "earliestReferenceDate": "2024-01-01",
+  "pricePolicy": {
+    "minimumSamples": 20,
+    "allowedSubtypes": [
+      "카페",
+      "백반/한정식",
+      "국/탕/찌개류",
+      "국수/칼국수",
+      "냉면/밀면",
+      "중국집"
+    ]
+  },
+  "spatialCellMeters": 500
+}

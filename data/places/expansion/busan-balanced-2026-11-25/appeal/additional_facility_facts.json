@@ -1,0 +1,456 @@
+{
+  "note": "현행 PlaceTag에 자동 적용하지 않는 별도 확인 자료",
+  "facts": [
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b6b6e11b0673809a1375a7f7",
+      "name": "KT&G상상마당부산미술관",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
+      "sourceDate": "2025-11-27",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b6b6e11b0673809a1375a7f7",
+      "name": "KT&G상상마당부산미술관",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
+      "sourceDate": "2025-11-27",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8260f79acf2558731dc13ddc",
+      "name": "시민공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:86baa4cfbae327d03604313a",
+      "name": "양정공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:37ac03de03f1fe426869c6db",
+      "name": "돌산공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:9618f9ac5ce9bacca62b871e",
+      "name": "동의대학교 박물관",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
+      "sourceDate": "2025-11-27",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:9618f9ac5ce9bacca62b871e",
+      "name": "동의대학교 박물관",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
+      "sourceDate": "2025-11-27",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:db67012122adebd20b9c1545",
+      "name": "가야감고개공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:84115689679c97deb0032781",
+      "name": "개금숲길공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:c2ddb08e72c669eccaad539c",
+      "name": "화목어린이공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:cc903db7a26c454027b497f1",
+      "name": "백양가족공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:286d49d78322887f38bee3f8",
+      "name": "명지공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:286d49d78322887f38bee3f8",
+      "name": "명지공원",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:5ce8ccf0c1e513956d2b9ae6",
+      "name": "바다공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:ae93f546668f59846fbe320f",
+      "name": "너울공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:ae93f546668f59846fbe320f",
+      "name": "너울공원",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:f8d35ce0ace319c355c2ab6c",
+      "name": "화동공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:205376e6bacdf24d476384bf",
+      "name": "화전공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:7f153f12e7cea27c24d931e0",
+      "name": "화암공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:4f6d31c9d9783a00002fe3ab",
+      "name": "신호공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:4f6d31c9d9783a00002fe3ab",
+      "name": "신호공원",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:74ef64eacdeee6136dce7f26",
+      "name": "장전공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-25",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:688a58cda6b84ec5d9af2695",
+      "name": "떡곡숲공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:a88f01737bf4c39bc470e689",
+      "name": "삼성숲공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:d69e25d0c59101800ef00143",
+      "name": "일광이천생태공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:c57787b8911803cabdde24bf",
+      "name": "통일공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:c1763b68f84809077258e99f",
+      "name": "용소웰빙공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2025-11-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:440f5f7d75f19a0c412b00a7",
+      "name": "중앙공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-10-01",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:1369e1992e4c2bc8ceb5d9f6",
+      "name": "증산공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-10-01",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:594d6231256c4cba49d02378",
+      "name": "부산진성공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-10-01",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:7a68c8fa76aae0e48dd87a20",
+      "name": "복천동고분군공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-08-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:7a68c8fa76aae0e48dd87a20",
+      "name": "복천동고분군공원",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-08-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8fc8bcf2a703e84ba31a4808",
+      "name": "충렬사공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-08-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:8fc8bcf2a703e84ba31a4808",
+      "name": "충렬사공원",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-08-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:73ca0b6c59772e8b2a67da56",
+      "name": "동래사적공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-08-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:73ca0b6c59772e8b2a67da56",
+      "name": "동래사적공원",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-08-21",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:539c9b8cbe577126b3e1b399",
+      "name": "사상생활사박물관",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
+      "sourceDate": "2026-07-18",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:461ba22ff4e5e86537294bf3",
+      "name": "동아대학교석당박물관",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15017323/standard.do",
+      "sourceDate": "2025-11-18",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:b01e356ed13dcc80b2e10fe6",
+      "name": "톤즈공원",
+      "kind": "PARKING",
+      "label": "주차시설 · 요금 미확인",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-09-11",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:d9900b375ed29b79fd559657",
+      "name": "중앙공원(대신공원)",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-09-11",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:5082050caeae82b0b9abb0d1",
+      "name": "엄광산어린이공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-09-11",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:bc23f2bf63e8430f9f1d1dde",
+      "name": "연봉공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15012890:d4bbb12fea43d608f38d1654",
+      "name": "해맞이체육공원",
+      "kind": "RESTROOM",
+      "label": "화장실 시설 정보",
+      "basis": "원문 편익시설/부대시설 필드에 명시 · 상호와 좌표 1m 이내 일치",
+      "sourceUrl": "https://www.data.go.kr/data/15012890/standard.do",
+      "sourceDate": "2026-08-24",
+      "checkedAt": "2026-11-25"
+    },
+    {
+      "kind": "FREE_ADMISSION",
+      "label": "무료 관람",
+      "basis": "운영기관 관람 안내에서 관람료 무료 확인",
+      "sourceUrl": "https://bsmuseum.ksd.or.kr/contents.do?menuno=262",
+      "sourceExcerpt": "관람료 무료",
+      "checkedAt": "2026-11-14",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:dd37d113291f15027d6931df",
+      "name": "증권박물관(부산관)"
+    },
+    {
+      "kind": "FREE_AUDIO_GUIDE",
+      "label": "오디오가이드 무료 대여",
+      "basis": "운영기관 관람 안내에 무료 대여 명시",
+      "conditions": "관람 당일 신분증 보관 및 신청서 작성; 만 14세 이하는 보호자 동반",
+      "sourceUrl": "https://bsmuseum.ksd.or.kr/contents.do?menuno=262",
+      "sourceExcerpt": "대여료 무료",
+      "checkedAt": "2026-11-14",
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:dd37d113291f15027d6931df",
+      "name": "증권박물관(부산관)"
+    }
+  ]
+}

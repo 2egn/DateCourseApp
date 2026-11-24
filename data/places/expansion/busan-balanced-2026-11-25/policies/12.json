@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "district": "중구",
+  "center": {
+    "lat": 35.10119797881676,
+    "lng": 129.03056928732798
+  },
+  "radiusMeters": 2000,
+  "categoryLimits": {
+    "MEAL": 2800,
+    "CAFE": 2260,
+    "CULTURE": 580
+  },
+  "preferredPerCuisine": 0,
+  "preferredDesignated": 0,
+  "earliestReferenceDate": "2024-01-01",
+  "pricePolicy": {
+    "minimumSamples": 20,
+    "allowedSubtypes": [
+      "카페",
+      "백반/한정식",
+      "국/탕/찌개류",
+      "국수/칼국수",
+      "냉면/밀면",
+      "중국집"
+    ]
+  },
+  "spatialCellMeters": 500
+}

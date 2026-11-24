@@ -1,0 +1,208 @@
+{
+  "targetMinimumByDistrict": {
+    "MEAL": 150,
+    "CAFE": 120,
+    "CULTURE": 30
+  },
+  "sourceMode": "existing_checksum_verified_public_snapshots_offline",
+  "baselinePlaces": 2138,
+  "places": 5628,
+  "districts": [
+    {
+      "district": "강서구",
+      "before": {},
+      "after": {
+        "MEAL": 150,
+        "CAFE": 120,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "금정구",
+      "before": {},
+      "after": {
+        "MEAL": 150,
+        "CAFE": 120,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "기장군",
+      "before": {},
+      "after": {
+        "MEAL": 150,
+        "CAFE": 120,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "남구",
+      "before": {
+        "CULTURE": 64,
+        "MEAL": 152,
+        "CAFE": 150
+      },
+      "after": {
+        "CULTURE": 64,
+        "MEAL": 152,
+        "CAFE": 150
+      },
+      "added": 0
+    },
+    {
+      "district": "동구",
+      "before": {},
+      "after": {
+        "MEAL": 150,
+        "CAFE": 120,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "동래구",
+      "before": {},
+      "after": {
+        "CAFE": 120,
+        "MEAL": 150,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "부산진구",
+      "before": {
+        "MEAL": 348,
+        "CAFE": 320,
+        "CULTURE": 46
+      },
+      "after": {
+        "MEAL": 348,
+        "CAFE": 320,
+        "CULTURE": 46
+      },
+      "added": 0
+    },
+    {
+      "district": "북구",
+      "before": {},
+      "after": {
+        "MEAL": 150,
+        "CAFE": 120,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "사상구",
+      "before": {},
+      "after": {
+        "CAFE": 120,
+        "MEAL": 150,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "사하구",
+      "before": {},
+      "after": {
+        "MEAL": 150,
+        "CAFE": 120,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "서구",
+      "before": {},
+      "after": {
+        "MEAL": 150,
+        "CAFE": 120,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "수영구",
+      "before": {
+        "MEAL": 300,
+        "CAFE": 150,
+        "CULTURE": 30
+      },
+      "after": {
+        "MEAL": 300,
+        "CAFE": 150,
+        "CULTURE": 30
+      },
+      "added": 0
+    },
+    {
+      "district": "연제구",
+      "before": {},
+      "after": {
+        "CAFE": 120,
+        "MEAL": 150,
+        "CULTURE": 30
+      },
+      "added": 300
+    },
+    {
+      "district": "영도구",
+      "before": {},
+      "after": {
+        "MEAL": 150,
+        "CULTURE": 30,
+        "CAFE": 120
+      },
+      "added": 300
+    },
+    {
+      "district": "중구",
+      "before": {
+        "MEAL": 40,
+        "CAFE": 40,
+        "CULTURE": 18
+      },
+      "after": {
+        "MEAL": 150,
+        "CAFE": 120,
+        "CULTURE": 18
+      },
+      "added": 190
+    },
+    {
+      "district": "해운대구",
+      "before": {
+        "MEAL": 200,
+        "CAFE": 200,
+        "CULTURE": 80
+      },
+      "after": {
+        "MEAL": 200,
+        "CAFE": 200,
+        "CULTURE": 80
+      },
+      "added": 0
+    }
+  ],
+  "note": "Targets are capped by qualified source availability. Previously published places remain unchanged; this is geographic coverage, not a representative statistical sample.",
+  "datasetSha256": "e59508532aebe212d20a7c0d67eb0a6fd563c010596f69480064870ab64fab6f",
+  "factsSha256": "112ac3c190cf015868fd25c561b222b8c7c83dc91401b39cf9f5659debd683a3",
+  "existingPlaceObjectsPreserved": true,
+  "existingFactsPreserved": true,
+  "categories": {
+    "MEAL": 2800,
+    "CAFE": 2260,
+    "CULTURE": 568
+  },
+  "prices": {
+    "SIMILAR_ESTIMATE": 3092,
+    "UNKNOWN": 2513,
+    "REFERENCE": 23
+  },
+  "addedPlaces": 3490
+}

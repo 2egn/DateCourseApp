@@ -1,0 +1,29 @@
+{
+  "dataset": "data/places/expansion/jung-gu-2026-11-25/places.json",
+  "facts": "data/places/expansion/jung-gu-2026-11-25/appeal/demo_appeal_facts.json",
+  "places": 2138,
+  "datasetSha256": "d2202befd181086f347bed53f2ca67d03d34acc933ba4f8ea31b1d2ae64dfc34",
+  "factsSha256": "b9a00c007194561b7febea21ec5e1ff65dedd2cb7474474a73d7c40533c638b7",
+  "previousPointer": {
+    "schemaVersion": 1,
+    "scope": "production_public_catalog_not_bundled_demo",
+    "sourceKey": "busan-public-places",
+    "places": 2138,
+    "dataset": "data/places/expansion/jung-gu-2026-11-25/places.json",
+    "facts": "data/places/expansion/jung-gu-2026-11-25/appeal/demo_appeal_facts.json",
+    "datasetSha256": "d2202befd181086f347bed53f2ca67d03d34acc933ba4f8ea31b1d2ae64dfc34",
+    "factsSha256": "b9a00c007194561b7febea21ec5e1ff65dedd2cb7474474a73d7c40533c638b7",
+    "payloadFingerprint": "99d005bbff008355fd86d578cd49f5eaf736ef2c93e58efe84aebc6693e38193",
+    "generatedAt": "2026-11-24T18:59:40.564296Z",
+    "verifiedAt": "2026-11-24T19:01:53.793261+00:00",
+    "importVerification": "data/places/expansion/jung-gu-2026-11-25/import-verification.json",
+    "previousDataset": "data/places/pricing/2026-11-24/staged/places.json",
+    "note": "Added 98 Jung-gu public-source places while preserving all 2040 previous records and facts. Reconciled 43 new-place prices with the existing regional/survey policy. Expansion and price-only imports, protected tables and repeat imports verified; no new live venue/price/provider checks.",
+    "previousFacts": "data/places/pricing/clock-correction-2026-11-24/facts.json",
+    "pricingSources": "data/places/pricing/2026-11-24/sources.json",
+    "priceImportVerification": "data/places/expansion/jung-gu-2026-11-25/price-import-verification.json",
+    "previousMetadataCorrection": "data/places/pricing/clock-correction-2026-11-24/correction-result.json"
+  },
+  "finalDatasetSha256": "e59508532aebe212d20a7c0d67eb0a6fd563c010596f69480064870ab64fab6f",
+  "finalFactsSha256": "112ac3c190cf015868fd25c561b222b8c7c83dc91401b39cf9f5659debd683a3"
+}

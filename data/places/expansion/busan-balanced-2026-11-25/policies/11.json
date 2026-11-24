@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "district": "영도구",
+  "center": {
+    "lat": 35.0891779287128,
+    "lng": 129.045592044633
+  },
+  "radiusMeters": 2000,
+  "categoryLimits": {
+    "MEAL": 2690,
+    "CAFE": 2180,
+    "CULTURE": 568
+  },
+  "preferredPerCuisine": 0,
+  "preferredDesignated": 0,
+  "earliestReferenceDate": "2024-01-01",
+  "pricePolicy": {
+    "minimumSamples": 20,
+    "allowedSubtypes": [
+      "카페",
+      "백반/한정식",
+      "국/탕/찌개류",
+      "국수/칼국수",
+      "냉면/밀면",
+      "중국집"
+    ]
+  },
+  "spatialCellMeters": 500
+}

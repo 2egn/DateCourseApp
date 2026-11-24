@@ -1,0 +1,32 @@
+{
+  "inputs": {
+    "build/busan-balanced-2026-11-25/places.json": "3fc81183a4e69396dd8a40941d5ce82c3c56d21db5c131120386cc21f73d3b92",
+    "data/places/public/busan/busan_good_price_shops.csv": "03f12ee5f4b94474ce0bcef32cf67d781a642707e7ee24dbdfcf42578b5b00e1",
+    "data/places/public/busan/busan_places.csv": "7e04410a6cdf57065a7b064407b9b4e992b29bb3cf3f43edf7de52cdad17c1f2",
+    "data/places/public/busan/raw/busan_standard_sources.json": "b0191185be7562ebebda56c94ae39fa8d5cc99d71a67cde3bb44178aa0e9f9f4",
+    "data/places/appeal/designation-sources.json": "fa014fe5bdd996e37a1c971318644026d82a2da52e3134b03f180f18eef7c88d",
+    "data/places/appeal/manual-facility-facts.json": "fe93d3b074fca64ed8539739298b75e2c7d00055332265519b26cd0eb3b2889b",
+    "data/places/appeal/busan-2026-11-14/raw/busan_bus_stops.csv": "74060217eaa9b05ea07f692646813a1690495afb7d9287632c756e2819fdfff4",
+    "data/places/appeal/busan-2026-11-14/raw/busan_railway_stations.csv": "be858b691edbf741c00601ef0d682734b0dcdae74ad327efe6eb7d4a039191da",
+    "data/places/expansion/jung-gu-2026-11-25/places.json": "d2202befd181086f347bed53f2ca67d03d34acc933ba4f8ea31b1d2ae64dfc34",
+    "data/places/expansion/jung-gu-2026-11-25/appeal/demo_appeal_facts.json": "b9a00c007194561b7febea21ec5e1ff65dedd2cb7474474a73d7c40533c638b7",
+    "data/places/appeal/busan-2026-11-14/raw/busanjin_model_restaurants_cp949.csv": "08bd230f7eb751fa8bb3c75db2eb3bb4c93dfc7237883df7f7dc68c99db0b678"
+  },
+  "outputs": {
+    "additional_facility_facts.json": "c8dff4f1302a5e4e800790543da2526ee4081f94c2a8db02e2761c875b0be6c2",
+    "busanjin_model_restaurants.csv": "1837a8ad89cc810e802b7d4ec91d9751f7ded64f7f0ade79015c91c5904bc1be",
+    "demo_appeal_facts.json": "112ac3c190cf015868fd25c561b222b8c7c83dc91401b39cf9f5659debd683a3",
+    "demo_nearest_transit.csv": "65b3440c731808f841af6dd64ef6b1fee986f7881c1647b8483b58ce122e7b36",
+    "designation_links.csv": "25be4e0f8b8c6b7b13bf0ab14151c751d829054b6eae43cc549f8cdabf6687b5",
+    "designation_review_needed.json": "278fe3405f0f8b7fbb5e3fac293ae02bec957166465b8b6ac8218c8de750cfc8",
+    "sources.json": "61b20fe41647a21dd2849cff494c9aecb9e316bf8757146f7b5dab6c04b390e6",
+    "summary.json": "d5b031e84d0fa266ab7468216edd7d05f90efe0aa96022b6f05db71296278480",
+    "threshold_comparison.json": "e0628b2cb4dc69f2634fae6cca0fea71c0f4ebf20178f4c5daa67295c64744a6"
+  },
+  "priceSupplement": {
+    "sources": "data/places/pricing/2026-11-24/sources.json",
+    "sourcesSha256": "04dab298040f8b339cc405cd4c7c53ef366bd4a1051d53eabac8a8ba6eb328d1",
+    "prePriceDatasetSha256": "3fc81183a4e69396dd8a40941d5ce82c3c56d21db5c131120386cc21f73d3b92",
+    "finalDatasetSha256": "e59508532aebe212d20a7c0d67eb0a6fd563c010596f69480064870ab64fab6f"
+  }
+}
