@@ -305,6 +305,14 @@ public final class CourseEditorController extends BasePageController {
         placeList.setItems(draftPlaces);
         placeList.setPlaceholder(new Label("첫 장소를 추천받고 코스에 추가해 주세요."));
         placeList.setCellFactory(list -> new ListCell<>() {
+            {
+                setOnMouseClicked(event -> {
+                    if (!isEmpty() && event.getButton() == javafx.scene.input.MouseButton.PRIMARY && event.getClickCount() == 2) {
+                        placeList.getSelectionModel().select(getIndex());
+                        onPlaceDetail();
+                    }
+                });
+            }
             @Override protected void updateItem(Place place, boolean empty) {
                 super.updateItem(place, empty);
                 RouteRangeValidator.Leg leg = getIndex() >= 0 && getIndex() < legs.size() ? legs.get(getIndex()) : null;
@@ -328,7 +336,6 @@ public final class CourseEditorController extends BasePageController {
                 map.fitLeg(value.intValue());
             }
         });
-        placeList.setOnMouseClicked(event -> { if (event.getClickCount() == 2) onPlaceDetail(); });
         selectedRadiusSlider.valueProperty().addListener((obs, old, value) -> {
             if (!syncingSelectedRadius) onUpdateSelectedRadius();
         });

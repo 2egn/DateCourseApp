@@ -1,5 +1,7 @@
 # 현재 아키텍처
 
+최신 후속 검증은 **2026-11-25 · 앱 Java 394개 + 선택 유지보수 3개**, 보관 UI 2개다. 키보드·포커스, 도보 설정 동기화와 추천 계산 재사용은 [후속 개선 기록](review-2026-11-25.md)을 참고한다. 아래 11월 24일 검사 숫자는 당시 기록이다.
+
 현재 앱과 검사는 `com.datecourse` 아래에 있다. DB는 `db`, 회원 화면은 `page.account`, 관리 화면은 `page.admin`, 공용 부품은 `page.common.controls`(JavaFX)·`page.common.swing`에 둔다. `UserSession`은 `model`, `PasswordHash`는 `auth`다. [패키지 통합과 남은 구조 점검](site/content/패키지_통합과_구조_점검_2026_11_24.md)을 참고한다.
 
 운영 DB는 빈 백업 8개 정리 후 **15개 테이블**이다. [역할별 DB 구조·장소 저장 위치·보존 검증](site/content/DB_구조와_빈_백업_정리_2026_11_24.md)을 참고한다.

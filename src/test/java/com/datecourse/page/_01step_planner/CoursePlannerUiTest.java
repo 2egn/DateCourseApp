@@ -2421,10 +2421,19 @@ class CoursePlannerUiTest {
             invoke(editor,"onAddCandidate");
             assertEquals(java.util.List.of(places.get(3)),confirmed.getItems());
             assertTrue(candidates.getItems().isEmpty());
-            confirmed.getSelectionModel().selectFirst();
+            confirmed.getSelectionModel().selectFirst();root.applyCss();root.layout();
+            doubleClick(confirmed,javafx.scene.input.MouseButton.PRIMARY);
+            assertEquals("[4]",engine.executeScript("JSON.stringify(detailCalls)"));
+            var confirmedCell=root.lookupAll(".list-cell").stream()
+                    .filter(n->n instanceof javafx.scene.control.ListCell<?> c && c.getListView()==confirmed && c.getIndex()==0 && !c.isEmpty())
+                    .findFirst().orElseThrow();
+            doubleClick(confirmedCell,javafx.scene.input.MouseButton.SECONDARY);
+            assertEquals("[4]",engine.executeScript("JSON.stringify(detailCalls)"));
+            doubleClick(confirmedCell,javafx.scene.input.MouseButton.PRIMARY);
+            assertEquals("[4,4]",engine.executeScript("JSON.stringify(detailCalls)"));
             confirmed.fireEvent(new javafx.scene.input.KeyEvent(javafx.scene.input.KeyEvent.KEY_PRESSED,"","",
                     javafx.scene.input.KeyCode.ENTER,false,false,false,false));
-            assertEquals("[4,4]",engine.executeScript("JSON.stringify(detailCalls)"));
+            assertEquals("[4,4,4]",engine.executeScript("JSON.stringify(detailCalls)"));
             return null;
         });Platform.runLater(task);task.get(10,TimeUnit.SECONDS);
     }
@@ -2698,6 +2707,11 @@ class CoursePlannerUiTest {
             Path file=Path.of("build/ui-preview/user-first-feedback.png");Files.createDirectories(file.getParent());
             ImageIO.write(SwingFXUtils.fromFXImage(root.snapshot(null,null),null),"png",file.toFile());return null;
         });
+    }
+
+    private static void doubleClick(javafx.scene.Node target,javafx.scene.input.MouseButton button) {
+        target.fireEvent(new javafx.scene.input.MouseEvent(javafx.scene.input.MouseEvent.MOUSE_CLICKED,
+                4,4,4,4,button,2,false,false,false,false,false,false,false,false,false,true,null));
     }
 
     private WebEngine loadMap() throws Exception {
