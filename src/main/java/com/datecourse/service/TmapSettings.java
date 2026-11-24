@@ -12,6 +12,11 @@ import java.util.Set;
 
 /** TMAP appKey is used only by Java HTTP requests and never sent to the map page. */
 public record TmapSettings(String appKey, int searchOption) {
+    private static final java.util.concurrent.atomic.AtomicLong PREFERENCES_VERSION = new java.util.concurrent.atomic.AtomicLong();
+
+    /** 다른 지도도 저장된 도보 설정 변경을 감지할 수 있는 실행 중 버전이다. */
+    public static long preferencesVersion() { return PREFERENCES_VERSION.get(); }
+
     public static final Path LOCAL_FILE = Path.of(".local", "tmap.properties");
     public static final Path PREFERENCES_FILE = Path.of(".local", "tmap-route.properties");
 
@@ -70,6 +75,7 @@ public record TmapSettings(String appKey, int searchOption) {
         try {
             try (OutputStream output = Files.newOutputStream(temporary)) { properties.store(output, "User walking route preference"); }
             Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
+            PREFERENCES_VERSION.incrementAndGet();
         } finally { Files.deleteIfExists(temporary); }
     }
 
@@ -83,6 +89,7 @@ public record TmapSettings(String appKey, int searchOption) {
         try {
             try (OutputStream output = Files.newOutputStream(temporary)) { properties.store(output, "Local TMAP pedestrian routing settings"); }
             Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
+            PREFERENCES_VERSION.incrementAndGet();
         } finally { Files.deleteIfExists(temporary); }
     }
 

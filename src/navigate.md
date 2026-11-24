@@ -70,3 +70,5 @@ src/
 로컬 JDK 21이 없을 때의 자동 다운로드 저장소는 루트 [settings.gradle](../settings.gradle)에 고정 버전으로 등록한다. 다운로드는 개인 Gradle 캐시에서 관리한다.
 
 목록 키보드 조작은 `SavedCourseController.focusPlaceRow`·`CourseEditorController.configureEditorNavigation`, 상세 포커스 복귀는 `itinerary-rail.js.rememberDetailOpener`·`map.html.closeZoom`에서 관리한다. [현재 동작·검증 범위](../docs/site/content/키보드_조작과_포커스_복귀_2026_11_25.md).
+
+도보 옵션 저장 이력은 `TmapSettings.preferencesVersion`, 지도 경로 유효성은 `CourseMapView.synchronizeWalkingRoute/isCurrentRouteRequest`에서 확인한다. [다른 지도와의 동기화](../docs/site/content/도보_설정과_지도_경로_동기화_2026_11_25.md).

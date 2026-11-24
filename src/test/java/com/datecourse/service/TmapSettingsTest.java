@@ -31,6 +31,17 @@ class TmapSettingsTest {
         assertEquals(10, TmapSettings.load(root, Map.of()).searchOption());
         assertThrows(IllegalArgumentException.class, () -> TmapSettings.saveSearchOption(root, 99));
     }
+    @Test void preferenceVersionAdvancesOnlyAfterSuccessfulSave() throws Exception {
+        long version=TmapSettings.preferencesVersion();
+        assertThrows(IllegalArgumentException.class,()->TmapSettings.saveSearchOption(root,99));
+        assertEquals(version,TmapSettings.preferencesVersion());
+        Path blocked=root.resolve("blocked");Files.writeString(blocked,"file");
+        assertThrows(java.io.IOException.class,()->TmapSettings.saveSearchOption(blocked,10));
+        assertEquals(version,TmapSettings.preferencesVersion());
+        TmapSettings.saveSearchOption(root,10);assertEquals(++version,TmapSettings.preferencesVersion());
+        TmapSettings.saveLocal(root,new TmapSettings(KEY,30));assertEquals(++version,TmapSettings.preferencesVersion());
+    }
+
     @TempDir Path root;
     private static final String KEY = "testTmapKey01234567890123456789";
 

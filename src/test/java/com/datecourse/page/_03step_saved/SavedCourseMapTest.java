@@ -422,6 +422,28 @@ class SavedCourseMapTest {
         } finally {release.countDown();}
     }
 
+    @Test void savedTimeCacheRejectsOldWalkingOptionButKeepsDrivingTime(@org.junit.jupiter.api.io.TempDir Path root) throws Exception {
+        Form form=form();
+        var walking=new SavedCourse(1,7,PLAN);
+        var driving=new SavedCourse(2,7,PLAN.withTravelMode(TravelMode.DRIVING));
+        var route=new TravelRoute(List.of(),100,60);
+        try {
+            fx(()->{((ListView<SavedCourse>)field(form.controller,"courseList")).getItems().setAll(walking,driving);
+                ((ListView<?>)field(form.controller,"courseList")).getSelectionModel().selectFirst();return null;});
+            awaitPreview(form);
+            fx(()->{((java.util.function.BiConsumer<TravelRoute,String>)field(form.map,"walkingResult")).accept(route,"");
+                assertFalse(((Label)field(form.controller,"travelSummaryLabel")).getText().contains("조회 전"));
+                ((ListView<?>)field(form.controller,"courseList")).getSelectionModel().select(1);return null;});awaitPreview(form);
+            fx(()->{((java.util.function.BiConsumer<TravelRoute,String>)field(form.map,"walkingResult")).accept(route,"");return null;});
+            var save=com.datecourse.service.TmapSettings.class.getDeclaredMethod("saveSearchOption",Path.class,int.class);
+            save.setAccessible(true);save.invoke(null,root,30);
+            fx(()->{((ListView<?>)field(form.controller,"courseList")).getSelectionModel().selectFirst();return null;});awaitPreview(form);
+            fx(()->{assertTrue(((Label)field(form.controller,"travelSummaryLabel")).getText().contains("조회 전"));
+                ((ListView<?>)field(form.controller,"courseList")).getSelectionModel().select(1);return null;});awaitPreview(form);
+            fx(()->{assertFalse(((Label)field(form.controller,"travelSummaryLabel")).getText().contains("조회 전"));return null;});
+        } finally {fx(()->{form.controller.dispose();return null;});}
+    }
+
     private static com.zaxxer.hikari.HikariDataSource pool() throws Exception {
         var config=new com.zaxxer.hikari.HikariConfig();config.setJdbcUrl("jdbc:h2:mem:"+UUID.randomUUID()+";MODE=MySQL");
         config.setUsername("sa");config.setPassword("");var pool=new com.zaxxer.hikari.HikariDataSource(config);

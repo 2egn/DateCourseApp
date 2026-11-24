@@ -86,7 +86,8 @@ public class SavedCourseController extends BasePageController {
     private com.datecourse.model.Place pendingFocusPlace;
     private long previewLoadVersion;
     private boolean showingMap, selectedPreviewView, storedPreview, routeRequested, mapSelected, mapPrepared, previewLoading;
-    private final java.util.Map<SavedCourse,com.datecourse.model.TravelRoute> routeSummaries=new java.util.HashMap<>();
+    private record RouteSummary(com.datecourse.model.TravelRoute route, long preferencesVersion) {}
+    private final java.util.Map<SavedCourse,RouteSummary> routeSummaries=new java.util.HashMap<>();
     private java.util.concurrent.CompletableFuture<PreviewImage> previewTask;
     private record PreviewImage(javafx.scene.image.Image image, boolean stored) {}
     private String mapFailure = "", routeFailure = "", routeMessage = "";
@@ -184,7 +185,7 @@ public class SavedCourseController extends BasePageController {
             routeMessage = route == null && message != null ? message : "";
             routeFailure = "";
             if (route != null && previewCourse != null) {
-                routeSummaries.put(previewCourse,route); courseList.refresh();
+                routeSummaries.put(previewCourse,new RouteSummary(route,com.datecourse.service.TmapSettings.preferencesVersion()));
             }
             refreshTravelInformation();
             refreshMapNotice();
@@ -425,6 +426,7 @@ public class SavedCourseController extends BasePageController {
         showFuture("저장한 코스를 확인하고 있어요", context.courses(), courses -> {
             if (context != userContext || context.isClosed() || version != viewVersion) return;
             busy = false;
+            routeSummaries.keySet().retainAll(courses);
             courseList.getItems().setAll(courses);
             emptyLabel.setVisible(courses.isEmpty());
             emptyLabel.setManaged(courses.isEmpty());
@@ -566,15 +568,23 @@ public class SavedCourseController extends BasePageController {
         if (previewCourse == null || userContext == null || !showingMap || !map.isReady()) return;
         mapPrepared = userContext.markMapPrepared(previewCourse);
     }
+    /** 도보 설정이 다른 옛 이동시간은 목록·표에서도 재사용하지 않는다. */
+    private com.datecourse.model.TravelRoute cachedRoute(SavedCourse course) {
+        var summary=routeSummaries.get(course);
+        if (summary==null || course.plan().travelMode()!=com.datecourse.model.TravelMode.DRIVING
+                && summary.preferencesVersion()!=com.datecourse.service.TmapSettings.preferencesVersion()) return null;
+        return summary.route();
+    }
     private String travelText(SavedCourse course) {
-        var route=routeSummaries.get(course);
+        var route=cachedRoute(course);
         return course.plan().travelMode().label()+" · "+(route==null?"이동시간 조회 전":com.datecourse.model.TravelRoute.durationText(route.totalTime()));
     }
     /** 공급사 응답이 있는 구간만 시간을 표시하며 미조회 시간을 추정하지 않는다. */
     private void refreshTravelInformation() {
+        courseList.refresh();
         travelSummaryLabel.setText(previewCourse==null?"":travelText(previewCourse));
         if (previewCourse==null) return;
-        var route=routeSummaries.get(previewCourse);
+        var route=cachedRoute(previewCourse);
         for (int index=0;index<placeTable.getItems().size();index++) {
             var row=placeTable.getItems().get(index);
             String travel=previewCourse.plan().travelMode().label()+" · "+(route!=null && index<route.legs().size()

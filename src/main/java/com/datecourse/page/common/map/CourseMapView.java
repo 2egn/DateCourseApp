@@ -39,6 +39,11 @@ public final class CourseMapView {
     private com.datecourse.model.TravelMode routedMode=com.datecourse.model.TravelMode.WALKING;
     /** 현재 코스의 이동수단을 반환하며 코스가 없으면 도보를 사용한다. */
     private com.datecourse.model.TravelMode mode(){return plan==null?com.datecourse.model.TravelMode.WALKING:plan.travelMode();}
+    private long routedPreferencesVersion = -1;
+    /** 자동차 경로에는 도보 탐색 옵션 변경을 적용하지 않는다. */
+    private long currentPreferencesVersion() {
+        return mode() == com.datecourse.model.TravelMode.DRIVING ? 0 : TmapSettings.preferencesVersion();
+    }
     private List<Stop> walkingStops = List.of();
     private TravelRoute walkingRoute;
     private Task<TravelRoute> walkingTask;
@@ -519,18 +524,23 @@ public final class CourseMapView {
         return List.copyOf(stops);
     }
 
-    /** 방문 순서나 이동수단이 바뀌면 이전 경로 요청과 결과를 무효화한다. */
+    /** 방문 순서·이동수단·도보 설정이 바뀌면 이전 요청과 결과를 무효화한다. */
     private boolean synchronizeWalkingRoute() {
         List<Stop> current = currentWalkingStops();
-        if (current.equals(walkingStops) && routedMode==mode()) return false;
+        long preferencesVersion = currentPreferencesVersion();
+        boolean preferencesChanged = routedPreferencesVersion != preferencesVersion;
+        if (current.equals(walkingStops) && routedMode==mode() && !preferencesChanged) return false;
         routedMode=mode();
+        routedPreferencesVersion = preferencesVersion;
         walkingStops = current;
         walkingVersion++;
         walkingPending = false;
         if (walkingTask != null) walkingTask.cancel();
         walkingTask=null;
         walkingRoute = null;
-        walkingMessage = walkingRequested ? "코스가 바뀌었어요. 이동 경로를 다시 확인해 주세요." : "";
+        walkingMessage = walkingRequested ? (preferencesChanged
+                ? "도보 탐색 방식이 바뀌었어요. 이동 경로를 다시 확인해 주세요."
+                : "코스가 바뀌었어요. 이동 경로를 다시 확인해 주세요.") : "";
         publishWalking();
         return true;
     }
@@ -589,9 +599,19 @@ public final class CourseMapView {
         worker.start();
     }
 
+    /** 다른 화면에서 설정을 바꾼 뒤 도착한 결과도 표시하지 않는다. */
+    private boolean isCurrentRouteRequest(Task<TravelRoute> task, long version) {
+        if (walkingVersion != version || walkingTask != task) return false;
+        if (routedPreferencesVersion == currentPreferencesVersion()) return true;
+        synchronizeWalkingRoute();
+        renderWalkingRoute(false);
+        if (automaticWalking) requestWalkingRouteWhenReady();
+        return false;
+    }
+
     /** 최신 경로 요청의 성공 결과만 화면에 반영한다. */
     private void applyRouteSuccess(Task<TravelRoute> task, long version, boolean fitResult) {
-        if (walkingVersion != version || walkingTask != task) return;
+        if (!isCurrentRouteRequest(task, version)) return;
         walkingRoute = task.getValue();
         walkingTask=null;
         walkingMessage = "";
@@ -601,7 +621,7 @@ public final class CourseMapView {
 
     /** 최신 경로 요청의 실패를 기록하고 재시도 안내를 표시한다. */
     private void applyRouteFailure(Task<TravelRoute> task, long version) {
-        if (walkingVersion != version || walkingTask != task) return;
+        if (!isCurrentRouteRequest(task, version)) return;
         com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.TRAVEL_ROUTE,
                 com.datecourse.service.AppDiagnostics.Stage.PROVIDER_REQUEST,task.getException());
         walkingRoute = null;
@@ -632,6 +652,8 @@ public final class CourseMapView {
 
     /** 경로 설정이 바뀌면 준비된 지도에서 다시 조회한다. */
     public void refreshWalkingPreferences() {
+        synchronizeWalkingRoute();
+        renderWalkingRoute(false);
         if (ready && currentWalkingStops().size() >= 2) requestWalkingRoute();
     }
 }

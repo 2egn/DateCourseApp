@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "373dc82a5cc3ac3a70d1b00452345c0ae5e7e61c41a85f9f57318ad81cb49b87",
-      "revision": 30,
+      "fingerprint": "228fd752faf844b2d23d5f5256abb1b67662c79a9527535245ffcfedb89b7ebc",
+      "revision": 31,
       "updated": true,
       "present": true
     },
@@ -903,6 +903,12 @@
     },
     "키보드_조작과_포커스_복귀_2026_11_25.md": {
       "fingerprint": "3d3294e70304877573293b2ff657537dd63a85e89fafdeb325aeb0a01af476e4",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "도보_설정과_지도_경로_동기화_2026_11_25.md": {
+      "fingerprint": "c20377d10e0d9a21e52ddc91fbc359ed9d355256d5a01a004392847135365aac",
       "revision": 1,
       "updated": true,
       "present": true

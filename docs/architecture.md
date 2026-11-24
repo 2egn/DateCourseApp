@@ -89,3 +89,7 @@
 JDK 선택은 `build.gradle`의 21 toolchain과 `gradle.properties`의 자동 검색·환경변수 후보로 관리한다. Gradle 자체 JVM과 앱 도구 JVM은 별개이며 개인 경로는 공유하지 않는다. [여러 JDK 환경의 선택 규칙](site/content/JDK21_자동_검색과_선택_2026_11_25.md).
 
 JDK 21이 로컬 검색에 없으면 `settings.gradle`의 Foojay resolver 1.0.0과 `auto-download=true`로 Gradle 개인 캐시에 준비한다. JDK 바이너리·개인 설치 경로는 저장소에 넣지 않는다. Gradle 자체를 시작할 JVM은 별도로 필요하다.
+
+## 도보 설정 변경과 경로 무효화 · 2026-11-25
+
+`TmapSettings`는 성공적인 설정 저장 뒤 실행 중 버전을 올리고, `CourseMapView`는 방문 순서·이동수단·설정 버전으로 기존 요청과 결과를 무효화한다. 자동 지도는 다시 조회하고 저장 미리보기는 명시적인 조회를 유지한다. 다른 화면에서 바꾼 설정의 늦은 응답도 적용하지 않는다. 자동차에는 도보 설정 무효화를 적용하지 않는다. [설계·검증 범위](site/content/도보_설정과_지도_경로_동기화_2026_11_25.md).
