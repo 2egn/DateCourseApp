@@ -1,12 +1,13 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';
 import {TaskBoard} from '../src/board-store.mjs';
+import {IMPLEMENTATION_REFERENCE as LATEST_REFERENCE} from '../src/board-nov25-followup.mjs';
 import {applyNov25,NOV25_VERSION,NOV25_ADDITIONS,IMPLEMENTATION_REFERENCE} from '../src/board-nov25.mjs';
 
 test('Nov25 adds verified records once while preserving every existing task and unfinished checks',async()=>{
  const db=new DatabaseSync(':memory:');const sql={exec(q,...args){const s=db.prepare(q),rows=s.columns().length?s.all(...args):(s.run(...args),[]);return{toArray:()=>rows};}};
  const board=new TaskBoard({storage:{sql,transactionSync(fn){db.exec('BEGIN');try{const result=fn();db.exec('COMMIT');return result;}catch(error){db.exec('ROLLBACK');throw error;}}}});
  const response=await board.fetch(new Request('https://board.test/api/board',{headers:{'X-Board-User':'fixture'}}));
- assert.deepEqual((await response.json()).implementation,IMPLEMENTATION_REFERENCE);
+ assert.deepEqual((await response.json()).implementation,LATEST_REFERENCE);
  assert.equal(IMPLEMENTATION_REFERENCE.commit,'64d93e3');assert.equal(IMPLEMENTATION_REFERENCE.scope,'master');
  db.prepare('DELETE FROM board_meta WHERE key=?').run(NOV25_VERSION);
  db.prepare('DELETE FROM tasks WHERE id=?').run('JDK21-25');

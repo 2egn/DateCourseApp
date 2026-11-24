@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {DatabaseSync} from 'node:sqlite';
 import {TaskBoard} from '../src/board-store.mjs';
-import {IMPLEMENTATION_REFERENCE as LATEST_REFERENCE} from '../src/board-nov25.mjs';
+import {IMPLEMENTATION_REFERENCE as LATEST_REFERENCE} from '../src/board-nov25-followup.mjs';
 import {applyNov24,NOV24_VERSION,NOV24_ADDITIONS,IMPLEMENTATION_REFERENCE} from '../src/board-nov24.mjs';
 
 test('feature branch sync preserves human changes and incomplete work, and runs only once',async()=>{
