@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "cfa2b5474ee9a60753e7b5f474cedf63065f25fc7e900068e99ee3f8ef5a6387",
-      "revision": 42,
+      "fingerprint": "0788075e82be1c99f1e72421da5dc760eae5612e3749428ca2c873e3c574ae9a",
+      "revision": 43,
       "updated": true,
       "present": true
     },
@@ -944,14 +944,20 @@
       "present": true
     },
     "구현_참조_자료_길잡이_2026_11_25.md": {
-      "fingerprint": "f7c18e0e35e924669f255fe9d4dac6a7bddfc0da9e44aebd71fba137cfab3550",
-      "revision": 2,
+      "fingerprint": "d37d6f8698621395b223f8c6eef418cb4f6383d10bacdf738344b0fdfc208b23",
+      "revision": 3,
       "updated": true,
       "present": true
     },
     "구현_흐름_한눈에_보기_2026_11_25.md": {
-      "fingerprint": "1648d4ea1ee4ae2e4569465d38c3718a6d6a8b99a763a148527d5da0ff753d69",
-      "revision": 2,
+      "fingerprint": "09c5570fa0857f6f14cb77cb76dd0fb784027ab692d2cb73cef6467a88baeec7",
+      "revision": 6,
+      "updated": true,
+      "present": true
+    },
+    "기능별_코드_흐름_2026_11_25.md": {
+      "fingerprint": "7df5bf5ba341d62cc59fef0412251e930efabc0c1832ffbf4590302188a5186a",
+      "revision": 3,
       "updated": true,
       "present": true
     }

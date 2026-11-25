@@ -1,6 +1,6 @@
 # 장소 추천: 실제 순서·논리·한계
 
-[흐름도로 보기](00-flow-map.md)
+[짧은 전체 흐름](00-flow-map.md) · [이 기능의 코드 흐름](10-flow-details.md#recommendation)
 
 [전체 길잡이](README.md) · [모델](02-models.md)
 

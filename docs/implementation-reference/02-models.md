@@ -1,6 +1,6 @@
 # 모델: 값과 책임을 왜 분리했는가
 
-[흐름도로 보기](00-flow-map.md)
+[짧은 전체 흐름](00-flow-map.md) · [이 기능의 코드 흐름](10-flow-details.md#models)
 
 [전체 길잡이](README.md) · [모든 모델의 역할·선언](08-class-index.md)
 

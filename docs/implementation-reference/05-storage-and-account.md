@@ -1,6 +1,6 @@
 # 회원·코스 저장·정정·DB
 
-[흐름도로 보기](00-flow-map.md)
+[짧은 전체 흐름](00-flow-map.md) · [이 기능의 코드 흐름](10-flow-details.md#storage)
 
 [전체 길잡이](README.md). 일반 실행과 관리용 DB 준비를 구분한다.
 

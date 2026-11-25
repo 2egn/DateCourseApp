@@ -1,6 +1,6 @@
 # 원본·카탈로그·가격·운영 도구
 
-[흐름도로 보기](00-flow-map.md)
+[짧은 전체 흐름](00-flow-map.md) · [이 기능의 코드 흐름](10-flow-details.md#data)
 
 [전체 길잡이](README.md) · [현재 파일 쌍](../../data/places/expansion/current.json) · [자료 안내](../../data/README.md)
 

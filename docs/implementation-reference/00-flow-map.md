@@ -1,202 +1,79 @@
 # 구현 흐름 한눈에 보기
 
-[전체 참조 자료](README.md) · 소스 기준 `a0d9436` · 2026-11-25
+**조건을 정하면 → 맞는 장소를 찾아 보여주고 → 사용자가 골라 코스를 만든 뒤 → 저장하고 다시 연다.**
 
-**사용자가 하는 일 → 처리하는 클래스 → 사용하는 기술 → 결과** 순서로 읽는다. 네모는 처리, 마름모는 판단, 원통은 영구 저장이다. 화살표는 실행·데이터 전달 순서이며 모든 단계가 같은 스레드에서 실행된다는 뜻은 아니다.
-
-## 1. 전체 사용자 흐름
+[전체 참조 자료](README.md) · [기능별 코드 흐름](10-flow-details.md) · 소스 기준 `a0d9436` · 2026-11-25
 
 ```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
+%%{init: {"htmlLabels": false, "flowchart": {"htmlLabels": false, "curve": "linear", "rankSpacing": 22}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "18px"}}}%%
 flowchart TD
-    A["① 로그인<br/>Swing · MemberRepository"] --> B["② 기본 조건 설정<br/>출발지 · 인원 · 전체 반경 · 이동수단"]
-    B --> C["③ 다음 장소 검색<br/>활동 · 가격 · 유형 · 특징"]
-    C --> D["④ 후보 비교 · 장소 선택<br/>목록 ↔ 지도 · 상세 카드"]
-    D --> E{"코스를 더 편집?"}
-    E -->|예| C
-    E -->|완료| F["⑤ 계획 확정 · 저장<br/>RoutePlan → SavedCourseRepository"]
-    F --> G["⑥ 저장한 코스 다시 열기<br/>이미지 · 지도 · 장소 목록"]
+    A["① 이동 조건 정하기"] --> B["② 맞는 장소 찾기"]
+    B --> C["③ 골라 코스 만들기"]
+    C --> D["④ 저장 · 다시 열기"]
 ```
 
-**왜 이렇게 나누는가:** 조건 입력·후보 탐색·확정·영구 저장을 구분해 편집 중인 초안과 저장된 코스를 분리한다. [화면별 코드](04-screens-and-map.md)
+**프로그램은 후보를 찾고, 최종 장소와 순서는 사용자가 정한다.** 추천은 직선 거리 기준이고 실제 길찾기는 별도로 조회한다.
 
-## 2. 기본 설정에서 앱 실행까지
+## 예시로 이해하기: 500m 안의 1만 원 이하 카페 찾기
+
+이미 식당을 골랐고, 다음에 갈 카페를 찾는 상황이다. 전체 범위는 **출발지에서 2km**, 다음 범위는 **선택한 식당에서 500m**로 정했다. **포장 가능한 곳**을 고르고, 가격 미확인 포함은 끄고, 표시 수는 5곳으로 정했다.
+
+아래 A~H는 **설명을 위한 가상 장소·가상 값**이다. 실제 DB의 매장·검색 결과나 실행 검증 결과가 아니다. 가격은 1인 1잔 가정에 적용 가능한 유한한 단일 참고 금액으로 두고, 좌표·활동·기본 중복 검사는 이미 통과했다고 가정한다.
 
 ```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
+%%{init: {"htmlLabels": false, "flowchart": {"htmlLabels": false, "curve": "linear", "rankSpacing": 22}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "18px"}}}%%
 flowchart TD
-    A["① Gradle Wrapper<br/>동일한 빌드 도구 사용"] --> B{"JDK 21 검색"}
-    B -->|설치됨| C["로컬 JDK 21 선택"]
-    B -->|없음| D["Foojay resolver<br/>개인 Gradle 캐시에 다운로드"]
-    C --> E["② toolchain 21 · release 21<br/>컴파일 · 검사 · 앱 실행 기준"]
-    D --> E
-    E --> F["③ AppLauncher → MembershipApp<br/>Swing 회원 화면"]
-    F --> G["④ JFXPanel → JavaFX<br/>FXML 코스 화면 · WebView 지도"]
+    A["전체 범위 안 카페<br/>8곳"] -->|조건 검사| B["조건에 맞는 카페<br/>3곳"]
+    B -->|최대 5곳 표시| C["거리순으로 보기<br/>A → F → H"]
 ```
 
-**왜 사용하는가:** Wrapper는 빌드 도구를 맞추고, toolchain은 요구 JDK를 선택하며, release는 대상 API·바이트코드를 제한한다. Gradle 자체 시작 JVM은 별도다. [버전·설정 파일](01-project-and-stack.md)
+**결과는 3곳이다.** 5곳을 요청해도 조건에 맞지 않는 곳을 끼워 넣지 않는다. 사용자가 셋 중 하나를 선택하면 편집 중인 코스에 추가한다.
 
-## 3. 모델이 화면·계산·저장을 연결하는 구조
+<details><summary>어떤 장소가 왜 제외됐는지 보기</summary>
 
-```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
-flowchart TD
-    A["장소 원본 · DB<br/>출처와 가격 근거"] --> P["Place + PlaceDetails<br/>한 장소의 식별 · 위치 · 상세"]
-    P --> Q["PriceEstimate<br/>가격 범위 · 단위 · 근거"]
-    Q --> C["CostEstimate<br/>인원을 적용한 예상 금액"]
-    P --> R["RoutePlan<br/>사용자가 고른 순서 · 반경 · 수단"]
-    R --> S[("SavedCourse<br/>저장 당시 계획 · 장소 스냅샷")]
-    R --> T["실제 길찾기 요청<br/>공급사 API 조회"]
-    T --> V["TravelRoute<br/>실제 구간 · 좌표 · 거리 · 시간"]
-```
+모든 예시 카페는 출발지에서 2km 안에 있다. 표의 거리는 **직전 식당에서의 직선 거리**다. 포장 여부는 자료에서 확인된 상태를 뜻한다.
 
-**왜 분리하는가:** 계획은 사용자의 선택이고 경로는 외부 조회 결과다. 가격은 미확인·추정을 보존해 알 수 없는 값을 확정 금액에 섞지 않는다. [모델 책임·불변성·동일성](02-models.md)
+| 장소 | 거리 | 참고 가격 | 포장 | 선택 결과와 이유 |
+|---|---:|---:|---|---|
+| A | 200m | 8,000원 | 가능 | **남김** — 모든 조건 충족 |
+| B | 300m | 12,000원 | 가능 | 제외 — 1만 원 초과 |
+| C | 700m | 6,000원 | 가능 | 제외 — 다음 범위 500m 초과 |
+| D | 400m | 미확인 | 가능 | 제외 — 가격 미확인 포함을 끈 상태 |
+| E | 450m | 7,000원 | 가능 | 제외 — 이미 코스에 고른 장소 |
+| F | 350m | 9,000원 | 가능 | **남김** — 모든 조건 충족 |
+| G | 250m | 5,000원 | 미확인 | 제외 — 필수로 고른 포장 가능이 확인되지 않음 |
+| H | 450m | 9,000원 | 가능 | **남김** — 모든 조건 충족 |
 
-## 4. 다음 장소 추천 — 조건을 먼저, 표시 개수는 마지막에
+**8곳 → 거리 검사 후 7곳 → 가격 검사 후 5곳 → 이미 선택한 곳 제외 후 4곳 → 포장 검사 후 3곳**이다. 이후 표시 개수 제한을 적용한다. 유형·가격 근거 등 추가 필터는 이 예시에서 지정하지 않았다.
 
-```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
-flowchart TD
-    A["① 화면 입력<br/>onRecommendNext"] --> B["② 조건 객체 · 검증<br/>NextPlaceCondition"]
-    B --> C["③ 전체 범위 안의 장소<br/>nearby: 활동 · 좌표 · 동일성"]
-    C --> D["④ 직전 장소에서 갈 수 있는 범위<br/>다음 반경 검사"]
-    D --> E["⑤ 가격 · 선택 중복 · 유형 · 특징<br/>모든 필수 조건 함께 검사"]
-    E --> F["⑥ 전체 일치 결과<br/>직선 거리순 · 동률 recordId"]
-    F --> G["⑦ 표시 개수 제한<br/>5 · 10 · 20 · 30곳"]
-    G --> H["⑧ 사용자가 선택<br/>onAddCandidate → 편집 초안"]
-    F -. 일치 결과 없음 .-> I["조건 변경 대안 안내<br/>조건을 자동으로 바꾸지는 않음"]
-```
+특징 미확인은 불가능 확정이 아니다. 다만 사용자가 ‘포장 가능’을 필수로 골랐으므로 확인된 장소만 남긴다. 가격 미확인도 0원으로 바꾸지 않는다.
 
-**왜 이 순서인가:** 가까운 일부를 먼저 자르면 그 뒤에 있는 조건 일치 장소를 놓칠 수 있다. 전체 후보에 조건을 적용한 뒤 화면 표시 수를 제한한다. **정렬은 직선 거리 기준**이며 실제 시간 최적화·개인화 학습은 아니다. [메서드·근거·회귀 검사](03-recommendation.md)
+</details>
 
-### 두 반경은 서로 다른 질문에 답한다
+<details><summary>이 예시를 실제 클래스·기술과 연결하기</summary>
 
-```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
-flowchart TD
-    P["후보 장소 P"] --> A{"출발지 S 기준<br/>전체 반경 R 이내?"}
-    A -->|아니오| X["후보에서 제외"]
-    A -->|예| B{"직전 장소 L 기준<br/>다음 반경 r 이내?"}
-    B -->|아니오| X
-    B -->|예| C["범위 조건 통과<br/>가격 · 유형 · 특징도 검사"]
-```
-
-| 검사 | 막으려는 상황 | 예시 |
+| 하는 일 | 사용하는 코드·기술 | 왜 사용하는가 / 어떻게 처리하는가 |
 |---|---|---|
-| 전체 반경 | 장소를 따라가며 출발지에서 계속 멀어짐 | 전체 2km인데 출발지에서 2.1km → 제외 |
-| 다음 반경 | 한 구간을 지나치게 멀리 이동함 | 다음 500m인데 직전 장소에서 700m → 제외 |
+| 입력을 검색 조건으로 묶기 | CourseEditorController.onRecommendNext · NextPlaceCondition | 화면의 활동·가격·반경·특징을 같은 조건 객체로 전달하고 값을 확인 |
+| 범위 안의 카페 찾기 | PlaceSearchService.nearby · 좌표 거리 계산 | 전체 범위·활동·좌표·동일성 검사. 다음 범위는 직전 장소에서 다시 계산 |
+| 조건에 맞지 않는 장소 빼기 | NextPlaceService.matching · Java Stream 필터 | 거리·가격·이미 고른 장소·유형·가격 조건·태그를 적용해 전체 일치 결과 확보 |
+| 결과를 필요한 수만 보여주기 | CourseEditorController.displayCandidates | 모든 필터를 거친 뒤 표시 수 제한. 조건 불일치 후보로 빈자리를 채우지 않음 |
+| 선택한 장소를 코스에 추가하기 | CourseEditorController.onAddCandidate · RoutePlan | 선택 결과를 편집 초안에 반영하고 편집 완료 시 계획으로 전달 |
 
-두 조건의 **교집합**이다. 첫 장소는 직전 장소 대신 출발지를 기준으로 한다. 반경 안이라는 사실은 실제 도로 접근 가능성이나 짧은 이동시간을 보장하지 않는다.
+[추천의 근거·경계·한계](03-recommendation.md) · [범위 두 개를 함께 검사하는 상세 흐름](10-flow-details.md#recommendation)
 
-## 5. 지도 표시와 실제 길찾기는 별도 흐름
+</details>
 
-```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
-sequenceDiagram
-    actor U as 사용자
-    participant C as 화면 Controller
-    participant M as CourseMapView
-    participant S as TravelRouteService
-    participant J as WebView 지도
-    U->>C: 장소 선택 · 코스 편집
-    C->>M: RoutePlan · 후보 · 선택 상태
-    M->>J: JSON으로 마커 · 계획 표시
-    J-->>M: 마커/경로 선택 이벤트
-    M-->>C: MapEventBridge 콜백
-    U->>M: 실제 경로 조회 요청
-    M->>S: 장소 순서 · 수단 · 설정
-    Note over S: 배경 작업에서 공급사 API 조회
-    S-->>M: TravelRoute
-    Note over M: 요청 번호 · 세션 · 설정 버전 확인
-    M->>J: 현재 요청이면 실제 경로 표시
-```
+## 필요한 부분만 더 보기
 
-**왜 사용하는가:** WebView는 웹 지도 SDK를 JavaFX 화면에 넣고, 브리지는 Java와 JavaScript의 선택·표시를 연결한다. 요청 검사는 늦은 응답이 새 코스에 섞이는 것을 막는다. [지도 모듈·비동기·포커스](04-screens-and-map.md)
+| 알고 싶은 것 | 짧은 답 | 상세 흐름 · 코드 설명 |
+|---|---|---|
+| 기본 설정·기술 스택은? | Java 21로 빌드·실행 기준을 맞추고 JavaFX 화면을 연다 | [실행 흐름](10-flow-details.md#setup) · [버전·설정](01-project-and-stack.md) |
+| 모델은 왜 나눴나? | 장소 정보·사용자 계획·실제 경로 결과를 서로 다른 값으로 다룬다 | [모델 연결](10-flow-details.md#models) · [값의 의미](02-models.md) |
+| 후보는 어떻게 찾나? | 범위·가격·특징을 만족하는 장소를 직선 거리순으로 보여준다 | [추천 과정](10-flow-details.md#recommendation) · [논리·한계](03-recommendation.md) |
+| 지도는 어떻게 연결하나? | Java 화면과 웹 지도가 JSON·이벤트를 주고받는다 | [지도 연결](10-flow-details.md#map) · [관련 클래스](04-screens-and-map.md) |
+| 회원·코스는 어떻게 저장하나? | 입력 비밀번호를 검증하고 회원별 코스를 한 묶음으로 저장한다 | [회원·저장·다시 열기](10-flow-details.md#storage) · [DB 처리](05-storage-and-account.md) |
+| 장소 자료는 어디서 오나? | 공공 원본을 같은 형식으로 맞추고 출처·가격 근거를 함께 보관한다 | [자료 준비](10-flow-details.md#data) · [도구·근거](06-data-and-operations.md) |
+| 구현을 어떻게 확인하나? | 변경 범위에 맞는 자동 검사와 문서·화면 확인을 구분한다 | [검증·공유](10-flow-details.md#verification) · [검사 범위](07-verification-and-team-site.md) |
 
-## 6. 로그인과 코스 저장
-
-```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
-flowchart TD
-    A["가입 시 비밀번호"] --> B["PasswordHash.create<br/>개별 salt + PBKDF2 반복 계산"]
-    B --> C[("회원 DB<br/>형식 · 반복 수 · salt · 해시")]
-    D["로그인 입력"] --> E["MemberRepository.login<br/>회원 조회 → PasswordHash.verify"]
-    C --> E
-    E --> F{"인증 성공?"}
-    F -->|예| G["UserSession · UserContext<br/>회원별 조회 · 캐시"]
-    F -->|아니오| H["실패 안내"]
-```
-
-```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
-flowchart TD
-    A["확정한 RoutePlan"] --> B["SavedCourseRepository.persist<br/>회원 소유 조건 · 트랜잭션 시작"]
-    B --> C["코스 본문 · 방문 순서 · 반경 · 수단<br/>장소 스냅샷 저장"]
-    C --> D{"정상 처리?"}
-    D -->|예| E["commit → 목록 캐시 무효화"]
-    D -->|실패| F["rollback → 오류 안내"]
-    E --> G["findAll → readPlaceSnapshot<br/>저장 당시 코스 복원"]
-```
-
-**왜 사용하는가:** JDBC 트랜잭션은 본문과 방문 목록이 일부만 저장되는 일을 막고, 스냅샷은 원본 변경과 별개로 저장 당시 정보를 복원한다. 현재 Planner는 `saveWithoutPreview`를 사용한다. [DB·해시·동시 편집 한계](05-storage-and-account.md)
-
-### 저장 이미지와 지도 준비 상태
-
-```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
-flowchart TD
-    A["저장 코스 선택"] --> B{"이미지 확인 상태"}
-    B -->|확인 중| C["로딩 유지<br/>이미지 없음으로 간주하지 않음"]
-    B -->|이미지 있음| D["저장 PNG 표시"]
-    D --> E{"지도 탭 선택"}
-    E -->|이번 세션에서 준비됨| H["지도 표시"]
-    E -->|아직 준비 안 됨| F["지도 불러오기 버튼"]
-    F -->|사용자가 누름| H
-    B -->|이미지 없음 확인| H
-    H --> I["실제 경로는 별도 요청<br/>기본 연결과 구분"]
-    H -. 지도 실패 .-> J["로컬 연결도"]
-```
-
-**DB에 저장한 PNG**, **로그인 세션의 지도 준비 여부**, **현재 요청의 실제 길찾기 결과**는 보관 위치와 수명이 다르다.
-
-## 7. 공공 원본에서 추천에 쓰이는 자료까지
-
-```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
-flowchart TD
-    A["① 공공 원본<br/>출처 · 기준일 · 지문"] --> B["② 정규화 · 품질 검사<br/>ID · 좌표 · 분류 · 보류"]
-    B --> C["③ 지역별 확장<br/>기존 자료 보존 · 구군 분산"]
-    C --> D["④ 속성 · 가격 근거 연결<br/>참고 / 추정 / 미확인 구분"]
-    D --> E["⑤ 전체 파일 쌍 · current.json<br/>Java 모델 · 지문 · 보존 검증"]
-    E --> F["⑥ 명시적 DB 적재<br/>트랜잭션 · 보호 · 반복 검증"]
-    F --> G[("운영 카탈로그")]
-    G --> H["PlaceRepository<br/>추천 · 지도 · 상세"]
-```
-
-**왜 사용하는가:** 정규화는 서로 다른 원본을 같은 모델에 연결하고, 지문·보존 검사는 기존 자료와 이용자 데이터를 지키면서 확장한 근거를 남긴다. 파일 수정과 운영 DB 반영은 별도 작업이다. [데이터 도구·출처·표본 한계](06-data-and-operations.md)
-
-## 8. 검증과 문서 공유
-
-```mermaid
-%%{init: {"flowchart": {"curve": "linear", "rankSpacing": 28, "nodeSpacing": 20}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "16px"}}}%%
-flowchart TD
-    A["코드 · 자료 · 문서 변경"] --> B["변경 범위에 맞는 검사<br/>JUnit/H2 · Python · Node"]
-    B --> C["문서 대조<br/>링크 · 메서드 · 소스 기준"]
-    C --> D["Quartz 로컬 빌드<br/>Markdown → 사이트"]
-    D --> E["공유 가능한 원본 · 검증 기록"]
-    E -. 별도 승인된 운영 절차 .-> F["원격 반영 · 사이트 배포"]
-    G["팀원 사이트 접속"] --> H["Worker · GitHub OAuth<br/>접근 권한 확인"]
-    H --> I["문서 · 공유 보드<br/>Durable Object / SQLite"]
-```
-
-**왜 사용하는가:** 자동 검사는 규칙의 회귀를 확인하고, 문서는 코드와 기술 선택의 근거를 공유한다. 로컬 검사 통과·푸시·운영 배포는 각각 다른 사건이다. 팀 사이트 인증은 앱 회원 인증과 별개다. [검사 범위·사이트 역할](07-verification-and-team-site.md)
-
-## 코드 설명으로 이어가기
-
-| 시각 자료에서 확인한 내용 | 근거를 더 볼 곳 |
-|---|---|
-| 사용 기술 · 버전 · 설정 | [기본 설정·스택](01-project-and-stack.md) |
-| 모델 책임 · 값의 의미 | [모델 논리](02-models.md) |
-| 후보를 남기고 제외하는 이유 | [추천 논리](03-recommendation.md) |
-| 특정 클래스의 대표 메서드 | [Java 전체 색인](08-class-index.md) |
-| SQL · 도구 · 자료 · 자원 위치 | [프로젝트 전체 색인](09-project-index.md) |
+클래스 하나를 찾을 때는 [Java 색인](08-class-index.md), SQL·설정·자료 파일을 찾을 때는 [전체 파일 색인](09-project-index.md)을 사용한다.

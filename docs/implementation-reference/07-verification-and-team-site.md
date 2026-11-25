@@ -1,6 +1,6 @@
 # 검증·팀 사이트·협업 지원
 
-[흐름도로 보기](00-flow-map.md)
+[짧은 전체 흐름](00-flow-map.md) · [이 기능의 코드 흐름](10-flow-details.md#verification)
 
 [전체 길잡이](README.md). 앱 기능과 개발/운영 지원 기능을 구분한다.
 
