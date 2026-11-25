@@ -1,0 +1,146 @@
+[
+  {
+    "district": "강서구",
+    "added": 300,
+    "distinct500mCells": 126,
+    "distinctNamedNeighborhoods": 9,
+    "largestNeighborhood": [
+      [
+        "명지1동",
+        164
+      ]
+    ]
+  },
+  {
+    "district": "금정구",
+    "added": 300,
+    "distinct500mCells": 74,
+    "distinctNamedNeighborhoods": 16,
+    "largestNeighborhood": [
+      [
+        "장전1동",
+        79
+      ]
+    ]
+  },
+  {
+    "district": "기장군",
+    "added": 300,
+    "distinct500mCells": 133,
+    "distinctNamedNeighborhoods": 5,
+    "largestNeighborhood": [
+      [
+        "일광읍",
+        153
+      ]
+    ]
+  },
+  {
+    "district": "동구",
+    "added": 300,
+    "distinct500mCells": 30,
+    "distinctNamedNeighborhoods": 12,
+    "largestNeighborhood": [
+      [
+        "초량3동",
+        72
+      ]
+    ]
+  },
+  {
+    "district": "동래구",
+    "added": 300,
+    "distinct500mCells": 57,
+    "distinctNamedNeighborhoods": 13,
+    "largestNeighborhood": [
+      [
+        "명륜동",
+        96
+      ]
+    ]
+  },
+  {
+    "district": "북구",
+    "added": 300,
+    "distinct500mCells": 57,
+    "distinctNamedNeighborhoods": 13,
+    "largestNeighborhood": [
+      [
+        "덕천2동",
+        77
+      ]
+    ]
+  },
+  {
+    "district": "사상구",
+    "added": 300,
+    "distinct500mCells": 65,
+    "distinctNamedNeighborhoods": 12,
+    "largestNeighborhood": [
+      [
+        "괘법동",
+        139
+      ]
+    ]
+  },
+  {
+    "district": "사하구",
+    "added": 300,
+    "distinct500mCells": 76,
+    "distinctNamedNeighborhoods": 16,
+    "largestNeighborhood": [
+      [
+        "당리동",
+        64
+      ]
+    ]
+  },
+  {
+    "district": "서구",
+    "added": 300,
+    "distinct500mCells": 43,
+    "distinctNamedNeighborhoods": 13,
+    "largestNeighborhood": [
+      [
+        "부민동",
+        58
+      ]
+    ]
+  },
+  {
+    "district": "연제구",
+    "added": 300,
+    "distinct500mCells": 40,
+    "distinctNamedNeighborhoods": 12,
+    "largestNeighborhood": [
+      [
+        "연산4동",
+        85
+      ]
+    ]
+  },
+  {
+    "district": "영도구",
+    "added": 300,
+    "distinct500mCells": 46,
+    "distinctNamedNeighborhoods": 11,
+    "largestNeighborhood": [
+      [
+        "남항동",
+        56
+      ]
+    ]
+  },
+  {
+    "district": "중구",
+    "added": 190,
+    "distinct500mCells": 16,
+    "distinctNamedNeighborhoods": 9,
+    "largestNeighborhood": [
+      [
+        "광복동",
+        48
+      ]
+    ]
+  }
+]

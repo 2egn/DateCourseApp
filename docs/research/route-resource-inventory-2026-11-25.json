@@ -1,0 +1,243 @@
+{
+  "scope": "Offline inventory of existing local public-source resources; candidate snapshot 5628, live import tracked separately. No new provider or DB queries.",
+  "places": 5628,
+  "tags": {
+    "GOOD_PRICE": 173,
+    "NEAR_SUBWAY": 3266,
+    "NEAR_BUS": 5164,
+    "MODEL_RESTAURANT": 4,
+    "FREE_ADMISSION": 18
+  },
+  "nearestTransitRows": 5628,
+  "museumRawRows": 39,
+  "strictMuseumHoursMatches": 23,
+  "museumSchedules": [
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b6b6e11b0673809a1375a7f7",
+      "referenceDate": "2025-11-27",
+      "weekdayOpen": "11:00",
+      "weekdayClose": "20:00",
+      "holidayOpen": "11:00",
+      "holidayClose": "20:00",
+      "restDays": "1월1일+추석 당일+설 당일"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:dd37d113291f15027d6931df",
+      "referenceDate": "2025-11-24",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "17:00",
+      "holidayOpen": "00:00",
+      "holidayClose": "00:00",
+      "restDays": "매주 일요일, 공휴일, 근로자의 날"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:9618f9ac5ce9bacca62b871e",
+      "referenceDate": "2025-11-27",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "16:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "16:00",
+      "restDays": "토+일+국경일+개교기념일"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:c20e1e1a4c3c3a2a835504cd",
+      "referenceDate": "2025-11-24",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "18:00",
+      "restDays": "매월 둘째, 넷째 일요일"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:3604455069f66a17015a18b8",
+      "referenceDate": "2025-11-24",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "17:00",
+      "holidayOpen": "00:00",
+      "holidayClose": "00:00",
+      "restDays": "토·일요일, 공휴일"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:210c3c3eff9da6991dee8954",
+      "referenceDate": "2025-11-24",
+      "weekdayOpen": "09:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "09:00",
+      "holidayClose": "21:00",
+      "restDays": "1월 1일, 매주 월요일, 단 월요일이 공휴일인 경우 다음날 휴관"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:d83e14c58b8ce66e51037b0d",
+      "referenceDate": "2025-11-24",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "18:00",
+      "restDays": "매주 월요일, 단 국가공휴일과 월요일이 겹칠 경우 당일은 개관하고 다음날 휴관"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:5c7a598df5b5c8a2a491219f",
+      "referenceDate": "2026-09-04",
+      "weekdayOpen": "09:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "09:00",
+      "holidayClose": "18:00",
+      "restDays": "1.1 휴관매주 월요일 휴관"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:8eede64ea0cace4527f5e565",
+      "referenceDate": "2026-04-08",
+      "weekdayOpen": "09:30",
+      "weekdayClose": "17:30",
+      "holidayOpen": "09:30",
+      "holidayClose": "17:30",
+      "restDays": "매주 월요일, 1월 1일, 설날, 추석"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:c949f48fd2d15099ce6528e2",
+      "referenceDate": "2025-11-20",
+      "weekdayOpen": "14:00",
+      "weekdayClose": "16:00",
+      "holidayOpen": "14:00",
+      "holidayClose": "16:00",
+      "restDays": "금 제외"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:7322198dbe6de15aba994a32",
+      "referenceDate": "2025-11-20",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "18:00",
+      "restDays": "월"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:8a6f41caa326b43c11ae4c04",
+      "referenceDate": "2025-11-20",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "18:00",
+      "restDays": "월+명절"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:7ede8801b529f9c96343c535",
+      "referenceDate": "2025-11-20",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "19:00",
+      "restDays": "월"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:a20c1341aeec8a1e8cb0ada2",
+      "referenceDate": "2025-11-20",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "18:00",
+      "restDays": "월"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b6867a13bf083ba27c18e2fb",
+      "referenceDate": "2026-09-04",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "18:00",
+      "restDays": "1월 1일, 매주 월요일(월요일이 휴일인 경우, 화요일)"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:43acf198da26e1a75400a75f",
+      "referenceDate": "2025-11-20",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "19:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "20:00",
+      "restDays": "연중무휴"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:8a0d979ef5a28b857c41bc6d",
+      "referenceDate": "2025-11-20",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "17:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "17:00",
+      "restDays": "공휴일"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:5a7a699a75c79c20c8b9507f",
+      "referenceDate": "2025-11-19",
+      "weekdayOpen": "09:00",
+      "weekdayClose": "17:00",
+      "holidayOpen": "00:00",
+      "holidayClose": "00:00",
+      "restDays": "일+공휴일"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:b27afe3c010cbd99463603c7",
+      "referenceDate": "2025-11-19",
+      "weekdayOpen": "11:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "00:00",
+      "holidayClose": "00:00",
+      "restDays": "일+월+명절연휴"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:4098d57a878689a445904ded",
+      "referenceDate": "2026-06-18",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "17:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "17:00",
+      "restDays": "일요일+월요일+공휴일 및 명절연휴기간"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:539c9b8cbe577126b3e1b399",
+      "referenceDate": "2026-07-18",
+      "weekdayOpen": "09:00",
+      "weekdayClose": "18:00",
+      "holidayOpen": "09:00",
+      "holidayClose": "18:00",
+      "restDays": "1월 1일+설 및 추석연휴+매주 월요일(공휴일이면 그 다음 첫번째 평일 휴관)"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:461ba22ff4e5e86537294bf3",
+      "referenceDate": "2025-11-18",
+      "weekdayOpen": "09:30",
+      "weekdayClose": "17:00",
+      "holidayOpen": "09:30",
+      "holidayClose": "17:00",
+      "restDays": "월요일+법정공휴일+개교기념일(11월 1일)(박물관 사정에 따라 변경될 수 있음)"
+    },
+    {
+      "placeId": "DCA-DEMO-PUBLIC-STD:15017323:84a29f9f33c65596214c94b5",
+      "referenceDate": "2026-01-01",
+      "weekdayOpen": "10:00",
+      "weekdayClose": "21:00",
+      "holidayOpen": "10:00",
+      "holidayClose": "21:00",
+      "restDays": "연중무휴"
+    }
+  ],
+  "additionalFacilityFacts": 45,
+  "additionalFacilitiesByKind": {
+    "RESTROOM": 33,
+    "PARKING": 10,
+    "FREE_ADMISSION": 1,
+    "FREE_AUDIO_GUIDE": 1
+  },
+  "ratingsGreaterThanZero": 0,
+  "notes": [
+    "Museum join requires exact normalized name and <=1m coordinates, exactly one raw match. Recorded hours are not a fresh open-now check.",
+    "Bus source has stops only; no routes, headways or schedules. Railway rows have line and transfer labels, not complete operating timetables.",
+    "Additional facility facts are separate review materials, not all imported into application features.",
+    "Raw place snapshot attribute count is not the imported application count: PublicPlaceFacts converts the separate tag pack to typed attribute facts during import."
+  ],
+  "inputPlaceSnapshotAttributeFactCount": 0,
+  "inputs": {
+    "data/places/expansion/busan-balanced-2026-11-25/places.json": "97d12a8e61124cbae487fb1ffbb4f5ce8a20d0c3fe9bc54cf5465855a91b1e31",
+    "data/places/expansion/busan-balanced-2026-11-25/appeal/demo_appeal_facts.json": "845ea3213499f6f9fd709419d5410caf171291d8157d41903629b42df6cb8b0e",
+    "data/places/public/busan/raw/busan_standard_sources.json": "b0191185be7562ebebda56c94ae39fa8d5cc99d71a67cde3bb44178aa0e9f9f4"
+  }
+}

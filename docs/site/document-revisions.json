@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "6126e29a59a5678f8747e289d1fcf938f841db1347798d79d55e315aec59d88d",
-      "revision": 37,
+      "fingerprint": "6a419b975b9feb6a0e3a2b62d66328298f3f769ffae18278356fea8c5c9e9c39",
+      "revision": 38,
       "updated": true,
       "present": true
     },
@@ -921,6 +921,18 @@
     },
     "JavaFX21_유지보수_패치_2026_11_25.md": {
       "fingerprint": "71c03e819b4baf1a5239a17c4272643d7bf662966bca049e38d7614df76d6647",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "보유_자원의_경로_추천_활용_탐색_2026_11_25.md": {
+      "fingerprint": "11dda9f1f786f97e238dfe41b7ce9e3adc8a7c738fc9f38a6a9c98bba3b892e2",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "부산_16개_구군_분산_확장_2026_11_25.md": {
+      "fingerprint": "c1087d34da73fc4afb0ad37a5c8e9024e99570b43c41dc7d2d8a8a02a980da6b",
       "revision": 1,
       "updated": true,
       "present": true

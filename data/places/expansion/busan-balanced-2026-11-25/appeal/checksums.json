@@ -15,7 +15,7 @@
   "outputs": {
     "additional_facility_facts.json": "c8dff4f1302a5e4e800790543da2526ee4081f94c2a8db02e2761c875b0be6c2",
     "busanjin_model_restaurants.csv": "1837a8ad89cc810e802b7d4ec91d9751f7ded64f7f0ade79015c91c5904bc1be",
-    "demo_appeal_facts.json": "112ac3c190cf015868fd25c561b222b8c7c83dc91401b39cf9f5659debd683a3",
+    "demo_appeal_facts.json": "845ea3213499f6f9fd709419d5410caf171291d8157d41903629b42df6cb8b0e",
     "demo_nearest_transit.csv": "65b3440c731808f841af6dd64ef6b1fee986f7881c1647b8483b58ce122e7b36",
     "designation_links.csv": "25be4e0f8b8c6b7b13bf0ab14151c751d829054b6eae43cc549f8cdabf6687b5",
     "designation_review_needed.json": "278fe3405f0f8b7fbb5e3fac293ae02bec957166465b8b6ac8218c8de750cfc8",
@@ -27,6 +27,6 @@
     "sources": "data/places/pricing/2026-11-24/sources.json",
     "sourcesSha256": "04dab298040f8b339cc405cd4c7c53ef366bd4a1051d53eabac8a8ba6eb328d1",
     "prePriceDatasetSha256": "3fc81183a4e69396dd8a40941d5ce82c3c56d21db5c131120386cc21f73d3b92",
-    "finalDatasetSha256": "e59508532aebe212d20a7c0d67eb0a6fd563c010596f69480064870ab64fab6f"
+    "finalDatasetSha256": "97d12a8e61124cbae487fb1ffbb4f5ce8a20d0c3fe9bc54cf5465855a91b1e31"
   }
 }

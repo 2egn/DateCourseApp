@@ -65,3 +65,5 @@ node docs/site/tools/build.mjs
 문서 빌드는 기존 로컬 Quartz(`build/docs-tools/quartz`)와 OneDrive 학습 노트를 사용한다. 경로가 다르면 `DOCS_NOTES_DIR`를 지정한다. 이 폴더를 정리하는 작업은 OneDrive 원본을 이동하지 않는다.
 
 사이트 배포 설정은 `site/wrangler.jsonc`, 빌드 결과는 `site/public/`에 있다. 폴더 이동만으로 재배포되지는 않는다. 인증·배포의 상세 절차는 `site/README.md`를 참고한다.
+
+[현재 보유 자원의 추천 활용 탐색 · 2026-11-25](research/route-resource-exploration-2026-11-25.md): 연결 가능성·교통 거리·시간·가격 근거·운영시간·시설의 활용 상태와 오프라인 비교. 구현 완료와 구분한 개선 후보다.

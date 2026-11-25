@@ -1,0 +1,89 @@
+{
+  "scope" : "Exploratory bounded backtracking through at most the nearest five eligible candidates per stage; offline, fixed meal-cafe-culture sequence, no route APIs or DB; not production behavior, real travel time or user completion rate",
+  "inputs" : {
+    "data/places/expansion/busan-balanced-2026-11-25/places.json" : "97d12a8e61124cbae487fb1ffbb4f5ce8a20d0c3fe9bc54cf5465855a91b1e31",
+    "data/places/expansion/busan-balanced-2026-11-25/appeal/demo_appeal_facts.json" : "845ea3213499f6f9fd709419d5410caf171291d8157d41903629b42df6cb8b0e",
+    "data/places/expansion/busan-balanced-2026-11-25/rehearsal-report.json" : "92b62ed69412445da94ecf9c13195fca4621046f0bac1503fd88dc51c9c72895",
+    "data/places/expansion/busan-balanced-2026-11-25/rehearsal-scenarios.json" : "dc1aceb6139b91b4a384d9971a22c331cb0c534e2571fc99e7fe20625a09e209"
+  },
+  "candidateLimitPerStage" : 5,
+  "scenarioCount" : 696,
+  "greedyCompleted" : 535,
+  "testedIncompleteScenarios" : 161,
+  "rescuedIncompleteScenarios" : 19,
+  "exploratoryCompleted" : 554,
+  "examples" : [ {
+    "origin" : "가야",
+    "mode" : "TRANSIT",
+    "radius" : 5000,
+    "legRadius" : 1500,
+    "priceCap" : 10000,
+    "includeUnknown" : false,
+    "greedyVisited" : 2,
+    "alternative" : [ "SBIZ:MA0101202307A0052144", "SBIZ:MA010120220813756768", "STD:15017323:9618f9ac5ce9bacca62b871e" ]
+  }, {
+    "origin" : "수영",
+    "mode" : "WALKING",
+    "radius" : 2000,
+    "legRadius" : 1000,
+    "priceCap" : 20000,
+    "includeUnknown" : false,
+    "greedyVisited" : 2,
+    "alternative" : [ "SBIZ:MA010120220811424537", "SBIZ:MA010120220807886520", "STD:15017323:43acf198da26e1a75400a75f" ]
+  }, {
+    "origin" : "수영",
+    "mode" : "TRANSIT",
+    "radius" : 5000,
+    "legRadius" : 1500,
+    "priceCap" : 10000,
+    "includeUnknown" : false,
+    "greedyVisited" : 2,
+    "alternative" : [ "SBIZ:MA010120220811424537", "SBIZ:MA010120220807886520", "STD:15017323:8a0d979ef5a28b857c41bc6d" ]
+  }, {
+    "origin" : "수영",
+    "mode" : "TRANSIT",
+    "radius" : 5000,
+    "legRadius" : 1500,
+    "priceCap" : 20000,
+    "includeUnknown" : false,
+    "greedyVisited" : 2,
+    "alternative" : [ "SBIZ:MA010120220811424537", "SBIZ:MA010120220807886520", "STD:15017323:43acf198da26e1a75400a75f" ]
+  }, {
+    "origin" : "민락",
+    "mode" : "TRANSIT",
+    "radius" : 5000,
+    "legRadius" : 1500,
+    "priceCap" : 20000,
+    "includeUnknown" : false,
+    "greedyVisited" : 2,
+    "alternative" : [ "SBIZ:MA010120220810807803", "SBIZ:MA0101202212A0027594", "STD:15017323:43acf198da26e1a75400a75f" ]
+  }, {
+    "origin" : "보수·대청",
+    "mode" : "WALKING",
+    "radius" : 1000,
+    "legRadius" : 500,
+    "priceCap" : 10000,
+    "includeUnknown" : false,
+    "greedyVisited" : 2,
+    "alternative" : [ "SBIZ:MA0101202504A0024378", "SBIZ:MA0101202502A0037683", "STD:15017323:461ba22ff4e5e86537294bf3" ]
+  }, {
+    "origin" : "보수·대청",
+    "mode" : "WALKING",
+    "radius" : 1000,
+    "legRadius" : 500,
+    "priceCap" : 20000,
+    "includeUnknown" : false,
+    "greedyVisited" : 2,
+    "alternative" : [ "SBIZ:MA0101202504A0024378", "SBIZ:MA0101202502A0037683", "STD:15017323:461ba22ff4e5e86537294bf3" ]
+  }, {
+    "origin" : "영주",
+    "mode" : "WALKING",
+    "radius" : 2000,
+    "legRadius" : 1000,
+    "priceCap" : 10000,
+    "includeUnknown" : false,
+    "greedyVisited" : 2,
+    "alternative" : [ "SBIZ:MA010120220812979563", "SBIZ:MA010120220810622114", "STD:15017323:461ba22ff4e5e86537294bf3" ]
+  } ],
+  "elapsedSeconds" : 0.7857852
+}

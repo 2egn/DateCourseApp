@@ -25,3 +25,15 @@ gradle.projectsEvaluated {
         if(app.findProperty('placeRehearsalMode')=='price-update') args 'price-update'
     }
 }
+
+// 기존 추천 조건만 사용하며 경로 공급사 API와 DB는 호출하지 않는다.
+gradle.projectsEvaluated {
+    def app=gradle.rootProject
+    app.tasks.register('exploreCatalogRoutes', JavaExec) {
+        group='verification'
+        dependsOn app.tasks.testClasses
+        classpath=app.sourceSets.test.runtimeClasspath
+        mainClass='com.datecourse.db.RouteResourceProbe'
+        args app.property('placeDataset'),app.property('placeFacts'),app.property('placeRehearsal'),app.property('placeScenarios'),app.property('placeReport')
+    }
+}

@@ -82,3 +82,5 @@ src/
 JavaFX UI·WebView 유지보수 버전도 `build.gradle`의 `javafx.version`에서 고정한다. 현재 21.0.13.1이며 [같은 LTS 계열 비교 결과](../docs/site/content/JavaFX21_유지보수_패치_2026_11_25.md)를 참고한다.
 
 실제 지도 선택 검사의 Windows 배율 재현은 `CourseMapCaptureLiveTest.verifyBufferedEdgeAndAttribution`과 `build.gradle`의 `coursePreviewLiveTest`에서 관리한다. [125%·150% 실행법과 확인 범위](../docs/site/content/지도_렌더링_여유_영역_2026_11_24.md).
+
+추천 자원 탐색용 `RouteResourceProbe`는 `NextPlaceService`를 재사용하는 오프라인 유지보수 도구이며 기본 앱에는 포함하지 않는다. [활용 가능 요소·기존 연결 상태·탐색 실험](../docs/research/route-resource-exploration-2026-11-25.md)을 확인한다.

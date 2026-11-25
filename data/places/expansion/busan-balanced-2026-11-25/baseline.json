@@ -24,6 +24,9 @@
     "priceImportVerification": "data/places/expansion/jung-gu-2026-11-25/price-import-verification.json",
     "previousMetadataCorrection": "data/places/pricing/clock-correction-2026-11-24/correction-result.json"
   },
-  "finalDatasetSha256": "e59508532aebe212d20a7c0d67eb0a6fd563c010596f69480064870ab64fab6f",
-  "finalFactsSha256": "112ac3c190cf015868fd25c561b222b8c7c83dc91401b39cf9f5659debd683a3"
+  "finalDatasetSha256": "97d12a8e61124cbae487fb1ffbb4f5ce8a20d0c3fe9bc54cf5465855a91b1e31",
+  "finalFactsSha256": "845ea3213499f6f9fd709419d5410caf171291d8157d41903629b42df6cb8b0e",
+  "originalPreparedCommit": "5ecb907",
+  "originalPreparedDatasetSha256": "e59508532aebe212d20a7c0d67eb0a6fd563c010596f69480064870ab64fab6f",
+  "originalPreparedFactsSha256": "112ac3c190cf015868fd25c561b222b8c7c83dc91401b39cf9f5659debd683a3"
 }

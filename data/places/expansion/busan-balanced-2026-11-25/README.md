@@ -34,6 +34,7 @@ foreach ($catalogPolicy in Get-ChildItem "$catalogPack/policies/*.json" | Sort-O
   if ($LASTEXITCODE -ne 0) { throw '장소 생성 실패' }
   $catalogBaseline = "$catalogStage/places.json"
 }
+python -c "import json,sys; from pathlib import Path; p=Path(sys.argv[1]); d=json.loads(p.read_text(encoding='utf-8')); d['title']='부산 16개 구·군 분산 확대 공공자료 · 추정 가격'; p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')" $catalogBaseline
 python tools/collect_busan_appeal_data.py --offline --dataset $catalogBaseline --output build/balanced-rebuild/appeal --baseline-dataset data/places/expansion/jung-gu-2026-11-25/places.json --baseline-facts data/places/expansion/jung-gu-2026-11-25/appeal/demo_appeal_facts.json
 python tools/supplement_place_prices.py --dataset $catalogBaseline --facts build/balanced-rebuild/appeal/demo_appeal_facts.json --sources data/places/pricing/2026-11-24/sources.json --output build/balanced-final
 ```
@@ -43,3 +44,7 @@ python tools/supplement_place_prices.py --dataset $catalogBaseline --facts build
 운영 적용에는 `tools/catalog-ops/verify.init.gradle`의 `verifyCatalogExpansion`을 사용하고 기준본·기준 속성은 위 중구 전체 파일 쌍으로 지정한다. 먼저 기본 읽기 전용 대조를 수행하며 명시적 `-PplaceExpansionMode=apply`에서만 쓴다. 운영 적용 후에는 2,138곳 기준본으로 다시 실행하지 말고 현재 포인터와 결과부터 확인한다. 실제 적재·반복 검증 성공 전에는 운영 완료로 표시하지 않는다.
 
 Java 모의 코스 696개에서 세 활동 선택은 373→535, 기존 코스 조건 탈락·단계 수 감소는 0이었다. 고정 최근접 선택의 오프라인 비교이며 실제 이동 경로·사용자 완료율·추천 품질 점수는 아니다. Python 도구 32개도 통과했다. 앱은 DB를 읽으며 기존 장소 캐시는 다시 불러오거나 재시작해야 갱신된다.
+
+구·군 내부 신규 장소는 500m 격자 16~133개에 걸쳐 있다. 동·읍별 같은 개수는 아니며 강서구 명지1동 164/300곳, 기장군 일광읍 153/300곳처럼 원본 밀도와 기존 업종 순환 선택에 따른 편중이 남는다. `spatial-summary.json`의 격자·행정동 분포를 함께 확인한다. 실제 면적·인구·업소 밀도에 비례한 대표성이나 동별 균등 표본을 주장하지 않는다.
+
+최초 준비 커밋 `5ecb907` 뒤 전체 자료의 표제만 부산 전역으로 정리했다. 장소 객체·속성 행·생성 시각·운영 payload는 동일하다. 최초/최종 파일 지문은 `baseline.json`에 구분했다.

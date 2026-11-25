@@ -190,8 +190,8 @@
     }
   ],
   "note": "Targets are capped by qualified source availability. Previously published places remain unchanged; this is geographic coverage, not a representative statistical sample.",
-  "datasetSha256": "e59508532aebe212d20a7c0d67eb0a6fd563c010596f69480064870ab64fab6f",
-  "factsSha256": "112ac3c190cf015868fd25c561b222b8c7c83dc91401b39cf9f5659debd683a3",
+  "datasetSha256": "97d12a8e61124cbae487fb1ffbb4f5ce8a20d0c3fe9bc54cf5465855a91b1e31",
+  "factsSha256": "845ea3213499f6f9fd709419d5410caf171291d8157d41903629b42df6cb8b0e",
   "existingPlaceObjectsPreserved": true,
   "existingFactsPreserved": true,
   "categories": {
@@ -204,5 +204,6 @@
     "UNKNOWN": 2513,
     "REFERENCE": 23
   },
-  "addedPlaces": 3490
+  "addedPlaces": 3490,
+  "metadataNote": "Normalized whole-Busan title only; existing and new place objects, fact rows and generatedAt unchanged."
 }
