@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "6c3b590856d08749e4e0da0e0f34abcaaa78bd542d5184f5b8fa1dcc36942d31",
-      "revision": 41,
+      "fingerprint": "cfa2b5474ee9a60753e7b5f474cedf63065f25fc7e900068e99ee3f8ef5a6387",
+      "revision": 42,
       "updated": true,
       "present": true
     },
@@ -944,8 +944,14 @@
       "present": true
     },
     "구현_참조_자료_길잡이_2026_11_25.md": {
-      "fingerprint": "2c0bcd28649dda7ad7085c5fa75f2e79a634774dfc4a5833ecf335ffa304d5f6",
-      "revision": 1,
+      "fingerprint": "f7c18e0e35e924669f255fe9d4dac6a7bddfc0da9e44aebd71fba137cfab3550",
+      "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "구현_흐름_한눈에_보기_2026_11_25.md": {
+      "fingerprint": "1648d4ea1ee4ae2e4569465d38c3718a6d6a8b99a763a148527d5da0ff753d69",
+      "revision": 2,
       "updated": true,
       "present": true
     }
