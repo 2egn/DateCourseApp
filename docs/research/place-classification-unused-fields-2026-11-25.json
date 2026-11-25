@@ -1,0 +1,171 @@
+{
+  "reviewedCommit": "8b5efe4",
+  "checkedAt": "2026-11-25T06:41:27.328874+00:00",
+  "scope": "Read-only classification and unused native-field inventory. No recommendation scores, lookahead or derived accessibility metrics. No fresh provider route/place calls.",
+  "dataset": "data/places/expansion/busan-balanced-2026-11-25/places.json",
+  "datasetSha256": "97d12a8e61124cbae487fb1ffbb4f5ce8a20d0c3fe9bc54cf5465855a91b1e31",
+  "categories": {
+    "MEAL": 2800,
+    "CAFE": 2260,
+    "CULTURE": 568
+  },
+  "subcategories": {
+    "MEAL": {
+      "백반/한정식": 276,
+      "냉면/밀면": 71,
+      "돼지고기 구이/찜": 155,
+      "일식 회/초밥": 153,
+      "해산물 구이/찜": 88,
+      "기타 한식 음식점": 21,
+      "중국집": 183,
+      "마라탕/훠궈": 37,
+      "일식 카레/돈가스/덮밥": 42,
+      "일식 면 요리": 36,
+      "국/탕/찌개류": 121,
+      "국수/칼국수": 125,
+      "김밥/만두/분식": 139,
+      "족발/보쌈": 64,
+      "경양식": 115,
+      "기타 일식 음식점": 18,
+      "뷔페": 22,
+      "그 외 기타 간이 음식점": 77,
+      "치킨": 143,
+      "베트남식 전문": 52,
+      "피자": 107,
+      "소고기 구이/찜": 52,
+      "빵/도넛": 130,
+      "곱창 전골/구이": 52,
+      "횟집": 107,
+      "토스트/샌드위치/샐러드": 46,
+      "닭/오리고기 구이/찜": 64,
+      "구내식당": 42,
+      "버거": 64,
+      "복 요리 전문": 10,
+      "떡/한과": 68,
+      "파스타/스테이크": 26,
+      "기타 서양식 음식점": 18,
+      "아이스크림/빙수": 39,
+      "패밀리레스토랑": 9,
+      "전/부침개": 15,
+      "기타 동남아식 전문": 12,
+      "분류 안된 외국식 음식점": 1
+    },
+    "CAFE": {
+      "카페": 2260
+    },
+    "CULTURE": {
+      "공공도서관": 153,
+      "전국박물관미술관정보표준데이터": 23,
+      "전국도시공원정보표준데이터": 348,
+      "전국관광지정보표준데이터": 44
+    }
+  },
+  "nativeBusinessMiddleCategories": [
+    {
+      "appActivity": "CAFE",
+      "nativeMiddleCategory": "비알코올",
+      "count": 2260
+    },
+    {
+      "appActivity": "MEAL",
+      "nativeMiddleCategory": "구내식당·뷔페",
+      "count": 64
+    },
+    {
+      "appActivity": "MEAL",
+      "nativeMiddleCategory": "기타 간이",
+      "count": 813
+    },
+    {
+      "appActivity": "MEAL",
+      "nativeMiddleCategory": "기타 외국",
+      "count": 1
+    },
+    {
+      "appActivity": "MEAL",
+      "nativeMiddleCategory": "동남아시아",
+      "count": 64
+    },
+    {
+      "appActivity": "MEAL",
+      "nativeMiddleCategory": "서양식",
+      "count": 168
+    },
+    {
+      "appActivity": "MEAL",
+      "nativeMiddleCategory": "일식",
+      "count": 249
+    },
+    {
+      "appActivity": "MEAL",
+      "nativeMiddleCategory": "중식",
+      "count": 220
+    },
+    {
+      "appActivity": "MEAL",
+      "nativeMiddleCategory": "한식",
+      "count": 1221
+    }
+  ],
+  "nativeBusinessExamples": {
+    "카페": {
+      "middle": "비알코올",
+      "code": "I21201"
+    },
+    "횟집": {
+      "middle": "한식",
+      "code": "I20111"
+    },
+    "빵/도넛": {
+      "middle": "기타 간이",
+      "code": "I21001"
+    },
+    "떡/한과": {
+      "middle": "기타 간이",
+      "code": "I21002"
+    },
+    "베트남식 전문": {
+      "middle": "동남아시아",
+      "code": "I20501"
+    },
+    "아이스크림/빙수": {
+      "middle": "기타 간이",
+      "code": "I21008"
+    },
+    "파스타/스테이크": {
+      "middle": "서양식",
+      "code": "I20402"
+    }
+  },
+  "storedFieldsByCategory": {
+    "MEAL": {
+      "website": 0,
+      "phone": 0
+    },
+    "CAFE": {
+      "website": 0,
+      "phone": 0
+    },
+    "CULTURE": {
+      "website": 161,
+      "phone": 457
+    }
+  },
+  "linkedPublicMenuRecords": 410,
+  "linkedPriceShopRecords": 174,
+  "priceShopRecordsWithMenus": 168,
+  "databasePreflight": {
+    "schemaVersion": 1,
+    "sourceKey": "busan-public-places",
+    "generatedAt": "2026-11-24T23:31:58.116886Z",
+    "baselinePlaces": 5628,
+    "stagedPlaces": 5628,
+    "payloadFingerprint": "6da8efe35a007b2a1101964c5f0324b0402fd815b7fdf8c9e26ab128a17523ad",
+    "baselineMatchesDatabase": true,
+    "existingPayloadsPreserved": true,
+    "pricesOnly": false,
+    "applied": false
+  },
+  "productionCodeChanged": false,
+  "databaseWritten": false
+}

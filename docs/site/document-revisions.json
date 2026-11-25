@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "c775399253bbcd992ce6c7edc0471da2dce6f315e67d4bcd6ad6debcb33eb157",
-      "revision": 39,
+      "fingerprint": "c2ec63d8e3a969b12e3d0c8c37b28b0c31c90ec3c312d48d9a055261d81dfb9c",
+      "revision": 40,
       "updated": true,
       "present": true
     },
@@ -926,14 +926,20 @@
       "present": true
     },
     "보유_자원의_경로_추천_활용_탐색_2026_11_25.md": {
-      "fingerprint": "a03e4ae021695f8ef1d1361ee7afc4be0eee9a71550108dc4314d6957e90af8b",
-      "revision": 2,
+      "fingerprint": "e1a0b4b160cd9e5729c500a264da5f53821fdc67f17ecf266309008db6713ad7",
+      "revision": 3,
       "updated": true,
       "present": true
     },
     "부산_16개_구군_분산_확장_2026_11_25.md": {
       "fingerprint": "36d145d701d8cbc5ef072a2e99a923c0c23a8db7cb946e1750161d7ec704c1b2",
       "revision": 2,
+      "updated": true,
+      "present": true
+    },
+    "분류_세분화와_미사용_원본_필드_2026_11_25.md": {
+      "fingerprint": "51a56f04fdef00c742e17eb3550a0211c7f5875c244e668d0c21310a818fddac",
+      "revision": 1,
       "updated": true,
       "present": true
     }

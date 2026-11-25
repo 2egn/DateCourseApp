@@ -67,3 +67,5 @@ node docs/site/tools/build.mjs
 사이트 배포 설정은 `site/wrangler.jsonc`, 빌드 결과는 `site/public/`에 있다. 폴더 이동만으로 재배포되지는 않는다. 인증·배포의 상세 절차는 `site/README.md`를 참고한다.
 
 [현재 보유 자원의 추천 활용 탐색 · 2026-11-25](research/route-resource-exploration-2026-11-25.md): 연결 가능성·교통 거리·시간·가격 근거·운영시간·시설의 활용 상태와 오프라인 비교. 구현 완료와 구분한 개선 후보다.
+
+[장소 분류·미사용 원본 필드 검토 · 2026-11-25](research/place-classification-unused-fields-2026-11-25.md): 원본 중분류·코드, 홈페이지·시설 소개·운영시간·메뉴 원문, 현재 API 파서에서 빠지는 필드. 새 추천 지표 산출과 구분한 검토다.
