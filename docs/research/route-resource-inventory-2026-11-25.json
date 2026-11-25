@@ -232,12 +232,126 @@
     "Museum join requires exact normalized name and <=1m coordinates, exactly one raw match. Recorded hours are not a fresh open-now check.",
     "Bus source has stops only; no routes, headways or schedules. Railway rows have line and transfer labels, not complete operating timetables.",
     "Additional facility facts are separate review materials, not all imported into application features.",
-    "Raw place snapshot attribute count is not the imported application count: PublicPlaceFacts converts the separate tag pack to typed attribute facts during import."
+    "Raw place snapshot attribute count is not the imported application count: PublicPlaceFacts converts the separate tag pack to typed attribute facts during import.",
+    "Tourism PRKPLCE_CO values are retained as raw strings; units and interpretation of zero are not verified here. Do not convert to parking availability or parking spaces automatically. LEISURE is not part of the current application activity selection.",
+    "Provided store CSV has the same 157296 IDs as retained raw data but building/lot/road IDs are in scientific notation and coordinates differ. Use retained 25-digit building IDs for building grouping. Current expansion used retained raw sources, never the provided rounded coordinates or IDs."
   ],
   "inputPlaceSnapshotAttributeFactCount": 0,
   "inputs": {
     "data/places/expansion/busan-balanced-2026-11-25/places.json": "97d12a8e61124cbae487fb1ffbb4f5ce8a20d0c3fe9bc54cf5465855a91b1e31",
     "data/places/expansion/busan-balanced-2026-11-25/appeal/demo_appeal_facts.json": "845ea3213499f6f9fd709419d5410caf171291d8157d41903629b42df6cb8b0e",
     "data/places/public/busan/raw/busan_standard_sources.json": "b0191185be7562ebebda56c94ae39fa8d5cc99d71a67cde3bb44178aa0e9f9f4"
+  },
+  "additionalRawResources": {
+    "unusedLeisureRows": 6032,
+    "unusedLeisureSubtypes": {
+      "헬스장": 1041,
+      "당구장": 591,
+      "노래방": 1204,
+      "골프 연습장": 583,
+      "독서실/스터디 카페": 621,
+      "기타 오락관련 서비스업": 117,
+      "테니스장": 135,
+      "기타 오락장": 224,
+      "수영장": 46,
+      "탁구장": 128,
+      "PC방": 358,
+      "복권 발행/판매업": 464,
+      "전자 게임장": 173,
+      "수상/해양 레저업": 77,
+      "종합 스포츠시설": 57,
+      "기타 스포츠시설 운영업": 117,
+      "볼링장": 54,
+      "낚시터 운영업": 9,
+      "비디오방": 7,
+      "스쿼시/라켓볼장": 7,
+      "바둑/장기/체스 경기 운영업": 19
+    },
+    "strictTourismMatches": 44,
+    "tourismParkingFieldNonempty": 44,
+    "tourismParkingValues": {
+      "80": 1,
+      "0": 18,
+      "203": 1,
+      "101": 1,
+      "76": 1,
+      "398": 1,
+      "240": 1,
+      "292": 1,
+      "151": 1,
+      "100": 1,
+      "187": 1,
+      "1": 1,
+      "2": 5,
+      "7": 1,
+      "50": 1,
+      "10": 1,
+      "482": 1,
+      "182": 1,
+      "110": 1,
+      "1047": 1,
+      "892": 1,
+      "16": 1,
+      "88": 1
+    }
+  },
+  "providedCsvAndRetainedBuildingData": {
+    "providedCsvRows": 157296,
+    "providedCsvSameBytesAsPublishedStoreRaw": false,
+    "providedCsvSha256": "d487720b71631f990c9d389805f6961219cfb8fd05a2927c822518c0c5ab91b7",
+    "rawRowsWithFloorInfo": 84196,
+    "selectedPlacesJoinedByPublicStoreId": 5060,
+    "selectedPlacesWithFloorInfo": 3191,
+    "note": "Building IDs and floor labels are raw records. Shared building does not prove indoor connection, accessible entrance, zero travel time or weather protection. No user/private course rows queried.",
+    "providedCsvSemanticComparison": {
+      "providedRows": 157296,
+      "publishedRawRows": 157296,
+      "commonColumnCount": 39,
+      "providedOnlyColumns": [],
+      "publishedOnlyColumns": [],
+      "additionalProvidedStoreIds": 0,
+      "missingProvidedStoreIds": 0,
+      "sharedRowsWithDifferentCommonFieldValues": 157296
+    },
+    "sameRowOrder": true,
+    "fieldDifferencesInSameOrder": {
+      "지번코드": 157296,
+      "도로명코드": 157296,
+      "건물관리번호": 157296,
+      "경도": 157291,
+      "위도": 157296
+    },
+    "buildingComparison": {
+      "provided": {
+        "selectedWithFloor": 3191,
+        "buildingIdLengths": {
+          "11": 157296
+        },
+        "buildingIdScientificNotationRows": 157296,
+        "selectedMealCafeBuildingGroups": 16
+      },
+      "published": {
+        "selectedWithFloor": 3191,
+        "buildingIdLengths": {
+          "25": 157296
+        },
+        "buildingIdScientificNotationRows": 0,
+        "selectedMealCafeBuildingGroups": 173
+      }
+    },
+    "coordinateDifferenceAgainstPublishedRawMeters": {
+      "median": 0.002,
+      "maximum": 0.005,
+      "over1m": 0,
+      "over50m": 0,
+      "meaning": "Difference against retained raw source coordinates, not measured error against ground truth."
+    },
+    "publishedRawSha256": "3638e6795961a6f23b2c41cb7139322b18ad6356caa560b9bc40d54840779fab",
+    "untrustedProvidedBuildingGroupCounts": {
+      "sharedGroups": 16,
+      "mealCafeGroups": 16,
+      "reason": "Rounded scientific-notation IDs collapse unrelated buildings; these are not usable building-group counts."
+    },
+    "providedAdditionalUniqueStoreIds": 0
   }
 }

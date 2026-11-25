@@ -1,0 +1,35 @@
+{
+  "schemaVersion" : 1,
+  "sourceKey" : "busan-public-places",
+  "generatedAt" : "2026-11-24T23:31:58.116886Z",
+  "baselinePlaces" : 2138,
+  "stagedPlaces" : 5628,
+  "payloadFingerprint" : "6da8efe35a007b2a1101964c5f0324b0402fd815b7fdf8c9e26ab128a17523ad",
+  "baselineMatchesDatabase" : true,
+  "existingPayloadsPreserved" : true,
+  "pricesOnly" : false,
+  "applied" : true,
+  "result" : {
+    "importId" : 15,
+    "inserted" : 3490,
+    "updated" : 0,
+    "reactivated" : 0,
+    "deactivated" : 0,
+    "unchanged" : 2138
+  },
+  "activeAfter" : 5628,
+  "effectiveAfter" : 5628,
+  "existingRecordIdsPreserved" : true,
+  "payloadMismatches" : 0,
+  "unchangedTables" : [ "app_admins", "categories", "members", "place_information_overrides", "place_information_reports", "saved_course_places", "saved_course_previews", "saved_course_transport", "saved_courses" ],
+  "repeat" : {
+    "importId" : 16,
+    "inserted" : 0,
+    "updated" : 0,
+    "reactivated" : 0,
+    "deactivated" : 0,
+    "unchanged" : 5628
+  },
+  "applyAndVerificationSeconds" : 2922.8499297,
+  "providerChecks" : "Existing public snapshots only; no new provider identity or price verification"
+}

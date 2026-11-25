@@ -1,6 +1,6 @@
 # 문서와 팀 사이트
 
-[후속 개선 · 2026-11-25](review-2026-11-25.md): 키보드·포커스, 도보 설정 동기화, 저장 미리보기 경계 조건과 장소 기준본 읽기 전용 점검.
+[후속 개선 · 2026-11-25](review-2026-11-25.md): 키보드·포커스, 도보 설정 동기화, 저장 미리보기 경계 조건, 장소 분산 확장·운영 보존 검증과 추천 자원 탐색.
 
 [패키지 통합·구조 점검](site/content/패키지_통합과_구조_점검_2026_11_24.md): 앱 패키지 통일, 공용 화면 부품 정리, 남은 책임 혼재와 검증 결과.
 
@@ -16,7 +16,7 @@
 
 [2026-11-16 구조 검토](architecture-review-2026-11-16.md)는 과거 제안이며, 현재 구현과 구분한다.
 
-공공 시연 표본은 [386곳 확대 기록](dataset-expansion-2026-11-16.md), 이전 866곳은 [수영구 확대 기록](district-expansion-2026-11-16.md), 이전 운영 2,040곳은 [부산 주요 지역 확대](busan-core-expansion-2026-11-23.md), 현재 2,138곳은 [중구 98곳 추가](../data/places/expansion/jung-gu-2026-11-25/README.md)에 정리했다.
+공공 시연 표본은 [386곳 확대 기록](dataset-expansion-2026-11-16.md), 이전 866곳은 [수영구 확대 기록](district-expansion-2026-11-16.md), 이전 운영 2,040곳은 [부산 주요 지역 확대](busan-core-expansion-2026-11-23.md), 이전 2,138곳은 [중구 98곳 추가](../data/places/expansion/jung-gu-2026-11-25/README.md), 현재 5,628곳은 [부산 16개 구·군 분산 확장](../data/places/expansion/busan-balanced-2026-11-25/README.md)에 정리했다.
 교통수단 연결은 [카카오 경로 구현](kakao-routing-2026-11-16.md)에서 확인한다.
 확장 전 품질과 구조는 [데이터 자가진단](research/dataset-self-audit-2026-11-16.md), 후속 작업은 [수영구 확대 기록](district-expansion-2026-11-16.md)과 [코스 모의 테스트](suyeong-rehearsal-2026-11-16.md)에서 확인한다.
 
