@@ -2,7 +2,7 @@
 
 **조건을 정하면 → 맞는 장소를 찾아 보여주고 → 사용자가 골라 코스를 만든 뒤 → 저장하고 다시 연다.**
 
-[전체 참조 자료](README.md) · [기능별 코드 흐름](10-flow-details.md) · 소스 기준 `a0d9436` · 2026-11-25
+[기능별 문서](features/README.md) · [전체 참조 자료](README.md) · [기능별 코드 흐름](10-flow-details.md) · 소스 기준 `a0d9436` · 2026-11-25
 
 ```mermaid
 %%{init: {"htmlLabels": false, "flowchart": {"htmlLabels": false, "curve": "linear", "rankSpacing": 22}, "themeVariables": {"fontFamily": "system-ui, sans-serif", "fontSize": "18px"}}}%%

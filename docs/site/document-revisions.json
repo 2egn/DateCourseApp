@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "0788075e82be1c99f1e72421da5dc760eae5612e3749428ca2c873e3c574ae9a",
-      "revision": 43,
+      "fingerprint": "fbd9a496d98d589605af50ea31c145cf2cef402879e10012c758e2825d1011e7",
+      "revision": 44,
       "updated": true,
       "present": true
     },
@@ -944,20 +944,98 @@
       "present": true
     },
     "구현_참조_자료_길잡이_2026_11_25.md": {
-      "fingerprint": "d37d6f8698621395b223f8c6eef418cb4f6383d10bacdf738344b0fdfc208b23",
-      "revision": 3,
+      "fingerprint": "840dea9c1d2d1e96c44fba82f96f4a3cf0d00dbd1b9ea9babb4b7c6a34ba2c52",
+      "revision": 4,
       "updated": true,
       "present": true
     },
     "구현_흐름_한눈에_보기_2026_11_25.md": {
-      "fingerprint": "09c5570fa0857f6f14cb77cb76dd0fb784027ab692d2cb73cef6467a88baeec7",
-      "revision": 6,
+      "fingerprint": "dce71af1c48300a2ec41f8f8d43a61383b063ed2611afd7ca2d616574911733d",
+      "revision": 7,
       "updated": true,
       "present": true
     },
     "기능별_코드_흐름_2026_11_25.md": {
       "fingerprint": "7df5bf5ba341d62cc59fef0412251e930efabc0c1832ffbf4590302188a5186a",
       "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/01-account.md": {
+      "fingerprint": "47f4a898af57bd4515408a207a9dd60815c9d94ba7004bb2c874912788f32c56",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/02-planning.md": {
+      "fingerprint": "d22973d73210ed152d9d0d5fc1cc8376548dd6bad558d2d300dd59275a579790",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/03-recommendation.md": {
+      "fingerprint": "541353533c1a0f2742bf3484fa2eeb216f64308ceb1422865a61c59d7071ac2c",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/04-price-and-models.md": {
+      "fingerprint": "984369063a8d78bb3f27607ac0e90fb0d9684941bbeb6057d53fb25f1938c7df",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/05-map.md": {
+      "fingerprint": "df4618effda120f19da7fb207717b4552565254fb368a157658ceed5e6bad3f1",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/06-routing.md": {
+      "fingerprint": "1776cff98f2c7c3246efc27766144cb9e4f90554de6ed1a71ab73e6dc3ef2ad8",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/07-saved-courses.md": {
+      "fingerprint": "56d33ffd22b85a28e85a5bdc6ed119106caa739d2cde59633a531d40a1f637a8",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/08-reports-admin.md": {
+      "fingerprint": "e2de32a310bfb20ff9597853b3518ff4b899e0b5762dc8973f9ff70e91a0a3a3",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/09-ui-state.md": {
+      "fingerprint": "6ba79dab7d40c4c69746f93a66c2d85f2e1e4e392ec6a1701b459dca6042e816",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/10-place-data.md": {
+      "fingerprint": "1473561d52a8cb39dbf31da812df12ab25103eb552e5d31115dde2a175a45ea5",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/11-runtime-db.md": {
+      "fingerprint": "36a08ec40c5be53beab635b0a42181abdbb0e348220507e635ad8c10f3ba97a4",
+      "revision": 4,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/12-team-and-checks.md": {
+      "fingerprint": "513c010dd60b5a4c5c47d5d693f2e17f5765f2e523b3684e66d4f5e9dc5f1fe1",
+      "revision": 3,
+      "updated": true,
+      "present": true
+    },
+    "기능별_구현/목차.md": {
+      "fingerprint": "ad409932c72694af2d829b8741646295611ae4b88318e6112252d293d1edc8d7",
+      "revision": 1,
       "updated": true,
       "present": true
     }
