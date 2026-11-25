@@ -1,5 +1,7 @@
 # 앱 코드 탐색
 
+구현 동작과 기술의 연결은 [구현 참조 길잡이](../docs/implementation-reference/README.md), 클래스별 역할·대표 선언은 [전체 클래스 색인](../docs/implementation-reference/08-class-index.md), 설정·자원·도구·검사·자료까지는 [프로젝트 요소 색인](../docs/implementation-reference/09-project-index.md)에서 확인한다.
+
 앱 코드는 `com.datecourse` 아래에서 화면·모델·서비스·DB 역할로 나눕니다. 폴더·파일 이름을 누르면 해당 경로로 이동합니다.
 
 <pre>

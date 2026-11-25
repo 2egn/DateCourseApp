@@ -506,8 +506,8 @@
       "present": true
     },
     "업데이트_내역.md": {
-      "fingerprint": "c2ec63d8e3a969b12e3d0c8c37b28b0c31c90ec3c312d48d9a055261d81dfb9c",
-      "revision": 40,
+      "fingerprint": "6c3b590856d08749e4e0da0e0f34abcaaa78bd542d5184f5b8fa1dcc36942d31",
+      "revision": 41,
       "updated": true,
       "present": true
     },
@@ -939,6 +939,12 @@
     },
     "분류_세분화와_미사용_원본_필드_2026_11_25.md": {
       "fingerprint": "51a56f04fdef00c742e17eb3550a0211c7f5875c244e668d0c21310a818fddac",
+      "revision": 1,
+      "updated": true,
+      "present": true
+    },
+    "구현_참조_자료_길잡이_2026_11_25.md": {
+      "fingerprint": "2c0bcd28649dda7ad7085c5fa75f2e79a634774dfc4a5833ecf335ffa304d5f6",
       "revision": 1,
       "updated": true,
       "present": true

@@ -1,0 +1,45 @@
+# 구현 참조 자료
+
+소스 기준 `a0d9436` · 2026-11-25. 화면 동작에서 **무엇을 구현했는가 → 무엇을 사용했는가 → 어떤 기능이 필요했는가 → 코드가 어떻게 처리하는가**를 찾아보는 자료다. 발표 대본·시간표·진행 지침은 포함하지 않는다.
+
+‘채택 이유’는 코드가 실제로 이용하는 기능과 구현상 효과를 설명한다. 기록이 없는 당시의 역사적 선택 동기는 단정하지 않는다. 구현·시연 전용·검토/실험 항목은 구분한다.
+
+```text
+구현 참조 자료/
+├─ 01-project-and-stack.md         실행 설정·사용 기술과 적용 위치
+├─ 02-models.md                    모델 책임·가격·동일성의 논리
+├─ 03-recommendation.md            추천 순서·조건·정당성·한계
+├─ 04-screens-and-map.md           화면 동작 ↔ 클래스·메서드·지도 연결
+├─ 05-storage-and-account.md       회원·저장·정정·관리자·DB
+├─ 06-data-and-operations.md       원본 → 카탈로그·속성·운영 도구
+├─ 07-verification-and-team-site.md 검증·팀 사이트·협업 지원
+├─ 08-class-index.md               모든 활성 Java 파일의 역할·기술·대표 선언
+├─ 09-project-index.md             설정·코드·자원·SQL·도구·검사·자료 전체 색인
+└─ coverage.json                  포함 범위·기준 버전·소스 지문·누락 확인 목록
+```
+
+| 찾는 내용 | 바로 가기 |
+|---|---|
+| Java 21·Gradle·라이브러리를 어디에 사용했는가 | [프로젝트·스택](01-project-and-stack.md) |
+| Place·RoutePlan·TravelRoute를 왜 나눴는가 | [모델](02-models.md) |
+| 후보는 어떤 조건과 순서로 선택되는가 | [추천 논리](03-recommendation.md) |
+| 화면 동작은 어느 메서드와 연결되는가 | [화면·지도](04-screens-and-map.md) |
+| 회원·저장·정보 정정은 어떻게 동작하는가 | [저장·회원](05-storage-and-account.md) |
+| 5,628곳의 출처와 보존 근거는 무엇인가 | [자료·운영](06-data-and-operations.md) |
+| 자동 검사·문서 사이트의 역할은 무엇인가 | [검증·팀 사이트](07-verification-and-team-site.md) |
+| 특정 클래스/파일 하나를 찾아보고 싶다 | [클래스 색인](08-class-index.md) · [전체 파일](09-project-index.md) |
+
+현재 장소·속성 쌍은 [current.json](../../data/places/expansion/current.json)이 기준이다. 내장 시연 386곳·별도 파일럿 9곳·운영 5,628곳은 다르다. [분류·미사용 정보 검토](../research/place-classification-unused-fields-2026-11-25.md), [후속 후보 탐색 실험](../research/route-resource-exploration-2026-11-25.md), [최근 변경·검증](../review-2026-11-25.md)은 현재 구현과 구분한다.
+
+<details><summary>읽는 범위와 근거 수준</summary>
+
+공유 저장소의 추적 파일을 기준으로 앱·설정·FXML·지도·CSS·SQL·도구·검사·자료·문서·보관 요소를 색인한다. 개인 접속 정보·키·IDE 상태·Git 내부·생성물·의존성 캐시의 본문은 포함하지 않는다. 큰 자료는 명세·지문·준비 도구·검증 결과로 참조하고 전체 행을 복제하지 않는다.
+
+기능 문서는 코드와 직접 대조한 설명이다. 전체 색인은 각 파일의 역할·선언·사용 요소를 찾는 목록이며 모든 본문을 개별 심층 감사했다는 뜻은 아니다. main에 있는 클래스도 모두 일반 사용자 화면에서 호출되는 것은 아니다. 소스가 바뀌면 이 자료도 갱신한다.
+</details>
+
+## 색인 재생성
+
+프로젝트 루트에서 `python docs/implementation-reference/build-index.py`를 실행한다. 역할·대표 선언·파일 목록·coverage.json만 갱신하며 앞의 기능 설명을 자동으로 다시 쓰지 않는다. 구현이나 현재 자료가 소스 기준과 다르면 중단한다. 먼저 핵심 문서를 대조·수정하고 이 문서의 소스 기준 커밋을 갱신해야 한다. 현재 범위는 활성 Java 107개·공유 추적 파일 743개다.
+
+[재생성 도구](build-index.py) · [범위·지문 목록](coverage.json). 핵심 문서의 설명과 색인·해시의 일치는 별개로 검토한다.
