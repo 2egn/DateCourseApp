@@ -59,23 +59,23 @@ src/
 
 실행은 프로젝트 루트에서 `.\gradlew.bat run`, 검사는 `.\gradlew.bat test`를 사용합니다. 단독 시연은 통합 앱 흐름과 구분합니다. 미연결 예제는 [archive/legacy-ui](../archive/legacy-ui/README.md)에 보관하며 기본 빌드에서 제외합니다.
 
-[아키텍처](../docs/architecture.md) · [변경 지침](../AGENTS.md) · [페이지 이름 대응](../docs/site/content/페이지_구조와_이름_2026_11_24.md) · [패키지 구조 점검](../docs/site/content/패키지_통합과_구조_점검_2026_11_24.md)
+[아키텍처](../docs/architecture.md) · [변경 지침](../AGENTS.md) · [페이지 이름 대응](../docs/site/content/09_구조와_검토/페이지_구조와_이름_2026_11_24.md) · [패키지 구조 점검](../docs/site/content/09_구조와_검토/패키지_통합과_구조_점검_2026_11_24.md)
 
-지도 호버·포커스는 `map/map.js`, 왼쪽 상세 카드는 `map/itinerary-rail.js`에서 관리한다. 저장 지도 준비 상태는 `UserContext.isMapPrepared/markMapPrepared`에서 로그인 세션 안에만 기억한다. [상세 흐름](../docs/site/content/지도_선택과_저장_지도_준비_2026_11_24.md).
+지도 호버·포커스는 `map/map.js`, 왼쪽 상세 카드는 `map/itinerary-rail.js`에서 관리한다. 저장 지도 준비 상태는 `UserContext.isMapPrepared/markMapPrepared`에서 로그인 세션 안에만 기억한다. [상세 흐름](../docs/site/content/08_지도_보충/지도_선택과_저장_지도_준비_2026_11_24.md).
 
-작은 창의 편집 합계는 `CourseEditorController.configureResponsiveSummary`, 저장 표는 `SavedCourseController.configureResponsiveDetails/layoutDetailTables`에서 배치한다. 알림 위치는 `PageFeedback`, 글자·선택·스크롤 표시는 공통 CSS와 지도 테마를 확인한다. [화면 가독성 안내](../docs/site/content/화면_가독성과_작은_창_배치_2026_11_24.md).
+작은 창의 편집 합계는 `CourseEditorController.configureResponsiveSummary`, 저장 표는 `SavedCourseController.configureResponsiveDetails/layoutDetailTables`에서 배치한다. 알림 위치는 `PageFeedback`, 글자·선택·스크롤 표시는 공통 CSS와 지도 테마를 확인한다. [화면 가독성 안내](../docs/site/content/02_화면/화면_가독성과_작은_창_배치_2026_11_24.md).
 
-지도 이동의 렌더링 여유는 [map-viewport.js](main/resources/map/map-viewport.js)가 관리한다. 보이는 창과 내부 SDK 크기를 분리하고 `camera-motion.js`·`instant-zoom.js`·`map.js`에서 좌표를 보정한다. [설계와 검증 범위](../docs/site/content/지도_렌더링_여유_영역_2026_11_24.md).
+지도 이동의 렌더링 여유는 [map-viewport.js](main/resources/map/map-viewport.js)가 관리한다. 보이는 창과 내부 SDK 크기를 분리하고 `camera-motion.js`·`instant-zoom.js`·`map.js`에서 좌표를 보정한다. [설계와 검증 범위](../docs/site/content/08_지도_보충/지도_렌더링_여유_영역_2026_11_24.md).
 
-마우스 입력 우선순위는 `map.js.pointerFrom`, 경로 상세의 키보드 접근은 `itinerary-rail.js.openRouteDetails`, 저장 이미지 확인 중 전환은 `SavedCourseController.previewLoading`에서 관리한다. [수정과 추가 UX 검토](../docs/site/content/마우스_키보드_입력_점검_2026_11_24.md).
+마우스 입력 우선순위는 `map.js.pointerFrom`, 경로 상세의 키보드 접근은 `itinerary-rail.js.openRouteDetails`, 저장 이미지 확인 중 전환은 `SavedCourseController.previewLoading`에서 관리한다. [수정과 추가 UX 검토](../docs/site/content/08_지도_보충/마우스_키보드_입력_점검_2026_11_24.md).
 
 컴파일·테스트·실행 JDK는 루트 [build.gradle](../build.gradle)의 Java 21 toolchain, 설치 검색은 [gradle.properties](../gradle.properties)에서 확인한다. 개인 JDK 경로는 공유 파일에 넣지 않는다.
 
 로컬 JDK 21이 없을 때의 자동 다운로드 저장소는 루트 [settings.gradle](../settings.gradle)에 고정 버전으로 등록한다. 다운로드는 개인 Gradle 캐시에서 관리한다.
 
-목록 키보드 조작은 `SavedCourseController.focusPlaceRow`·`CourseEditorController.configureEditorNavigation`, 상세 포커스 복귀는 `itinerary-rail.js.rememberDetailOpener`·`map.html.closeZoom`에서 관리한다. [현재 동작·검증 범위](../docs/site/content/키보드_조작과_포커스_복귀_2026_11_25.md).
+목록 키보드 조작은 `SavedCourseController.focusPlaceRow`·`CourseEditorController.configureEditorNavigation`, 상세 포커스 복귀는 `itinerary-rail.js.rememberDetailOpener`·`map.html.closeZoom`에서 관리한다. [현재 동작·검증 범위](../docs/site/content/02_화면/키보드_조작과_포커스_복귀_2026_11_25.md).
 
-도보 옵션 저장 이력은 `TmapSettings.preferencesVersion`, 지도 경로 유효성은 `CourseMapView.synchronizeWalkingRoute/isCurrentRouteRequest`에서 확인한다. [다른 지도와의 동기화](../docs/site/content/도보_설정과_지도_경로_동기화_2026_11_25.md).
+도보 옵션 저장 이력은 `TmapSettings.preferencesVersion`, 지도 경로 유효성은 `CourseMapView.synchronizeWalkingRoute/isCurrentRouteRequest`에서 확인한다. [다른 지도와의 동기화](../docs/site/content/08_지도_보충/도보_설정과_지도_경로_동기화_2026_11_25.md).
 
 지도 상세를 닫은 뒤 JavaFX 조작 위치로 돌아오는 연결은 `MapEventBridge.onDetailClosed` → `CourseMapView.restoreDetailFocus`다. 코스 초기화·폐기 때는 보관한 포커스와 이전 콜백을 무효화한다.
 
@@ -83,9 +83,9 @@ src/
 
 추천의 전체 범위·중복 대표 선택은 `PlaceSearchService.nearby`, 직전 장소 기준 거리 재계산과 조건 필터는 `NextPlaceService.matching`이 맡는다. [결과 보존 대조·로컬 측정](../docs/review-2026-11-25.md#추천-후보의-중복-계산-정리).
 
-JavaFX UI·WebView 유지보수 버전도 `build.gradle`의 `javafx.version`에서 고정한다. 현재 21.0.13.1이며 [같은 LTS 계열 비교 결과](../docs/site/content/JavaFX21_유지보수_패치_2026_11_25.md)를 참고한다.
+JavaFX UI·WebView 유지보수 버전도 `build.gradle`의 `javafx.version`에서 고정한다. 현재 21.0.13.1이며 [같은 LTS 계열 비교 결과](../docs/site/content/01_시작/JavaFX21_유지보수_패치_2026_11_25.md)를 참고한다.
 
-실제 지도 선택 검사의 Windows 배율 재현은 `CourseMapCaptureLiveTest.verifyBufferedEdgeAndAttribution`과 `build.gradle`의 `coursePreviewLiveTest`에서 관리한다. [125%·150% 실행법과 확인 범위](../docs/site/content/지도_렌더링_여유_영역_2026_11_24.md).
+실제 지도 선택 검사의 Windows 배율 재현은 `CourseMapCaptureLiveTest.verifyBufferedEdgeAndAttribution`과 `build.gradle`의 `coursePreviewLiveTest`에서 관리한다. [125%·150% 실행법과 확인 범위](../docs/site/content/08_지도_보충/지도_렌더링_여유_영역_2026_11_24.md).
 
 추천 자원 탐색용 `RouteResourceProbe`는 `NextPlaceService`를 재사용하는 오프라인 유지보수 도구이며 기본 앱에는 포함하지 않는다. [활용 가능 요소·기존 연결 상태·탐색 실험](../docs/research/route-resource-exploration-2026-11-25.md)을 확인한다.
 

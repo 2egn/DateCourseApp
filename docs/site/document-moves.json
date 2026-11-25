@@ -1,0 +1,688 @@
+{
+  "schemaVersion": 1,
+  "movedAt": "2026-11-26",
+  "moves": {
+    "공통_접속_키.md": "01_시작/공통_접속_키.md",
+    "라이브러리_사용_안내.md": "01_시작/라이브러리_사용_안내.md",
+    "실행_및_테스트.md": "01_시작/실행_및_테스트.md",
+    "JDK21_자동_검색과_선택_2026_11_25.md": "01_시작/JDK21_자동_검색과_선택_2026_11_25.md",
+    "JavaFX21_유지보수_패치_2026_11_25.md": "01_시작/JavaFX21_유지보수_패치_2026_11_25.md",
+    "공통_UI와_홈_메뉴.md": "02_화면/공통_UI와_홈_메뉴.md",
+    "사용자_안내와_진단.md": "02_화면/사용자_안내와_진단.md",
+    "화면_가독성과_작은_창_배치_2026_11_24.md": "02_화면/화면_가독성과_작은_창_배치_2026_11_24.md",
+    "키보드_조작과_포커스_복귀_2026_11_25.md": "02_화면/키보드_조작과_포커스_복귀_2026_11_25.md",
+    "가격_보완_2026_11_24.md": "04_데이터/가격_보완_2026_11_24.md",
+    "데이터_확장_2026_11_23.md": "04_데이터/데이터_확장_2026_11_23.md",
+    "보유_자원의_경로_추천_활용_탐색_2026_11_25.md": "04_데이터/보유_자원의_경로_추천_활용_탐색_2026_11_25.md",
+    "부산_16개_구군_분산_확장_2026_11_25.md": "04_데이터/부산_16개_구군_분산_확장_2026_11_25.md",
+    "분류_세분화와_미사용_원본_필드_2026_11_25.md": "04_데이터/분류_세분화와_미사용_원본_필드_2026_11_25.md",
+    "시연_장소와_가격_흐름.md": "04_데이터/시연_장소와_가격_흐름.md",
+    "장소_데이터와_표시.md": "04_데이터/장소_데이터와_표시.md",
+    "중구_98곳_추가와_가격_보완_2026_11_25.md": "04_데이터/중구_98곳_추가와_가격_보완_2026_11_25.md",
+    "관리자_이용과_검토.md": "05_회원_DB/관리자_이용과_검토.md",
+    "배치_적재_개선_2026_11_24.md": "05_회원_DB/배치_적재_개선_2026_11_24.md",
+    "저장_미리보기와_복구.md": "05_회원_DB/저장_미리보기와_복구.md",
+    "코스_저장_설계.md": "05_회원_DB/코스_저장_설계.md",
+    "코스_저장과_다시열기.md": "05_회원_DB/코스_저장과_다시열기.md",
+    "DB_구조와_빈_백업_정리_2026_11_24.md": "05_회원_DB/DB_구조와_빈_백업_정리_2026_11_24.md",
+    "DB_준비와_일반_실행_분리_2026_11_24.md": "05_회원_DB/DB_준비와_일반_실행_분리_2026_11_24.md",
+    "도보_설정과_지도_경로_동기화_2026_11_25.md": "08_지도_보충/도보_설정과_지도_경로_동기화_2026_11_25.md",
+    "마우스_키보드_입력_점검_2026_11_24.md": "08_지도_보충/마우스_키보드_입력_점검_2026_11_24.md",
+    "지도_렌더링_여유_영역_2026_11_24.md": "08_지도_보충/지도_렌더링_여유_영역_2026_11_24.md",
+    "지도_범위와_포커스.md": "08_지도_보충/지도_범위와_포커스.md",
+    "지도_선택과_저장_지도_준비_2026_11_24.md": "08_지도_보충/지도_선택과_저장_지도_준비_2026_11_24.md",
+    "순서_넘버링과_미사용_정리_2026_11_24.md": "09_구조와_검토/순서_넘버링과_미사용_정리_2026_11_24.md",
+    "전체_동작_흐름.md": "99_이전_문서/이전_안내/전체_동작_흐름.md",
+    "전체_점검_2026_11_24.md": "09_구조와_검토/전체_점검_2026_11_24.md",
+    "최종_검토_2026_11_15.md": "99_이전_문서/이전_안내/최종_검토_2026_11_15.md",
+    "패키지_통합과_구조_점검_2026_11_24.md": "09_구조와_검토/패키지_통합과_구조_점검_2026_11_24.md",
+    "페이지_구조와_이름_2026_11_24.md": "09_구조와_검토/페이지_구조와_이름_2026_11_24.md",
+    "구현_참조_자료_길잡이_2026_11_25.md": "10_구현_안내/구현_참조_자료_길잡이_2026_11_25.md",
+    "구현_흐름_한눈에_보기_2026_11_25.md": "10_구현_안내/구현_흐름_한눈에_보기_2026_11_25.md",
+    "기능별_코드_흐름_2026_11_25.md": "10_구현_안내/기능별_코드_흐름_2026_11_25.md",
+    "01_시작/AppLauncher.md": "99_이전_문서/이전_발췌/01_시작/AppLauncher.md",
+    "01_시작/MainApp.md": "99_이전_문서/보관_코드/01_시작/MainApp.md",
+    "02_화면/AdminController.md": "99_이전_문서/보관_코드/02_화면/AdminController.md",
+    "02_화면/BasePageController.md": "99_이전_문서/이전_발췌/02_화면/BasePageController.md",
+    "02_화면/CommunityController.md": "99_이전_문서/보관_코드/02_화면/CommunityController.md",
+    "02_화면/ConditionController.md": "99_이전_문서/이전_발췌/02_화면/ConditionController.md",
+    "02_화면/CourseEditController.md": "99_이전_문서/보관_코드/02_화면/CourseEditController.md",
+    "02_화면/InformationReviewController.md": "99_이전_문서/이전_발췌/02_화면/InformationReviewController.md",
+    "02_화면/login.md": "99_이전_문서/보관_코드/02_화면/login.md",
+    "02_화면/MapBridge.md": "99_이전_문서/이전_발췌/02_화면/MapBridge.md",
+    "02_화면/MyPageController.md": "99_이전_문서/이전_발췌/02_화면/MyPageController.md",
+    "02_화면/NumberStepper.md": "99_이전_문서/이전_발췌/02_화면/NumberStepper.md",
+    "02_화면/PageFeedback.md": "99_이전_문서/이전_발췌/02_화면/PageFeedback.md",
+    "02_화면/PlannerMap.md": "99_이전_문서/이전_발췌/02_화면/PlannerMap.md",
+    "02_화면/RouteEditorController.md": "99_이전_문서/이전_발췌/02_화면/RouteEditorController.md",
+    "02_화면/SavedCourseController.md": "99_이전_문서/이전_발췌/02_화면/SavedCourseController.md",
+    "02_화면/TmapSettingsDialog.md": "99_이전_문서/이전_발췌/02_화면/TmapSettingsDialog.md",
+    "03_처리/AppDiagnostics.md": "99_이전_문서/이전_발췌/03_처리/AppDiagnostics.md",
+    "03_처리/CoursePreviewImage.md": "99_이전_문서/이전_발췌/03_처리/CoursePreviewImage.md",
+    "03_처리/MapPageServer.md": "99_이전_문서/이전_발췌/03_처리/MapPageServer.md",
+    "03_처리/NextPlaceService.md": "99_이전_문서/이전_발췌/03_처리/NextPlaceService.md",
+    "03_처리/PlaceBindingCatalog.md": "99_이전_문서/이전_발췌/03_처리/PlaceBindingCatalog.md",
+    "03_처리/PlaceCalculationService.md": "99_이전_문서/이전_발췌/03_처리/PlaceCalculationService.md",
+    "03_처리/PlaceCountService.md": "99_이전_문서/보관_코드/03_처리/PlaceCountService.md",
+    "03_처리/PlacePresenter.md": "99_이전_문서/이전_발췌/03_처리/PlacePresenter.md",
+    "03_처리/PlaceSearchService.md": "99_이전_문서/이전_발췌/03_처리/PlaceSearchService.md",
+    "03_처리/RecommendedCourseMapper.md": "99_이전_문서/보관_코드/03_처리/RecommendedCourseMapper.md",
+    "03_처리/SavedCoursePresenter.md": "99_이전_문서/이전_발췌/03_처리/SavedCoursePresenter.md",
+    "03_처리/TmapSettings.md": "99_이전_문서/이전_발췌/03_처리/TmapSettings.md",
+    "03_처리/UserContext.md": "99_이전_문서/이전_발췌/03_처리/UserContext.md",
+    "03_처리/WalkingRouteService.md": "99_이전_문서/이전_발췌/03_처리/WalkingRouteService.md",
+    "04_데이터/CostEstimate.md": "99_이전_문서/이전_발췌/04_데이터/CostEstimate.md",
+    "04_데이터/Course.md": "99_이전_문서/보관_코드/04_데이터/Course.md",
+    "04_데이터/CoursePlace.md": "99_이전_문서/보관_코드/04_데이터/CoursePlace.md",
+    "04_데이터/Member.md": "99_이전_문서/이전_발췌/04_데이터/Member.md",
+    "04_데이터/Place.md": "99_이전_문서/이전_발췌/04_데이터/Place.md",
+    "04_데이터/PlaceDetails.md": "99_이전_문서/이전_발췌/04_데이터/PlaceDetails.md",
+    "04_데이터/PriceEstimate.md": "99_이전_문서/이전_발췌/04_데이터/PriceEstimate.md",
+    "04_데이터/Review.md": "99_이전_문서/보관_코드/04_데이터/Review.md",
+    "04_데이터/RoutePlan.md": "99_이전_문서/이전_발췌/04_데이터/RoutePlan.md",
+    "04_데이터/SearchCondition.md": "99_이전_문서/이전_발췌/04_데이터/SearchCondition.md",
+    "04_데이터/WalkingRoute.md": "99_이전_문서/보관_코드/04_데이터/WalkingRoute.md",
+    "05_회원_DB/AppDialogs.md": "99_이전_문서/이전_발췌/05_회원_DB/AppDialogs.md",
+    "05_회원_DB/CapsLockHint.md": "99_이전_문서/이전_발췌/05_회원_DB/CapsLockHint.md",
+    "05_회원_DB/DatabasePool.md": "99_이전_문서/이전_발췌/05_회원_DB/DatabasePool.md",
+    "05_회원_DB/DbSettings.md": "99_이전_문서/이전_발췌/05_회원_DB/DbSettings.md",
+    "05_회원_DB/InformationReportRepository.md": "99_이전_문서/이전_발췌/05_회원_DB/InformationReportRepository.md",
+    "05_회원_DB/InputHistory.md": "99_이전_문서/이전_발췌/05_회원_DB/InputHistory.md",
+    "05_회원_DB/LoginUI.md": "99_이전_문서/이전_발췌/05_회원_DB/LoginUI.md",
+    "05_회원_DB/MemberAdminPanel.md": "99_이전_문서/이전_발췌/05_회원_DB/MemberAdminPanel.md",
+    "05_회원_DB/MemberRepository.md": "99_이전_문서/이전_발췌/05_회원_DB/MemberRepository.md",
+    "05_회원_DB/MembershipApp.md": "99_이전_문서/이전_발췌/05_회원_DB/MembershipApp.md",
+    "05_회원_DB/PasswordHash.md": "99_이전_문서/이전_발췌/05_회원_DB/PasswordHash.md",
+    "05_회원_DB/PlaceCatalogRepository.md": "99_이전_문서/이전_발췌/05_회원_DB/PlaceCatalogRepository.md",
+    "05_회원_DB/PlaceQueryDemo.md": "99_이전_문서/보관_코드/05_회원_DB/PlaceQueryDemo.md",
+    "05_회원_DB/PlaceRepository.md": "99_이전_문서/이전_발췌/05_회원_DB/PlaceRepository.md",
+    "05_회원_DB/PlannerLoadingDialog.md": "99_이전_문서/이전_발췌/05_회원_DB/PlannerLoadingDialog.md",
+    "05_회원_DB/ReplaceIntegratedData.md": "99_이전_문서/이전_발췌/05_회원_DB/ReplaceIntegratedData.md",
+    "05_회원_DB/RevealPanel.md": "99_이전_문서/이전_발췌/05_회원_DB/RevealPanel.md",
+    "05_회원_DB/SavedCourseRepository.md": "99_이전_문서/이전_발췌/05_회원_DB/SavedCourseRepository.md",
+    "05_회원_DB/SignupForm.md": "99_이전_문서/이전_발췌/05_회원_DB/SignupForm.md",
+    "05_회원_DB/StartupPanel.md": "99_이전_문서/이전_발췌/05_회원_DB/StartupPanel.md",
+    "05_회원_DB/UiTheme.md": "99_이전_문서/보관_코드/05_회원_DB/UiTheme.md",
+    "05_회원_DB/UserSession.md": "99_이전_문서/이전_발췌/05_회원_DB/UserSession.md",
+    "06_데모/AdminLauncher.md": "99_이전_문서/보관_코드/06_데모/AdminLauncher.md",
+    "06_데모/AdminTestApp.md": "99_이전_문서/보관_코드/06_데모/AdminTestApp.md",
+    "06_데모/CommunityLauncher.md": "99_이전_문서/보관_코드/06_데모/CommunityLauncher.md",
+    "06_데모/CommunityTestApp.md": "99_이전_문서/보관_코드/06_데모/CommunityTestApp.md",
+    "06_데모/ConditionLauncher.md": "99_이전_문서/이전_발췌/06_데모/ConditionLauncher.md",
+    "06_데모/ConditionTestApp.md": "99_이전_문서/이전_발췌/06_데모/ConditionTestApp.md",
+    "06_데모/CourseEditLauncher.md": "99_이전_문서/보관_코드/06_데모/CourseEditLauncher.md",
+    "06_데모/CourseEditTestApp.md": "99_이전_문서/보관_코드/06_데모/CourseEditTestApp.md",
+    "06_데모/FakeCourseData.md": "99_이전_문서/보관_코드/06_데모/FakeCourseData.md",
+    "06_데모/FakeMapData.md": "99_이전_문서/보관_코드/06_데모/FakeMapData.md",
+    "06_데모/FakeMemberData.md": "99_이전_문서/보관_코드/06_데모/FakeMemberData.md",
+    "06_데모/FakeReviewData.md": "99_이전_문서/보관_코드/06_데모/FakeReviewData.md",
+    "06_데모/PilotPlannerApp.md": "99_이전_문서/이전_발췌/06_데모/PilotPlannerApp.md",
+    "06_데모/SavedCourseLauncher.md": "99_이전_문서/보관_코드/06_데모/SavedCourseLauncher.md",
+    "06_데모/SavedCourseTestApp.md": "99_이전_문서/보관_코드/06_데모/SavedCourseTestApp.md",
+    "07_테스트/CapsLockHintTest.md": "99_이전_문서/이전_발췌/07_테스트/CapsLockHintTest.md",
+    "07_테스트/DatabasePoolTest.md": "99_이전_문서/이전_발췌/07_테스트/DatabasePoolTest.md",
+    "07_테스트/DbSettingsTest.md": "99_이전_문서/이전_발췌/07_테스트/DbSettingsTest.md",
+    "07_테스트/MapBridgeTest.md": "99_이전_문서/이전_발췌/07_테스트/MapBridgeTest.md",
+    "07_테스트/MapSearchTest.md": "99_이전_문서/이전_발췌/07_테스트/MapSearchTest.md",
+    "07_테스트/MemberProfileTest.md": "99_이전_문서/이전_발췌/07_테스트/MemberProfileTest.md",
+    "07_테스트/NextPlaceServiceTest.md": "99_이전_문서/이전_발췌/07_테스트/NextPlaceServiceTest.md",
+    "07_테스트/PasswordFieldTest.md": "99_이전_문서/이전_발췌/07_테스트/PasswordFieldTest.md",
+    "07_테스트/PlaceCalculationServiceTest.md": "99_이전_문서/이전_발췌/07_테스트/PlaceCalculationServiceTest.md",
+    "07_테스트/PlaceRepositoryPriceTest.md": "99_이전_문서/이전_발췌/07_테스트/PlaceRepositoryPriceTest.md",
+    "07_테스트/PlaceSearchServiceTest.md": "99_이전_문서/이전_발췌/07_테스트/PlaceSearchServiceTest.md",
+    "07_테스트/PlannerLoadingDialogTest.md": "99_이전_문서/이전_발췌/07_테스트/PlannerLoadingDialogTest.md",
+    "07_테스트/RecommendedCourseMapperTest.md": "99_이전_문서/보관_코드/07_테스트/RecommendedCourseMapperTest.md",
+    "07_테스트/ReplaceIntegratedDataTest.md": "99_이전_문서/이전_발췌/07_테스트/ReplaceIntegratedDataTest.md",
+    "07_테스트/SavedCourseRepositoryTest.md": "99_이전_문서/이전_발췌/07_테스트/SavedCourseRepositoryTest.md",
+    "07_테스트/SavedCourseSchemaTest.md": "99_이전_문서/이전_발췌/07_테스트/SavedCourseSchemaTest.md",
+    "07_테스트/StartupPanelTest.md": "99_이전_문서/이전_발췌/07_테스트/StartupPanelTest.md",
+    "07_테스트/WalkingRouteUiTest.md": "99_이전_문서/이전_발췌/07_테스트/WalkingRouteUiTest.md",
+    "08_지도_보충/instant-zoom.js.md": "99_이전_문서/이전_발췌/08_지도_보충/instant-zoom.js.md",
+    "08_지도_보충/itinerary-rail.js.md": "99_이전_문서/이전_발췌/08_지도_보충/itinerary-rail.js.md",
+    "08_지도_보충/map.js.md": "99_이전_문서/이전_발췌/08_지도_보충/map.js.md"
+  },
+  "archived": [
+    {
+      "old": "01_시작/AppLauncher.md",
+      "new": "99_이전_문서/이전_발췌/01_시작/AppLauncher.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "01_시작/MainApp.md",
+      "new": "99_이전_문서/보관_코드/01_시작/MainApp.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "02_화면/AdminController.md",
+      "new": "99_이전_문서/보관_코드/02_화면/AdminController.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "02_화면/BasePageController.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/BasePageController.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/CommunityController.md",
+      "new": "99_이전_문서/보관_코드/02_화면/CommunityController.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "02_화면/ConditionController.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/ConditionController.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/CourseEditController.md",
+      "new": "99_이전_문서/보관_코드/02_화면/CourseEditController.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "02_화면/InformationReviewController.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/InformationReviewController.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/login.md",
+      "new": "99_이전_문서/보관_코드/02_화면/login.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "02_화면/MapBridge.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/MapBridge.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/MyPageController.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/MyPageController.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/NumberStepper.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/NumberStepper.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/PageFeedback.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/PageFeedback.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/PlannerMap.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/PlannerMap.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/RouteEditorController.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/RouteEditorController.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/SavedCourseController.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/SavedCourseController.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "02_화면/TmapSettingsDialog.md",
+      "new": "99_이전_문서/이전_발췌/02_화면/TmapSettingsDialog.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/AppDiagnostics.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/AppDiagnostics.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/CoursePreviewImage.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/CoursePreviewImage.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/MapPageServer.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/MapPageServer.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/NextPlaceService.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/NextPlaceService.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/PlaceBindingCatalog.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/PlaceBindingCatalog.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/PlaceCalculationService.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/PlaceCalculationService.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/PlaceCountService.md",
+      "new": "99_이전_문서/보관_코드/03_처리/PlaceCountService.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "03_처리/PlacePresenter.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/PlacePresenter.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/PlaceSearchService.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/PlaceSearchService.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/RecommendedCourseMapper.md",
+      "new": "99_이전_문서/보관_코드/03_처리/RecommendedCourseMapper.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "03_처리/SavedCoursePresenter.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/SavedCoursePresenter.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/TmapSettings.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/TmapSettings.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/UserContext.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/UserContext.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "03_처리/WalkingRouteService.md",
+      "new": "99_이전_문서/이전_발췌/03_처리/WalkingRouteService.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "04_데이터/CostEstimate.md",
+      "new": "99_이전_문서/이전_발췌/04_데이터/CostEstimate.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "04_데이터/Course.md",
+      "new": "99_이전_문서/보관_코드/04_데이터/Course.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "04_데이터/CoursePlace.md",
+      "new": "99_이전_문서/보관_코드/04_데이터/CoursePlace.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "04_데이터/Member.md",
+      "new": "99_이전_문서/이전_발췌/04_데이터/Member.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "04_데이터/Place.md",
+      "new": "99_이전_문서/이전_발췌/04_데이터/Place.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "04_데이터/PlaceDetails.md",
+      "new": "99_이전_문서/이전_발췌/04_데이터/PlaceDetails.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "04_데이터/PriceEstimate.md",
+      "new": "99_이전_문서/이전_발췌/04_데이터/PriceEstimate.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "04_데이터/Review.md",
+      "new": "99_이전_문서/보관_코드/04_데이터/Review.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "04_데이터/RoutePlan.md",
+      "new": "99_이전_문서/이전_발췌/04_데이터/RoutePlan.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "04_데이터/SearchCondition.md",
+      "new": "99_이전_문서/이전_발췌/04_데이터/SearchCondition.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "04_데이터/WalkingRoute.md",
+      "new": "99_이전_문서/보관_코드/04_데이터/WalkingRoute.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "05_회원_DB/AppDialogs.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/AppDialogs.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/CapsLockHint.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/CapsLockHint.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/DatabasePool.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/DatabasePool.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/DbSettings.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/DbSettings.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/InformationReportRepository.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/InformationReportRepository.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/InputHistory.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/InputHistory.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/LoginUI.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/LoginUI.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/MemberAdminPanel.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/MemberAdminPanel.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/MemberRepository.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/MemberRepository.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/MembershipApp.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/MembershipApp.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/PasswordHash.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/PasswordHash.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/PlaceCatalogRepository.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/PlaceCatalogRepository.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/PlaceQueryDemo.md",
+      "new": "99_이전_문서/보관_코드/05_회원_DB/PlaceQueryDemo.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "05_회원_DB/PlaceRepository.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/PlaceRepository.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/PlannerLoadingDialog.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/PlannerLoadingDialog.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/ReplaceIntegratedData.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/ReplaceIntegratedData.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/RevealPanel.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/RevealPanel.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/SavedCourseRepository.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/SavedCourseRepository.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/SignupForm.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/SignupForm.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/StartupPanel.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/StartupPanel.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "05_회원_DB/UiTheme.md",
+      "new": "99_이전_문서/보관_코드/05_회원_DB/UiTheme.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "05_회원_DB/UserSession.md",
+      "new": "99_이전_문서/이전_발췌/05_회원_DB/UserSession.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "06_데모/AdminLauncher.md",
+      "new": "99_이전_문서/보관_코드/06_데모/AdminLauncher.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/AdminTestApp.md",
+      "new": "99_이전_문서/보관_코드/06_데모/AdminTestApp.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/CommunityLauncher.md",
+      "new": "99_이전_문서/보관_코드/06_데모/CommunityLauncher.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/CommunityTestApp.md",
+      "new": "99_이전_문서/보관_코드/06_데모/CommunityTestApp.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/ConditionLauncher.md",
+      "new": "99_이전_문서/이전_발췌/06_데모/ConditionLauncher.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "06_데모/ConditionTestApp.md",
+      "new": "99_이전_문서/이전_발췌/06_데모/ConditionTestApp.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "06_데모/CourseEditLauncher.md",
+      "new": "99_이전_문서/보관_코드/06_데모/CourseEditLauncher.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/CourseEditTestApp.md",
+      "new": "99_이전_문서/보관_코드/06_데모/CourseEditTestApp.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/FakeCourseData.md",
+      "new": "99_이전_문서/보관_코드/06_데모/FakeCourseData.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/FakeMapData.md",
+      "new": "99_이전_문서/보관_코드/06_데모/FakeMapData.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/FakeMemberData.md",
+      "new": "99_이전_문서/보관_코드/06_데모/FakeMemberData.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/FakeReviewData.md",
+      "new": "99_이전_문서/보관_코드/06_데모/FakeReviewData.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/PilotPlannerApp.md",
+      "new": "99_이전_문서/이전_발췌/06_데모/PilotPlannerApp.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "06_데모/SavedCourseLauncher.md",
+      "new": "99_이전_문서/보관_코드/06_데모/SavedCourseLauncher.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "06_데모/SavedCourseTestApp.md",
+      "new": "99_이전_문서/보관_코드/06_데모/SavedCourseTestApp.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "07_테스트/CapsLockHintTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/CapsLockHintTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/DatabasePoolTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/DatabasePoolTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/DbSettingsTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/DbSettingsTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/MapBridgeTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/MapBridgeTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/MapSearchTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/MapSearchTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/MemberProfileTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/MemberProfileTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/NextPlaceServiceTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/NextPlaceServiceTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/PasswordFieldTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/PasswordFieldTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/PlaceCalculationServiceTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/PlaceCalculationServiceTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/PlaceRepositoryPriceTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/PlaceRepositoryPriceTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/PlaceSearchServiceTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/PlaceSearchServiceTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/PlannerLoadingDialogTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/PlannerLoadingDialogTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/RecommendedCourseMapperTest.md",
+      "new": "99_이전_문서/보관_코드/07_테스트/RecommendedCourseMapperTest.md",
+      "reason": "보관되거나 사라진 코드의 설명"
+    },
+    {
+      "old": "07_테스트/ReplaceIntegratedDataTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/ReplaceIntegratedDataTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/SavedCourseRepositoryTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/SavedCourseRepositoryTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/SavedCourseSchemaTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/SavedCourseSchemaTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/StartupPanelTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/StartupPanelTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "07_테스트/WalkingRouteUiTest.md",
+      "new": "99_이전_문서/이전_발췌/07_테스트/WalkingRouteUiTest.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "08_지도_보충/instant-zoom.js.md",
+      "new": "99_이전_문서/이전_발췌/08_지도_보충/instant-zoom.js.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "08_지도_보충/itinerary-rail.js.md",
+      "new": "99_이전_문서/이전_발췌/08_지도_보충/itinerary-rail.js.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "08_지도_보충/map.js.md",
+      "new": "99_이전_문서/이전_발췌/08_지도_보충/map.js.md",
+      "reason": "현재 소스와 다른 버전의 코드 발췌"
+    },
+    {
+      "old": "전체_동작_흐름.md",
+      "new": "99_이전_문서/이전_안내/전체_동작_흐름.md",
+      "reason": "새 흐름·검증 문서로 대체된 안내"
+    },
+    {
+      "old": "최종_검토_2026_11_15.md",
+      "new": "99_이전_문서/이전_안내/최종_검토_2026_11_15.md",
+      "reason": "새 흐름·검증 문서로 대체된 안내"
+    }
+  ],
+  "retiredGuides": [
+    {
+      "old": "목차.md",
+      "new": "99_이전_문서/이전_안내/목차_2026_11_25.md",
+      "reason": "현재 기능 안내로 교체한 이전 길잡이"
+    },
+    {
+      "old": "문서_읽는법.md",
+      "new": "99_이전_문서/이전_안내/문서_읽는법_2026_11_25.md",
+      "reason": "현재 기능 안내로 교체한 이전 길잡이"
+    },
+    {
+      "old": "현재_구현_흐름.md",
+      "new": "99_이전_문서/이전_안내/현재_구현_흐름_2026_11_25.md",
+      "reason": "현재 기능 안내로 교체한 이전 길잡이"
+    },
+    {
+      "old": "변경_요약.md",
+      "new": "99_이전_문서/이전_안내/변경_요약_2026_11_25.md",
+      "reason": "현재 기능 안내로 교체한 이전 길잡이"
+    },
+    {
+      "old": "리뷰_및_구현_방향.md",
+      "new": "99_이전_문서/이전_안내/리뷰_및_구현_방향_2026_11_25.md",
+      "reason": "현재 기능 안내로 교체한 이전 길잡이"
+    },
+    {
+      "old": "라이브러리_사용_안내.md",
+      "new": "99_이전_문서/이전_안내/라이브러리_사용_안내_2026_11_25.md",
+      "reason": "현재 기능 안내로 교체한 이전 길잡이"
+    }
+  ]
+}

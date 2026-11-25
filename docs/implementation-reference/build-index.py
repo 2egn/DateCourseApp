@@ -126,7 +126,10 @@ def methods(text):
   name=re.search(r'(\w+)\s*$',before)
   if name and name.group(1) not in [x['name'] for x in result]:result.append({'name':name.group(1),'line':i})
  return result
-def link(path,label=None):return f'[{label or Path(path).name}](../../{path})'
+def link(path,label=None):
+ moves=json.loads((R/'docs/site/document-moves.json').read_text(encoding='utf-8'))['moves'] if (R/'docs/site/document-moves.json').exists() else {}
+ destination='docs/site/content/'+moves[path[len('docs/site/content/'):]] if path.startswith('docs/site/content/') and path[len('docs/site/content/'):] in moves else path
+ return f'[{label or Path(path).name}](../../{destination})'
 entries=[];index=['# 활성 Java 파일 전체 색인','','[전체 길잡이](README.md). 모든 main Java 파일을 포함한다. 기능별 핵심 설명은 앞 문서에 있고, 아래는 각 파일의 무엇·사용 요소·필요 기능·대표 처리 선언·소스 확인용이다.','','대표 선언은 접근 제한자가 있는 메서드를 자동 추출한 것이며 전체 Java AST·호출 관계 분석은 아니다. 생성자·중첩 타입·접근 제한자 없는 메서드는 직접 소스에서 확인한다. main 파일이 모두 일반 화면에서 호출된다는 뜻은 아니며 demo·maintenance는 별도 역할이다.'];last=None
 for p in files:
  text=p.read_text(encoding='utf-8-sig');rel=p.relative_to(R).as_posix();name=p.stem;pkg=re.search(r'package\s+([^;]+)',text).group(1)

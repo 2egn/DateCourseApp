@@ -23,7 +23,7 @@ title: RouteRangeValidatorTest
 
 - **현재 위치:** 자동 테스트
 - **원본:** `src/test/java/com/datecourse/service/RouteRangeValidatorTest.java`
-- **전체 안내:** [[전체_동작_흐름|전체_동작_흐름]] · [[목차|목차]]
+- **전체 안내:** [[99_이전_문서/이전_안내/전체_동작_흐름|전체_동작_흐름]] · [[목차|목차]]
 
 전체 반경 축소, 출발지 이동, 순서/삭제 후 새 구간, 경계 포함과 반경표 불변성을 확인해요.
 
@@ -62,7 +62,7 @@ JUnit이 @Test 메서드 실행 → 테스트용 입력/대체 객체 준비 →
 | 목록·대응표<br/>JDK 기본: java.util<br/>List, Map, HashMap | plan(), shrinkingRadiusAndMovingOriginRevalidateExistingPlaces(), includesExactBoundaryAndDoesNotDependOnOrder(), limitsFollowDestinationAfterReorderingDeletionAndDepartureChange(), legBoundaryIsIncluded() | 장소 목록·ID별 반경·정렬·중복 제거·문자열 설정을 관리한다. stream/filter/map은 목록을 고르고 변환하는 데 사용해요. |
 | JUnit 자동 검사<br/>외부: JUnit Jupiter 5.10.0<br/>Test, Assertions, assertEquals/assertTrue 등 | shrinkingRadiusAndMovingOriginRevalidateExistingPlaces(), includesExactBoundaryAndDoesNotDependOnOrder(), limitsFollowDestinationAfterReorderingDeletionAndDepartureChange(), legBoundaryIsIncluded() | @Test로 검사 메서드를 지정하고 assertEquals/assertTrue 등으로 기대값을 확인해요. |
 
-외부 라이브러리 버전과 전체 사용 위치: [[라이브러리_사용_안내|라이브러리 사용 안내]]
+외부 라이브러리 버전과 전체 사용 위치: [[01_시작/라이브러리_사용_안내|라이브러리 사용 안내]]
 
 ## 클래스 내부 함수 흐름도
 
@@ -100,4 +100,4 @@ flowchart TD
 
 ## 함께 읽기
 
-[[04_데이터/Place|Place]] · [[04_데이터/RoutePlan|RoutePlan]] · [[03_처리/RouteRangeValidator|RouteRangeValidator]]
+[[99_이전_문서/이전_발췌/04_데이터/Place|Place]] · [[99_이전_문서/이전_발췌/04_데이터/RoutePlan|RoutePlan]] · [[03_처리/RouteRangeValidator|RouteRangeValidator]]

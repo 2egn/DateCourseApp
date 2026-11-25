@@ -23,7 +23,7 @@ title: RouteRangeValidator
 
 - **현재 위치:** 현재 사용
 - **원본:** `src/main/java/com/datecourse/service/RouteRangeValidator.java`
-- **전체 안내:** [[전체_동작_흐름|전체_동작_흐름]] · [[목차|목차]]
+- **전체 안내:** [[99_이전_문서/이전_안내/전체_동작_흐름|전체_동작_흐름]] · [[목차|목차]]
 
 ## 사용 장면과 읽는 순서
 
@@ -66,7 +66,7 @@ Leg.exceeded() → 허용 반경이 기록되어 있고 실제 거리가 더 길
 |---|---|---|
 | 목록·대응표<br/>JDK 기본: java.util<br/>List, ArrayList | legs(), outsideRange() | 장소 목록·ID별 반경·정렬·중복 제거·문자열 설정을 관리한다. stream/filter/map은 목록을 고르고 변환하는 데 사용해요. |
 
-외부 라이브러리 버전과 전체 사용 위치: [[라이브러리_사용_안내|라이브러리 사용 안내]]
+외부 라이브러리 버전과 전체 사용 위치: [[01_시작/라이브러리_사용_안내|라이브러리 사용 안내]]
 
 ## 클래스 내부 함수 흐름도
 
@@ -114,7 +114,7 @@ public List<Leg> legs(RoutePlan plan) {
 
 ## 함께 읽기
 
-[[04_데이터/Place|Place]] · [[03_처리/PlaceCalculationService|PlaceCalculationService]] · [[04_데이터/RoutePlan|RoutePlan]]
+[[99_이전_문서/이전_발췌/04_데이터/Place|Place]] · [[99_이전_문서/이전_발췌/03_처리/PlaceCalculationService|PlaceCalculationService]] · [[99_이전_문서/이전_발췌/04_데이터/RoutePlan|RoutePlan]]
 
 ## 이 파일 안의 내부 타입
 

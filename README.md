@@ -10,7 +10,7 @@
 
 ## 빠른 시작
 
-1. Gradle을 시작할 JDK 17 이상과 저장소의 Gradle Wrapper를 사용합니다. 설치된 JDK 21을 우선 사용하며, 없으면 운영체제·CPU에 맞는 21을 Gradle 개인 캐시에 자동 다운로드합니다. 최초 다운로드에는 인터넷 연결이 필요하고 JDK 파일은 저장소에 포함하지 않습니다. Gradle toolchain으로 컴파일·검사·앱 실행 JDK를 21로 고정하고 `--release 21`도 유지합니다. Gradle 자체 실행 JDK는 IDE·`JAVA_HOME` 설정을 따릅니다. JavaFX는 같은 21 계열의 유지보수판 **21.0.13.1**로 고정하고 나머지 라이브러리도 명시한 버전을 사용합니다. 처음 받는 PC에는 이 의존성을 내려받을 인터넷 연결이 필요합니다. IDE에서 직접 실행할 때도 Project SDK를 21로 지정합니다. 여러 JDK가 있어도 자동 검색·`JDK21_HOME`·`JAVA_HOME_21_X64`·`JAVA_HOME`에서 찾은 후보 중 21을 선택합니다. 일반 위치 밖에 설치한 21은 `JDK21_HOME`에 설치 경로를 지정합니다. [선택 규칙과 검색 실패 해결](docs/site/content/JDK21_자동_검색과_선택_2026_11_25.md)을 참고합니다.
+1. Gradle을 시작할 JDK 17 이상과 저장소의 Gradle Wrapper를 사용합니다. 설치된 JDK 21을 우선 사용하며, 없으면 운영체제·CPU에 맞는 21을 Gradle 개인 캐시에 자동 다운로드합니다. 최초 다운로드에는 인터넷 연결이 필요하고 JDK 파일은 저장소에 포함하지 않습니다. Gradle toolchain으로 컴파일·검사·앱 실행 JDK를 21로 고정하고 `--release 21`도 유지합니다. Gradle 자체 실행 JDK는 IDE·`JAVA_HOME` 설정을 따릅니다. JavaFX는 같은 21 계열의 유지보수판 **21.0.13.1**로 고정하고 나머지 라이브러리도 명시한 버전을 사용합니다. 처음 받는 PC에는 이 의존성을 내려받을 인터넷 연결이 필요합니다. IDE에서 직접 실행할 때도 Project SDK를 21로 지정합니다. 여러 JDK가 있어도 자동 검색·`JDK21_HOME`·`JAVA_HOME_21_X64`·`JAVA_HOME`에서 찾은 후보 중 21을 선택합니다. 일반 위치 밖에 설치한 21은 `JDK21_HOME`에 설치 경로를 지정합니다. [선택 규칙과 검색 실패 해결](docs/site/content/01_시작/JDK21_자동_검색과_선택_2026_11_25.md)을 참고합니다.
 2. [공통 접속 키 안내](docs/공통_접속_키.md)에 따라 `.local/team-access.properties`를 준비합니다. 카카오 JavaScript·REST, TMAP, Google Places 키와 DB 접속 정보를 실행 시 받아옵니다.
 3. 카카오 JavaScript 키의 허용 도메인에 `http://localhost:8080`을 등록합니다. 로컬 지도 서버는 앱이 시작합니다.
 4. 프로젝트 루트에서 실행합니다.
@@ -19,19 +19,19 @@
 .\gradlew.bat run
 ```
 
-IntelliJ 실행 진입점은 `com.datecourse.app.AppLauncher`이고 Working directory는 프로젝트 루트입니다. 공통 설정을 사용하지 않는 개별 키·DB 설정은 [공통 접속 키 안내](docs/공통_접속_키.md)와 [실행 및 테스트](docs/site/content/실행_및_테스트.md)를 참고하세요. 실제 키·접속 정보는 커밋하지 않습니다.
+IntelliJ 실행 진입점은 `com.datecourse.app.AppLauncher`이고 Working directory는 프로젝트 루트입니다. 공통 설정을 사용하지 않는 개별 키·DB 설정은 [공통 접속 키 안내](docs/공통_접속_키.md)와 [실행 및 테스트](docs/site/content/01_시작/실행_및_테스트.md)를 참고하세요. 실제 키·접속 정보는 커밋하지 않습니다.
 
-현재 변경의 상세와 세션 처리: [지도 선택·저장 지도 준비](docs/site/content/지도_선택과_저장_지도_준비_2026_11_24.md).
+현재 변경의 상세와 세션 처리: [지도 선택·저장 지도 준비](docs/site/content/08_지도_보충/지도_선택과_저장_지도_준비_2026_11_24.md).
 
-화면 가독성 개선: [작은 창 배치·정보 역할·대비](docs/site/content/화면_가독성과_작은_창_배치_2026_11_24.md).
+화면 가독성 개선: [작은 창 배치·정보 역할·대비](docs/site/content/02_화면/화면_가독성과_작은_창_배치_2026_11_24.md).
 
-지도 이동 개선: [렌더링 여유 영역과 좌표·캡처 보정](docs/site/content/지도_렌더링_여유_영역_2026_11_24.md).
+지도 이동 개선: [렌더링 여유 영역과 좌표·캡처 보정](docs/site/content/08_지도_보충/지도_렌더링_여유_영역_2026_11_24.md).
 
-입력 오류 수정과 추가 UX 검토: [마우스·키보드 입력 점검](docs/site/content/마우스_키보드_입력_점검_2026_11_24.md).
+입력 오류 수정과 추가 UX 검토: [마우스·키보드 입력 점검](docs/site/content/08_지도_보충/마우스_키보드_입력_점검_2026_11_24.md).
 
-키보드 조작 개선: [저장 장소·편집 목록·상세 포커스 복귀](docs/site/content/키보드_조작과_포커스_복귀_2026_11_25.md).
+키보드 조작 개선: [저장 장소·편집 목록·상세 포커스 복귀](docs/site/content/02_화면/키보드_조작과_포커스_복귀_2026_11_25.md).
 
-도보 설정 반영: [같은 코스를 다시 표시할 때 다른 지도의 경로도 갱신](docs/site/content/도보_설정과_지도_경로_동기화_2026_11_25.md).
+도보 설정 반영: [같은 코스를 다시 표시할 때 다른 지도의 경로도 갱신](docs/site/content/08_지도_보충/도보_설정과_지도_경로_동기화_2026_11_25.md).
 
 ## 현재 사용 흐름
 
@@ -57,7 +57,7 @@ IntelliJ 실행 진입점은 `com.datecourse.app.AppLauncher`이고 Working dire
 
 운영 공공 카탈로그는 부산 16개 구·군 분산 확장 후 **5,628곳**이다. 기존 2,138곳과 내장 시연 386곳은 유지한다. [지역별 확장·가격·보존 검증 결과](data/places/expansion/busan-balanced-2026-11-25/README.md)와 [현재 기준본](data/places/expansion/current.json)을 참고한다.
 
-운영 DB는 비어 있는 이전 백업 8개 정리 후 15개 테이블이다. 원본·사용자·코스·변경 이력은 보존했다. [현재 DB 구조](docs/site/content/DB_구조와_빈_백업_정리_2026_11_24.md)와 [복원 SQL·검증 기록](archive/db-schema/2026-11-24-empty-backups/README.md)을 참고한다.
+운영 DB는 비어 있는 이전 백업 8개 정리 후 15개 테이블이다. 원본·사용자·코스·변경 이력은 보존했다. [현재 DB 구조](docs/site/content/05_회원_DB/DB_구조와_빈_백업_정리_2026_11_24.md)와 [복원 SQL·검증 기록](archive/db-schema/2026-11-24-empty-backups/README.md)을 참고한다.
 
 가격 보완은 매장 참고값과 통계 추정을 구분한다. [지역 외식비·커피 조사 적용](data/places/pricing/2026-11-24/README.md)에서 근거·제약·적재 검증을 확인한다.
 
@@ -85,7 +85,7 @@ DateCourseApp/
 └─ <a href="AGENTS.md">AGENTS.md</a>            변경·호환성·검증·문서 갱신 지침
 </pre>
 
-앱 코드는 `com.datecourse`로 통일했습니다. JavaFX 컨트롤러와 FXML은 같은 페이지 경로를 사용합니다. [페이지 이름 대응](docs/site/content/페이지_구조와_이름_2026_11_24.md) · [패키지 통합·구조 점검](docs/site/content/패키지_통합과_구조_점검_2026_11_24.md) · [현재 구현 흐름](docs/site/content/현재_구현_흐름.md)
+앱 코드는 `com.datecourse`로 통일했습니다. JavaFX 컨트롤러와 FXML은 같은 페이지 경로를 사용합니다. [페이지 이름 대응](docs/site/content/09_구조와_검토/페이지_구조와_이름_2026_11_24.md) · [패키지 통합·구조 점검](docs/site/content/09_구조와_검토/패키지_통합과_구조_점검_2026_11_24.md) · [현재 구현 흐름](docs/site/content/현재_구현_흐름.md)
 
 <details>
 <summary>개발 검증과 시연 명령</summary>

@@ -23,7 +23,7 @@ title: ExternalBrowser
 
 - **현재 위치:** 현재 사용
 - **원본:** `src/main/java/com/datecourse/service/ExternalBrowser.java`
-- **전체 안내:** [[전체_동작_흐름|전체_동작_흐름]] · [[목차|목차]]
+- **전체 안내:** [[99_이전_문서/이전_안내/전체_동작_흐름|전체_동작_흐름]] · [[목차|목차]]
 
 ## 사용 장면과 읽는 순서
 
@@ -69,7 +69,7 @@ open() → URL 검사 → Windows의 열린 브라우저 탐색
 | 비동기·콜백<br/>JDK 기본: java.lang / java.util.concurrent / java.util.function<br/>TimeUnit | findExistingWindowsBrowser() | 오래 걸리는 작업을 분리하고 완료 동작을 넘겨줘요. 테스트에서는 작업 완료를 기다리거나 결과를 보관해요. |
 | 주소·외부 프로세스<br/>JDK 기본: java.net / java.lang<br/>URI, ProcessBuilder, ProcessHandle, Process | open(), findExistingWindowsBrowser(), command(), validate() | 웹 주소를 검사하거나 브라우저 실행 프로세스를 시작·조회한다. |
 
-외부 라이브러리 버전과 전체 사용 위치: [[라이브러리_사용_안내|라이브러리 사용 안내]]
+외부 라이브러리 버전과 전체 사용 위치: [[01_시작/라이브러리_사용_안내|라이브러리 사용 안내]]
 
 ## 클래스 내부 함수 흐름도
 

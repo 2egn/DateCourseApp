@@ -14,7 +14,7 @@ try{
  });
  await page.goto('https://board.test/dashboard/');await page.waitForLoadState('networkidle');
  const referenceText=await page.locator('#implementation-status').innerText();
- assert.match(referenceText,/4309741/);assert.match(referenceText,/기능 브랜치 4309741/);assert.match(referenceText,/master 미반영/);
+ assert.match(referenceText,/master d5659e3/);assert.doesNotMatch(referenceText,/master 미반영/);
  assert.ok(await page.locator('[data-task-id="STRUCTURE-24"]').isVisible());
  assert.ok(await page.locator('[data-task-id="INPUT-FIXES-25"]').isVisible());
  assert.equal(data.tasks.find(t=>t.id==='KEYBOARD-UX-25').status,'todo');

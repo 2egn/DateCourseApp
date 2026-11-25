@@ -1,6 +1,6 @@
 // 후속 구현의 새 기록만 추가하며 기존 팀 카드와 수동 확인 상태는 보존한다.
 export const NOV25_FOLLOWUP_VERSION='implementation-followup-balanced-5ecb907-2026-11-25-v2';
-export const IMPLEMENTATION_REFERENCE={commit:'4309741',reviewedAt:'2026-11-25',scope:'feature',branch:'data/busan-core-expansion-20261123'};
+export const IMPLEMENTATION_REFERENCE={commit:'d5659e3',reviewedAt:'2026-11-26',scope:'master',branch:'master'};
 export const NOV25_FOLLOWUP_ADDITIONS=[
  ['KEYBOARD-POLISH-25','키보드·포커스 후속 구현의 실제 PC 확인','frontend','review','[기능 브랜치 4309741 · master 미반영] 저장 장소 방향키·Enter, 내 코스 Enter·실제 행 더블클릭, DOM·JavaFX 포커스 복귀, 확대 Tab, 지연 이미지 선택·이전 변환 취소를 구현했어요. 원래 카드의 수동 확인 상태는 유지해요.','Java 398개·보관 2개 통과. 실제 Windows 연속 조작·배율 확인은 후속','KEYBOARD-UX-25','/키보드_조작과_포커스_복귀_2026_11_25.html'],
  ['ROUTE-PREF-SYNC-25','다른 지도에 도보 설정 변경 반영','backend','done','[기능 브랜치 4309741 · master 미반영] 같은 코스 재표시·늦은 응답에 도보 설정 버전을 적용하고 저장 목록의 옛 시간도 제외해요. 실제 작업 상태로 재조회 버튼을 제어하고 빈 실패 메시지를 보완했어요.','다른 지도·지연 응답·자동/명시 조회·자동차 제외·재시도 회귀 검사 통과','T-AC26320C','/도보_설정과_지도_경로_동기화_2026_11_25.html'],

@@ -5,7 +5,7 @@ test('followup records distinguish feature work from applied data and preserve a
  const db=new DatabaseSync(':memory:');const sql={exec(q,...args){const s=db.prepare(q),rows=s.columns().length?s.all(...args):(s.run(...args),[]);return{toArray:()=>rows};}};
  const ctx={storage:{sql,transactionSync(fn){db.exec('BEGIN');try{const value=fn();db.exec('COMMIT');return value;}catch(error){db.exec('ROLLBACK');throw error;}}}};
  const board=new TaskBoard(ctx);const data=await(await board.fetch(new Request('https://board.test/api/board',{headers:{'X-Board-User':'fixture'}}))).json();
- assert.deepEqual(data.implementation,IMPLEMENTATION_REFERENCE);assert.equal(IMPLEMENTATION_REFERENCE.scope,'feature');
+ assert.deepEqual(data.implementation,IMPLEMENTATION_REFERENCE);assert.equal(IMPLEMENTATION_REFERENCE.scope,'master');
  assert.equal(data.tasks.find(t=>t.id==='KEYBOARD-POLISH-25').dependencies,'KEYBOARD-UX-25');
  assert.equal(data.tasks.find(t=>t.id==='KEYBOARD-POLISH-25').parentId,'');
  assert.equal(data.tasks.find(t=>t.id==='KEYBOARD-POLISH-25').status,'review');

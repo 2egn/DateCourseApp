@@ -23,7 +23,7 @@ title: ExternalBrowserTest
 
 - **현재 위치:** 자동 테스트
 - **원본:** `src/test/java/com/datecourse/service/ExternalBrowserTest.java`
-- **전체 안내:** [[전체_동작_흐름|전체_동작_흐름]] · [[목차|목차]]
+- **전체 안내:** [[99_이전_문서/이전_안내/전체_동작_흐름|전체_동작_흐름]] · [[목차|목차]]
 
 프로필 인자, 브라우저 종류, 비공개 옵션과 주소 검사를 확인해요.
 
@@ -64,7 +64,7 @@ JUnit이 @Test 메서드 실행 → 테스트용 입력/대체 객체 준비 →
 | 주소·외부 프로세스<br/>JDK 기본: java.net / java.lang<br/>URI | privateWindowsUseTheBrowsersPrivateMode(), chromiumReusesExistingProfileAndKeepsUrlOutOfShellCode(), firefoxExplicitlyRequestsNewTab(), rejectsNonWebAddressesBeforeStartingAProcess() | 웹 주소를 검사하거나 브라우저 실행 프로세스를 시작·조회한다. |
 | JUnit 자동 검사<br/>외부: JUnit Jupiter 5.10.0<br/>Test, Assertions, assertEquals/assertTrue 등 | privateWindowsUseTheBrowsersPrivateMode(), detectsPrivateTitlesAndLaunchFlagsWithoutCopyingOtherArguments(), chromiumReusesExistingProfileAndKeepsUrlOutOfShellCode(), firefoxExplicitlyRequestsNewTab(), onlyBrowserProfileSwitchesAreCarriedOver(), rejectsNonWebAddressesBeforeStartingAProcess() | @Test로 검사 메서드를 지정하고 assertEquals/assertTrue 등으로 기대값을 확인해요. |
 
-외부 라이브러리 버전과 전체 사용 위치: [[라이브러리_사용_안내|라이브러리 사용 안내]]
+외부 라이브러리 버전과 전체 사용 위치: [[01_시작/라이브러리_사용_안내|라이브러리 사용 안내]]
 
 ## 클래스 내부 함수 흐름도
 

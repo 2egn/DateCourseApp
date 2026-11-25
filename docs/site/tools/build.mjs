@@ -8,10 +8,12 @@ import {compactDocument} from './compact-docs.mjs';
 import {optimizeAssets} from './optimize-assets.mjs';
 import {normalizeTableLinks} from './table-links.mjs';
 import {updateDocumentRevisions} from './document-revisions.mjs';
+import {removeMovedCopies,normalizeMovedLinks,carryMovedRevisions} from './document-moves.mjs';
 const site=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),root=path.resolve(site,'../..');
 const quartz=process.env.DOCS_QUARTZ_DIR?path.resolve(process.env.DOCS_QUARTZ_DIR):path.join(root,'build/docs-tools/quartz');
 const source=process.env.DOCS_NOTES_DIR||path.join(process.env.USERPROFILE,'OneDrive/OneSyncFiles/SchoolStudies/Java/프로젝트/DateCourseApp');
 if(!fs.existsSync(source))throw Error('DOCS_NOTES_DIR에 문서 원본 폴더를 지정해 주세요.');
+const documentMoves=JSON.parse(fs.readFileSync(path.join(site,'document-moves.json'),'utf8')).moves;
 const yaml=createRequire(path.join(quartz,'package.json'))('yaml');
 const cfg=yaml.parse(fs.readFileSync(path.join(quartz,'quartz.config.default.yaml'),'utf8'));
 Object.assign(cfg.configuration,{pageTitle:'DateCourseApp 팀 문서',analytics:null,locale:'ko-KR',baseUrl:'datecourseapp-team-docs.ate-ourse-pp.workers.dev',prefetch:'off'});
@@ -49,6 +51,7 @@ function copy(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){
 }}
 copy(source);
 fs.cpSync(path.join(site,'content'),output,{recursive:true});
+removeMovedCopies(output,documentMoves);
 fs.mkdirSync(path.join(output,'downloads'),{recursive:true});
 fs.copyFileSync(path.join(root,'data/sql/07_saved_courses.sql'),path.join(output,'downloads/07_saved_courses.sql'));
 fs.copyFileSync(path.join(root,'data/sql/08_saved_course_price_estimates.sql'),path.join(output,'downloads/08_saved_course_price_estimates.sql'));
@@ -62,7 +65,7 @@ for(const file of markdownFiles)for(const [name,description] of Object.entries(e
 }
 for(const [name,description] of Object.entries(unique))if(description)all[name]=description;
 let enriched=0;
-for(const file of markdownFiles){const before=fs.readFileSync(file,'utf8'),after=normalizeTableLinks(enrichMethods(before,path.basename(file,'.md'),all));if(before!==after)enriched++;fs.writeFileSync(file,after);}
+for(const file of markdownFiles){const before=fs.readFileSync(file,'utf8'),after=normalizeTableLinks(enrichMethods(normalizeMovedLinks(before,documentMoves),path.basename(file,'.md'),all));if(before!==after)enriched++;fs.writeFileSync(file,after);}
 console.log(`Updated diagram method tables in ${enriched} notes.`);
 function removeDuplicateTitles(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){
  const file=path.join(dir,item.name);if(item.isDirectory()){removeDuplicateTitles(file);continue;}if(!item.name.endsWith('.md'))continue;
@@ -74,7 +77,7 @@ const previousRevisions=fs.existsSync(revisionFile)?JSON.parse(fs.readFileSync(r
 const initialRecent=new Set(['목차.md','전체_동작_흐름.md','문서_읽는법.md','02_화면/ConditionController.md','02_화면/RouteEditorController.md','02_화면/PlannerMap.md','05_회원_DB/MembershipApp.md']);
 const documentContents={};
 for(const file of markdownFiles){const relative=path.relative(output,file).replaceAll(path.sep,'/');documentContents[relative]=fs.readFileSync(file,'utf8');if(fs.existsSync(path.join(site,'content',relative)))initialRecent.add(relative);}
-const revisionState=updateDocumentRevisions(previousRevisions,documentContents,initialRecent);
+const revisionState=updateDocumentRevisions(carryMovedRevisions(previousRevisions,documentMoves),documentContents,initialRecent);
 const result=spawnSync(process.execPath,['quartz/bootstrap-cli.mjs','build','-d','team-content','-o',path.join(site,'public'),'--concurrency','1'],{cwd:quartz,stdio:'inherit'});
 if(result.status!==0)process.exit(result.status||1);
 const contentIndex=JSON.parse(fs.readFileSync(path.join(site,'public/static/contentIndex.json'),'utf8'));
