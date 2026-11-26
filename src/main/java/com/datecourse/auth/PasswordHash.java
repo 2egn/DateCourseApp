@@ -7,6 +7,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 /** 비밀번호 원문 대신 개인별 salt와 PBKDF2 해시를 저장합니다. */
+/** PBKDF2 알고리즘 - 600,000번 반복 처리*/
 public final class PasswordHash {
     private static final int ITERATIONS = 600_000;
     private PasswordHash() {}
