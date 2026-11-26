@@ -13,7 +13,7 @@
 - **무엇:** 통합 실행을 회원·코스 화면으로 연결.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `AppLauncher()` (줄 7), `main()` (줄 9)
+- **어떻게 확인:** `AppLauncher()` (줄 8), `main()` (줄 10)
 - **코드:** [AppLauncher.java](../../src/main/java/com/datecourse/app/AppLauncher.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -28,7 +28,7 @@
 - **무엇:** 개별 salt·반복 해시 생성과 비밀번호 비교.
 - **무엇을 사용:** JDK 암호화.
 - **필요 기능·사용 효과:** salt 생성·반복 키 유도·해시 비교를 제공한다.
-- **어떻게 확인:** `create()` (줄 14), `verify()` (줄 21), `derive()` (줄 29), `PasswordHash()` (줄 12)
+- **어떻게 확인:** `create()` (줄 15), `verify()` (줄 22), `derive()` (줄 30), `PasswordHash()` (줄 13)
 - **코드:** [PasswordHash.java](../../src/main/java/com/datecourse/auth/PasswordHash.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -43,7 +43,7 @@
 - **무엇:** 명시적인 관리자 비밀번호 재설정 도구.
 - **무엇을 사용:** Swing.
 - **필요 기능·사용 효과:** 창·양식·이벤트 부품을 사용한다.
-- **어떻게 확인:** `AdminPasswordReset()` (줄 14), `main()` (줄 48), `askPassword()` (줄 76)
+- **어떻게 확인:** `AdminPasswordReset()` (줄 17), `main()` (줄 51), `askPassword()` (줄 79)
 - **코드:** [AdminPasswordReset.java](../../src/main/java/com/datecourse/db/AdminPasswordReset.java)
 - **검증 참조:** [AdminPasswordResetTest.java](../../src/test/java/com/datecourse/db/AdminPasswordResetTest.java)
 
@@ -55,7 +55,7 @@
 - **무엇:** DB 연결 재사용을 위한 풀 생성.
 - **무엇을 사용:** HikariCP.
 - **필요 기능·사용 효과:** DB 연결 생성·반환·풀 한도를 관리한다.
-- **어떻게 확인:** `DatabasePool()` (줄 7), `create()` (줄 9)
+- **어떻게 확인:** `DatabasePool()` (줄 8), `create()` (줄 10)
 - **코드:** [DatabasePool.java](../../src/main/java/com/datecourse/db/DatabasePool.java)
 - **검증 참조:** [DatabasePoolTest.java](../../src/test/java/com/datecourse/db/DatabasePoolTest.java)
 
@@ -67,7 +67,7 @@
 - **무엇:** 필요한 DB 구조 존재 확인.
 - **무엇을 사용:** JDBC.
 - **필요 기능·사용 효과:** SQL 실행·값 바인딩·연결/트랜잭션 기능을 사용한다.
-- **어떻게 확인:** `DatabaseSchema()` (줄 9), `SetupRequiredException()` (줄 11), `requireTables()` (줄 16), `requireMembership()` (줄 29)
+- **어떻게 확인:** `DatabaseSchema()` (줄 10), `SetupRequiredException()` (줄 12), `requireTables()` (줄 17), `requireMembership()` (줄 30)
 - **중첩 타입:** `SetupRequiredException`
 - **코드:** [DatabaseSchema.java](../../src/main/java/com/datecourse/db/DatabaseSchema.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -80,7 +80,7 @@
 - **무엇:** DB 설정의 로딩·형식 확인.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `load()` (줄 13), `toString()` (줄 57), `value()` (줄 59)
+- **어떻게 확인:** `load()` (줄 16), `toString()` (줄 60), `value()` (줄 62)
 - **주요 값:** `url`, `user`, `password`
 - **코드:** [DbSettings.java](../../src/main/java/com/datecourse/db/DbSettings.java)
 - **검증 참조:** [DbSettingsTest.java](../../src/test/java/com/datecourse/db/DbSettingsTest.java)
@@ -93,7 +93,7 @@
 - **무엇:** 정정 제보·검토·승인값 적용.
 - **무엇을 사용:** JDBC.
 - **필요 기능·사용 효과:** SQL 실행·값 바인딩·연결/트랜잭션 기능을 사용한다.
-- **어떻게 확인:** `InformationReportRepository()` (줄 13), `initialize()` (줄 16), `submit()` (줄 22), `toString()` (줄 52)
+- **어떻게 확인:** `InformationReportRepository()` (줄 16), `initialize()` (줄 19), `submit()` (줄 25), `toString()` (줄 55)
 - **중첩 타입:** `ReportFilter`, `ReportPage`, `Correction`, `ReviewContext`, `Override`
 - **코드:** [InformationReportRepository.java](../../src/main/java/com/datecourse/db/InformationReportRepository.java)
 - **검증 참조:** [InformationReportRepositoryTest.java](../../src/test/java/com/datecourse/db/InformationReportRepositoryTest.java)
@@ -119,7 +119,7 @@
 - **무엇:** 출처별 장소·버전·이력·보존 적재.
 - **무엇을 사용:** JDBC · Jackson.
 - **필요 기능·사용 효과:** SQL 실행·값 바인딩·연결/트랜잭션 기능을 사용한다. JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `PlaceCatalogRepository()` (줄 40), `prepare()` (줄 46), `initialize()` (줄 72), `synchronize()` (줄 77)
+- **어떻게 확인:** `PlaceCatalogRepository()` (줄 43), `prepare()` (줄 49), `initialize()` (줄 75), `synchronize()` (줄 80)
 - **중첩 타입:** `Batch`, `ImportMode`, `ImportResult`, `PreparedBatch`, `Existing`
 - **코드:** [PlaceCatalogRepository.java](../../src/main/java/com/datecourse/db/PlaceCatalogRepository.java)
 - **검증 참조:** [PlaceCatalogRepositoryTest.java](../../src/test/java/com/datecourse/db/PlaceCatalogRepositoryTest.java)
@@ -132,7 +132,7 @@
 - **무엇:** 운영 카탈로그 우선 장소 조회.
 - **무엇을 사용:** JDBC · Jackson.
 - **필요 기능·사용 효과:** SQL 실행·값 바인딩·연결/트랜잭션 기능을 사용한다. JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `PlaceRepository()` (줄 23), `findAll()` (줄 27)
+- **어떻게 확인:** `PlaceRepository()` (줄 28), `findAll()` (줄 33)
 - **코드:** [PlaceRepository.java](../../src/main/java/com/datecourse/db/PlaceRepository.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -144,7 +144,7 @@
 - **무엇:** 회원별 코스·장소 스냅샷·미리보기 저장.
 - **무엇을 사용:** JDBC · Jackson.
 - **필요 기능·사용 효과:** SQL 실행·값 바인딩·연결/트랜잭션 기능을 사용한다. JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `persist()` (줄 144), `findAll()` (줄 47), `saveWithoutPreview()` (줄 139), `refreshPreview()` (줄 286)
+- **어떻게 확인:** `persist()` (줄 148), `findAll()` (줄 51), `saveWithoutPreview()` (줄 143), `refreshPreview()` (줄 290)
 - **중첩 타입:** `SaveResult`
 - **코드:** [SavedCourseRepository.java](../../src/main/java/com/datecourse/db/SavedCourseRepository.java)
 - **검증 참조:** [SavedCourseRepositoryTest.java](../../src/test/java/com/datecourse/db/SavedCourseRepositoryTest.java)
@@ -323,7 +323,7 @@
 - **무엇:** 인원별 비용 범위와 미확인·추정 개수 집계.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `of()` (줄 11), `display()` (줄 34), `exactTotal()` (줄 28), `CostEstimate()` (줄 8)
+- **어떻게 확인:** `of()` (줄 15), `display()` (줄 39), `exactTotal()` (줄 33), `CostEstimate()` (줄 11)
 - **주요 값:** `minimum`, `maximum`, `unknownPlaces`, `placeCount`, `estimatedPlaces`
 - **코드:** [CostEstimate.java](../../src/main/java/com/datecourse/model/CostEstimate.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -336,7 +336,7 @@
 - **무엇:** 외부 ID의 승인·일치도·실제 장소 여부 구분.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `usable()` (줄 23), `identityChanged()` (줄 24), `unreviewedGoogle()` (줄 28), `clean()` (줄 32)
+- **어떻게 확인:** `usable()` (줄 26), `identityChanged()` (줄 27), `unreviewedGoogle()` (줄 31), `clean()` (줄 35)
 - **주요 값:** `provider`, `externalId`, `confidence`, `reviewStatus`, `entityKind`, `matchMethod`, `checkedAt`, `reviewNote`
 - **중첩 타입:** `Provider`, `Confidence`, `ReviewStatus`, `EntityKind`
 - **코드:** [ExternalPlaceLink.java](../../src/main/java/com/datecourse/model/ExternalPlaceLink.java)
@@ -350,7 +350,7 @@
 - **무엇:** 외부 상세 조회의 임시 결과·영업 구간.
 - **무엇을 사용:** Java record · Jackson.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다. JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `contains()` (줄 22), `featureState()` (줄 35), `openAt()` (줄 37), `toString()` (줄 40)
+- **어떻게 확인:** `contains()` (줄 25), `featureState()` (줄 38), `openAt()` (줄 40), `toString()` (줄 43)
 - **주요 값:** `link`, `fetchedAt`, `priceRange`, `rating`, `ratingCount`, `features`, `openingIntervals`
 - **중첩 타입:** `OpeningInterval`, `NoPersistence`
 - **코드:** [ExternalPlaceSnapshot.java](../../src/main/java/com/datecourse/model/ExternalPlaceSnapshot.java)
@@ -376,7 +376,7 @@
 - **무엇:** 정정 대상·이유·검토 상태 전달.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `label()` (줄 10), `toString()` (줄 11)
+- **어떻게 확인:** `label()` (줄 11), `toString()` (줄 12)
 - **주요 값:** `id`, `placeId`, `placeName`, `field`, `originalValue`, `proposedValue`, `reason`, `sourceUrl`, `status`, `reviewNote`, `createdAt`, `reviewedValue`
 - **중첩 타입:** `Field`
 - **코드:** [InformationReport.java](../../src/main/java/com/datecourse/model/InformationReport.java)
@@ -403,7 +403,7 @@
 - **무엇:** 다음 장소 조건·필터·표시 개수 전달.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `NextPlaceCondition()` (줄 12)
+- **어떻게 확인:** `NextPlaceCondition()` (줄 15)
 - **주요 값:** `activity`, `maxPrice`, `radius`, `includeUnknown`, `subtypes`, `tags`, `displayLimit`, `detailTypes`, `priceFilter`
 - **코드:** [NextPlaceCondition.java](../../src/main/java/com/datecourse/model/NextPlaceCondition.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -416,7 +416,7 @@
 - **무엇:** 장소 ID·좌표·분류·가격·상세 전달.
 - **무엇을 사용:** Java record · Jackson.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다. JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `stableKey()` (줄 26), `sameIdentityAs()` (줄 31), `Place()` (줄 15), `hasPublicIdentity()` (줄 39)
+- **어떻게 확인:** `stableKey()` (줄 30), `sameIdentityAs()` (줄 36), `Place()` (줄 19), `hasPublicIdentity()` (줄 44)
 - **주요 값:** `recordId`, `placeId`, `name`, `category`, `lat`, `lng`, `priceEstimate`, `rating`, `details`
 - **코드:** [Place.java](../../src/main/java/com/datecourse/model/Place.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -442,7 +442,7 @@
 - **무엇:** 주소·업종·연락처·출처·속성·외부 연결 보관.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `if()` (줄 13), `PlaceDetails()` (줄 15), `evidenceFor()` (줄 65), `featureState()` (줄 66)
+- **어떻게 확인:** `if()` (줄 16), `PlaceDetails()` (줄 18), `evidenceFor()` (줄 68), `featureState()` (줄 69)
 - **주요 값:** `address`, `subcategory`, `phone`, `website`, `sourceUrl`, `sourceDate`, `identityCheckedAt`, `verificationUrl`, `externalIds`, `tags`, `attributeFacts`, `externalLinks`, `fieldEvidence`
 - **중첩 타입:** `TagFact`
 - **코드:** [PlaceDetails.java](../../src/main/java/com/datecourse/model/PlaceDetails.java)
@@ -456,7 +456,7 @@
 - **무엇:** 장소 속성의 종류 정의.
 - **무엇을 사용:** Java enum.
 - **필요 기능·사용 효과:** 상태·정책의 경우를 명시해 분기와 표시를 일관되게 사용한다.
-- **어떻게 확인:** `from()` (줄 9)
+- **어떻게 확인:** `from()` (줄 12)
 - **코드:** [PlaceFeature.java](../../src/main/java/com/datecourse/model/PlaceFeature.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -480,7 +480,7 @@
 - **무엇:** 참고·추정·무료 가격 조건 판정.
 - **무엇을 사용:** Java enum.
 - **필요 기능·사용 효과:** 상태·정책의 경우를 명시해 분기와 표시를 일관되게 사용한다.
-- **어떻게 확인:** `accepts()` (줄 8), `toString()` (줄 14)
+- **어떻게 확인:** `accepts()` (줄 11), `toString()` (줄 17)
 - **코드:** [PlacePriceFilter.java](../../src/main/java/com/datecourse/model/PlacePriceFilter.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -504,7 +504,7 @@
 - **무엇:** 가격 범위·단위·근거·미확인 표현.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `withinCap()` (줄 54), `exact()` (줄 32), `estimated()` (줄 36), `display()` (줄 63)
+- **어떻게 확인:** `withinCap()` (줄 61), `exact()` (줄 36), `estimated()` (줄 42), `display()` (줄 70)
 - **주요 값:** `minimum`, `maximum`, `unit`, `basis`, `evidence`, `sourceUrl`, `checkedAt`
 - **중첩 타입:** `Unit`, `Evidence`
 - **코드:** [PriceEstimate.java](../../src/main/java/com/datecourse/model/PriceEstimate.java)
@@ -531,7 +531,7 @@
 - **무엇:** 사용자 계획·방문 순서·반경·수단 전달.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `RoutePlan()` (줄 9), `withTravelMode()` (줄 12), `costEstimate()` (줄 26), `totalCost()` (줄 27)
+- **어떻게 확인:** `RoutePlan()` (줄 9), `withTravelMode()` (줄 12), `costEstimate()` (줄 27), `totalCost()` (줄 29)
 - **주요 값:** `startLat`, `startLng`, `people`, `radius`, `title`, `places`, `arrivalRadii`, `travelMode`
 - **코드:** [RoutePlan.java](../../src/main/java/com/datecourse/model/RoutePlan.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -544,7 +544,7 @@
 - **무엇:** 저장 코스 ID·소유자·계획·수정 시각 전달.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `SavedCourse()` (줄 5)
+- **어떻게 확인:** `SavedCourse()` (줄 8)
 - **주요 값:** `courseId`, `memberId`, `plan`, `updatedAt`
 - **코드:** [SavedCourse.java](../../src/main/java/com/datecourse/model/SavedCourse.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -557,7 +557,7 @@
 - **무엇:** 이전 일괄 추천의 예산·분류·방문 수 조건.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `SearchCondition()` (줄 16)
+- **어떻게 확인:** `SearchCondition()` (줄 20)
 - **주요 값:** `budget`, `people`, `categories`, `lat`, `lng`, `radius`, `minPlaces`, `maxPlaces`
 - **코드:** [SearchCondition.java](../../src/main/java/com/datecourse/model/SearchCondition.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -570,7 +570,7 @@
 - **무엇:** 출처·기준일·확인일 구분.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `clean()` (줄 28)
+- **어떻게 확인:** `clean()` (줄 31)
 - **주요 값:** `origin`, `basis`, `sourceUrl`, `referenceDate`, `checkedAt`
 - **중첩 타입:** `Origin`
 - **코드:** [SourceEvidence.java](../../src/main/java/com/datecourse/model/SourceEvidence.java)
@@ -584,7 +584,7 @@
 - **무엇:** 이동수단별 반경 한도·안내 정책.
 - **무엇을 사용:** Java enum.
 - **필요 기능·사용 효과:** 상태·정책의 경우를 명시해 분기와 표시를 일관되게 사용한다.
-- **어떻게 확인:** `maximumRadius()` (줄 11), `maximumLegRadius()` (줄 12), `label()` (줄 13), `timeNote()` (줄 14)
+- **어떻게 확인:** `maximumRadius()` (줄 12), `maximumLegRadius()` (줄 13), `label()` (줄 14), `timeNote()` (줄 15)
 - **코드:** [TravelMode.java](../../src/main/java/com/datecourse/model/TravelMode.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -596,7 +596,7 @@
 - **무엇:** 공급사가 조회한 실제 경로·구간·거리·시간 전달.
 - **무엇을 사용:** Java record · Jackson.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다. JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `TravelRoute()` (줄 7), `durationText()` (줄 13), `Leg()` (줄 41), `movementSummary()` (줄 45)
+- **어떻게 확인:** `TravelRoute()` (줄 10), `durationText()` (줄 16), `Leg()` (줄 44), `movementSummary()` (줄 48)
 - **주요 값:** `legs`, `totalDistance`, `totalTime`, `mode`, `provider`
 - **중첩 타입:** `Coordinate`, `Stop`, `Step`, `TransitStage`, `Leg`
 - **코드:** [TravelRoute.java](../../src/main/java/com/datecourse/model/TravelRoute.java)
@@ -650,7 +650,7 @@
 - **무엇:** 장소 정정 제보 입력.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `confirmSend()` (줄 123)
+- **어떻게 확인:** `confirmSend()` (줄 124)
 - **중첩 타입:** `Submission`
 - **코드:** [InformationReportDialog.java](../../src/main/java/com/datecourse/page/_01step_planner/InformationReportDialog.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -734,7 +734,7 @@
 - **무엇:** 프로필·내 코스 화면 연결.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `configure()` (줄 18), `onRefresh()` (줄 25), `clear()` (줄 31), `loadProfile()` (줄 39)
+- **어떻게 확인:** `configure()` (줄 21), `onRefresh()` (줄 28), `clear()` (줄 34), `loadProfile()` (줄 42)
 - **코드:** [MyPageController.java](../../src/main/java/com/datecourse/page/account/MyPageController.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -758,7 +758,7 @@
 - **무엇:** 회원가입 입력 양식.
 - **무엇을 사용:** Swing.
 - **필요 기능·사용 효과:** 창·양식·이벤트 부품을 사용한다.
-- **어떻게 확인:** `getPreferredScrollableViewportSize()` (줄 13), `getScrollableUnitIncrement()` (줄 14), `getScrollableBlockIncrement()` (줄 15), `getScrollableTracksViewportWidth()` (줄 18)
+- **어떻게 확인:** `getPreferredScrollableViewportSize()` (줄 16), `getScrollableUnitIncrement()` (줄 17), `getScrollableBlockIncrement()` (줄 18), `getScrollableTracksViewportWidth()` (줄 21)
 - **코드:** [SignupForm.java](../../src/main/java/com/datecourse/page/account/SignupForm.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -770,7 +770,7 @@
 - **무엇:** 시작 화면 표시.
 - **무엇을 사용:** Swing.
 - **필요 기능·사용 효과:** 창·양식·이벤트 부품을 사용한다.
-- **어떻게 확인:** `doInBackground()` (줄 72), `done()` (줄 76), `showFailure()` (줄 95)
+- **어떻게 확인:** `doInBackground()` (줄 75), `done()` (줄 79), `showFailure()` (줄 98)
 - **코드:** [StartupPanel.java](../../src/main/java/com/datecourse/page/account/StartupPanel.java)
 - **검증 참조:** [StartupPanelTest.java](../../src/test/java/com/datecourse/page/account/StartupPanelTest.java)
 
@@ -814,7 +814,7 @@
 - **무엇:** 공통 비동기·로딩·실패 표시.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `showFuture()` (줄 12), `loadingProperty()` (줄 32), `isLoading()` (줄 33), `useFeedback()` (줄 34)
+- **어떻게 확인:** `showFuture()` (줄 17), `loadingProperty()` (줄 37), `isLoading()` (줄 38), `useFeedback()` (줄 39)
 - **코드:** [BasePageController.java](../../src/main/java/com/datecourse/page/common/BasePageController.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -878,7 +878,7 @@
 - **무엇:** 활동별 특징 필터 구성.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `PlaceFeatureSelector()` (줄 14), `selectedTags()` (줄 18), `availableTags()` (줄 19), `configure()` (줄 20)
+- **어떻게 확인:** `PlaceFeatureSelector()` (줄 17), `selectedTags()` (줄 21), `availableTags()` (줄 22), `configure()` (줄 23)
 - **코드:** [PlaceFeatureSelector.java](../../src/main/java/com/datecourse/page/common/controls/PlaceFeatureSelector.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -906,7 +906,7 @@
 - **무엇:** 지도 JavaScript에서 Java로 오는 이벤트 경계.
 - **무엇을 사용:** Jackson.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `setOnDetailClosed()` (줄 20), `onDetailClosed()` (줄 21), `setOnRouteImageRequested()` (줄 23), `requestRouteImage()` (줄 24)
+- **어떻게 확인:** `setOnDetailClosed()` (줄 23), `onDetailClosed()` (줄 24), `setOnRouteImageRequested()` (줄 26), `requestRouteImage()` (줄 27)
 - **코드:** [MapEventBridge.java](../../src/main/java/com/datecourse/page/common/map/MapEventBridge.java)
 - **검증 참조:** [MapEventBridgeTest.java](../../src/test/java/com/datecourse/page/common/map/MapEventBridgeTest.java)
 
@@ -918,7 +918,7 @@
 - **무엇:** 숨김·크기 변경 후 실제 표시 시점 감지.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `observe()` (줄 37), `close()` (줄 38)
+- **어떻게 확인:** `observe()` (줄 40), `close()` (줄 41)
 - **코드:** [MapViewportLifecycle.java](../../src/main/java/com/datecourse/page/common/map/MapViewportLifecycle.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -945,7 +945,7 @@
 - **무엇:** 로딩·성공·오류 메시지 표시.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `PageFeedback()` (줄 30), `show()` (줄 73), `hide()` (줄 89), `beginLoading()` (줄 95)
+- **어떻게 확인:** `PageFeedback()` (줄 33), `show()` (줄 76), `hide()` (줄 92), `beginLoading()` (줄 98)
 - **중첩 타입:** `Kind`
 - **코드:** [PageFeedback.java](../../src/main/java/com/datecourse/page/common/PageFeedback.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -973,7 +973,7 @@
 - **무엇:** 비밀번호 입력 Caps Lock 안내.
 - **무엇을 사용:** Swing.
 - **필요 기능·사용 효과:** 창·양식·이벤트 부품을 사용한다.
-- **어떻게 확인:** `focusGained()` (줄 21), `focusLost()` (줄 22), `refresh()` (줄 26)
+- **어떻게 확인:** `focusGained()` (줄 24), `focusLost()` (줄 25), `refresh()` (줄 29)
 - **코드:** [CapsLockHint.java](../../src/main/java/com/datecourse/page/common/swing/CapsLockHint.java)
 - **검증 참조:** [CapsLockHintTest.java](../../src/test/java/com/datecourse/page/common/swing/CapsLockHintTest.java)
 
@@ -1013,7 +1013,7 @@
 - **무엇:** 도보 탐색 옵션 입력.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `show()` (줄 13)
+- **어떻게 확인:** `show()` (줄 14)
 - **코드:** [TmapSettingsDialog.java](../../src/main/java/com/datecourse/page/common/TmapSettingsDialog.java)
 - **검증 참조:** [TmapSettingsDialogTest.java](../../src/test/java/com/datecourse/page/common/TmapSettingsDialogTest.java)
 
@@ -1043,7 +1043,7 @@
 - **무엇:** 실패 단계·취소·결과 진단 정보.
 - **무엇을 사용:** JDBC.
 - **필요 기능·사용 효과:** SQL 실행·값 바인딩·연결/트랜잭션 기능을 사용한다.
-- **어떻게 확인:** `AppDiagnostics()` (줄 13), `begin()` (줄 14), `HttpFailure()` (줄 18), `status()` (줄 19)
+- **어떻게 확인:** `AppDiagnostics()` (줄 16), `begin()` (줄 17), `HttpFailure()` (줄 21), `status()` (줄 22)
 - **중첩 타입:** `Operation`, `Stage`, `Outcome`, `HttpFailure`, `Trace`
 - **코드:** [AppDiagnostics.java](../../src/main/java/com/datecourse/service/AppDiagnostics.java)
 - **검증 참조:** [AppDiagnosticsTest.java](../../src/test/java/com/datecourse/service/AppDiagnosticsTest.java)
@@ -1056,7 +1056,7 @@
 - **무엇:** 조작 의도·화면 거리·넘침에 따른 지도 이동 정책.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `decide()` (줄 26), `defaults()` (줄 20), `CameraMotionPolicy()` (줄 24)
+- **어떻게 확인:** `decide()` (줄 29), `defaults()` (줄 23), `CameraMotionPolicy()` (줄 27)
 - **중첩 타입:** `Intent`, `Movement`, `Frame`, `Options`, `Transition`
 - **코드:** [CameraMotionPolicy.java](../../src/main/java/com/datecourse/service/CameraMotionPolicy.java)
 - **검증 참조:** [CameraMotionPolicyTest.java](../../src/test/java/com/datecourse/service/CameraMotionPolicyTest.java)
@@ -1069,7 +1069,7 @@
 - **무엇:** 후보를 실제로 늘리는 조건 완화 안내.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `analyze()` (줄 14), `offer()` (줄 38), `matches()` (줄 41), `copy()` (줄 44)
+- **어떻게 확인:** `analyze()` (줄 17), `offer()` (줄 41), `matches()` (줄 44), `copy()` (줄 47)
 - **중첩 타입:** `Change`, `Suggestion`, `Advice`
 - **코드:** [CandidateRecoveryService.java](../../src/main/java/com/datecourse/service/CandidateRecoveryService.java)
 - **검증 참조:** [CandidateRecoveryServiceTest.java](../../src/test/java/com/datecourse/service/CandidateRecoveryServiceTest.java)
@@ -1082,7 +1082,7 @@
 - **무엇:** PNG 생성·이미지 내용 지문.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `fingerprint()` (줄 22), `renderWithMap()` (줄 34), `renderMapOnly()` (줄 52), `render()` (줄 60)
+- **어떻게 확인:** `fingerprint()` (줄 25), `renderWithMap()` (줄 37), `renderMapOnly()` (줄 55), `render()` (줄 63)
 - **코드:** [CoursePreviewImage.java](../../src/main/java/com/datecourse/service/CoursePreviewImage.java)
 - **검증 참조:** [CoursePreviewImageTest.java](../../src/test/java/com/datecourse/service/CoursePreviewImageTest.java)
 
@@ -1106,7 +1106,7 @@
 - **무엇:** 외부 링크를 시스템 브라우저에 연결.
 - **무엇을 사용:** Jackson.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `ExternalBrowser()` (줄 25), `open()` (줄 27), `validate()` (줄 104)
+- **어떻게 확인:** `ExternalBrowser()` (줄 28), `open()` (줄 30), `validate()` (줄 107)
 - **중첩 타입:** `BrowserTarget`
 - **코드:** [ExternalBrowser.java](../../src/main/java/com/datecourse/service/ExternalBrowser.java)
 - **검증 참조:** [ExternalBrowserTest.java](../../src/test/java/com/datecourse/service/ExternalBrowserTest.java)
@@ -1119,7 +1119,7 @@
 - **무엇:** 카카오 자동차·대중교통 응답 파싱.
 - **무엇을 사용:** Jackson · HttpClient.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다. 외부 HTTP 요청과 응답 처리를 제공한다.
-- **어떻게 확인:** `KakaoRouteService()` (줄 20), `route()` (줄 23), `request()` (줄 46), `array()` (줄 134)
+- **어떻게 확인:** `KakaoRouteService()` (줄 23), `route()` (줄 26), `request()` (줄 49), `array()` (줄 137)
 - **중첩 타입:** `NoTransitRouteException`
 - **코드:** [KakaoRouteService.java](../../src/main/java/com/datecourse/service/KakaoRouteService.java)
 - **검증 참조:** [KakaoRouteServiceTest.java](../../src/test/java/com/datecourse/service/KakaoRouteServiceTest.java)
@@ -1132,7 +1132,7 @@
 - **무엇:** 카카오 REST 경로 키 설정 확인.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `toString()` (줄 15), `load()` (줄 16)
+- **어떻게 확인:** `toString()` (줄 18), `load()` (줄 19)
 - **주요 값:** `restApiKey`
 - **코드:** [KakaoRouteSettings.java](../../src/main/java/com/datecourse/service/KakaoRouteSettings.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -1145,7 +1145,7 @@
 - **무엇:** 지도 자원을 로컬 HTTP로 제공.
 - **무엇을 사용:** Jackson · HttpServer.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다. 프로세스 안에서 로컬 지도 자원을 제공한다.
-- **어떻게 확인:** `sharedPage()` (줄 45), `configuration()` (줄 109), `pageUri()` (줄 127), `close()` (줄 131)
+- **어떻게 확인:** `sharedPage()` (줄 48), `configuration()` (줄 112), `pageUri()` (줄 130), `close()` (줄 134)
 - **코드:** [MapPageServer.java](../../src/main/java/com/datecourse/service/MapPageServer.java)
 - **검증 참조:** [MapPageServerTest.java](../../src/test/java/com/datecourse/service/MapPageServerTest.java)
 
@@ -1157,7 +1157,7 @@
 - **무엇:** 전체 범위·직전 장소에 맞는 구간 반경 상한.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `NextPlaceRadius()` (줄 7), `maximum()` (줄 9)
+- **어떻게 확인:** `NextPlaceRadius()` (줄 10), `maximum()` (줄 12)
 - **코드:** [NextPlaceRadius.java](../../src/main/java/com/datecourse/service/NextPlaceRadius.java)
 - **검증 참조:** [NextPlaceRadiusTest.java](../../src/test/java/com/datecourse/service/NextPlaceRadiusTest.java)
 
@@ -1169,7 +1169,7 @@
 - **무엇:** 조건에 맞는 다음 후보를 거리순으로 선택.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `matching()` (줄 34), `candidates()` (줄 13)
+- **어떻게 확인:** `matching()` (줄 41), `candidates()` (줄 14)
 - **코드:** [NextPlaceService.java](../../src/main/java/com/datecourse/service/NextPlaceService.java)
 - **검증 참조:** [NextPlaceServiceTest.java](../../src/test/java/com/datecourse/service/NextPlaceServiceTest.java)
 
@@ -1181,7 +1181,7 @@
 - **무엇:** 소규모 대조 완료 시연 자료 읽기.
 - **무엇을 사용:** Jackson.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `findAll()` (줄 17), `read()` (줄 24)
+- **어떻게 확인:** `findAll()` (줄 20), `read()` (줄 27)
 - **코드:** [PilotPlaceRepository.java](../../src/main/java/com/datecourse/service/PilotPlaceRepository.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -1193,7 +1193,7 @@
 - **무엇:** 자료 버전과 일치하는 외부 ID 연결표 읽기.
 - **무엇을 사용:** Jackson.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `PlaceBindingCatalog()` (줄 35), `load()` (줄 42), `googlePlaceId()` (줄 77), `reviewedGoogleLink()` (줄 87)
+- **어떻게 확인:** `PlaceBindingCatalog()` (줄 38), `load()` (줄 45), `googlePlaceId()` (줄 80), `reviewedGoogleLink()` (줄 90)
 - **코드:** [PlaceBindingCatalog.java](../../src/main/java/com/datecourse/service/PlaceBindingCatalog.java)
 - **검증 참조:** [PlaceBindingCatalogTest.java](../../src/test/java/com/datecourse/service/PlaceBindingCatalogTest.java)
 
@@ -1205,7 +1205,7 @@
 - **무엇:** 좌표 사이 구면 거리·이전 정액 계산.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `calculateDistance()` (줄 10), `filterPlacesByRadius()` (줄 21), `calculateTotalCost()` (줄 33), `validateCoordinates()` (줄 41)
+- **어떻게 확인:** `calculateDistance()` (줄 14), `filterPlacesByRadius()` (줄 25), `calculateTotalCost()` (줄 37), `validateCoordinates()` (줄 45)
 - **코드:** [PlaceCalculationService.java](../../src/main/java/com/datecourse/service/PlaceCalculationService.java)
 - **검증 참조:** [PlaceCalculationServiceTest.java](../../src/test/java/com/datecourse/service/PlaceCalculationServiceTest.java)
 
@@ -1229,7 +1229,7 @@
 - **무엇:** 모델에 지도 표시용 presentation을 덧붙임.
 - **무엇을 사용:** Jackson.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `PlaceMapPayload()` (줄 15), `place()` (줄 18), `places()` (줄 25), `plan()` (줄 28)
+- **어떻게 확인:** `PlaceMapPayload()` (줄 18), `place()` (줄 21), `places()` (줄 28), `plan()` (줄 31)
 - **코드:** [PlaceMapPayload.java](../../src/main/java/com/datecourse/service/PlaceMapPayload.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -1241,7 +1241,7 @@
 - **무엇:** 가격·출처·특징을 표시 문구로 변환.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `present()` (줄 21), `candidateType()` (줄 42), `badge()` (줄 48), `line()` (줄 57)
+- **어떻게 확인:** `present()` (줄 24), `candidateType()` (줄 45), `badge()` (줄 51), `line()` (줄 60)
 - **중첩 타입:** `Badge`, `DetailLine`, `Presentation`
 - **코드:** [PlacePresenter.java](../../src/main/java/com/datecourse/service/PlacePresenter.java)
 - **검증 참조:** [PlacePresenterTest.java](../../src/test/java/com/datecourse/service/PlacePresenterTest.java)
@@ -1254,7 +1254,7 @@
 - **무엇:** 전체 범위·중복 대표 검색과 이전 일괄 추천.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `nearby()` (줄 15), `recommend()` (줄 47), `identity()` (줄 94), `categoryName()` (줄 98)
+- **어떻게 확인:** `nearby()` (줄 19), `recommend()` (줄 52), `identity()` (줄 99), `categoryName()` (줄 103)
 - **중첩 타입:** `NearbyPlace`, `Result`, `PlaceLocation`
 - **코드:** [PlaceSearchService.java](../../src/main/java/com/datecourse/service/PlaceSearchService.java)
 - **검증 참조:** [PlaceSearchServiceTest.java](../../src/test/java/com/datecourse/service/PlaceSearchServiceTest.java)
@@ -1279,7 +1279,7 @@
 - **무엇:** 내장 공공 시연 자료 읽기.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `findAll()` (줄 11)
+- **어떻게 확인:** `findAll()` (줄 14)
 - **코드:** [PublicDemoPlaceRepository.java](../../src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -1291,7 +1291,7 @@
 - **무엇:** 장소 파일 지문·ID 검사와 공공 속성 연결.
 - **무엇을 사용:** Jackson.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `PublicPlaceFacts()` (줄 15), `read()` (줄 16), `required()` (줄 70), `sha256()` (줄 75)
+- **어떻게 확인:** `PublicPlaceFacts()` (줄 18), `read()` (줄 20), `required()` (줄 74), `sha256()` (줄 79)
 - **코드:** [PublicPlaceFacts.java](../../src/main/java/com/datecourse/service/PublicPlaceFacts.java)
 - **검증 참조:** [PublicPlaceFactsTest.java](../../src/test/java/com/datecourse/service/PublicPlaceFactsTest.java)
 
@@ -1303,7 +1303,7 @@
 - **무엇:** 완성 코스의 전체·구간 직선 반경 검사.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `exceeded()` (줄 12), `legs()` (줄 15), `outsideRange()` (줄 28)
+- **어떻게 확인:** `exceeded()` (줄 15), `legs()` (줄 18), `outsideRange()` (줄 31)
 - **중첩 타입:** `Leg`
 - **코드:** [RouteRangeValidator.java](../../src/main/java/com/datecourse/service/RouteRangeValidator.java)
 - **검증 참조:** [RouteRangeValidatorTest.java](../../src/test/java/com/datecourse/service/RouteRangeValidatorTest.java)
@@ -1316,7 +1316,7 @@
 - **무엇:** 저장 코스 합계·이동 요약 문구.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `costSummary()` (줄 16), `present()` (줄 28)
+- **어떻게 확인:** `costSummary()` (줄 19), `present()` (줄 31)
 - **중첩 타입:** `Summary`
 - **코드:** [SavedCoursePresenter.java](../../src/main/java/com/datecourse/service/SavedCoursePresenter.java)
 - **검증 참조:** [SavedCoursePresenterTest.java](../../src/test/java/com/datecourse/service/SavedCoursePresenterTest.java)
@@ -1329,7 +1329,7 @@
 - **무엇:** 공통 인증으로 실행 중 키·DB 설정 조회.
 - **무엇을 사용:** Jackson.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `TeamApiKeys()` (줄 24), `get()` (줄 27), `database()` (줄 32), `fetch()` (줄 75)
+- **어떻게 확인:** `TeamApiKeys()` (줄 27), `get()` (줄 30), `database()` (줄 35), `fetch()` (줄 78)
 - **코드:** [TeamApiKeys.java](../../src/main/java/com/datecourse/service/TeamApiKeys.java)
 - **검증 참조:** [TeamApiKeysTest.java](../../src/test/java/com/datecourse/service/TeamApiKeysTest.java)
 
@@ -1341,7 +1341,7 @@
 - **무엇:** 도보 키·옵션·설정 변경 버전.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `preferencesVersion()` (줄 18), `load()` (줄 31), `saveLocal()` (줄 64), `saveSearchOption()` (줄 66)
+- **어떻게 확인:** `preferencesVersion()` (줄 21), `load()` (줄 34), `saveLocal()` (줄 67), `saveSearchOption()` (줄 69)
 - **주요 값:** `appKey`, `searchOption`
 - **코드:** [TmapSettings.java](../../src/main/java/com/datecourse/service/TmapSettings.java)
 - **검증 참조:** [TmapSettingsTest.java](../../src/test/java/com/datecourse/service/TmapSettingsTest.java)
@@ -1366,7 +1366,7 @@
 - **무엇:** 이동수단에 맞는 경로 어댑터 호출.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `route()` (줄 11)
+- **어떻게 확인:** `route()` (줄 15)
 - **코드:** [TravelRouteService.java](../../src/main/java/com/datecourse/service/TravelRouteService.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -1378,7 +1378,7 @@
 - **무엇:** 한 로그인의 프로필·목록·이미지·지도 준비 캐시.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `courses()` (줄 38), `preview()` (줄 42), `invalidateCourses()` (줄 40), `close()` (줄 68)
+- **어떻게 확인:** `courses()` (줄 41), `preview()` (줄 47), `invalidateCourses()` (줄 44), `close()` (줄 73)
 - **중첩 타입:** `PreviewKey`, `CachedValue`
 - **코드:** [UserContext.java](../../src/main/java/com/datecourse/service/UserContext.java)
 - **검증 참조:** [UserContextTest.java](../../src/test/java/com/datecourse/service/UserContextTest.java)
@@ -1391,7 +1391,7 @@
 - **무엇:** TMAP 보행 구간 조회·파싱·짧은 캐시.
 - **무엇을 사용:** Jackson · HttpClient.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다. 외부 HTTP 요청과 응답 처리를 제공한다.
-- **어떻게 확인:** `WalkingRouteService()` (줄 32), `route()` (줄 38), `leg()` (줄 56), `nonnegative()` (줄 125)
+- **어떻게 확인:** `WalkingRouteService()` (줄 35), `route()` (줄 41), `leg()` (줄 59), `nonnegative()` (줄 128)
 - **중첩 타입:** `CacheKey`, `Cached`
 - **코드:** [WalkingRouteService.java](../../src/main/java/com/datecourse/service/WalkingRouteService.java)
 - **검증 참조:** [WalkingRouteServiceTest.java](../../src/test/java/com/datecourse/service/WalkingRouteServiceTest.java)

@@ -1,5 +1,5 @@
 {
-  "reviewedCommit": "a0d9436",
+  "reviewedCommit": "1a4568c",
   "date": "2026-11-25",
   "scope": "Shared tracked project components, excluding personal settings/secrets, IDE state, Git internals, generated outputs/caches and this reference package.",
   "mainJavaFiles": 107,
@@ -16,14 +16,14 @@
       "methods": [
         {
           "name": "AppLauncher",
-          "line": 7
+          "line": 8
         },
         {
           "name": "main",
-          "line": 9
+          "line": 10
         }
       ],
-      "sha256": "557f607c528606bc89f4f1b66012085095858d67a9926272d16361e1e7f00fd0",
+      "sha256": "b9ffd5102de84c15ff3bbc207469fd40b818d609638908e74a523ef7e382fa07",
       "nestedTypes": [],
       "fields": []
     },
@@ -39,22 +39,22 @@
       "methods": [
         {
           "name": "PasswordHash",
-          "line": 12
+          "line": 13
         },
         {
           "name": "create",
-          "line": 14
+          "line": 15
         },
         {
           "name": "verify",
-          "line": 21
+          "line": 22
         },
         {
           "name": "derive",
-          "line": 29
+          "line": 30
         }
       ],
-      "sha256": "a69329770359bb5ffa56c85a37e3b911ac15f058370d4b86aa513e4d0c9d885c",
+      "sha256": "cfd88655199d39be4e98efa89d9b759a105d496693503348154737c9f3be9b19",
       "nestedTypes": [],
       "fields": []
     },
@@ -70,18 +70,18 @@
       "methods": [
         {
           "name": "AdminPasswordReset",
-          "line": 14
+          "line": 17
         },
         {
           "name": "main",
-          "line": 48
+          "line": 51
         },
         {
           "name": "askPassword",
-          "line": 76
+          "line": 79
         }
       ],
-      "sha256": "d8fb5710c3d911a42897c1c057d9037a75440f88921dcc54c7d69b4c320f875d",
+      "sha256": "856d8dae86c525ab59565c16e45c2da8047646cc3cd31f57ba0c71498d41a4d9",
       "nestedTypes": [],
       "fields": []
     },
@@ -97,14 +97,14 @@
       "methods": [
         {
           "name": "DatabasePool",
-          "line": 7
+          "line": 8
         },
         {
           "name": "create",
-          "line": 9
+          "line": 10
         }
       ],
-      "sha256": "1ae305fca5db82261a6f1692e0fb87754a74ad620b8bfd5e5a4dbde50f2c8a40",
+      "sha256": "e402d281df90570ec6346e3c60bd71464775546db49d644056159ebdcb0f456a",
       "nestedTypes": [],
       "fields": []
     },
@@ -120,22 +120,22 @@
       "methods": [
         {
           "name": "DatabaseSchema",
-          "line": 9
+          "line": 10
         },
         {
           "name": "SetupRequiredException",
-          "line": 11
+          "line": 12
         },
         {
           "name": "requireTables",
-          "line": 16
+          "line": 17
         },
         {
           "name": "requireMembership",
-          "line": 29
+          "line": 30
         }
       ],
-      "sha256": "4e3cdaf215dd043d581acf64b4ba088b310e9a5ad201e991eac1fdea3b513e50",
+      "sha256": "cc3910f78706c2f865fec6ab1d2e82e780a7f28214f16dbde07fa1c122ff074a",
       "nestedTypes": [
         "SetupRequiredException"
       ],
@@ -153,18 +153,18 @@
       "methods": [
         {
           "name": "load",
-          "line": 13
+          "line": 16
         },
         {
           "name": "toString",
-          "line": 57
+          "line": 60
         },
         {
           "name": "value",
-          "line": 59
+          "line": 62
         }
       ],
-      "sha256": "34962789b3758572e8ca862b86dad5a6be90d2948e5fd86f784abc6a23264183",
+      "sha256": "45fb395021ddb9f93998eb7c653e26177996e39e2f89ca2caa0d0fb2e4b43c28",
       "nestedTypes": [],
       "fields": [
         "url",
@@ -184,50 +184,50 @@
       "methods": [
         {
           "name": "InformationReportRepository",
-          "line": 13
-        },
-        {
-          "name": "initialize",
           "line": 16
         },
         {
+          "name": "initialize",
+          "line": 19
+        },
+        {
           "name": "submit",
-          "line": 22
+          "line": 25
         },
         {
           "name": "toString",
-          "line": 52
+          "line": 55
         },
         {
           "name": "readCorrection",
-          "line": 101
+          "line": 104
         },
         {
           "name": "apply",
-          "line": 144
+          "line": 147
         },
         {
           "name": "key",
-          "line": 177
-        },
-        {
-          "name": "original",
           "line": 180
         },
         {
-          "name": "value",
+          "name": "original",
           "line": 183
         },
         {
+          "name": "value",
+          "line": 186
+        },
+        {
           "name": "text",
-          "line": 191
+          "line": 194
         },
         {
           "name": "url",
-          "line": 194
+          "line": 197
         }
       ],
-      "sha256": "6776df392d4a16309386ddb3cb31f3196ae8b9d2f8e87a2fa021dcec334c9103",
+      "sha256": "92bb1bae1482cf69626d07e377e8e5e3c53a92a9b39685e623511be009ed26ba",
       "nestedTypes": [
         "ReportFilter",
         "ReportPage",
@@ -341,7 +341,7 @@
           "line": 250
         }
       ],
-      "sha256": "8b3a511a598edad4f4d6e8d641d54b8dd14b6f9926ee586ce590e1546b303c15",
+      "sha256": "8f6ab7ca5db24182bdd763b99d35972b27bc88b162259cdda6b60d2fc4b3dfcb",
       "nestedTypes": [
         "Login",
         "Member",
@@ -363,90 +363,90 @@
       "methods": [
         {
           "name": "PlaceCatalogRepository",
-          "line": 40
+          "line": 43
         },
         {
           "name": "prepare",
-          "line": 46
+          "line": 49
         },
         {
           "name": "initialize",
-          "line": 72
+          "line": 75
         },
         {
           "name": "synchronize",
-          "line": 77
+          "line": 80
         },
         {
           "name": "validatePriceUpdate",
-          "line": 157
+          "line": 160
         },
         {
           "name": "checkVersion",
-          "line": 172
+          "line": 175
         },
         {
           "name": "existing",
-          "line": 183
+          "line": 186
         },
         {
           "name": "newRun",
-          "line": 191
+          "line": 194
         },
         {
           "name": "insertEntry",
-          "line": 195
-        },
-        {
-          "name": "category",
           "line": 198
         },
         {
+          "name": "category",
+          "line": 201
+        },
+        {
           "name": "newRecord",
-          "line": 204
+          "line": 207
         },
         {
           "name": "addBatch",
-          "line": 208
+          "line": 211
         },
         {
           "name": "flushBatches",
-          "line": 213
+          "line": 216
         },
         {
           "name": "parameters",
-          "line": 221
-        },
-        {
-          "name": "execute",
           "line": 224
         },
         {
-          "name": "insert",
+          "name": "execute",
           "line": 227
         },
         {
+          "name": "insert",
+          "line": 230
+        },
+        {
           "name": "findImported",
-          "line": 235
+          "line": 238
         },
         {
           "name": "findAll",
-          "line": 259
+          "line": 262
         },
         {
           "name": "tableExists",
-          "line": 260
+          "line": 263
         },
         {
           "name": "copy",
-          "line": 267
+          "line": 270
         },
         {
           "name": "hash",
-          "line": 270
+          "line": 273
         }
       ],
-      "sha256": "82977401499f00c4eb831c42ceca5a244ba642ab1ebea92975d810770e13a234",
+      "sha256": "bc1f0b69d282c9553a315b08f0f76580664927e5006f385bf3f7c0e5df5b2930",
       "nestedTypes": [
         "Batch",
         "ImportMode",
@@ -469,14 +469,14 @@
       "methods": [
         {
           "name": "PlaceRepository",
-          "line": 23
+          "line": 28
         },
         {
           "name": "findAll",
-          "line": 27
+          "line": 33
         }
       ],
-      "sha256": "ebad990979f30f8a9fa5538e6aa89e5e2bd0b78ad11b59dc265237d2e7a5cedf",
+      "sha256": "941ee9e8791dedf57f5b24eba8574a2c6732da6d74238f7a7964f02fed208fdd",
       "nestedTypes": [],
       "fields": []
     },
@@ -493,122 +493,122 @@
       "methods": [
         {
           "name": "SavedCourseRepository",
-          "line": 37
+          "line": 41
         },
         {
           "name": "findAll",
-          "line": 47
+          "line": 51
         },
         {
           "name": "restored",
-          "line": 85
+          "line": 89
         },
         {
           "name": "rename",
-          "line": 91
+          "line": 95
         },
         {
           "name": "delete",
-          "line": 113
+          "line": 117
         },
         {
           "name": "requireSession",
-          "line": 123
+          "line": 127
         },
         {
           "name": "save",
-          "line": 128
+          "line": 132
         },
         {
           "name": "saveWithoutPreview",
-          "line": 139
+          "line": 143
         },
         {
           "name": "persist",
-          "line": 144
+          "line": 148
         },
         {
           "name": "saveWithPreview",
-          "line": 149
+          "line": 153
         },
         {
           "name": "saveWithPreviewResult",
-          "line": 156
+          "line": 160
         },
         {
           "name": "transportTableExists",
-          "line": 223
+          "line": 227
         },
         {
           "name": "courseQuery",
-          "line": 230
+          "line": 234
         },
         {
           "name": "initializeTransport",
-          "line": 238
+          "line": 242
         },
         {
           "name": "replaceTransport",
-          "line": 243
+          "line": 247
         },
         {
           "name": "readTransport",
-          "line": 249
+          "line": 253
         },
         {
           "name": "initializePreviews",
-          "line": 257
+          "line": 261
         },
         {
           "name": "replacePreview",
-          "line": 263
+          "line": 267
         },
         {
           "name": "refreshPreview",
-          "line": 286
+          "line": 290
         },
         {
           "name": "readCurrentPlan",
-          "line": 307
+          "line": 311
         },
         {
           "name": "findPreview",
-          "line": 334
+          "line": 338
         },
         {
           "name": "insertCourse",
-          "line": 351
+          "line": 355
         },
         {
           "name": "updateCourse",
-          "line": 366
+          "line": 370
         },
         {
           "name": "bindCourse",
-          "line": 388
+          "line": 392
         },
         {
           "name": "replacePlaces",
-          "line": 396
+          "line": 400
         },
         {
           "name": "validate",
-          "line": 434
+          "line": 438
         },
         {
           "name": "text",
-          "line": 463
+          "line": 467
         },
         {
           "name": "coordinates",
-          "line": 468
+          "line": 472
         },
         {
           "name": "snapshotJson",
-          "line": 473
+          "line": 477
         }
       ],
-      "sha256": "b85ffd523848f234d6a9eb7592b320c29f6508094f07cf21b050956ede7c926b",
+      "sha256": "79216e32f6a4c693154dcadb445246e30f4215f094a7e6948843c4096329bae7",
       "nestedTypes": [
         "SaveResult"
       ],
@@ -970,30 +970,30 @@
       "methods": [
         {
           "name": "CostEstimate",
-          "line": 8
-        },
-        {
-          "name": "of",
           "line": 11
         },
         {
+          "name": "of",
+          "line": 15
+        },
+        {
           "name": "exactTotal",
-          "line": 28
+          "line": 33
         },
         {
           "name": "display",
-          "line": 34
+          "line": 39
         },
         {
           "name": "amountDisplay",
-          "line": 43
+          "line": 48
         },
         {
           "name": "won",
-          "line": 48
+          "line": 53
         }
       ],
-      "sha256": "5fe8f2740042f9cc236ef00e708d9c61edbfc3a5188a45aae52811e3a6c2580f",
+      "sha256": "ef8342dc477607be577292839d30a1eed8a4a7ea968e493c174bdedf532ffb19",
       "nestedTypes": [],
       "fields": [
         "minimum",
@@ -1015,22 +1015,22 @@
       "methods": [
         {
           "name": "usable",
-          "line": 23
+          "line": 26
         },
         {
           "name": "identityChanged",
-          "line": 24
+          "line": 27
         },
         {
           "name": "unreviewedGoogle",
-          "line": 28
+          "line": 31
         },
         {
           "name": "clean",
-          "line": 32
+          "line": 35
         }
       ],
-      "sha256": "c5adfb9c674598c352ea0e715eaac7552e8a9c0627b2cce37afdc07323a41b6f",
+      "sha256": "aee0f9cd7425a4a63119dbadac48729d0c4bd076ee8c1c255c98a9c783a27ed0",
       "nestedTypes": [
         "Provider",
         "Confidence",
@@ -1061,26 +1061,26 @@
       "methods": [
         {
           "name": "contains",
-          "line": 22
+          "line": 25
         },
         {
           "name": "featureState",
-          "line": 35
+          "line": 38
         },
         {
           "name": "openAt",
-          "line": 37
-        },
-        {
-          "name": "toString",
           "line": 40
         },
         {
+          "name": "toString",
+          "line": 43
+        },
+        {
           "name": "serialize",
-          "line": 42
+          "line": 45
         }
       ],
-      "sha256": "6a99690bdf17860c7c9c66f241905fc90201bf60edd8a0c8d3bf56324ef9e2c3",
+      "sha256": "e927fd7be39b2f01aff639fcdd54d56562fa1ac4eeb94ac2aa500b54d25e01fb",
       "nestedTypes": [
         "OpeningInterval",
         "NoPersistence"
@@ -1105,7 +1105,7 @@
         "Java enum"
       ],
       "methods": [],
-      "sha256": "fa92201d14d19a186e3e4437e321fc6ae2b7d3711e1c7d79d01d4baa83465f6c",
+      "sha256": "849410cee4fb02a89972a5f2831df48bbdcc7adaca1996962dfa4f44230e7bfb",
       "nestedTypes": [],
       "fields": []
     },
@@ -1121,14 +1121,14 @@
       "methods": [
         {
           "name": "label",
-          "line": 10
+          "line": 11
         },
         {
           "name": "toString",
-          "line": 11
+          "line": 12
         }
       ],
-      "sha256": "04300f8b9010537c359d5f8ef0c0cacd35edde048bd939419f4f4c22188c6fe0",
+      "sha256": "e9b5135f0703d417091af4f198afa232a71f9bd239c70ada66acc361c79adca2",
       "nestedTypes": [
         "Field"
       ],
@@ -1157,7 +1157,7 @@
         "Java record"
       ],
       "methods": [],
-      "sha256": "6c5e495a21187ecac52ad4f37a565f71a751c5e00b25db82cd43eb33cdfc697d",
+      "sha256": "3032d894ba7e88a78e454086405e61c96adc08956001957b1a4d79cb74cb3f56",
       "nestedTypes": [],
       "fields": [
         "memberId",
@@ -1179,10 +1179,10 @@
       "methods": [
         {
           "name": "NextPlaceCondition",
-          "line": 12
+          "line": 15
         }
       ],
-      "sha256": "ca47f42cd7919fa78761eb99481cfd610d37a420a06ac797c53e839a44e06a12",
+      "sha256": "328c335902d8e70a241451164d988736272d85b6ff7582d7c5a6259980103d46",
       "nestedTypes": [],
       "fields": [
         "activity",
@@ -1209,30 +1209,30 @@
       "methods": [
         {
           "name": "Place",
-          "line": 15
+          "line": 19
         },
         {
           "name": "stableKey",
-          "line": 26
+          "line": 30
         },
         {
           "name": "sameIdentityAs",
-          "line": 31
+          "line": 36
         },
         {
           "name": "hasPublicIdentity",
-          "line": 39
-        },
-        {
-          "name": "price",
           "line": 44
         },
         {
+          "name": "price",
+          "line": 49
+        },
+        {
           "name": "priceText",
-          "line": 47
+          "line": 52
         }
       ],
-      "sha256": "eba862b6b5a17974bdc7fbaafc77a395951801342869ec4ba4a1e523e2d8a346",
+      "sha256": "d5308f165f9ef0d9ce132da6ffac66c95244b9da2945dfb699147ee80dc396f5",
       "nestedTypes": [],
       "fields": [
         "recordId",
@@ -1256,7 +1256,7 @@
         "Java record"
       ],
       "methods": [],
-      "sha256": "134888552140bb550beed34fbfa221ee175addcdd29f02aaaeb879f970aab45c",
+      "sha256": "dfdb673bc43758734c45274257fe142baba4af30a516e99d8a8f85c5e3e8c01f",
       "nestedTypes": [],
       "fields": [
         "feature",
@@ -1276,42 +1276,42 @@
       "methods": [
         {
           "name": "if",
-          "line": 13
+          "line": 16
         },
         {
           "name": "PlaceDetails",
-          "line": 15
+          "line": 18
         },
         {
           "name": "evidenceFor",
-          "line": 65
+          "line": 68
         },
         {
           "name": "featureState",
-          "line": 66
+          "line": 69
         },
         {
           "name": "availableTags",
-          "line": 72
-        },
-        {
-          "name": "hasTag",
           "line": 75
         },
         {
+          "name": "hasTag",
+          "line": 78
+        },
+        {
           "name": "withPublicFacts",
-          "line": 76
+          "line": 79
         },
         {
           "name": "identityText",
-          "line": 80
+          "line": 83
         },
         {
           "name": "clean",
-          "line": 84
+          "line": 87
         }
       ],
-      "sha256": "10313a4d46bc22b0546aea69000b506761203cb1c475d6fae1c007a715bfaa15",
+      "sha256": "a95952447fd1c064fa3a25e02663e0e4c9ea9e5684e36119423ba3a5e8d8b9d3",
       "nestedTypes": [
         "TagFact"
       ],
@@ -1343,10 +1343,10 @@
       "methods": [
         {
           "name": "from",
-          "line": 9
+          "line": 12
         }
       ],
-      "sha256": "3f1540aa5c70a379c534bc78457e9a618518154ede6a48e12cb9a6703cd5fe26",
+      "sha256": "214b81dd4a31f2eed6e35a006d35565cebd02a9d401a158b271e990d79f4bc75",
       "nestedTypes": [],
       "fields": []
     },
@@ -1360,7 +1360,7 @@
         "Java enum"
       ],
       "methods": [],
-      "sha256": "826e6e312774d3c0d3da3ef2188f774e2a34a233c3ce6190ec5e2513a776ff8a",
+      "sha256": "5a9eda58fd1c2112fdce791c3a204e03e41d401464222bee39fc3ef793bb4964",
       "nestedTypes": [],
       "fields": []
     },
@@ -1376,14 +1376,14 @@
       "methods": [
         {
           "name": "accepts",
-          "line": 8
+          "line": 11
         },
         {
           "name": "toString",
-          "line": 14
+          "line": 17
         }
       ],
-      "sha256": "364a9db20712dd101f56ab82a104d48339c3fe5c19be737b0ac84554e8bd3313",
+      "sha256": "0d99012261955d4761c15269ca4d086348b88fe329f8e5c5115a5408a3d99274",
       "nestedTypes": [],
       "fields": []
     },
@@ -1406,7 +1406,7 @@
           "line": 13
         }
       ],
-      "sha256": "6288f4d32272c9802f250d01d97ad4d75923001e39467d4ac9b1fd8f27a4b430",
+      "sha256": "c4756cabee0f60a41688a65e96711af7f8a7221c5ba7f9328b53f18c4718e585",
       "nestedTypes": [],
       "fields": []
     },
@@ -1422,66 +1422,66 @@
       "methods": [
         {
           "name": "label",
-          "line": 15
+          "line": 18
         },
         {
           "name": "PriceEstimate",
-          "line": 17
+          "line": 20
         },
         {
           "name": "unknown",
-          "line": 31
-        },
-        {
-          "name": "exact",
-          "line": 32
-        },
-        {
-          "name": "usablePerPerson",
-          "line": 33
-        },
-        {
-          "name": "finite",
           "line": 34
         },
         {
-          "name": "estimated",
+          "name": "exact",
           "line": 36
         },
         {
-          "name": "evidenceText",
+          "name": "usablePerPerson",
           "line": 37
         },
         {
-          "name": "briefBasis",
+          "name": "finite",
           "line": 38
         },
         {
+          "name": "estimated",
+          "line": 42
+        },
+        {
+          "name": "evidenceText",
+          "line": 43
+        },
+        {
+          "name": "briefBasis",
+          "line": 44
+        },
+        {
           "name": "explanation",
-          "line": 53
+          "line": 59
         },
         {
           "name": "withinCap",
-          "line": 54
+          "line": 61
         },
         {
           "name": "sortUpperBound",
-          "line": 55
+          "line": 62
         },
         {
           "name": "exactAmount",
-          "line": 58
+          "line": 65
         },
         {
           "name": "display",
-          "line": 63
+          "line": 70
         },
         {
           "name": "won",
-          "line": 72
+          "line": 79
         }
       ],
-      "sha256": "c6c945395362a9939c1e5917a82da6582be1588f468ec33d3a45fa9983e8c1af",
+      "sha256": "879840fb130f6fa0fa284bc20158805d416fddd886aba35ba1ce1c04db26ed4a",
       "nestedTypes": [
         "Unit",
         "Evidence"
@@ -1506,7 +1506,7 @@
         "Java record"
       ],
       "methods": [],
-      "sha256": "ded217815e5e2e608997557406d9d5753baead9fb15570366383a8d54e4550b0",
+      "sha256": "9ec4975244a665498c9063193b7383126cfa7d3461ea36799242308b77845dfd",
       "nestedTypes": [],
       "fields": [
         "minimum",
@@ -1534,14 +1534,14 @@
         },
         {
           "name": "costEstimate",
-          "line": 26
+          "line": 27
         },
         {
           "name": "totalCost",
-          "line": 27
+          "line": 29
         }
       ],
-      "sha256": "b67546e232e24a57b6185cc582d3279a21befd37db0a9f2f65da18be07cd4b33",
+      "sha256": "7411fb9764bd2661ff4aff873fb5eda3f4e708f233995bcd9e8e6149ce9c86e7",
       "nestedTypes": [],
       "fields": [
         "startLat",
@@ -1566,10 +1566,10 @@
       "methods": [
         {
           "name": "SavedCourse",
-          "line": 5
+          "line": 8
         }
       ],
-      "sha256": "c96f6df66c8422444ca78829250aa056feaa6921cf703656171bdb463ccf0093",
+      "sha256": "59e4708e05ed416685c6eb45d5253a4601198e961c1d9c462d7a8325edf1b8c0",
       "nestedTypes": [],
       "fields": [
         "courseId",
@@ -1590,10 +1590,10 @@
       "methods": [
         {
           "name": "SearchCondition",
-          "line": 16
+          "line": 20
         }
       ],
-      "sha256": "e0f3689b31f8fbbf1630bf402d313088f36c6afd0e99b7fd9ddcff11aedea7ab",
+      "sha256": "5546a4f9729c11defad3ee89c3a5d50c25865f343a9d378be066399e2ad39852",
       "nestedTypes": [],
       "fields": [
         "budget",
@@ -1618,10 +1618,10 @@
       "methods": [
         {
           "name": "clean",
-          "line": 28
+          "line": 31
         }
       ],
-      "sha256": "55e58dbd01c4028652818121d8b21cb23e0c4efadf22ee20d0f738e98e87945a",
+      "sha256": "ddf1c75bdd0fa4672b69d1591cfb94afc63b23967082e3d04380c77fcfec8587",
       "nestedTypes": [
         "Origin"
       ],
@@ -1645,26 +1645,26 @@
       "methods": [
         {
           "name": "maximumRadius",
-          "line": 11
-        },
-        {
-          "name": "maximumLegRadius",
           "line": 12
         },
         {
-          "name": "label",
+          "name": "maximumLegRadius",
           "line": 13
         },
         {
-          "name": "timeNote",
+          "name": "label",
           "line": 14
         },
         {
-          "name": "toString",
+          "name": "timeNote",
           "line": 15
+        },
+        {
+          "name": "toString",
+          "line": 16
         }
       ],
-      "sha256": "cebe0e4802c9c4c609e528b4454bf0456cc90f6b24642b1238fe09f0df4cb6a6",
+      "sha256": "4b6de7b3d2efae19dd21d24cec5087ff78ed979f141911e92a5089a1039d8964",
       "nestedTypes": [],
       "fields": []
     },
@@ -1681,22 +1681,22 @@
       "methods": [
         {
           "name": "TravelRoute",
-          "line": 7
+          "line": 10
         },
         {
           "name": "durationText",
-          "line": 13
+          "line": 16
         },
         {
           "name": "Leg",
-          "line": 41
+          "line": 44
         },
         {
           "name": "movementSummary",
-          "line": 45
+          "line": 48
         }
       ],
-      "sha256": "fe0d86e0c34d12d562aff3348ae6243b53672d04db1c88a96150fd168ef0c051",
+      "sha256": "e451bb434a4780975c12e25af25bc75c9a62ce0162aafea5362418a68eb5fa77",
       "nestedTypes": [
         "Coordinate",
         "Stop",
@@ -1722,7 +1722,7 @@
         "Java record"
       ],
       "methods": [],
-      "sha256": "d67f284569d6ebd1a855835b0106811297e6888001d34fb83915cfe0ffa46397",
+      "sha256": "0033bbf30788db11fdf05bc34d35b0566afd512ae4525316f98b2f32203cda54",
       "nestedTypes": [],
       "fields": [
         "memberId",
@@ -1752,7 +1752,7 @@
           "line": 17
         }
       ],
-      "sha256": "da082508a489d69cc84da2865cf5c8f5efae8bc0a06b4677ffbe0eb9de59912e",
+      "sha256": "e93d5fb3f6b3b83a4841c3e13d270a99551fa9deb0824c16fc976f9535ce2dab",
       "nestedTypes": [],
       "fields": []
     },
@@ -1991,10 +1991,10 @@
       "methods": [
         {
           "name": "confirmSend",
-          "line": 123
+          "line": 124
         }
       ],
-      "sha256": "998ebb0333c9cc1e82ace1ebcbc710e2acb1331bcc94ffea435edd508fef9c13",
+      "sha256": "04ddc0a776295e10d6bd0481e1092894b5c3ec2b013d4fe2b09e7bfa42131739",
       "nestedTypes": [
         "Submission"
       ],
@@ -2329,7 +2329,7 @@
         "JavaFX"
       ],
       "methods": [],
-      "sha256": "2c75e25f38c039be78d3272320e7d345058b25f42441619eaf813282839006f5",
+      "sha256": "1c879859ad44ca2ff1ccadd33708809b53380193ce543e0927a5387e76282119",
       "nestedTypes": [],
       "fields": []
     },
@@ -2665,7 +2665,7 @@
           "line": 468
         }
       ],
-      "sha256": "0587ee204e4e01cff0a0f32e6681bc57a9d51cbf442da795df36ffe9f3e2520c",
+      "sha256": "767349775bb1e7fa40bd41c09cc36c38486cd31726b506ec710a35195d1e1103",
       "nestedTypes": [],
       "fields": []
     },
@@ -2681,30 +2681,30 @@
       "methods": [
         {
           "name": "configure",
-          "line": 18
+          "line": 21
         },
         {
           "name": "onRefresh",
-          "line": 25
+          "line": 28
         },
         {
           "name": "clear",
-          "line": 31
+          "line": 34
         },
         {
           "name": "loadProfile",
-          "line": 39
+          "line": 42
         },
         {
           "name": "onSavedCourses",
-          "line": 62
+          "line": 65
         },
         {
           "name": "onBack",
-          "line": 63
+          "line": 66
         }
       ],
-      "sha256": "baaf6bdb9438b6705b1cc8db23febaa5c109502ba277f4a4cd703f7d944a7e33",
+      "sha256": "c6324c4bbef908a45ff185e15a1daebb244ffa7a46ee78c262bc44062349cbfe",
       "nestedTypes": [],
       "fields": []
     },
@@ -2718,7 +2718,7 @@
         "Swing"
       ],
       "methods": [],
-      "sha256": "f5601a78c16671820cda9b0acd16c33240753e7b3d46998f9c9378164a726a4d",
+      "sha256": "4e32c30d837833a903a314e08d21298d14a553237bb7193bc05d6bbaa58fa615",
       "nestedTypes": [],
       "fields": []
     },
@@ -2734,26 +2734,26 @@
       "methods": [
         {
           "name": "getPreferredScrollableViewportSize",
-          "line": 13
+          "line": 16
         },
         {
           "name": "getScrollableUnitIncrement",
-          "line": 14
+          "line": 17
         },
         {
           "name": "getScrollableBlockIncrement",
-          "line": 15
-        },
-        {
-          "name": "getScrollableTracksViewportWidth",
           "line": 18
         },
         {
+          "name": "getScrollableTracksViewportWidth",
+          "line": 21
+        },
+        {
           "name": "getScrollableTracksViewportHeight",
-          "line": 19
+          "line": 22
         }
       ],
-      "sha256": "578f8f7d59f2fdfd940332eb163adb8a4838276d4fd28c28dfeda3f6b665922c",
+      "sha256": "16dad82f39c954fe42fb6d5b5c2ebe5b31fbee19b3f86f645d079585396d2f66",
       "nestedTypes": [],
       "fields": []
     },
@@ -2769,18 +2769,18 @@
       "methods": [
         {
           "name": "doInBackground",
-          "line": 72
+          "line": 75
         },
         {
           "name": "done",
-          "line": 76
+          "line": 79
         },
         {
           "name": "showFailure",
-          "line": 95
+          "line": 98
         }
       ],
-      "sha256": "10483405887c3a696e36d3e3b97bf3df0d0df316ef38a0470afa283f2c09d9fe",
+      "sha256": "e951abf9314218d6145c43c4ae937dff3f700f63fec88a4aa0d955dc510c8d7f",
       "nestedTypes": [],
       "fields": []
     },
@@ -3013,7 +3013,7 @@
           "line": 524
         }
       ],
-      "sha256": "1da4d8f58ee31f84af6d89721f4e26ba9f9110cbd3cf9e52a3bde83507ee8436",
+      "sha256": "74619f0734abb8046fe884f8b115e93cd618ec1f7ac78f3b97f38b7ef43f9e6d",
       "nestedTypes": [
         "Status",
         "MemberTableModel"
@@ -3032,46 +3032,46 @@
       "methods": [
         {
           "name": "showFuture",
-          "line": 12
+          "line": 17
         },
         {
           "name": "loadingProperty",
-          "line": 32
+          "line": 37
         },
         {
           "name": "isLoading",
-          "line": 33
+          "line": 38
         },
         {
           "name": "useFeedback",
-          "line": 34
-        },
-        {
-          "name": "updateLoading",
-          "line": 35
-        },
-        {
-          "name": "notifyUser",
-          "line": 36
-        },
-        {
-          "name": "watchNotice",
           "line": 39
         },
         {
-          "name": "beginLoading",
+          "name": "updateLoading",
+          "line": 40
+        },
+        {
+          "name": "notifyUser",
+          "line": 41
+        },
+        {
+          "name": "watchNotice",
           "line": 44
         },
         {
+          "name": "beginLoading",
+          "line": 50
+        },
+        {
           "name": "diagnose",
-          "line": 56
+          "line": 62
         },
         {
           "name": "runWork",
-          "line": 62
+          "line": 69
         }
       ],
-      "sha256": "340aa2a14d465f48ab4736f84bec0831102e581b07709bfff7923ffb75289bc4",
+      "sha256": "908c62ecfc5efdea1a098c0e439ac0f76cea57b82929e840829ecfe303f78bd9",
       "nestedTypes": [],
       "fields": []
     },
@@ -3094,7 +3094,7 @@
           "line": 8
         }
       ],
-      "sha256": "d1362644074fdf72a568705f1ca9245e7d183eb505d930ac8924c213aa5db823",
+      "sha256": "a2b3fe1e3934faa164ea6a05138925695badbc06ff39bc8f87a542dfbd4868a1",
       "nestedTypes": [],
       "fields": []
     },
@@ -3185,7 +3185,7 @@
           "line": 123
         }
       ],
-      "sha256": "5eac926957dbd2ce475c71bba5d419d854039b721d194692f20482c97c71075e",
+      "sha256": "19058f411e4567d9218b11cbac6597ed6f501814ff57f3dd616c3ee571e7bf9a",
       "nestedTypes": [
         "Tone",
         "Section",
@@ -3208,7 +3208,7 @@
           "line": 5
         }
       ],
-      "sha256": "0124fd86e16c49d9eca3e4458ea487ff4ccf78e332d29033fe05de77ff3286ca",
+      "sha256": "9080b23383f83d36b083953f9d34e1226e2e7df187802b0898d9f030d30018a8",
       "nestedTypes": [],
       "fields": []
     },
@@ -3227,7 +3227,7 @@
           "line": 7
         }
       ],
-      "sha256": "c88a165e872a5905d91393b87bc3f3f05a6641b013cbbbd5f29a2848fce1a065",
+      "sha256": "a5efe088732eb52ed071a2cbf97696166b2ff9f9ef6fef0af44214cf556a61f2",
       "nestedTypes": [],
       "fields": []
     },
@@ -3243,26 +3243,26 @@
       "methods": [
         {
           "name": "PlaceFeatureSelector",
-          "line": 14
+          "line": 17
         },
         {
           "name": "selectedTags",
-          "line": 18
+          "line": 21
         },
         {
           "name": "availableTags",
-          "line": 19
+          "line": 22
         },
         {
           "name": "configure",
-          "line": 20
+          "line": 23
         },
         {
           "name": "group",
-          "line": 37
+          "line": 40
         }
       ],
-      "sha256": "bc4bbefbb176302fc2461295dddd239f3812b1aa7193823aed429159da112fec",
+      "sha256": "9d3827f690cb217e4b9b9d118cf6b6d7645fcbad9540ef01af787b265af9e176",
       "nestedTypes": [],
       "fields": []
     },
@@ -3522,70 +3522,70 @@
       "methods": [
         {
           "name": "setOnDetailClosed",
-          "line": 20
-        },
-        {
-          "name": "onDetailClosed",
-          "line": 21
-        },
-        {
-          "name": "setOnRouteImageRequested",
           "line": 23
         },
         {
-          "name": "requestRouteImage",
+          "name": "onDetailClosed",
           "line": 24
         },
         {
-          "name": "setOnAddCandidate",
-          "line": 25
-        },
-        {
-          "name": "addCandidate",
+          "name": "setOnRouteImageRequested",
           "line": 26
         },
         {
+          "name": "requestRouteImage",
+          "line": 27
+        },
+        {
+          "name": "setOnAddCandidate",
+          "line": 28
+        },
+        {
+          "name": "addCandidate",
+          "line": 29
+        },
+        {
           "name": "setOnReportPlace",
-          "line": 30
+          "line": 33
         },
         {
           "name": "reportPlace",
-          "line": 31
+          "line": 34
         },
         {
           "name": "MapEventBridge",
-          "line": 35
+          "line": 38
         },
         {
           "name": "decideCameraTransition",
-          "line": 67
+          "line": 70
         },
         {
           "name": "onMapReady",
-          "line": 75
-        },
-        {
-          "name": "onOriginChangeBlocked",
-          "line": 76
-        },
-        {
-          "name": "onLocationSelected",
           "line": 78
         },
         {
+          "name": "onOriginChangeBlocked",
+          "line": 79
+        },
+        {
+          "name": "onLocationSelected",
+          "line": 81
+        },
+        {
           "name": "onMapError",
-          "line": 85
+          "line": 88
         },
         {
           "name": "onPlaceSelected",
-          "line": 86
+          "line": 89
         },
         {
           "name": "openExternalLink",
-          "line": 91
+          "line": 94
         }
       ],
-      "sha256": "c640f5f1ab5ede63ca16e3a734e1022158518ec6230567fb9ba85728306fb4c4",
+      "sha256": "2c98bee042cddd90752a75b5ce1bf0bd99085f6d88415adcb9db95ef14b5b398",
       "nestedTypes": [],
       "fields": []
     },
@@ -3601,14 +3601,14 @@
       "methods": [
         {
           "name": "observe",
-          "line": 37
+          "line": 40
         },
         {
           "name": "close",
-          "line": 38
+          "line": 41
         }
       ],
-      "sha256": "13e3edd2d48f7daf9f4906c8e54fe4442417ec14ecdca60e64f628b8aea3c7b0",
+      "sha256": "de2b3bdb336943f8fe87b7817674063e9ff924333a5a86bf26b01ae7be7328ab",
       "nestedTypes": [],
       "fields": []
     },
@@ -3671,34 +3671,34 @@
       "methods": [
         {
           "name": "PageFeedback",
-          "line": 30
+          "line": 33
         },
         {
           "name": "show",
-          "line": 73
+          "line": 76
         },
         {
           "name": "hide",
-          "line": 89
+          "line": 92
         },
         {
           "name": "beginLoading",
-          "line": 95
+          "line": 98
         },
         {
           "name": "updateLoading",
-          "line": 110
-        },
-        {
-          "name": "isBusy",
           "line": 113
         },
         {
+          "name": "isBusy",
+          "line": 116
+        },
+        {
           "name": "dispose",
-          "line": 114
+          "line": 117
         }
       ],
-      "sha256": "cc3d07e34deeda7d605376dc865c9866b11e2e34688f928e32a1d7c3c3b4f1a8",
+      "sha256": "5e896ffd089787c3a993f1e7094e81dcf9686fd671d38bd7d32bf723804f58bb",
       "nestedTypes": [
         "Kind"
       ],
@@ -3755,18 +3755,18 @@
       "methods": [
         {
           "name": "focusGained",
-          "line": 21
+          "line": 24
         },
         {
           "name": "focusLost",
-          "line": 22
+          "line": 25
         },
         {
           "name": "refresh",
-          "line": 26
+          "line": 29
         }
       ],
-      "sha256": "e566d4062f9600606070295111869ca9409488a0c1ffcba5a3caf6fc82146d15",
+      "sha256": "375b29edd36ff37522f10d4d8ea02b001f778c1b417b5da924e7c2f2e4153b02",
       "nestedTypes": [],
       "fields": []
     },
@@ -3885,7 +3885,7 @@
           "line": 305
         }
       ],
-      "sha256": "e711d97e22c70fe543232f5ab55dd8f4f886d76695a7443526ab17e4b8cdfcc9",
+      "sha256": "d5ab7965200d99be7dddc8776efc019306515d9f504536d53355a48e52d54723",
       "nestedTypes": [
         "TextField",
         "PasswordField",
@@ -3954,10 +3954,10 @@
       "methods": [
         {
           "name": "show",
-          "line": 13
+          "line": 14
         }
       ],
-      "sha256": "97c7e6f8498b46dbcb94436f5f4de67712b18b9a37aed8fa5c1089ef804f8caf",
+      "sha256": "90efa8c51b69508f52c7b429ad1a1b11afc430c2066ac8db69583c5623c51c18",
       "nestedTypes": [],
       "fields": []
     },
@@ -4040,7 +4040,7 @@
           "line": 166
         }
       ],
-      "sha256": "e5bdbd3e827524297059006a9ce2683983eb11ed0c0b45353076f0472354379e",
+      "sha256": "c90fec50cf0f5329bb29efe5851b3f237eeaf6296a6791a43e0b2855a9e27a9f",
       "nestedTypes": [],
       "fields": []
     },
@@ -4056,42 +4056,42 @@
       "methods": [
         {
           "name": "AppDiagnostics",
-          "line": 13
+          "line": 16
         },
         {
           "name": "begin",
-          "line": 14
+          "line": 17
         },
         {
           "name": "HttpFailure",
-          "line": 18
-        },
-        {
-          "name": "status",
-          "line": 19
-        },
-        {
-          "name": "failure",
           "line": 21
         },
         {
-          "name": "root",
+          "name": "status",
           "line": 22
         },
         {
+          "name": "failure",
+          "line": 24
+        },
+        {
+          "name": "root",
+          "line": 25
+        },
+        {
           "name": "cancelled",
-          "line": 27
+          "line": 30
         },
         {
           "name": "Trace",
-          "line": 34
+          "line": 37
         },
         {
           "name": "report",
-          "line": 35
+          "line": 38
         }
       ],
-      "sha256": "32deb5cf33cd8605a1e0e4ece84810bdcbdf174ba928741f4161d9392671a44a",
+      "sha256": "2d1ec181af2af40e5dddca0ab943a09b4faae3b5a0a4546e70bcabe540b25ca2",
       "nestedTypes": [
         "Operation",
         "Stage",
@@ -4113,18 +4113,18 @@
       "methods": [
         {
           "name": "defaults",
-          "line": 20
+          "line": 23
         },
         {
           "name": "CameraMotionPolicy",
-          "line": 24
+          "line": 27
         },
         {
           "name": "decide",
-          "line": 26
+          "line": 29
         }
       ],
-      "sha256": "5de805cc879d1f03e0cff67752f34b9fc79c9108dd25c2cb32a5a2aab546d269",
+      "sha256": "3df5039dc5fc9c64daa3f296e113999e04d4d8cd3c6b86c96a6876b8c37226eb",
       "nestedTypes": [
         "Intent",
         "Movement",
@@ -4146,22 +4146,22 @@
       "methods": [
         {
           "name": "analyze",
-          "line": 14
+          "line": 17
         },
         {
           "name": "offer",
-          "line": 38
-        },
-        {
-          "name": "matches",
           "line": 41
         },
         {
-          "name": "copy",
+          "name": "matches",
           "line": 44
+        },
+        {
+          "name": "copy",
+          "line": 47
         }
       ],
-      "sha256": "ca820bb997afe3ce08b85efceda6a9dee23a1a382cc5850332b03efcf50c35fe",
+      "sha256": "84744bdf23469c581d1764428f0cc933b7eebda238b5938d301c50a7ee2bb8e9",
       "nestedTypes": [
         "Change",
         "Suggestion",
@@ -4181,34 +4181,34 @@
       "methods": [
         {
           "name": "fingerprint",
-          "line": 22
+          "line": 25
         },
         {
           "name": "renderWithMap",
-          "line": 34
+          "line": 37
         },
         {
           "name": "renderMapOnly",
-          "line": 52
+          "line": 55
         },
         {
           "name": "render",
-          "line": 60
+          "line": 63
         },
         {
           "name": "drawConnections",
-          "line": 88
+          "line": 91
         },
         {
           "name": "dot",
-          "line": 106
+          "line": 109
         },
         {
           "name": "text",
-          "line": 112
+          "line": 115
         }
       ],
-      "sha256": "90a86957d86e3a8c471d8b3a032bed3effc1d65d6096dd8b524e979d8235ec27",
+      "sha256": "8ef17ceb53c386acb6e2ec1c525ce87e129553d0fbc69e592466052427b58516",
       "nestedTypes": [],
       "fields": []
     },
@@ -4222,7 +4222,7 @@
         "Java interface"
       ],
       "methods": [],
-      "sha256": "38d9bf1f216df3c16a8b5735db1624ea3871db2eebce4cbc2959f2e903e098a7",
+      "sha256": "b85b6caccc9e5cf83659ab7b71a7f56de508be1020a0891d9e47692c175c72d8",
       "nestedTypes": [],
       "fields": []
     },
@@ -4238,18 +4238,18 @@
       "methods": [
         {
           "name": "ExternalBrowser",
-          "line": 25
+          "line": 28
         },
         {
           "name": "open",
-          "line": 27
+          "line": 30
         },
         {
           "name": "validate",
-          "line": 104
+          "line": 107
         }
       ],
-      "sha256": "538032a79307d75f1ad84c8429cc8a020711caca5c7495a8ea3550d285a8873b",
+      "sha256": "7a8d48357ad5d80447036e3450e1964982a86c659eb1ef0f47549a173dea6174",
       "nestedTypes": [
         "BrowserTarget"
       ],
@@ -4268,42 +4268,42 @@
       "methods": [
         {
           "name": "KakaoRouteService",
-          "line": 20
-        },
-        {
-          "name": "route",
           "line": 23
         },
         {
+          "name": "route",
+          "line": 26
+        },
+        {
           "name": "request",
-          "line": 46
+          "line": 49
         },
         {
           "name": "array",
-          "line": 134
+          "line": 137
         },
         {
           "name": "number",
-          "line": 135
-        },
-        {
-          "name": "optionalInt",
           "line": 138
         },
         {
-          "name": "coordinate",
-          "line": 142
+          "name": "optionalInt",
+          "line": 141
         },
         {
-          "name": "requireGeometry",
+          "name": "coordinate",
           "line": 145
         },
         {
-          "name": "malformed",
+          "name": "requireGeometry",
           "line": 148
+        },
+        {
+          "name": "malformed",
+          "line": 151
         }
       ],
-      "sha256": "c83d0ce9f64771e1a34f2ac4fa9e4b639293c998c7030b51526d50c453bc94e7",
+      "sha256": "15c9587719738d26f0a0960ba87902fe9b1564a90816b6a08d6345b9c6be8e58",
       "nestedTypes": [
         "NoTransitRouteException"
       ],
@@ -4321,14 +4321,14 @@
       "methods": [
         {
           "name": "toString",
-          "line": 15
+          "line": 18
         },
         {
           "name": "load",
-          "line": 16
+          "line": 19
         }
       ],
-      "sha256": "a5680571a29c5865a7e3c1df93c43116f4a3fb0b34fd8a3ab9142f9e9cdc3335",
+      "sha256": "d858fb0b3d64de49e753f2a26c824f9822e6613ec5bcc55a1ef3390b3cf69806",
       "nestedTypes": [],
       "fields": [
         "restApiKey"
@@ -4347,22 +4347,22 @@
       "methods": [
         {
           "name": "sharedPage",
-          "line": 45
+          "line": 48
         },
         {
           "name": "configuration",
-          "line": 109
+          "line": 112
         },
         {
           "name": "pageUri",
-          "line": 127
+          "line": 130
         },
         {
           "name": "close",
-          "line": 131
+          "line": 134
         }
       ],
-      "sha256": "20cc2086629f1a7e8aea2d6ac31e02d12364a41d4b9fe69ccb5855d564797722",
+      "sha256": "ab635d22253da7f6e83c406247e0dc6989098673b106feab12da5560f1a0433a",
       "nestedTypes": [],
       "fields": []
     },
@@ -4378,14 +4378,14 @@
       "methods": [
         {
           "name": "NextPlaceRadius",
-          "line": 7
+          "line": 10
         },
         {
           "name": "maximum",
-          "line": 9
+          "line": 12
         }
       ],
-      "sha256": "dc43b878176fd7188f4b9147ec3856ca49e5d32f71b66e1cd9e30010a7bb5671",
+      "sha256": "0de44054a81843f6609bbf8de00b57a0badbb59157f7cbd36c79115021d94476",
       "nestedTypes": [],
       "fields": []
     },
@@ -4401,14 +4401,14 @@
       "methods": [
         {
           "name": "candidates",
-          "line": 13
+          "line": 14
         },
         {
           "name": "matching",
-          "line": 34
+          "line": 41
         }
       ],
-      "sha256": "6cae596593d4f26ed1277feb63ac602395492076d7a2724a48f7be2ca17b6cf9",
+      "sha256": "a3942f7d834573c0dbd19d4f2d40f3802eaa1df8d15c4946e3cde452ddc867fe",
       "nestedTypes": [],
       "fields": []
     },
@@ -4424,14 +4424,14 @@
       "methods": [
         {
           "name": "findAll",
-          "line": 17
+          "line": 20
         },
         {
           "name": "read",
-          "line": 24
+          "line": 27
         }
       ],
-      "sha256": "4ac0acedc9a58681f29d7271e4944cfe9bcf7701826f0059849529de8092b66c",
+      "sha256": "33c7321ef8a59d0189ba78f581644c3262f88dc75a54367dafc0a977b86bdbe8",
       "nestedTypes": [],
       "fields": []
     },
@@ -4447,34 +4447,34 @@
       "methods": [
         {
           "name": "PlaceBindingCatalog",
-          "line": 35
+          "line": 38
         },
         {
           "name": "load",
-          "line": 42
+          "line": 45
         },
         {
           "name": "googlePlaceId",
-          "line": 77
+          "line": 80
         },
         {
           "name": "reviewedGoogleLink",
-          "line": 87
+          "line": 90
         },
         {
           "name": "size",
-          "line": 93
+          "line": 96
         },
         {
           "name": "requiredText",
-          "line": 95
+          "line": 98
         },
         {
           "name": "sha256",
-          "line": 103
+          "line": 106
         }
       ],
-      "sha256": "e9a5d6573edb38249981b212f0e9858d55f8f7364d1716435f0c79e78def91f9",
+      "sha256": "0d7701d5bfa83526ef8c8b9dbca25d422da786a7b59d1f9b660a510c61b9c448",
       "nestedTypes": [],
       "fields": []
     },
@@ -4490,22 +4490,22 @@
       "methods": [
         {
           "name": "calculateDistance",
-          "line": 10
+          "line": 14
         },
         {
           "name": "filterPlacesByRadius",
-          "line": 21
+          "line": 25
         },
         {
           "name": "calculateTotalCost",
-          "line": 33
+          "line": 37
         },
         {
           "name": "validateCoordinates",
-          "line": 41
+          "line": 45
         }
       ],
-      "sha256": "c08401651f01f1251fdd3a66395b4cc018a377dfb3f23bf2d0adafc7615236ba",
+      "sha256": "1591a69ff6389c9319c44e7a0a781f4e2562651cc2cd4588782e5adeaf082467",
       "nestedTypes": [],
       "fields": []
     },
@@ -4532,7 +4532,7 @@
           "line": 19
         }
       ],
-      "sha256": "1db4a3d0d0a14512d2dda610e072add470cf17e69f0a86bfadb9e5d7c00a3c28",
+      "sha256": "08de6b4ca44c6ccaf2077e82ec4fb003c75a422df6d297d9f3e43f18a1564efb",
       "nestedTypes": [],
       "fields": []
     },
@@ -4548,22 +4548,22 @@
       "methods": [
         {
           "name": "PlaceMapPayload",
-          "line": 15
-        },
-        {
-          "name": "place",
           "line": 18
         },
         {
+          "name": "place",
+          "line": 21
+        },
+        {
           "name": "places",
-          "line": 25
+          "line": 28
         },
         {
           "name": "plan",
-          "line": 28
+          "line": 31
         }
       ],
-      "sha256": "833c9548b505dfa594baeb7b6a757f772ef6f3b1cf70d446e69513732794590d",
+      "sha256": "4c6e43b4dae874ed520cd73e5ebe9dde317a0c76a029b6105fce80fdc9c125e1",
       "nestedTypes": [],
       "fields": []
     },
@@ -4579,30 +4579,30 @@
       "methods": [
         {
           "name": "present",
-          "line": 21
+          "line": 24
         },
         {
           "name": "candidateType",
-          "line": 42
+          "line": 45
         },
         {
           "name": "badge",
-          "line": 48
+          "line": 51
         },
         {
           "name": "line",
-          "line": 57
-        },
-        {
-          "name": "evidenceDescription",
           "line": 60
         },
         {
+          "name": "evidenceDescription",
+          "line": 63
+        },
+        {
           "name": "datasetSummary",
-          "line": 64
+          "line": 67
         }
       ],
-      "sha256": "cea78cfa3002f93a2f9312279b6817954b5185eeed4214c30e395d98e88fcf8b",
+      "sha256": "8d5b208e3e6c353e42444155431291082df496d83a7b03548fe9dac248b1e69e",
       "nestedTypes": [
         "Badge",
         "DetailLine",
@@ -4622,26 +4622,26 @@
       "methods": [
         {
           "name": "nearby",
-          "line": 15
+          "line": 19
         },
         {
           "name": "recommend",
-          "line": 47
+          "line": 52
         },
         {
           "name": "identity",
-          "line": 94
+          "line": 99
         },
         {
           "name": "categoryName",
-          "line": 98
+          "line": 103
         },
         {
           "name": "valid",
-          "line": 102
+          "line": 107
         }
       ],
-      "sha256": "1f27069a73d770f838cb4398fc30177b53ea64fc26c450da49d14c9ff9d3a0ae",
+      "sha256": "323a1e4eff873523f0fc71c30a1618f38c081239b2dc16532452d70ef2f3483a",
       "nestedTypes": [
         "NearbyPlace",
         "Result",
@@ -4659,7 +4659,7 @@
         "Java interface"
       ],
       "methods": [],
-      "sha256": "ad4ca6c8c79e156f49fa15a693462d4f6bc12cef7064a1d2cb5d4c6bd0aad49a",
+      "sha256": "42a3af38a5ff6b871253c8a439bcb09a3840243c15f91ef2018389e42a6377be",
       "nestedTypes": [],
       "fields": []
     },
@@ -4675,10 +4675,10 @@
       "methods": [
         {
           "name": "findAll",
-          "line": 11
+          "line": 14
         }
       ],
-      "sha256": "a3895cb815e5fcf131eb14e7cb9492c1d0049d4e24fb6a2f276245e843b5a5b4",
+      "sha256": "6ca59ccec99845fa731e26d049ea1041cdc90ed9ad026366f4d80bf6678d20f7",
       "nestedTypes": [],
       "fields": []
     },
@@ -4694,22 +4694,22 @@
       "methods": [
         {
           "name": "PublicPlaceFacts",
-          "line": 15
+          "line": 18
         },
         {
           "name": "read",
-          "line": 16
+          "line": 20
         },
         {
           "name": "required",
-          "line": 70
+          "line": 74
         },
         {
           "name": "sha256",
-          "line": 75
+          "line": 79
         }
       ],
-      "sha256": "cd87dd983217dca42635c12e2a85dae154f7154b3f1d8877147573eaf61f6e84",
+      "sha256": "b6649b1f10e93c65a19bc5e3a5f3cc26f12cd7f5b36d13f2c603975b9fe59129",
       "nestedTypes": [],
       "fields": []
     },
@@ -4725,18 +4725,18 @@
       "methods": [
         {
           "name": "exceeded",
-          "line": 12
-        },
-        {
-          "name": "legs",
           "line": 15
         },
         {
+          "name": "legs",
+          "line": 18
+        },
+        {
           "name": "outsideRange",
-          "line": 28
+          "line": 31
         }
       ],
-      "sha256": "9a1c7244d10bc735cc8c212dcd4fb20c71adf96247e19099dc039891b1bc5772",
+      "sha256": "24208fff68652a724eb80d977e71767a15f5f7a00676f8de2cadd31074b1fe68",
       "nestedTypes": [
         "Leg"
       ],
@@ -4754,14 +4754,14 @@
       "methods": [
         {
           "name": "costSummary",
-          "line": 16
+          "line": 19
         },
         {
           "name": "present",
-          "line": 28
+          "line": 31
         }
       ],
-      "sha256": "40ce1485c5ceb2caf779ec1b097bd56e0347a3851bab1970f4f061586ab24e03",
+      "sha256": "a1a83b4d09aa7c1cf4b058cdedd202c8d4c6925b05491eb9ec01b8db6c4c1d52",
       "nestedTypes": [
         "Summary"
       ],
@@ -4779,22 +4779,22 @@
       "methods": [
         {
           "name": "TeamApiKeys",
-          "line": 24
-        },
-        {
-          "name": "get",
           "line": 27
         },
         {
+          "name": "get",
+          "line": 30
+        },
+        {
           "name": "database",
-          "line": 32
+          "line": 35
         },
         {
           "name": "fetch",
-          "line": 75
+          "line": 78
         }
       ],
-      "sha256": "f61a3403ad610dd95184c500d3253ffb665f46809a47c75b68a7d33d0db8f73d",
+      "sha256": "31fac439dd6ec9273cc37b18127ba8e139105f4709ce4e6ee10da595b5ddfd43",
       "nestedTypes": [],
       "fields": []
     },
@@ -4810,26 +4810,26 @@
       "methods": [
         {
           "name": "preferencesVersion",
-          "line": 18
+          "line": 21
         },
         {
           "name": "load",
-          "line": 31
+          "line": 34
         },
         {
           "name": "saveLocal",
-          "line": 64
+          "line": 67
         },
         {
           "name": "saveSearchOption",
-          "line": 66
+          "line": 69
         },
         {
           "name": "toString",
-          "line": 96
+          "line": 99
         }
       ],
-      "sha256": "65baca2fa9614a49eb456f47a674714303823b6add2b9c493ad58f045888e29a",
+      "sha256": "dece3ea816b72ba07de82581e1d30663428f1776d60856162097b19351e66213",
       "nestedTypes": [],
       "fields": [
         "appKey",
@@ -4846,7 +4846,7 @@
         "Java 표준 클래스"
       ],
       "methods": [],
-      "sha256": "ec17ebb0fd5e455dbfcd598e8fe5be6aec253371b4a26b845c6c1e87bdd59bba",
+      "sha256": "08a1dbf4a08ad0a7fd17377ce2760e02587e1fa6e3024626ab46ca0db72298c2",
       "nestedTypes": [],
       "fields": []
     },
@@ -4862,10 +4862,10 @@
       "methods": [
         {
           "name": "route",
-          "line": 11
+          "line": 15
         }
       ],
-      "sha256": "ea11dd454c61942ec4f8a6624412e55a7b8d65423403cb6b0c93bbdb00bd24a9",
+      "sha256": "9d98c8798e7fccc29a79995ee6ecc9c164627bf8904a247a20543cab6394b3c4",
       "nestedTypes": [],
       "fields": []
     },
@@ -4881,62 +4881,62 @@
       "methods": [
         {
           "name": "removeEldestEntry",
-          "line": 21
+          "line": 24
         },
         {
           "name": "UserContext",
-          "line": 28
+          "line": 31
         },
         {
           "name": "session",
-          "line": 35
-        },
-        {
-          "name": "isClosed",
-          "line": 36
-        },
-        {
-          "name": "profile",
-          "line": 37
-        },
-        {
-          "name": "courses",
           "line": 38
         },
         {
-          "name": "invalidateProfile",
+          "name": "isClosed",
           "line": 39
         },
         {
-          "name": "invalidateCourses",
+          "name": "profile",
           "line": 40
         },
         {
-          "name": "preview",
+          "name": "courses",
+          "line": 41
+        },
+        {
+          "name": "invalidateProfile",
           "line": 42
         },
         {
-          "name": "isMapPrepared",
-          "line": 51
+          "name": "invalidateCourses",
+          "line": 44
         },
         {
-          "name": "markMapPrepared",
+          "name": "preview",
+          "line": 47
+        },
+        {
+          "name": "isMapPrepared",
           "line": 56
         },
         {
-          "name": "preload",
-          "line": 63
+          "name": "markMapPrepared",
+          "line": 61
         },
         {
-          "name": "close",
+          "name": "preload",
           "line": 68
         },
         {
+          "name": "close",
+          "line": 73
+        },
+        {
           "name": "CachedValue",
-          "line": 79
+          "line": 84
         }
       ],
-      "sha256": "5206f1095d40107edd1690b224f90de863fe6c156f37e30f13b833c6f1315853",
+      "sha256": "d9011258fc466a58437eb284c86f93d16883a99d37d05c92bab48059eb951fb6",
       "nestedTypes": [
         "PreviewKey",
         "CachedValue"
@@ -4956,26 +4956,26 @@
       "methods": [
         {
           "name": "WalkingRouteService",
-          "line": 32
+          "line": 35
         },
         {
           "name": "route",
-          "line": 38
+          "line": 41
         },
         {
           "name": "leg",
-          "line": 56
+          "line": 59
         },
         {
           "name": "nonnegative",
-          "line": 125
+          "line": 128
         },
         {
           "name": "coordinate",
-          "line": 130
+          "line": 133
         }
       ],
-      "sha256": "cb8fe01736ccb30aa1fe584788aad6a2f7841d932a0e9cf8eb31e01e0f0eb248",
+      "sha256": "4af60bfa4b424abb441f0ab72e29a2fd9177749a06108dc019dd768faf308c5a",
       "nestedTypes": [
         "CacheKey",
         "Cached"
@@ -6240,6 +6240,11 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
+      "path": "docs/releases/site-master-integration-2026-11-26.md",
+      "group": "설계·검토·변경 문서",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
       "path": "docs/research/dataset-self-audit-2026-11-16.md",
       "group": "설계·검토·변경 문서",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
@@ -6365,92 +6370,47 @@
       "role": "앱 기능·실행·현재 검증 안내"
     },
     {
-      "path": "docs/site/content/01_시작/AppLauncher.md",
+      "path": "docs/site/content/01_시작/JDK21_자동_검색과_선택_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/01_시작/MainApp.md",
+      "path": "docs/site/content/01_시작/JavaFX21_유지보수_패치_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/02_화면/AdminController.md",
+      "path": "docs/site/content/01_시작/공통_접속_키.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/02_화면/BasePageController.md",
+      "path": "docs/site/content/01_시작/라이브러리_사용_안내.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/02_화면/CommunityController.md",
+      "path": "docs/site/content/01_시작/실행_및_테스트.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/02_화면/ConditionController.md",
+      "path": "docs/site/content/02_화면/공통_UI와_홈_메뉴.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/02_화면/CourseEditController.md",
+      "path": "docs/site/content/02_화면/사용자_안내와_진단.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/02_화면/InformationReviewController.md",
+      "path": "docs/site/content/02_화면/키보드_조작과_포커스_복귀_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/02_화면/MapBridge.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/02_화면/MyPageController.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/02_화면/NumberStepper.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/02_화면/PageFeedback.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/02_화면/PlannerMap.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/02_화면/RouteEditorController.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/02_화면/SavedCourseController.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/02_화면/TmapSettingsDialog.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/02_화면/login.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/AppDiagnostics.md",
+      "path": "docs/site/content/02_화면/화면_가독성과_작은_창_배치_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -6460,22 +6420,7 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/03_처리/CoursePreviewImage.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "품질·가격·모의 결과·검토 기록"
-    },
-    {
       "path": "docs/site/content/03_처리/ExternalBrowser.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/MapPageServer.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/NextPlaceService.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -6485,37 +6430,7 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/03_처리/PlaceBindingCatalog.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/PlaceCalculationService.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/PlaceCountService.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/PlacePresenter.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/PlaceSearchService.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
       "path": "docs/site/content/03_처리/PlaceSource.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/RecommendedCourseMapper.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -6525,42 +6440,7 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/03_처리/SavedCoursePresenter.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
       "path": "docs/site/content/03_처리/TeamApiKeys.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/TmapSettings.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/UserContext.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/03_처리/WalkingRouteService.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/CostEstimate.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/Course.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/CoursePlace.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -6570,47 +6450,7 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/04_데이터/Member.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/Place.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/PlaceDetails.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/PriceEstimate.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/Review.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/RoutePlan.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
       "path": "docs/site/content/04_데이터/SavedCourse.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/SearchCondition.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/04_데이터/WalkingRoute.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -6620,177 +6460,77 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/AppDialogs.md",
+      "path": "docs/site/content/04_데이터/가격_보완_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/CapsLockHint.md",
+      "path": "docs/site/content/04_데이터/데이터_확장_2026_11_23.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/DatabasePool.md",
+      "path": "docs/site/content/04_데이터/보유_자원의_경로_추천_활용_탐색_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/DbSettings.md",
+      "path": "docs/site/content/04_데이터/부산_16개_구군_분산_확장_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/InformationReportRepository.md",
+      "path": "docs/site/content/04_데이터/분류_세분화와_미사용_원본_필드_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/InputHistory.md",
+      "path": "docs/site/content/04_데이터/시연_장소와_가격_흐름.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/LoginUI.md",
+      "path": "docs/site/content/04_데이터/장소_데이터와_표시.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/MemberAdminPanel.md",
+      "path": "docs/site/content/04_데이터/중구_98곳_추가와_가격_보완_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/MemberRepository.md",
+      "path": "docs/site/content/05_회원_DB/DB_구조와_빈_백업_정리_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/MembershipApp.md",
+      "path": "docs/site/content/05_회원_DB/DB_준비와_일반_실행_분리_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/PasswordHash.md",
+      "path": "docs/site/content/05_회원_DB/관리자_이용과_검토.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/PlaceCatalogRepository.md",
+      "path": "docs/site/content/05_회원_DB/배치_적재_개선_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/PlaceQueryDemo.md",
+      "path": "docs/site/content/05_회원_DB/저장_미리보기와_복구.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/PlaceRepository.md",
+      "path": "docs/site/content/05_회원_DB/코스_저장_설계.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/05_회원_DB/PlannerLoadingDialog.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/05_회원_DB/ReplaceIntegratedData.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/05_회원_DB/RevealPanel.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/05_회원_DB/SavedCourseRepository.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/05_회원_DB/SignupForm.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/05_회원_DB/StartupPanel.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/05_회원_DB/UiTheme.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/05_회원_DB/UserSession.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/AdminLauncher.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/AdminTestApp.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/CommunityLauncher.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/CommunityTestApp.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/ConditionLauncher.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/ConditionTestApp.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/CourseEditLauncher.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/CourseEditTestApp.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/FakeCourseData.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/FakeMapData.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/FakeMemberData.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/FakeReviewData.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/PilotPlannerApp.md",
+      "path": "docs/site/content/05_회원_DB/코스_저장과_다시열기.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -6805,57 +6545,7 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/06_데모/SavedCourseLauncher.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/06_데모/SavedCourseTestApp.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/CapsLockHintTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/DatabasePoolTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/DbSettingsTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
       "path": "docs/site/content/07_테스트/ExternalBrowserTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/MapBridgeTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/MapSearchTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/MemberProfileTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/NextPlaceServiceTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/PasswordFieldTest.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -6870,92 +6560,612 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/07_테스트/PlaceCalculationServiceTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/PlaceRepositoryPriceTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/PlaceSearchServiceTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/PlannerLoadingDialogTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/RecommendedCourseMapperTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/07_테스트/ReplaceIntegratedDataTest.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
       "path": "docs/site/content/07_테스트/RouteRangeValidatorTest.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/07_테스트/SavedCourseRepositoryTest.md",
+      "path": "docs/site/content/08_지도_보충/도보_설정과_지도_경로_동기화_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/07_테스트/SavedCourseSchemaTest.md",
+      "path": "docs/site/content/08_지도_보충/마우스_키보드_입력_점검_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/07_테스트/StartupPanelTest.md",
+      "path": "docs/site/content/08_지도_보충/지도_렌더링_여유_영역_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/07_테스트/WalkingRouteUiTest.md",
+      "path": "docs/site/content/08_지도_보충/지도_범위와_포커스.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/08_지도_보충/instant-zoom.js.md",
+      "path": "docs/site/content/08_지도_보충/지도_선택과_저장_지도_준비_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/08_지도_보충/itinerary-rail.js.md",
+      "path": "docs/site/content/09_구조와_검토/순서_넘버링과_미사용_정리_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/08_지도_보충/map.js.md",
+      "path": "docs/site/content/09_구조와_검토/전체_점검_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/DB_구조와_빈_백업_정리_2026_11_24.md",
+      "path": "docs/site/content/09_구조와_검토/패키지_통합과_구조_점검_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/DB_준비와_일반_실행_분리_2026_11_24.md",
+      "path": "docs/site/content/09_구조와_검토/페이지_구조와_이름_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/JDK21_자동_검색과_선택_2026_11_25.md",
+      "path": "docs/site/content/10_구현_안내/구현_참조_자료_길잡이_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/JavaFX21_유지보수_패치_2026_11_25.md",
+      "path": "docs/site/content/10_구현_안내/구현_흐름_한눈에_보기_2026_11_25.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/10_구현_안내/기능별_코드_흐름_2026_11_25.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/목차.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/01_시작/MainApp.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/02_화면/AdminController.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/02_화면/CommunityController.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/02_화면/CourseEditController.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/02_화면/login.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/03_처리/PlaceCountService.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/03_처리/RecommendedCourseMapper.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/04_데이터/Course.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/04_데이터/CoursePlace.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/04_데이터/Review.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/04_데이터/WalkingRoute.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/05_회원_DB/PlaceQueryDemo.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/05_회원_DB/UiTheme.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/AdminLauncher.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/AdminTestApp.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/CommunityLauncher.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/CommunityTestApp.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/CourseEditLauncher.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/CourseEditTestApp.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/FakeCourseData.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/FakeMapData.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/FakeMemberData.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/FakeReviewData.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/SavedCourseLauncher.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/06_데모/SavedCourseTestApp.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/보관_코드/07_테스트/RecommendedCourseMapperTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/01_시작/AppLauncher.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/BasePageController.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/ConditionController.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/InformationReviewController.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/MapBridge.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/MyPageController.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/NumberStepper.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/PageFeedback.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/PlannerMap.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/RouteEditorController.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/SavedCourseController.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/02_화면/TmapSettingsDialog.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/AppDiagnostics.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/CoursePreviewImage.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "품질·가격·모의 결과·검토 기록"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/MapPageServer.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/NextPlaceService.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceBindingCatalog.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceCalculationService.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/PlacePresenter.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceSearchService.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/SavedCoursePresenter.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/TmapSettings.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/UserContext.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/03_처리/WalkingRouteService.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/04_데이터/CostEstimate.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/04_데이터/Member.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/04_데이터/Place.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/04_데이터/PlaceDetails.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/04_데이터/PriceEstimate.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/04_데이터/RoutePlan.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/04_데이터/SearchCondition.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/AppDialogs.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/CapsLockHint.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/DatabasePool.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/DbSettings.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/InformationReportRepository.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/InputHistory.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/LoginUI.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MemberAdminPanel.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MemberRepository.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MembershipApp.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PasswordHash.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlaceCatalogRepository.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlaceRepository.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlannerLoadingDialog.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/ReplaceIntegratedData.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/RevealPanel.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/SavedCourseRepository.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/SignupForm.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/StartupPanel.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/UserSession.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/06_데모/ConditionLauncher.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/06_데모/ConditionTestApp.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/06_데모/PilotPlannerApp.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/CapsLockHintTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/DatabasePoolTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/DbSettingsTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/MapBridgeTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/MapSearchTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/MemberProfileTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/NextPlaceServiceTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/PasswordFieldTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceCalculationServiceTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceRepositoryPriceTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceSearchServiceTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlannerLoadingDialogTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/ReplaceIntegratedDataTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/SavedCourseRepositoryTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/SavedCourseSchemaTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/StartupPanelTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/07_테스트/WalkingRouteUiTest.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/instant-zoom.js.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/itinerary-rail.js.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/map.js.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_안내/라이브러리_사용_안내_2026_11_25.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_안내/리뷰_및_구현_방향_2026_11_25.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_안내/목차_2026_11_25.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_안내/문서_읽는법_2026_11_25.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_안내/변경_요약_2026_11_25.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_안내/전체_동작_흐름.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_안내/최종_검토_2026_11_15.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/99_이전_문서/이전_안내/현재_구현_흐름_2026_11_25.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -6965,47 +7175,72 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/가격_보완_2026_11_24.md",
+      "path": "docs/site/content/기능별_구현/01-account.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/공통_UI와_홈_메뉴.md",
+      "path": "docs/site/content/기능별_구현/02-planning.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/공통_접속_키.md",
+      "path": "docs/site/content/기능별_구현/03-recommendation.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/관리자_이용과_검토.md",
+      "path": "docs/site/content/기능별_구현/04-price-and-models.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/데이터_확장_2026_11_23.md",
+      "path": "docs/site/content/기능별_구현/05-map.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/도보_설정과_지도_경로_동기화_2026_11_25.md",
+      "path": "docs/site/content/기능별_구현/06-routing.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/라이브러리_사용_안내.md",
+      "path": "docs/site/content/기능별_구현/07-saved-courses.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/기능별_구현/08-reports-admin.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "품질·가격·모의 결과·검토 기록"
+    },
+    {
+      "path": "docs/site/content/기능별_구현/09-ui-state.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/기능별_구현/10-place-data.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/기능별_구현/11-runtime-db.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/기능별_구현/12-team-and-checks.md",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+    },
+    {
+      "path": "docs/site/content/기능별_구현/목차.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
       "path": "docs/site/content/리뷰_및_구현_방향.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/마우스_키보드_입력_점검_2026_11_24.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -7020,47 +7255,7 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/배치_적재_개선_2026_11_24.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
       "path": "docs/site/content/변경_요약.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/보유_자원의_경로_추천_활용_탐색_2026_11_25.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/부산_16개_구군_분산_확장_2026_11_25.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/분류_세분화와_미사용_원본_필드_2026_11_25.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/사용자_안내와_진단.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/순서_넘버링과_미사용_정리_2026_11_24.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/시연_장소와_가격_흐름.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/실행_및_테스트.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
@@ -7070,84 +7265,14 @@
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/장소_데이터와_표시.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/저장_미리보기와_복구.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/전체_동작_흐름.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/전체_점검_2026_11_24.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/중구_98곳_추가와_가격_보완_2026_11_25.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/지도_렌더링_여유_영역_2026_11_24.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/지도_범위와_포커스.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/지도_선택과_저장_지도_준비_2026_11_24.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/최종_검토_2026_11_15.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/코스_저장_설계.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/코스_저장과_다시열기.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/키보드_조작과_포커스_복귀_2026_11_25.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/패키지_통합과_구조_점검_2026_11_24.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
-      "path": "docs/site/content/페이지_구조와_이름_2026_11_24.md",
-      "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
-    },
-    {
       "path": "docs/site/content/현재_구현_흐름.md",
       "group": "팀 사이트 원본·자원·설정",
       "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
     },
     {
-      "path": "docs/site/content/화면_가독성과_작은_창_배치_2026_11_24.md",
+      "path": "docs/site/document-moves.json",
       "group": "팀 사이트 원본·자원·설정",
-      "role": "설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준"
+      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
     },
     {
       "path": "docs/site/document-revisions.json",
@@ -7280,12 +7405,22 @@
       "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
     },
     {
+      "path": "docs/site/test/document-moves.test.mjs",
+      "group": "사이트 로직 검사",
+      "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
+    },
+    {
       "path": "docs/site/test/document-revisions.test.mjs",
       "group": "사이트 로직 검사",
       "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
     },
     {
       "path": "docs/site/test/flow-methods.test.mjs",
+      "group": "사이트 로직 검사",
+      "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
+    },
+    {
+      "path": "docs/site/test/implementation-guide.test.mjs",
       "group": "사이트 로직 검사",
       "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
     },
@@ -7355,6 +7490,16 @@
       "role": "사이트의 해당 화면/동작 브라우저 점검"
     },
     {
+      "path": "docs/site/tools/check-guide-focus.mjs",
+      "group": "사이트 빌드·표시 검사",
+      "role": "사이트의 해당 화면/동작 브라우저 점검"
+    },
+    {
+      "path": "docs/site/tools/check-implementation-guide.mjs",
+      "group": "사이트 빌드·표시 검사",
+      "role": "사이트의 해당 화면/동작 브라우저 점검"
+    },
+    {
       "path": "docs/site/tools/check-initial-board.mjs",
       "group": "사이트 빌드·표시 검사",
       "role": "사이트의 해당 화면/동작 브라우저 점검"
@@ -7400,6 +7545,11 @@
       "role": "문서 구조·표시 보정"
     },
     {
+      "path": "docs/site/tools/document-moves.mjs",
+      "group": "사이트 빌드·표시 검사",
+      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
+    },
+    {
       "path": "docs/site/tools/document-revisions.mjs",
       "group": "사이트 빌드·표시 검사",
       "role": "본문 변경과 문서 읽음 버전 관리"
@@ -7408,6 +7558,11 @@
       "path": "docs/site/tools/flow-methods.mjs",
       "group": "사이트 빌드·표시 검사",
       "role": "문서의 함수 설명·호출 단서 보강"
+    },
+    {
+      "path": "docs/site/tools/implementation-guide.mjs",
+      "group": "사이트 빌드·표시 검사",
+      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
     },
     {
       "path": "docs/site/tools/optimize-assets.mjs",
@@ -7496,6 +7651,26 @@
     },
     {
       "path": "docs/site/web/flow-tooltips.js",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
+    },
+    {
+      "path": "docs/site/web/guide/guide.css",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "화면·문서의 구조·스타일·시각 자원"
+    },
+    {
+      "path": "docs/site/web/guide/guide.js",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
+    },
+    {
+      "path": "docs/site/web/guide/index.html",
+      "group": "팀 사이트 원본·자원·설정",
+      "role": "화면·문서의 구조·스타일·시각 자원"
+    },
+    {
+      "path": "docs/site/web/guide/layout.json",
       "group": "팀 사이트 원본·자원·설정",
       "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
     },
@@ -8705,11 +8880,11 @@
     "보관 원본·별도 검사": 35,
     "공공 원본·기준본·검증 이력": 177,
     "SQL 구조·마이그레이션": 11,
-    "설계·검토·변경 문서": 57,
-    "팀 사이트 원본·자원·설정": 179,
+    "설계·검토·변경 문서": 58,
+    "팀 사이트 원본·자원·설정": 207,
     "팀 사이트 서버·공유 상태": 15,
-    "사이트 로직 검사": 13,
-    "사이트 빌드·표시 검사": 27,
+    "사이트 로직 검사": 15,
+    "사이트 빌드·표시 검사": 31,
     "앱 Java": 107,
     "화면·지도·스타일·공개 설정 예제": 21,
     "앱 검사": 57,

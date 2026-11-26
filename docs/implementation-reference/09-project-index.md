@@ -8,11 +8,11 @@
 | 보관 원본·별도 검사 | 35 |
 | 공공 원본·기준본·검증 이력 | 177 |
 | SQL 구조·마이그레이션 | 11 |
-| 설계·검토·변경 문서 | 57 |
-| 팀 사이트 원본·자원·설정 | 179 |
+| 설계·검토·변경 문서 | 58 |
+| 팀 사이트 원본·자원·설정 | 207 |
 | 팀 사이트 서버·공유 상태 | 15 |
-| 사이트 로직 검사 | 13 |
-| 사이트 빌드·표시 검사 | 27 |
+| 사이트 로직 검사 | 15 |
+| 사이트 빌드·표시 검사 | 31 |
 | 앱 Java | 107 |
 | 화면·지도·스타일·공개 설정 예제 | 21 |
 | 앱 검사 | 57 |
@@ -289,7 +289,7 @@
 
 </details>
 
-<details><summary>설계·검토·변경 문서 · 57개</summary>
+<details><summary>설계·검토·변경 문서 · 58개</summary>
 
 무엇: 구현 근거·설계·당시 검토. 사용: 문서·지문·검증 기록. 왜: 현재 구현과 제안을 구분. 어떻게: 기준 버전·날짜·연결 소스로 확인.
 
@@ -319,6 +319,7 @@
 | [docs/release-readiness-2026-11-25.md](../../docs/release-readiness-2026-11-25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/releases/checkpoint-2026-11-17.json](../../docs/releases/checkpoint-2026-11-17.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [docs/releases/checkpoint-2026-11-17.md](../../docs/releases/checkpoint-2026-11-17.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/releases/site-master-integration-2026-11-26.md](../../docs/releases/site-master-integration-2026-11-26.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/research/dataset-self-audit-2026-11-16.md](../../docs/research/dataset-self-audit-2026-11-16.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/research/demo-price-verification-2026-11-13.md](../../docs/research/demo-price-verification-2026-11-13.md) | 적재·보존·반복 또는 형식 검증 기록 |
 | [docs/research/editor-travel-time-plan-2026-11-14.md](../../docs/research/editor-travel-time-plan-2026-11-14.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
@@ -355,7 +356,7 @@
 
 </details>
 
-<details><summary>팀 사이트 원본·자원·설정 · 179개</summary>
+<details><summary>팀 사이트 원본·자원·설정 · 207개</summary>
 
 무엇: 팀 문서·프런트·배포 설정. 사용: Markdown·HTML/CSS/JS·설정. 왜: 구현을 함께 읽고 공유. 어떻게: 원본 → 로컬 빌드, 운영 배포는 별도.
 
@@ -363,163 +364,187 @@
 |---|---|
 | [docs/site/.gitignore](../../docs/site/.gitignore) | 개인 설정·키·빌드/캐시의 Git 포함 제외 |
 | [docs/site/README.md](../../docs/site/README.md) | 앱 기능·실행·현재 검증 안내 |
-| [docs/site/content/01_시작/AppLauncher.md](../../docs/site/content/99_이전_문서/이전_발췌/01_시작/AppLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/01_시작/MainApp.md](../../docs/site/content/99_이전_문서/보관_코드/01_시작/MainApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/AdminController.md](../../docs/site/content/99_이전_문서/보관_코드/02_화면/AdminController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/BasePageController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/BasePageController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/CommunityController.md](../../docs/site/content/99_이전_문서/보관_코드/02_화면/CommunityController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/ConditionController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/ConditionController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/CourseEditController.md](../../docs/site/content/99_이전_문서/보관_코드/02_화면/CourseEditController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/InformationReviewController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/InformationReviewController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/MapBridge.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/MapBridge.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/MyPageController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/MyPageController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/NumberStepper.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/NumberStepper.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/PageFeedback.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/PageFeedback.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/PlannerMap.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/PlannerMap.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/RouteEditorController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/RouteEditorController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/SavedCourseController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/SavedCourseController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/TmapSettingsDialog.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/TmapSettingsDialog.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/02_화면/login.md](../../docs/site/content/99_이전_문서/보관_코드/02_화면/login.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/AppDiagnostics.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/AppDiagnostics.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/01_시작/JDK21_자동_검색과_선택_2026_11_25.md](../../docs/site/content/01_시작/JDK21_자동_검색과_선택_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/01_시작/JavaFX21_유지보수_패치_2026_11_25.md](../../docs/site/content/01_시작/JavaFX21_유지보수_패치_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/01_시작/공통_접속_키.md](../../docs/site/content/01_시작/공통_접속_키.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/01_시작/라이브러리_사용_안내.md](../../docs/site/content/01_시작/라이브러리_사용_안내.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/01_시작/실행_및_테스트.md](../../docs/site/content/01_시작/실행_및_테스트.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/02_화면/공통_UI와_홈_메뉴.md](../../docs/site/content/02_화면/공통_UI와_홈_메뉴.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/02_화면/사용자_안내와_진단.md](../../docs/site/content/02_화면/사용자_안내와_진단.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/02_화면/키보드_조작과_포커스_복귀_2026_11_25.md](../../docs/site/content/02_화면/키보드_조작과_포커스_복귀_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/02_화면/화면_가독성과_작은_창_배치_2026_11_24.md](../../docs/site/content/02_화면/화면_가독성과_작은_창_배치_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/03_처리/CameraMotionPolicy.md](../../docs/site/content/03_처리/CameraMotionPolicy.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/CoursePreviewImage.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/CoursePreviewImage.md) | 품질·가격·모의 결과·검토 기록 |
 | [docs/site/content/03_처리/ExternalBrowser.md](../../docs/site/content/03_처리/ExternalBrowser.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/MapPageServer.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/MapPageServer.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/NextPlaceService.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/NextPlaceService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/03_처리/PilotPlaceRepository.md](../../docs/site/content/03_처리/PilotPlaceRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/PlaceBindingCatalog.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceBindingCatalog.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/PlaceCalculationService.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceCalculationService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/PlaceCountService.md](../../docs/site/content/99_이전_문서/보관_코드/03_처리/PlaceCountService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/PlacePresenter.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/PlacePresenter.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/PlaceSearchService.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceSearchService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/03_처리/PlaceSource.md](../../docs/site/content/03_처리/PlaceSource.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/RecommendedCourseMapper.md](../../docs/site/content/99_이전_문서/보관_코드/03_처리/RecommendedCourseMapper.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/03_처리/RouteRangeValidator.md](../../docs/site/content/03_처리/RouteRangeValidator.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/SavedCoursePresenter.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/SavedCoursePresenter.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/03_처리/TeamApiKeys.md](../../docs/site/content/03_처리/TeamApiKeys.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/TmapSettings.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/TmapSettings.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/UserContext.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/UserContext.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/03_처리/WalkingRouteService.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/WalkingRouteService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/CostEstimate.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/CostEstimate.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/Course.md](../../docs/site/content/99_이전_문서/보관_코드/04_데이터/Course.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/CoursePlace.md](../../docs/site/content/99_이전_문서/보관_코드/04_데이터/CoursePlace.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/04_데이터/ExternalPlaceSnapshot.md](../../docs/site/content/04_데이터/ExternalPlaceSnapshot.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/Member.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/Member.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/Place.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/Place.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/PlaceDetails.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/PlaceDetails.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/PriceEstimate.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/PriceEstimate.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/Review.md](../../docs/site/content/99_이전_문서/보관_코드/04_데이터/Review.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/RoutePlan.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/RoutePlan.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/04_데이터/SavedCourse.md](../../docs/site/content/04_데이터/SavedCourse.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/SearchCondition.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/SearchCondition.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/04_데이터/WalkingRoute.md](../../docs/site/content/99_이전_문서/보관_코드/04_데이터/WalkingRoute.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/04_데이터/WalkingSearchOption.md](../../docs/site/content/04_데이터/WalkingSearchOption.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/AppDialogs.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/AppDialogs.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/CapsLockHint.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/CapsLockHint.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/DatabasePool.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/DatabasePool.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/DbSettings.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/DbSettings.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/InformationReportRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/InformationReportRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/InputHistory.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/InputHistory.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/LoginUI.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/LoginUI.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/MemberAdminPanel.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MemberAdminPanel.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/MemberRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MemberRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/MembershipApp.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MembershipApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/PasswordHash.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PasswordHash.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/PlaceCatalogRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlaceCatalogRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/PlaceQueryDemo.md](../../docs/site/content/99_이전_문서/보관_코드/05_회원_DB/PlaceQueryDemo.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/PlaceRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlaceRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/PlannerLoadingDialog.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlannerLoadingDialog.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/ReplaceIntegratedData.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/ReplaceIntegratedData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/RevealPanel.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/RevealPanel.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/SavedCourseRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/SavedCourseRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/SignupForm.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/SignupForm.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/StartupPanel.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/StartupPanel.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/UiTheme.md](../../docs/site/content/99_이전_문서/보관_코드/05_회원_DB/UiTheme.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/05_회원_DB/UserSession.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/UserSession.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/AdminLauncher.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/AdminLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/AdminTestApp.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/AdminTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/CommunityLauncher.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/CommunityLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/CommunityTestApp.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/CommunityTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/ConditionLauncher.md](../../docs/site/content/99_이전_문서/이전_발췌/06_데모/ConditionLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/ConditionTestApp.md](../../docs/site/content/99_이전_문서/이전_발췌/06_데모/ConditionTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/CourseEditLauncher.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/CourseEditLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/CourseEditTestApp.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/CourseEditTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/FakeCourseData.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/FakeCourseData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/FakeMapData.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/FakeMapData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/FakeMemberData.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/FakeMemberData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/FakeReviewData.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/FakeReviewData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/PilotPlannerApp.md](../../docs/site/content/99_이전_문서/이전_발췌/06_데모/PilotPlannerApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/04_데이터/가격_보완_2026_11_24.md](../../docs/site/content/04_데이터/가격_보완_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/04_데이터/데이터_확장_2026_11_23.md](../../docs/site/content/04_데이터/데이터_확장_2026_11_23.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/04_데이터/보유_자원의_경로_추천_활용_탐색_2026_11_25.md](../../docs/site/content/04_데이터/보유_자원의_경로_추천_활용_탐색_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/04_데이터/부산_16개_구군_분산_확장_2026_11_25.md](../../docs/site/content/04_데이터/부산_16개_구군_분산_확장_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/04_데이터/분류_세분화와_미사용_원본_필드_2026_11_25.md](../../docs/site/content/04_데이터/분류_세분화와_미사용_원본_필드_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/04_데이터/시연_장소와_가격_흐름.md](../../docs/site/content/04_데이터/시연_장소와_가격_흐름.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/04_데이터/장소_데이터와_표시.md](../../docs/site/content/04_데이터/장소_데이터와_표시.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/04_데이터/중구_98곳_추가와_가격_보완_2026_11_25.md](../../docs/site/content/04_데이터/중구_98곳_추가와_가격_보완_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/05_회원_DB/DB_구조와_빈_백업_정리_2026_11_24.md](../../docs/site/content/05_회원_DB/DB_구조와_빈_백업_정리_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/05_회원_DB/DB_준비와_일반_실행_분리_2026_11_24.md](../../docs/site/content/05_회원_DB/DB_준비와_일반_실행_분리_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/05_회원_DB/관리자_이용과_검토.md](../../docs/site/content/05_회원_DB/관리자_이용과_검토.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/05_회원_DB/배치_적재_개선_2026_11_24.md](../../docs/site/content/05_회원_DB/배치_적재_개선_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/05_회원_DB/저장_미리보기와_복구.md](../../docs/site/content/05_회원_DB/저장_미리보기와_복구.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/05_회원_DB/코스_저장_설계.md](../../docs/site/content/05_회원_DB/코스_저장_설계.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/05_회원_DB/코스_저장과_다시열기.md](../../docs/site/content/05_회원_DB/코스_저장과_다시열기.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/06_데모/PilotPlannerLauncher.md](../../docs/site/content/06_데모/PilotPlannerLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/06_데모/PlaceBindingDemo.md](../../docs/site/content/06_데모/PlaceBindingDemo.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/SavedCourseLauncher.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/SavedCourseLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/06_데모/SavedCourseTestApp.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/SavedCourseTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/CapsLockHintTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/CapsLockHintTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/DatabasePoolTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/DatabasePoolTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/DbSettingsTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/DbSettingsTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/07_테스트/ExternalBrowserTest.md](../../docs/site/content/07_테스트/ExternalBrowserTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/MapBridgeTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/MapBridgeTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/MapSearchTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/MapSearchTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/MemberProfileTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/MemberProfileTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/NextPlaceServiceTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/NextPlaceServiceTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/PasswordFieldTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PasswordFieldTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/07_테스트/PilotPriceFlowTest.md](../../docs/site/content/07_테스트/PilotPriceFlowTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/07_테스트/PlaceBindingCatalogTest.md](../../docs/site/content/07_테스트/PlaceBindingCatalogTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/PlaceCalculationServiceTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceCalculationServiceTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/PlaceRepositoryPriceTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceRepositoryPriceTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/PlaceSearchServiceTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceSearchServiceTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/PlannerLoadingDialogTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlannerLoadingDialogTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/RecommendedCourseMapperTest.md](../../docs/site/content/99_이전_문서/보관_코드/07_테스트/RecommendedCourseMapperTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/ReplaceIntegratedDataTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/ReplaceIntegratedDataTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/07_테스트/RouteRangeValidatorTest.md](../../docs/site/content/07_테스트/RouteRangeValidatorTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/SavedCourseRepositoryTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/SavedCourseRepositoryTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/SavedCourseSchemaTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/SavedCourseSchemaTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/StartupPanelTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/StartupPanelTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/07_테스트/WalkingRouteUiTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/WalkingRouteUiTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/08_지도_보충/instant-zoom.js.md](../../docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/instant-zoom.js.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/08_지도_보충/itinerary-rail.js.md](../../docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/itinerary-rail.js.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/08_지도_보충/map.js.md](../../docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/map.js.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/DB_구조와_빈_백업_정리_2026_11_24.md](../../docs/site/content/05_회원_DB/DB_구조와_빈_백업_정리_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/DB_준비와_일반_실행_분리_2026_11_24.md](../../docs/site/content/05_회원_DB/DB_준비와_일반_실행_분리_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/JDK21_자동_검색과_선택_2026_11_25.md](../../docs/site/content/01_시작/JDK21_자동_검색과_선택_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/JavaFX21_유지보수_패치_2026_11_25.md](../../docs/site/content/01_시작/JavaFX21_유지보수_패치_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/08_지도_보충/도보_설정과_지도_경로_동기화_2026_11_25.md](../../docs/site/content/08_지도_보충/도보_설정과_지도_경로_동기화_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/08_지도_보충/마우스_키보드_입력_점검_2026_11_24.md](../../docs/site/content/08_지도_보충/마우스_키보드_입력_점검_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/08_지도_보충/지도_렌더링_여유_영역_2026_11_24.md](../../docs/site/content/08_지도_보충/지도_렌더링_여유_영역_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/08_지도_보충/지도_범위와_포커스.md](../../docs/site/content/08_지도_보충/지도_범위와_포커스.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/08_지도_보충/지도_선택과_저장_지도_준비_2026_11_24.md](../../docs/site/content/08_지도_보충/지도_선택과_저장_지도_준비_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/09_구조와_검토/순서_넘버링과_미사용_정리_2026_11_24.md](../../docs/site/content/09_구조와_검토/순서_넘버링과_미사용_정리_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/09_구조와_검토/전체_점검_2026_11_24.md](../../docs/site/content/09_구조와_검토/전체_점검_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/09_구조와_검토/패키지_통합과_구조_점검_2026_11_24.md](../../docs/site/content/09_구조와_검토/패키지_통합과_구조_점검_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/09_구조와_검토/페이지_구조와_이름_2026_11_24.md](../../docs/site/content/09_구조와_검토/페이지_구조와_이름_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/10_구현_안내/구현_참조_자료_길잡이_2026_11_25.md](../../docs/site/content/10_구현_안내/구현_참조_자료_길잡이_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/10_구현_안내/구현_흐름_한눈에_보기_2026_11_25.md](../../docs/site/content/10_구현_안내/구현_흐름_한눈에_보기_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/10_구현_안내/기능별_코드_흐름_2026_11_25.md](../../docs/site/content/10_구현_안내/기능별_코드_흐름_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/목차.md](../../docs/site/content/99_이전_문서/목차.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/01_시작/MainApp.md](../../docs/site/content/99_이전_문서/보관_코드/01_시작/MainApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/02_화면/AdminController.md](../../docs/site/content/99_이전_문서/보관_코드/02_화면/AdminController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/02_화면/CommunityController.md](../../docs/site/content/99_이전_문서/보관_코드/02_화면/CommunityController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/02_화면/CourseEditController.md](../../docs/site/content/99_이전_문서/보관_코드/02_화면/CourseEditController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/02_화면/login.md](../../docs/site/content/99_이전_문서/보관_코드/02_화면/login.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/03_처리/PlaceCountService.md](../../docs/site/content/99_이전_문서/보관_코드/03_처리/PlaceCountService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/03_처리/RecommendedCourseMapper.md](../../docs/site/content/99_이전_문서/보관_코드/03_처리/RecommendedCourseMapper.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/04_데이터/Course.md](../../docs/site/content/99_이전_문서/보관_코드/04_데이터/Course.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/04_데이터/CoursePlace.md](../../docs/site/content/99_이전_문서/보관_코드/04_데이터/CoursePlace.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/04_데이터/Review.md](../../docs/site/content/99_이전_문서/보관_코드/04_데이터/Review.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/04_데이터/WalkingRoute.md](../../docs/site/content/99_이전_문서/보관_코드/04_데이터/WalkingRoute.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/05_회원_DB/PlaceQueryDemo.md](../../docs/site/content/99_이전_문서/보관_코드/05_회원_DB/PlaceQueryDemo.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/05_회원_DB/UiTheme.md](../../docs/site/content/99_이전_문서/보관_코드/05_회원_DB/UiTheme.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/AdminLauncher.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/AdminLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/AdminTestApp.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/AdminTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/CommunityLauncher.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/CommunityLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/CommunityTestApp.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/CommunityTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/CourseEditLauncher.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/CourseEditLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/CourseEditTestApp.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/CourseEditTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/FakeCourseData.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/FakeCourseData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/FakeMapData.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/FakeMapData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/FakeMemberData.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/FakeMemberData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/FakeReviewData.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/FakeReviewData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/SavedCourseLauncher.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/SavedCourseLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/06_데모/SavedCourseTestApp.md](../../docs/site/content/99_이전_문서/보관_코드/06_데모/SavedCourseTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/보관_코드/07_테스트/RecommendedCourseMapperTest.md](../../docs/site/content/99_이전_문서/보관_코드/07_테스트/RecommendedCourseMapperTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/01_시작/AppLauncher.md](../../docs/site/content/99_이전_문서/이전_발췌/01_시작/AppLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/BasePageController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/BasePageController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/ConditionController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/ConditionController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/InformationReviewController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/InformationReviewController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/MapBridge.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/MapBridge.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/MyPageController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/MyPageController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/NumberStepper.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/NumberStepper.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/PageFeedback.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/PageFeedback.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/PlannerMap.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/PlannerMap.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/RouteEditorController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/RouteEditorController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/SavedCourseController.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/SavedCourseController.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/02_화면/TmapSettingsDialog.md](../../docs/site/content/99_이전_문서/이전_발췌/02_화면/TmapSettingsDialog.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/AppDiagnostics.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/AppDiagnostics.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/CoursePreviewImage.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/CoursePreviewImage.md) | 품질·가격·모의 결과·검토 기록 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/MapPageServer.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/MapPageServer.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/NextPlaceService.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/NextPlaceService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceBindingCatalog.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceBindingCatalog.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceCalculationService.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceCalculationService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/PlacePresenter.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/PlacePresenter.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceSearchService.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/PlaceSearchService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/SavedCoursePresenter.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/SavedCoursePresenter.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/TmapSettings.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/TmapSettings.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/UserContext.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/UserContext.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/03_처리/WalkingRouteService.md](../../docs/site/content/99_이전_문서/이전_발췌/03_처리/WalkingRouteService.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/04_데이터/CostEstimate.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/CostEstimate.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/04_데이터/Member.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/Member.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/04_데이터/Place.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/Place.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/04_데이터/PlaceDetails.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/PlaceDetails.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/04_데이터/PriceEstimate.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/PriceEstimate.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/04_데이터/RoutePlan.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/RoutePlan.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/04_데이터/SearchCondition.md](../../docs/site/content/99_이전_문서/이전_발췌/04_데이터/SearchCondition.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/AppDialogs.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/AppDialogs.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/CapsLockHint.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/CapsLockHint.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/DatabasePool.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/DatabasePool.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/DbSettings.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/DbSettings.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/InformationReportRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/InformationReportRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/InputHistory.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/InputHistory.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/LoginUI.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/LoginUI.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MemberAdminPanel.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MemberAdminPanel.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MemberRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MemberRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MembershipApp.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/MembershipApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PasswordHash.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PasswordHash.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlaceCatalogRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlaceCatalogRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlaceRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlaceRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlannerLoadingDialog.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/PlannerLoadingDialog.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/ReplaceIntegratedData.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/ReplaceIntegratedData.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/RevealPanel.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/RevealPanel.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/SavedCourseRepository.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/SavedCourseRepository.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/SignupForm.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/SignupForm.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/StartupPanel.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/StartupPanel.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/UserSession.md](../../docs/site/content/99_이전_문서/이전_발췌/05_회원_DB/UserSession.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/06_데모/ConditionLauncher.md](../../docs/site/content/99_이전_문서/이전_발췌/06_데모/ConditionLauncher.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/06_데모/ConditionTestApp.md](../../docs/site/content/99_이전_문서/이전_발췌/06_데모/ConditionTestApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/06_데모/PilotPlannerApp.md](../../docs/site/content/99_이전_문서/이전_발췌/06_데모/PilotPlannerApp.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/CapsLockHintTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/CapsLockHintTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/DatabasePoolTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/DatabasePoolTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/DbSettingsTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/DbSettingsTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/MapBridgeTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/MapBridgeTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/MapSearchTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/MapSearchTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/MemberProfileTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/MemberProfileTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/NextPlaceServiceTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/NextPlaceServiceTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/PasswordFieldTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PasswordFieldTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceCalculationServiceTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceCalculationServiceTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceRepositoryPriceTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceRepositoryPriceTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceSearchServiceTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlaceSearchServiceTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlannerLoadingDialogTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/PlannerLoadingDialogTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/ReplaceIntegratedDataTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/ReplaceIntegratedDataTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/SavedCourseRepositoryTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/SavedCourseRepositoryTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/SavedCourseSchemaTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/SavedCourseSchemaTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/StartupPanelTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/StartupPanelTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/07_테스트/WalkingRouteUiTest.md](../../docs/site/content/99_이전_문서/이전_발췌/07_테스트/WalkingRouteUiTest.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/instant-zoom.js.md](../../docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/instant-zoom.js.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/itinerary-rail.js.md](../../docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/itinerary-rail.js.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/map.js.md](../../docs/site/content/99_이전_문서/이전_발췌/08_지도_보충/map.js.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_안내/라이브러리_사용_안내_2026_11_25.md](../../docs/site/content/99_이전_문서/이전_안내/라이브러리_사용_안내_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_안내/리뷰_및_구현_방향_2026_11_25.md](../../docs/site/content/99_이전_문서/이전_안내/리뷰_및_구현_방향_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_안내/목차_2026_11_25.md](../../docs/site/content/99_이전_문서/이전_안내/목차_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_안내/문서_읽는법_2026_11_25.md](../../docs/site/content/99_이전_문서/이전_안내/문서_읽는법_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_안내/변경_요약_2026_11_25.md](../../docs/site/content/99_이전_문서/이전_안내/변경_요약_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_안내/전체_동작_흐름.md](../../docs/site/content/99_이전_문서/이전_안내/전체_동작_흐름.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_안내/최종_검토_2026_11_15.md](../../docs/site/content/99_이전_문서/이전_안내/최종_검토_2026_11_15.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/99_이전_문서/이전_안내/현재_구현_흐름_2026_11_25.md](../../docs/site/content/99_이전_문서/이전_안내/현재_구현_흐름_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/index.md](../../docs/site/content/index.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/가격_보완_2026_11_24.md](../../docs/site/content/04_데이터/가격_보완_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/공통_UI와_홈_메뉴.md](../../docs/site/content/02_화면/공통_UI와_홈_메뉴.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/공통_접속_키.md](../../docs/site/content/01_시작/공통_접속_키.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/관리자_이용과_검토.md](../../docs/site/content/05_회원_DB/관리자_이용과_검토.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/데이터_확장_2026_11_23.md](../../docs/site/content/04_데이터/데이터_확장_2026_11_23.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/도보_설정과_지도_경로_동기화_2026_11_25.md](../../docs/site/content/08_지도_보충/도보_설정과_지도_경로_동기화_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/라이브러리_사용_안내.md](../../docs/site/content/01_시작/라이브러리_사용_안내.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/01-account.md](../../docs/site/content/기능별_구현/01-account.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/02-planning.md](../../docs/site/content/기능별_구현/02-planning.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/03-recommendation.md](../../docs/site/content/기능별_구현/03-recommendation.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/04-price-and-models.md](../../docs/site/content/기능별_구현/04-price-and-models.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/05-map.md](../../docs/site/content/기능별_구현/05-map.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/06-routing.md](../../docs/site/content/기능별_구현/06-routing.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/07-saved-courses.md](../../docs/site/content/기능별_구현/07-saved-courses.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/08-reports-admin.md](../../docs/site/content/기능별_구현/08-reports-admin.md) | 품질·가격·모의 결과·검토 기록 |
+| [docs/site/content/기능별_구현/09-ui-state.md](../../docs/site/content/기능별_구현/09-ui-state.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/10-place-data.md](../../docs/site/content/기능별_구현/10-place-data.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/11-runtime-db.md](../../docs/site/content/기능별_구현/11-runtime-db.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/12-team-and-checks.md](../../docs/site/content/기능별_구현/12-team-and-checks.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/content/기능별_구현/목차.md](../../docs/site/content/기능별_구현/목차.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/리뷰_및_구현_방향.md](../../docs/site/content/리뷰_및_구현_방향.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/마우스_키보드_입력_점검_2026_11_24.md](../../docs/site/content/08_지도_보충/마우스_키보드_입력_점검_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/목차.md](../../docs/site/content/목차.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/문서_읽는법.md](../../docs/site/content/문서_읽는법.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/배치_적재_개선_2026_11_24.md](../../docs/site/content/05_회원_DB/배치_적재_개선_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/변경_요약.md](../../docs/site/content/변경_요약.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/보유_자원의_경로_추천_활용_탐색_2026_11_25.md](../../docs/site/content/04_데이터/보유_자원의_경로_추천_활용_탐색_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/부산_16개_구군_분산_확장_2026_11_25.md](../../docs/site/content/04_데이터/부산_16개_구군_분산_확장_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/분류_세분화와_미사용_원본_필드_2026_11_25.md](../../docs/site/content/04_데이터/분류_세분화와_미사용_원본_필드_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/사용자_안내와_진단.md](../../docs/site/content/02_화면/사용자_안내와_진단.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/순서_넘버링과_미사용_정리_2026_11_24.md](../../docs/site/content/09_구조와_검토/순서_넘버링과_미사용_정리_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/시연_장소와_가격_흐름.md](../../docs/site/content/04_데이터/시연_장소와_가격_흐름.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/실행_및_테스트.md](../../docs/site/content/01_시작/실행_및_테스트.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/업데이트_내역.md](../../docs/site/content/업데이트_내역.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/장소_데이터와_표시.md](../../docs/site/content/04_데이터/장소_데이터와_표시.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/저장_미리보기와_복구.md](../../docs/site/content/05_회원_DB/저장_미리보기와_복구.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/전체_동작_흐름.md](../../docs/site/content/99_이전_문서/이전_안내/전체_동작_흐름.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/전체_점검_2026_11_24.md](../../docs/site/content/09_구조와_검토/전체_점검_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/중구_98곳_추가와_가격_보완_2026_11_25.md](../../docs/site/content/04_데이터/중구_98곳_추가와_가격_보완_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/지도_렌더링_여유_영역_2026_11_24.md](../../docs/site/content/08_지도_보충/지도_렌더링_여유_영역_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/지도_범위와_포커스.md](../../docs/site/content/08_지도_보충/지도_범위와_포커스.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/지도_선택과_저장_지도_준비_2026_11_24.md](../../docs/site/content/08_지도_보충/지도_선택과_저장_지도_준비_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/최종_검토_2026_11_15.md](../../docs/site/content/99_이전_문서/이전_안내/최종_검토_2026_11_15.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/코스_저장_설계.md](../../docs/site/content/05_회원_DB/코스_저장_설계.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/코스_저장과_다시열기.md](../../docs/site/content/05_회원_DB/코스_저장과_다시열기.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/키보드_조작과_포커스_복귀_2026_11_25.md](../../docs/site/content/02_화면/키보드_조작과_포커스_복귀_2026_11_25.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/패키지_통합과_구조_점검_2026_11_24.md](../../docs/site/content/09_구조와_검토/패키지_통합과_구조_점검_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/페이지_구조와_이름_2026_11_24.md](../../docs/site/content/09_구조와_검토/페이지_구조와_이름_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/site/content/현재_구현_흐름.md](../../docs/site/content/현재_구현_흐름.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
-| [docs/site/content/화면_가독성과_작은_창_배치_2026_11_24.md](../../docs/site/content/02_화면/화면_가독성과_작은_창_배치_2026_11_24.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
+| [docs/site/document-moves.json](../../docs/site/document-moves.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [docs/site/document-revisions.json](../../docs/site/document-revisions.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [docs/site/package.json](../../docs/site/package.json) | 사이트 배포·실행·의존성 설정 |
 | [docs/site/web/compact-docs.css](../../docs/site/web/compact-docs.css) | 화면·문서의 구조·스타일·시각 자원 |
@@ -535,6 +560,10 @@
 | [docs/site/web/document-updates.js](../../docs/site/web/document-updates.js) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [docs/site/web/flow-tooltips.css](../../docs/site/web/flow-tooltips.css) | 화면·문서의 구조·스타일·시각 자원 |
 | [docs/site/web/flow-tooltips.js](../../docs/site/web/flow-tooltips.js) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
+| [docs/site/web/guide/guide.css](../../docs/site/web/guide/guide.css) | 화면·문서의 구조·스타일·시각 자원 |
+| [docs/site/web/guide/guide.js](../../docs/site/web/guide/guide.js) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
+| [docs/site/web/guide/index.html](../../docs/site/web/guide/index.html) | 화면·문서의 구조·스타일·시각 자원 |
+| [docs/site/web/guide/layout.json](../../docs/site/web/guide/layout.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [docs/site/web/learning-demos.css](../../docs/site/web/learning-demos.css) | 화면·문서의 구조·스타일·시각 자원 |
 | [docs/site/web/learning-demos.js](../../docs/site/web/learning-demos.js) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [docs/site/web/navigation.css](../../docs/site/web/navigation.css) | 화면·문서의 구조·스타일·시각 자원 |
@@ -567,7 +596,7 @@
 
 </details>
 
-<details><summary>사이트 로직 검사 · 13개</summary>
+<details><summary>사이트 로직 검사 · 15개</summary>
 
 무엇: 인증·보드·이력의 회귀. 사용: Node test·SQLite fixture. 왜: 권한과 사람의 수정 보존. 어떻게: 요청/상태 준비 → handler → 응답·DB 상태 확인.
 
@@ -582,14 +611,16 @@
 | [docs/site/test/board-nov25-followup.test.mjs](../../docs/site/test/board-nov25-followup.test.mjs) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [docs/site/test/board-nov25.test.mjs](../../docs/site/test/board-nov25.test.mjs) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [docs/site/test/board-store.test.mjs](../../docs/site/test/board-store.test.mjs) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
+| [docs/site/test/document-moves.test.mjs](../../docs/site/test/document-moves.test.mjs) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [docs/site/test/document-revisions.test.mjs](../../docs/site/test/document-revisions.test.mjs) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [docs/site/test/flow-methods.test.mjs](../../docs/site/test/flow-methods.test.mjs) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
+| [docs/site/test/implementation-guide.test.mjs](../../docs/site/test/implementation-guide.test.mjs) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [docs/site/test/task-tree.test.mjs](../../docs/site/test/task-tree.test.mjs) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [docs/site/test/worker.test.mjs](../../docs/site/test/worker.test.mjs) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 
 </details>
 
-<details><summary>사이트 빌드·표시 검사 · 27개</summary>
+<details><summary>사이트 빌드·표시 검사 · 31개</summary>
 
 무엇: 문서 생성·표시 점검. 사용: Node·Quartz·Playwright. 왜: 참조성·화면 크기·링크 확인. 어떻게: 원본 가공 → 정적 빌드 → DOM/화면 검사.
 
@@ -606,6 +637,8 @@
 | [docs/site/tools/check-db01-design.mjs](../../docs/site/tools/check-db01-design.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
 | [docs/site/tools/check-document-updates.mjs](../../docs/site/tools/check-document-updates.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
 | [docs/site/tools/check-flow-tooltips.mjs](../../docs/site/tools/check-flow-tooltips.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
+| [docs/site/tools/check-guide-focus.mjs](../../docs/site/tools/check-guide-focus.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
+| [docs/site/tools/check-implementation-guide.mjs](../../docs/site/tools/check-implementation-guide.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
 | [docs/site/tools/check-initial-board.mjs](../../docs/site/tools/check-initial-board.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
 | [docs/site/tools/check-latest-board.mjs](../../docs/site/tools/check-latest-board.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
 | [docs/site/tools/check-learning-demos.mjs](../../docs/site/tools/check-learning-demos.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
@@ -615,8 +648,10 @@
 | [docs/site/tools/check-tables.mjs](../../docs/site/tools/check-tables.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
 | [docs/site/tools/check-ui.mjs](../../docs/site/tools/check-ui.mjs) | 사이트의 해당 화면/동작 브라우저 점검 |
 | [docs/site/tools/compact-docs.mjs](../../docs/site/tools/compact-docs.mjs) | 문서 구조·표시 보정 |
+| [docs/site/tools/document-moves.mjs](../../docs/site/tools/document-moves.mjs) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [docs/site/tools/document-revisions.mjs](../../docs/site/tools/document-revisions.mjs) | 본문 변경과 문서 읽음 버전 관리 |
 | [docs/site/tools/flow-methods.mjs](../../docs/site/tools/flow-methods.mjs) | 문서의 함수 설명·호출 단서 보강 |
+| [docs/site/tools/implementation-guide.mjs](../../docs/site/tools/implementation-guide.mjs) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [docs/site/tools/optimize-assets.mjs](../../docs/site/tools/optimize-assets.mjs) | 정적 CSS·JS 자원 최적화 |
 | [docs/site/tools/reading-notes.json](../../docs/site/tools/reading-notes.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [docs/site/tools/refresh-reading-guides.mjs](../../docs/site/tools/refresh-reading-guides.mjs) | 문서 원본의 설명·읽기 안내 갱신 도구 |

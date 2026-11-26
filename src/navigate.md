@@ -1,5 +1,7 @@
 # 앱 코드 탐색
 
+클래스 역할·주요 처리·라이브러리 사용 목적은 짧은 한국어 주석으로 확인할 수 있다. 주석 보완 기준 `1a4568c`, 실행 로직과 기존 사용자 주석은 유지했다.
+
 사용자 동작부터 코드를 따라갈 때는 사이트의 HTML 기능 안내를 사용한다. 기능 설명 원본은 [기능별 문서](../docs/implementation-reference/features/README.md), 화면 구성·빌드는 [사이트 안내](../docs/site/README.md#기능을-누르며-읽는-첫-화면)에 있다.
 
 구현 동작과 기술의 연결은 [구현 참조 길잡이](../docs/implementation-reference/README.md), 클래스별 역할·대표 선언은 [전체 클래스 색인](../docs/implementation-reference/08-class-index.md), 설정·자원·도구·검사·자료까지는 [프로젝트 요소 색인](../docs/implementation-reference/09-project-index.md)에서 확인한다.
