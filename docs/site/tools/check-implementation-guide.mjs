@@ -8,11 +8,11 @@ try {
  await page.screenshot({path:'build/ui-preview/guide-desktop.png',fullPage:true});
  const data=await page.locator('#guide-data').textContent();const features=JSON.parse(data).features;
  for(const f of features){await page.locator('#feature-menu [data-feature="'+f.id+'"]').click();await page.getByRole('heading',{name:f.title,exact:true}).waitFor();assert.equal(await page.locator('#feature-flow li').count(),4);assert.ok(await page.locator('#feature-tech .tech-card').count()>=3);assert.equal(await page.locator('#detail-link').getAttribute('href'),f.documentUrl);}
- await page.locator('#journey [data-feature="03-recommendation"]').click();
+ await page.locator('#journey [data-feature="03-recommendation"]').click();await page.locator('#example-section').evaluate(e=>e.open=true);
  for(const [stage,n] of [8,7,5,4,3].entries()){await page.locator('[data-stage="'+stage+'"]').click();assert.equal(await page.locator('.candidate:not(.removed)').count(),n);}
  await page.locator('#code-shortcut').click();assert.equal(await page.locator('#code-section').getAttribute('open'),'');assert.ok((await page.locator('#feature-code').innerText()).includes('NextPlaceService'));
  await page.goBack();assert.equal(await page.locator('#feature-title').innerText(),features.at(-1).title);
- await page.goto('https://guide.test/#03-recommendation');await page.locator('[data-stage="4"]').click();
+ await page.goto('https://guide.test/#03-recommendation');await page.locator('#example-section').evaluate(e=>e.open=true);await page.locator('[data-stage="4"]').click();
  await page.screenshot({path:'build/ui-preview/guide-recommendation-desktop.png',fullPage:true});
  for(const width of [390,320]){await page.setViewportSize({width,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,width+'px overflow');for(const f of features){const menu=page.locator((f.group==='use'?'#journey':'#feature-menu')+' [data-feature="'+f.id+'"]');await menu.click();assert.equal(await page.locator('#feature-title').innerText(),f.title);}}
  await page.locator('#journey [data-feature="02-planning"]').click();await page.setViewportSize({width:390,height:844});await page.screenshot({path:'build/ui-preview/guide-mobile.png',fullPage:true});
