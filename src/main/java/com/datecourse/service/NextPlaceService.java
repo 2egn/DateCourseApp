@@ -10,27 +10,34 @@ public final class NextPlaceService {
     private final PlaceSearchService search = new PlaceSearchService();
     private final PlaceCalculationService calculation = new PlaceCalculationService();
 
+    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
     public List<PlaceSearchService.NearbyPlace> candidates(List<Place> places, List<Place> confirmed,
             double startLat, double startLng, int radius, String category,
             int maxPricePerPerson, int people, int routeRadius) {
+    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
         return candidates(places, confirmed, startLat, startLng, radius, category,
                 maxPricePerPerson, people, routeRadius, false);
     }
 
+    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
     public List<PlaceSearchService.NearbyPlace> candidates(List<Place> places, List<Place> confirmed,
             double startLat, double startLng, int radius, String category,
             int maxPricePerPerson, int people, int routeRadius, boolean includeUncertainPrice) {
+    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
         return candidates(places, confirmed, startLat, startLng, people, routeRadius,
                 new NextPlaceCondition(category, maxPricePerPerson, radius, includeUncertainPrice,
                         java.util.Set.of(), java.util.Set.of(), DEFAULT_CANDIDATES));
     }
 
+    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
     public List<PlaceSearchService.NearbyPlace> candidates(List<Place> places, List<Place> confirmed,
             double startLat, double startLng, int people, int routeRadius, NextPlaceCondition condition) {
+    // 전체 범위 → 다음 반경 → 가격·중복·특징 순으로 조건에 맞는 전체 후보 조회
         return matching(places, confirmed, startLat, startLng, people, routeRadius, condition).stream()
                 .limit(condition.displayLimit()).toList();
     }
 
+    // 전체 범위 → 다음 반경 → 가격·중복·특징 순으로 조건에 맞는 전체 후보 조회
     public List<PlaceSearchService.NearbyPlace> matching(List<Place> places, List<Place> confirmed,
             double startLat, double startLng, int people, int routeRadius, NextPlaceCondition condition) {
         int maxPricePerPerson = condition.maxPrice();

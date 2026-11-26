@@ -261,7 +261,7 @@ public final class LoginUI {
         return panel;
     }
 
-    /** Rounded checkbox with the same accent as the login button. */
+    /** 로그인 버튼과 같은 강조색을 사용하는 둥근 체크박스 구성용 함수 */
     private static final class RememberIdIcon implements Icon {
         public int getIconWidth() { return 24; }
         public int getIconHeight() { return 24; }

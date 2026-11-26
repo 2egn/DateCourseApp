@@ -1,6 +1,9 @@
 package com.datecourse.model;
 
-/** A resolution score is independent from review approval and entity type. */
+/**
+ * - 공공 장소와 외부 장소 ID 연결 상태 보관용 모델
+ * - 일치 점수, 검토 승인 여부, 실제 장소 여부를 따로 구분
+ */
 public record ExternalPlaceLink(Provider provider, String externalId, Confidence confidence,
                                 ReviewStatus reviewStatus, EntityKind entityKind,
                                 String matchMethod, String checkedAt, String reviewNote) {

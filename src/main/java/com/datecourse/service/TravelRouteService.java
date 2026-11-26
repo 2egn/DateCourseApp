@@ -4,10 +4,14 @@ import com.datecourse.model.*;
 import com.datecourse.model.TravelRoute.Stop;
 import java.util.List;
 
-/** Minimal routing boundary: UI selects a mode, adapters own provider details. */
+/**
+ * - 선택한 이동수단을 실제 경로 조회 서비스에 연결하는 클래스
+ * - 화면은 수단만 전달, 제공사별 요청과 응답 처리는 각 서비스에서 담당
+ */
 public final class TravelRouteService {
     private final WalkingRouteService walking=new WalkingRouteService();
     private final KakaoRouteService kakao=new KakaoRouteService();
+    // 선택 수단에 따라 TMAP 도보, 카카오 자동차 또는 도보·대중교통 비교 서비스 호출
     public TravelRoute route(List<Stop> stops,TravelMode mode)throws Exception {
         if(mode==TravelMode.WALKING)return walking.route(stops,TmapSettings.load());
         var kakaoSettings=KakaoRouteSettings.load();

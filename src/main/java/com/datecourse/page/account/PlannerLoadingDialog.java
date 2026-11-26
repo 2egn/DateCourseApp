@@ -5,7 +5,7 @@ import com.datecourse.page.common.swing.LoginUI;
 import javax.swing.*;
 import java.awt.*;
 
-/** Short, nonblocking handoff between authenticated login and the JavaFX planner. */
+/** 로그인 완료 후 JavaFX 코스 화면으로 전환하는 동안 표시하는 로딩 창 */
 final class PlannerLoadingDialog extends JDialog {
     private final JFrame owner;
     private final boolean ownerWasEnabled;

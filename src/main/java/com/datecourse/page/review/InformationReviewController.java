@@ -7,7 +7,7 @@ import com.datecourse.db.MemberRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-/** The real administrator login supplies the otherwise unconstructable capability. */
+/** 관리자 로그인에서 받은 권한으로 장소 정보 제보를 검토하는 화면 */
 public final class InformationReviewController extends BasePageController {
 
     // ===== FXML 컴포넌트 (information-review-view.fxml의 위→아래 순서) =====

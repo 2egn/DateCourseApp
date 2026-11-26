@@ -8,7 +8,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 import java.util.Objects;
 
-/** Map boundary adapter. Presentation data is never added to the persisted Place model. */
+/**
+ * - 장소 모델을 지도 표시용 데이터로 변환하는 연결용 클래스
+ * - 화면 표시 값은 영구 저장용 Place 모델에 추가하지 않음
+ */
 public final class PlaceMapPayload {
     private final ObjectMapper json;
     private final PlacePresenter presenter;

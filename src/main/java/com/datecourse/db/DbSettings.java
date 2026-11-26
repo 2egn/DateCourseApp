@@ -8,7 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
-/** Team credentials take priority; installations without a shared key keep local settings. */
+/**
+ * - DB 접속 설정 로드용 클래스
+ * - 공통 접속 키가 있으면 서버 설정 우선 사용, 없는 환경만 로컬 설정 사용
+ */
 public record DbSettings(String url, String user, String password) {
     public static DbSettings load() {
         try {

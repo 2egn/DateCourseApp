@@ -18,7 +18,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.regex.Pattern;
 
-/** Both planner maps share a loopback server; no separate Python process is required. */
+/**
+ * - 공통 조건과 편집 지도가 공유하는 로컬 지도 서버
+ * - 127.0.0.1에서 지도 자원을 제공하며 별도 Python 서버 실행은 필요하지 않음
+ */
 public final class MapPageServer implements AutoCloseable {
     public static final int PORT = 8080;
     private static final Pattern KEY_ASSIGNMENT = Pattern.compile(

@@ -3,7 +3,10 @@ package com.datecourse.model;
 import java.time.LocalDate;
 import java.time.Instant;
 
-/** Source date and observation/calculation time describe different events. */
+/**
+ * - 장소 정보의 출처와 기준일 보관용 모델
+ * - 원본 자료의 기준일과 실제 조회 또는 계산한 시점은 따로 관리
+ */
 public record SourceEvidence(Origin origin, String basis, String sourceUrl,
                              String referenceDate, String checkedAt) {
     public enum Origin { PUBLIC_DATA, OFFICIAL_SITE, ADMIN_REVIEW, CALCULATED,

@@ -2,7 +2,10 @@ package com.datecourse.model;
 
 import java.util.Locale;
 
-/** Amounts are KRW. Null means unknown, never free. */
+/**
+ * - 가격의 범위, 단위, 출처 및 근거 보관용 모델
+ * - 금액은 원 단위, null은 미확인으로 처리하며 무료와 구분
+ */
 public record PriceEstimate(Integer minimum, Integer maximum, Unit unit, String basis,
                             Evidence evidence, String sourceUrl, String checkedAt) {
     public enum Unit { PER_PERSON, PER_DRINK, ADULT_TICKET, UNKNOWN }
@@ -29,10 +32,13 @@ public record PriceEstimate(Integer minimum, Integer maximum, Unit unit, String 
     }
 
     public static PriceEstimate unknown() { return new PriceEstimate(null, null, Unit.UNKNOWN, "가격 미확인"); }
+    // 1인 정액을 최소·최대가 같은 가격 모델로 생성
     public static PriceEstimate exact(int amount) { return new PriceEstimate(amount, amount, Unit.PER_PERSON, "1인 가격"); }
     public boolean usablePerPerson() { return minimum != null && unit != Unit.UNKNOWN; }
     public boolean finite() { return usablePerPerson() && maximum != null; }
+    // 가격 범위의 양 끝이 같은 숫자인지 확인. 실제 메뉴 검증 여부와는 별도
     public boolean exact() { return finite() && minimum.equals(maximum); }
+    // 통계 추정 또는 시연용 가정 가격인지 확인
     public boolean estimated() { return evidence == Evidence.SIMILAR_ESTIMATE || evidence == Evidence.DEMO_ASSUMPTION; }
     public String evidenceText() { return evidence.label(); }
     public String briefBasis() {
@@ -51,10 +57,11 @@ public record PriceEstimate(Integer minimum, Integer maximum, Unit unit, String 
         };
     }
     public String explanation() { return briefBasis() + (estimated() ? " 기준 추정 가격" : " · " + evidenceText()); }
+    // 최대 금액까지 확인된 가격 범위가 1인 상한 안에 있는지 확인
     public boolean withinCap(int cap) { return finite() && maximum <= cap; }
     public long sortUpperBound() { return finite() ? maximum : Long.MAX_VALUE; }
 
-    /** Compatibility for old screens accepting only an exact per-person integer. */
+    /** 1인 정액 정수만 받는 이전 화면과의 호환용 함수 */
     public int exactAmount() {
         if (!exact()) throw new IllegalStateException("가격이 미확인이거나 범위입니다. 가격 범위 모델을 사용해 주세요.");
         return minimum;

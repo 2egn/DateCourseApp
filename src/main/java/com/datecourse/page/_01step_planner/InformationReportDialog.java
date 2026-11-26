@@ -8,6 +8,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Window;
 import java.util.Optional;
 
+/** 장소 정보 정정 제안, 사유 및 출처 입력용 창 */
 final class InformationReportDialog {
     record Submission(InformationReport.Field field,String value,String reason,String source) {}
     static Optional<Submission> show(Window owner,Place place) {

@@ -1,6 +1,9 @@
 package com.datecourse.service;
 
-/** Shared planner policy in screen units. No SDK calls, JavaFX timers or venue-specific exceptions. */
+/**
+ * - 지도 선택과 범위 변경 시 카메라 이동 여부를 계산하는 공통 정책
+ * - 화면 단위로 판단하며 지도 SDK 호출이나 특정 장소별 예외 처리는 하지 않음
+ */
 public final class CameraMotionPolicy {
     public enum Intent { FOCUS, RANGE_DRAG, RANGE_COMMIT, FIT, RESET }
     public enum Movement { NONE, PAN, COMBINED, IMMEDIATE }

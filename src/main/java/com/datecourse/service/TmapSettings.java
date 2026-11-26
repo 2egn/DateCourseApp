@@ -10,7 +10,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-/** TMAP appKey is used only by Java HTTP requests and never sent to the map page. */
+/**
+ * - TMAP 도보 경로 요청에 사용할 키와 탐색 옵션 로드용 클래스
+ * - appKey는 Java HTTP 요청에만 사용하며 지도 페이지에는 전달하지 않음
+ */
 public record TmapSettings(String appKey, int searchOption) {
     private static final java.util.concurrent.atomic.AtomicLong PREFERENCES_VERSION = new java.util.concurrent.atomic.AtomicLong();
 

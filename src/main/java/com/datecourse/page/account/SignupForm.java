@@ -3,7 +3,10 @@ package com.datecourse.page.account;
 import javax.swing.*;
 import java.awt.*;
 
-/** Keeps signup fields as wide as the viewport and scrolls instead of squeezing their height. */
+/**
+ * - 회원가입 입력 폼 구성용 클래스
+ * - 창 너비에 맞춰 표시하고 세로 공간이 부족하면 스크롤로 처리
+ */
 final class SignupForm extends JPanel implements Scrollable {
     SignupForm() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

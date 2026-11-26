@@ -4,7 +4,10 @@ import com.datecourse.model.Place;
 import java.io.IOException;
 import java.util.List;
 
-/** Public place identities with explicitly estimated costs; separate from the original nine-place snapshot. */
+/**
+ * - 공공 장소 ID와 명시적인 추정 가격을 사용하는 시연 자료 조회용 클래스
+ * - 기존 9곳 파일럿 스냅샷과 별도 자료로 관리
+ */
 public final class PublicDemoPlaceRepository implements PlaceSource {
     public static final String RESOURCE="/datasets/seomyeon-public-estimates.json";
     public static final String FACTS_RESOURCE="/datasets/appeal/demo_appeal_facts.json";

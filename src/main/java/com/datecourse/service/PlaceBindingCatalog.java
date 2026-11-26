@@ -19,7 +19,10 @@ import java.util.HexFormat;
 import java.util.Map;
 import java.util.Optional;
 
-/** Reads confirmed public-source → Google IDs. It never searches by venue name. */
+/**
+ * - 공공 장소 ID와 확인된 Google 장소 ID 연결표 조회용 클래스
+ * - 가게 이름 검색으로 연결 관계를 새로 추정하지 않음
+ */
 public final class PlaceBindingCatalog {
     public static final Path PILOT_DIRECTORY = Path.of("data", "places", "pilot", "seomyeon-jeonpo-2026-11-13");
     private static final Map<Integer, String> MATCH_RULES = Map.of(
@@ -38,7 +41,7 @@ public final class PlaceBindingCatalog {
         this.checkedAt = checkedAt;
     }
 
-    /** Rejects the entire catalog when it belongs to another version of the dataset. */
+    /** 연결표가 현재 장소 자료와 다른 버전이면 전체 사용을 거부하는 검증 */
     public static PlaceBindingCatalog load(Path catalogFile, Path datasetFile) throws IOException {
         JsonNode catalog = new ObjectMapper().readTree(catalogFile.toFile());
         if (catalog == null || !catalog.isObject() || !catalog.path("schema_version").isIntegralNumber()
@@ -78,12 +81,12 @@ public final class PlaceBindingCatalog {
         return Optional.ofNullable(localPlaceId == null ? null : googleIds.get(localPlaceId));
     }
 
-    /** DB record numbers and venue names must not be used as fallback identities. */
+    /** 장소 연결의 식별값 조회용 함수. DB 번호나 장소명으로 대체 식별값을 만들지 않음 */
     public Optional<String> googlePlaceId(Place place) {
         return place == null ? Optional.empty() : googlePlaceId(place.placeId());
     }
 
-    /** Only catalogs that passed dataset/rule/eligibility checks can create a confirmed link. */
+    /** 자료, 규칙 및 사용 가능 여부 검사를 통과한 연결표만 확인된 연결로 변환 */
     public Optional<ExternalPlaceLink> reviewedGoogleLink(String localPlaceId) {
         return googlePlaceId(localPlaceId).map(id -> new ExternalPlaceLink(ExternalPlaceLink.Provider.GOOGLE_PLACES,
                 id, ExternalPlaceLink.Confidence.UNSPECIFIED, ExternalPlaceLink.ReviewStatus.CONFIRMED,

@@ -12,7 +12,10 @@ import javafx.scene.web.WebView;
 import javafx.stage.*;
 import java.util.concurrent.*;
 
-/** Rebuilds one optional preview using the existing map adapter; no walking-route lookup. */
+/**
+ * - 저장 코스의 선택적 지도 미리보기 재생성용 창
+ * - 기존 지도 연결 부품을 사용하며 실제 도보 경로는 조회하지 않음
+ */
 final class CoursePreviewDialog {
     static CompletableFuture<byte[]> generate(Window owner,RoutePlan plan) {
         var result=new CompletableFuture<byte[]>();

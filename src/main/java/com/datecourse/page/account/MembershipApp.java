@@ -383,7 +383,7 @@ public class MembershipApp {
         panel.requestFocusInWindow();
     }
 
-    /** Keep the authenticated planner in the same window while its bounds settle into place. */
+    /** 로그인 후 창 크기가 안정화되는 동안 같은 창에서 코스 화면을 유지하도록 처리 */
     private void animatePlannerWindow(Rectangle target) {
         if (screenTransition != null) screenTransition.stop();
         Rectangle start = home.getBounds();

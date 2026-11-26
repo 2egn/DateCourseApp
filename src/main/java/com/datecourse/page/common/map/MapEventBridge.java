@@ -5,7 +5,10 @@ import java.util.function.Consumer;
 import java.net.URI;
 import java.util.Locale;
 
-/** Narrow JavaScript interface; held by the controller so WebView cannot garbage-collect it. */
+/**
+ * - WebView의 JavaScript 이벤트를 Java 콜백으로 전달하는 연결용 클래스
+ * - 컨트롤러에서 참조를 유지해 브리지가 GC로 해제되지 않도록 처리
+ */
 public final class MapEventBridge {
     private final Runnable ready;
     private final BiConsumer<Double, Double> selected;
@@ -63,7 +66,7 @@ public final class MapEventBridge {
     private final com.datecourse.service.CameraMotionPolicy cameraPolicy = new com.datecourse.service.CameraMotionPolicy();
     private final com.fasterxml.jackson.databind.ObjectMapper cameraJson = new com.fasterxml.jackson.databind.ObjectMapper();
 
-    /** Synchronous, pure decision; no UI mutation or SDK calls cross this bridge. */
+    /** 동기식 판단 결과만 반환하는 연결용 함수. UI 변경이나 SDK 호출은 하지 않음 */
     public String decideCameraTransition(String intent, int level, int fitLevel, double distance, double overflow, boolean reduced) {
         try {
             var frame = new com.datecourse.service.CameraMotionPolicy.Frame(level, fitLevel, distance, overflow, reduced);

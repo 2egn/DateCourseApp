@@ -4,7 +4,10 @@ import com.datecourse.model.Place;
 import com.datecourse.model.RoutePlan;
 import java.util.List;
 
-/** Reuses the candidate search distance calculation; the circle boundary is included. */
+/**
+ * - 전체 원형 범위와 장소별 도착 반경 유효성 검사 클래스
+ * - 후보 검색과 같은 거리 계산 사용, 반경 경계에 있는 장소도 포함
+ */
 public final class RouteRangeValidator {
     private final PlaceCalculationService calculation = new PlaceCalculationService();
 

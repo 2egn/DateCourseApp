@@ -1,5 +1,6 @@
 package com.datecourse.model;
 
+/** 장소 정보 정정 제안과 관리자 검토 결과 전달용 모델 */
 public record InformationReport(long id, String placeId, String placeName, String field,
                                 String originalValue, String proposedValue, String reason, String sourceUrl,
                                 String status, String reviewNote, String createdAt, String reviewedValue) {

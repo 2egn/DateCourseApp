@@ -15,7 +15,10 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
-/** Shared overlay: does not take space from the map or resize the page. JavaFX thread only. */
+/**
+ * - JavaFX 화면의 공통 로딩 및 알림 표시용 클래스
+ * - 지도 크기를 바꾸지 않는 오버레이 방식, JavaFX 화면 스레드에서 사용
+ */
 public final class PageFeedback {
     public enum Kind { INFO, SUCCESS, ERROR }
     private final StackPane layer = new StackPane();

@@ -7,7 +7,10 @@ import java.awt.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
-/** Startup loading and retry screen. Database work always runs outside the Swing event thread. */
+/**
+ * - 앱 시작 시 DB 준비 상태와 재시도를 표시하는 화면
+ * - DB 작업은 Swing 화면 스레드 밖에서 실행
+ */
 final class StartupPanel extends JPanel {
     private final JLabel title = new JLabel("", SwingConstants.CENTER);
     private final JLabel description = new JLabel("", SwingConstants.CENTER);

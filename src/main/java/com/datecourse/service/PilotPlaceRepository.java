@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-/** Reads only the explicitly packaged demonstration snapshot. Never writes/imports into DB. */
+/**
+ * - 패키지에 포함된 별도 시연 장소 스냅샷 조회용 클래스
+ * - DB 적재나 원본 변경 없이 파일에 지정된 자료만 읽는 방식
+ */
 public final class PilotPlaceRepository implements PlaceSource {
     public static final String RESOURCE = "/datasets/seomyeon-jeonpo-demo.json";
     public static final double START_LAT = 35.1578, START_LNG = 129.0600;

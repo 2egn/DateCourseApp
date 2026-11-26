@@ -2,7 +2,10 @@ package com.datecourse.model;
 
 import java.util.List;
 
-/** Provider-neutral transient route; WGS84 geometry, meters and seconds. Never a persisted provider snapshot. */
+/**
+ * - API에서 조회한 실제 이동 경로 전달용 모델
+ * - WGS84 좌표, 미터 거리, 초 단위 시간 사용. 영구 저장용 스냅샷과는 별도
+ */
 public record TravelRoute(List<Leg> legs, long totalDistance, long totalTime, TravelMode mode, String provider) {
     public TravelRoute(List<Leg> legs,long totalDistance,long totalTime) {this(legs,totalDistance,totalTime,TravelMode.WALKING,"TMAP");}
     public TravelRoute(List<Leg> legs,long totalDistance,long totalTime,TravelMode mode) {this(legs,totalDistance,totalTime,mode,"");}

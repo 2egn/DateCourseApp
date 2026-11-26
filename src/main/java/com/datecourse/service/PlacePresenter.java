@@ -4,7 +4,10 @@ import com.datecourse.model.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/** Builds display-only values. Does not query providers, mutate places or decide search eligibility. */
+/**
+ * - 장소 목록과 상세에 사용할 표시 문구 구성용 클래스
+ * - API 조회, 원본 변경 및 후보 통과 여부 판정은 담당하지 않음
+ */
 public final class PlacePresenter {
     public record Badge(String code, String label, String description) {}
     public record DetailLine(String label, String value, String description) {}
@@ -38,7 +41,7 @@ public final class PlacePresenter {
         return new Presentation(priceLabel,place.priceText(),priceSummary,candidateSummary,description,
                 informationSummary,badges,lines);
     }
-    /** Stable category/type label for compact candidates; do not repeat identical cafe labels. */
+    /** 후보 요약용 활동·유형 문구 구성. 같은 카페 분류 문구는 중복 표시하지 않음 */
     public String candidateType(Place place) {
         String category=PlaceSearchService.categoryName(place.category());
         if(place.details().subcategory().isBlank())return category;

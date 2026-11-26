@@ -1,6 +1,6 @@
 package com.datecourse.model;
 
-/** Values supported by the TMAP pedestrian routing API. */
+/** TMAP 도보 경로 조회에 사용할 탐색 옵션 구분용 enum */
 public enum WalkingSearchOption {
     RECOMMENDED(0, "추천 경로", "걷기 좋은 추천 경로를 안내해요."),
     MAIN_ROADS(4, "대로 우선", "추천 경로 중 큰길을 우선해요."),

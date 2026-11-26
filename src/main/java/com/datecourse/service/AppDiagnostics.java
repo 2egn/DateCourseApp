@@ -4,7 +4,10 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-/** Safe one-line diagnostics: never formats exception messages, payloads, paths or user data. */
+/**
+ * - 작업 종류, 실행 단계 및 결과를 한 줄로 기록하는 진단용 클래스
+ * - 예외 메시지, 응답 본문, 경로 및 사용자 데이터는 로그에서 제외
+ */
 public final class AppDiagnostics {
     public enum Operation { PAGE_TASK, SCREEN_LOAD, ACCOUNT_TASK, COURSE_SAVE, PREVIEW_REBUILD, PREVIEW_READ, PREVIEW_STORAGE, MAP_LOAD, WALKING_ROUTE, TRAVEL_ROUTE, PLACE_LOAD }
     public enum Stage { START, MAP_PREPARE, MAP_CAPTURE, IMAGE_ENCODE, DATABASE_READ, DATABASE_WRITE, PROVIDER_REQUEST, RUN, COMPLETE }

@@ -11,7 +11,10 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Properties;
 
-/** One team credential on disk; provider keys live only in this process's memory. */
+/**
+ * - 공통 접속 키로 API 키와 DB 접속 설정을 받아오는 클래스
+ * - 실제 공급사 키는 프로세스 메모리에서만 보관
+ */
 public final class TeamApiKeys {
     public static final Path LOCAL_FILE = Path.of(".local", "team-access.properties");
     private static final URI ENDPOINT = URI.create(
@@ -23,12 +26,12 @@ public final class TeamApiKeys {
     private static Map<String, String> cachedKeys;
     private TeamApiKeys() {}
 
-    /** Empty means this installation has not opted into team key loading. */
+    /** 공통 접속 키가 설정돼 있지 않으면 빈 결과 반환 */
     public static String get(String provider) throws IOException {
         return get(provider, Path.of(""), System.getenv());
     }
 
-    /** DB credentials are fetched separately, so API-only tools do not receive them. */
+    /** DB 접속 정보는 API 키와 별도 조회, API 전용 도구에 DB 설정이 전달되지 않도록 처리 */
     public static synchronized Map<String, String> database() throws IOException {
         String access = accessKey(Path.of(""), System.getenv());
         if (access.isEmpty()) return Map.of();

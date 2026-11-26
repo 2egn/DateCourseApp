@@ -8,7 +8,10 @@ import javafx.scene.control.Label;
 import com.datecourse.db.MemberRepository;
 import com.datecourse.service.UserContext;
 
-/** Reuses the base loading and notices; account storage stays with the login application. */
+/**
+ * - 로그인한 회원의 프로필과 저장 코스 이동을 담당하는 화면
+ * - 공통 부모의 로딩과 알림을 사용, 회원 저장소는 로그인 앱에서 관리
+ */
 public final class MyPageController extends BasePageController {
     @FXML private Label avatarLabel, nameLabel, emailLabel, phoneLabel, statusLabel;
     private UserContext userContext;

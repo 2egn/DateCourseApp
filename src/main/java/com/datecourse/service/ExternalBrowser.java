@@ -9,7 +9,10 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-/** Reuses a visible browser before delegating to the OS default browser. */
+/**
+ * - 외부 장소 링크를 브라우저로 여는 도우미 클래스
+ * - 사용 가능한 브라우저 창을 먼저 확인하고 없으면 OS 기본 브라우저 사용
+ */
 public final class ExternalBrowser {
     private static final Set<String> EXECUTABLES = Set.of("chrome.exe", "msedge.exe", "firefox.exe", "brave.exe", "opera.exe");
     private static final String FIND_BROWSER = """

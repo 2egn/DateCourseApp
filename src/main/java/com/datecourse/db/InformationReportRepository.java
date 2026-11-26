@@ -6,7 +6,10 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
 
-/** Original place data and saved snapshots are never rewritten. Approved fields form an overlay. */
+/**
+ * - 장소 정보 제보 접수, 관리자 검토 및 정정값 적용용 DB 클래스
+ * - 승인된 항목만 조회 결과에 적용, 원본 장소와 저장 코스 스냅샷은 유지
+ */
 public final class InformationReportRepository {
     private final DataSource pool;
     private volatile boolean ready;
@@ -59,7 +62,7 @@ public final class InformationReportRepository {
         return reports(ReportFilter.ALL,null,300).items();
     }
 
-    /** ID cursor paging keeps old pending reports reachable without loading the entire history. */
+    /** ID 기준 페이지 조회로 전체 이력을 읽지 않고 이전 대기 제보까지 접근 가능하게 처리 */
     ReportPage reports(ReportFilter filter, Long beforeId, int limit) throws SQLException {
         java.util.Objects.requireNonNull(filter);
         if(limit<1 || limit>300 || beforeId!=null && beforeId<=0)throw new IllegalArgumentException("제보 조회 범위를 확인해 주세요.");

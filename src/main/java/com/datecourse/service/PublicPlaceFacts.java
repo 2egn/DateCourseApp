@@ -10,9 +10,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-/** Applies public facts only to the exact source snapshot they were calculated from. */
+/**
+ * - 공공 속성 파일의 근거를 해당 장소 스냅샷에 연결하는 클래스
+ * - 계산에 사용한 원본과 지문이 일치할 때만 적용
+ */
 public final class PublicPlaceFacts {
     private PublicPlaceFacts() {}
+    // 장소와 속성 파일의 ID·지문·기준 정보를 확인한 뒤 공공 속성 연결
     public static List<Place> read(byte[] dataset, InputStream factsInput) throws IOException {
         List<Place> places = PilotPlaceRepository.read(new ByteArrayInputStream(dataset));
         JsonNode facts = new ObjectMapper().readTree(factsInput);

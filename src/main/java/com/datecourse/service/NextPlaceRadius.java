@@ -2,7 +2,10 @@ package com.datecourse.service;
 
 import com.datecourse.model.RoutePlan;
 
-/** A larger next-place circle is redundant once it contains the whole route circle. */
+/**
+ * - 전체 반경과 직전 장소 위치로 다음 장소의 반경 상한을 계산하는 클래스
+ * - 전체 원을 덮는 데 필요한 범위와 이동수단별 상한을 적용
+ */
 public final class NextPlaceRadius {
     private NextPlaceRadius() {}
 

@@ -6,7 +6,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import java.util.*;
 
-/** Evidence-backed multiple selection. Missing facts never become available amenities. */
+/**
+ * - 근거가 확인된 장소 특징의 다중 선택용 부품
+ * - 미확인 속성을 사용 가능한 시설로 바꾸지 않음
+ */
 public final class PlaceFeatureSelector extends VBox {
     private final ObservableSet<PlaceTag> selected=FXCollections.observableSet(new LinkedHashSet<>());
     private final Map<PlaceTag,CheckBox> checks=new EnumMap<>(PlaceTag.class);

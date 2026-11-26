@@ -1,6 +1,9 @@
 package com.datecourse.model;
 
-/** Price provenance is a filter, not a claim that a venue's current menu was verified. */
+/**
+ * - 가격 자료의 근거 종류를 선택하는 필터
+ * - 참고값이나 추정값 구분용이며 현재 메뉴 가격의 검증 여부와는 별도
+ */
 public enum PlacePriceFilter {
     ANY("제한 없음"), REFERENCE("참고 가격만"), ESTIMATED("추정 가격만"), FREE("무료만");
     private final String label;

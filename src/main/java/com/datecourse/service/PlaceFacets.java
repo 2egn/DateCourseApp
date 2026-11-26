@@ -2,10 +2,10 @@ package com.datecourse.service;
 
 import com.datecourse.model.Place;
 
-/** User-facing groups over the public source's detailed business types. */
+/** 공공 원본의 상세 업종을 화면용 분류로 묶는 클래스 */
 public final class PlaceFacets {
     private PlaceFacets() {}
-    /** Keep the public business type; never guess a menu from the venue name. */
+    /** 공공 원본의 업종을 사용하며 장소 이름으로 메뉴를 추정하지 않도록 처리 */
     public static String detailType(Place p) {
         String value=p.details().subcategory().trim();
         return switch(value) {

@@ -6,7 +6,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/** Formats only the saved snapshot: no provider requests or invented travel times. */
+/**
+ * - 저장 코스의 스냅샷을 목록 및 상세 문구로 변환하는 클래스
+ * - 외부 API를 호출하거나 없는 이동시간을 만들어 표시하지 않음
+ */
 public final class SavedCoursePresenter {
     public record Summary(String overview, String details, List<String> places) {
         public Summary { places=List.copyOf(places); }

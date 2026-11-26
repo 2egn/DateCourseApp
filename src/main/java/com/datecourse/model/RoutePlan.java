@@ -10,7 +10,7 @@ public record RoutePlan(double startLat, double startLng, int people, int radius
         this(startLat,startLng,people,radius,title,places,arrivalRadii,TravelMode.WALKING);
     }
     public RoutePlan withTravelMode(TravelMode mode) {return new RoutePlan(startLat,startLng,people,radius,title,places,arrivalRadii,mode);}
-    // Older callers have no recorded per-place condition; do not invent one.
+    // 이전 호출부에는 장소별 반경 기록이 없으므로 임의의 조건을 추가하지 않음
     public RoutePlan(double startLat, double startLng, int people, int radius, String title, List<Place> places) {
         this(startLat, startLng, people, radius, title, places, Map.of());
     }
@@ -23,6 +23,8 @@ public record RoutePlan(double startLat, double startLng, int people, int radius
             throw new IllegalArgumentException("장소별 이동 반경이 지원 범위를 벗어났습니다.");
     }
 
+    // 현재 방문 장소와 인원으로 예상 비용 범위 계산
     public CostEstimate costEstimate() { return CostEstimate.of(places, people); }
+    // 현재 코스를 확정된 단일 비용으로 계산할 수 있는지 확인 후 반환
     public long totalCost() { return costEstimate().exactTotal(); }
 }

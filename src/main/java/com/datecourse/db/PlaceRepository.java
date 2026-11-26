@@ -5,6 +5,7 @@ import com.datecourse.model.PlaceDetails;
 import com.datecourse.model.PriceEstimate;
 import com.datecourse.service.PlaceSource;
 import com.fasterxml.jackson.databind.JsonNode;
+// DB의 JSON 문자열을 장소 속성으로 읽기 위한 라이브러리
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.sql.DataSource;
@@ -16,6 +17,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * - DB 장소 데이터를 Place 모델로 변환하는 조회용 클래스
+ * - 공공 카탈로그 우선 조회, 없으면 기존 통합 장소 자료 사용
+ */
 public class PlaceRepository implements PlaceSource {
     private final DataSource dataSource;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -24,6 +29,7 @@ public class PlaceRepository implements PlaceSource {
         this.dataSource = dataSource;
     }
 
+    // 공공 카탈로그가 있으면 우선 반환하고 없으면 기존 JSON 데이터 조회
     public List<Place> findAll() throws SQLException, IOException{
         var catalog = new PlaceCatalogRepository(dataSource).findImported();
         if (catalog.isPresent()) return catalog.get();

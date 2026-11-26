@@ -1,5 +1,6 @@
 package com.datecourse.model;
 
+/** 이동수단별 전체 반경, 구간 반경 상한 및 시간 안내 문구 관리용 enum */
 public enum TravelMode {
     WALKING("도보",2000,2000), DRIVING("자동차",30000,60000), TRANSIT("대중교통 + 도보",20000,40000);
     public static final int MIN_RADIUS=200;

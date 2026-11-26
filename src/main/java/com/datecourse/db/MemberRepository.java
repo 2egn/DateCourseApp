@@ -14,7 +14,7 @@ public class MemberRepository implements AutoCloseable {
     public record Member(long id, String email, String name, String phone, String status, String created) {}
     public record Profile(String email, String name, String phone) {}
 
-    /** Reads only the authenticated member's public account fields, never a password hash. */
+    /** 로그인한 회원의 프로필 조회용 함수. 비밀번호 해시는 조회 대상에서 제외 */
     public Profile profile(com.datecourse.model.UserSession session) throws SQLException {
         if (session == null || session.memberId() <= 0) throw new IllegalArgumentException("로그인이 필요합니다.");
         try (Connection connection = connect(); PreparedStatement query = connection.prepareStatement(
@@ -28,12 +28,12 @@ public class MemberRepository implements AutoCloseable {
     }
     private final HikariDataSource pool;
 
-    /** Place reads share the login pool and its application shutdown lifecycle. */
+    /** 로그인 앱의 연결 풀을 장소 조회에서도 공유, 앱 종료 시 같이 정리 */
     public PlaceRepository places() {
         return new PlaceRepository(pool);
     }
 
-    /** Course saves share the same pool; closing this member repository closes it. */
+    /** 코스 저장소도 회원 저장소의 연결 풀을 공유, 회원 저장소 종료 시 풀 정리 */
     public SavedCourseRepository savedCourses() {
         return new SavedCourseRepository(pool);
     }

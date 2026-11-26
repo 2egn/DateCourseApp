@@ -7,14 +7,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Compares door-to-door routes per leg, retaining the selected provider geometry and total time. */
+/**
+ * - 각 구간의 도보와 대중교통 시간을 비교해 이동 경로를 고르는 클래스
+ * - 선택한 제공사의 좌표와 구간별 시간을 유지
+ */
 final class TransitWalkingRouteService {
     @FunctionalInterface interface LegRouter {
+    // 각 구간의 도보·대중교통 시간을 비교하고 선택된 경로의 거리·시간 합산
         Leg route(Stop from,Stop to)throws IOException,InterruptedException;
     }
     private final LegRouter walking,transit;
     TransitWalkingRouteService(LegRouter walking,LegRouter transit){this.walking=walking;this.transit=transit;}
 
+    // 각 구간의 도보·대중교통 시간을 비교하고 선택된 경로의 거리·시간 합산
     TravelRoute route(List<Stop> input)throws IOException,InterruptedException {
         var stops=List.copyOf(input);
         if(stops.size()<2)throw new IllegalArgumentException("출발 위치와 방문할 장소를 선택해 주세요.");

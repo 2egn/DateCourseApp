@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/** Only checks the keyboard toggle state; never reads password contents. */
+/**
+ * - 비밀번호 입력 필드의 Caps Lock 안내 표시용 클래스
+ * - 키보드 토글 상태만 확인하며 비밀번호 내용은 읽지 않음
+ */
 final class CapsLockHint extends JLabel {
     private final Timer timer;
     private final java.util.function.BooleanSupplier capsLockState;

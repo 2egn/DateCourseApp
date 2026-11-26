@@ -8,7 +8,10 @@ import javafx.scene.web.WebView;
 import java.util.ArrayList;
 import java.util.List;
 
-/** WebKit has a default viewport even while its JavaFX host is hidden. Wait for the real host layout. */
+/**
+ * - WebView가 실제로 표시된 크기를 기준으로 지도 배치를 맞추는 클래스
+ * - 숨겨진 상태의 기본 크기로 배치하지 않도록 실제 레이아웃까지 대기
+ */
 final class MapViewportLifecycle implements AutoCloseable {
     private final WebView view;
     private final Runnable displayed;

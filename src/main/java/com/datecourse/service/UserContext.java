@@ -9,7 +9,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-/** One login's identity and shared, in-memory account data. Never owns the DB pool. */
+/**
+ * - 로그인한 회원의 식별값, 프로필 및 저장 코스 캐시 관리용 클래스
+ * - 한 로그인 세션에서 메모리를 공유하며 DB 연결 풀은 소유하지 않음
+ */
 public final class UserContext implements AutoCloseable {
     private final UserSession session;
     private final CachedValue<MemberRepository.Profile> profile;
@@ -37,8 +40,10 @@ public final class UserContext implements AutoCloseable {
     public CompletableFuture<MemberRepository.Profile> profile() { return profile.get(); }
     public CompletableFuture<List<SavedCourse>> courses() { return courses.get(); }
     public void invalidateProfile() { profile.invalidate(); }
+    // 저장 목록 변경 시 목록·이미지·지도 준비 상태를 함께 무효화
     public synchronized void invalidateCourses() { courses.invalidate(); previews.clear(); preparedMaps.clear(); }
 
+    // 코스 번호와 내용 지문이 같은 미리보기 조회를 로그인 세션에서 재사용
     public synchronized CompletableFuture<java.util.Optional<byte[]>> preview(
             SavedCourse course, Callable<java.util.Optional<byte[]>> loader) {
         if (closed || course.memberId() != session.memberId())
@@ -59,7 +64,7 @@ public final class UserContext implements AutoCloseable {
         return true;
     }
 
-    /** Background prefetch: it does not block navigation or display a loading overlay. */
+    /** 화면 이동을 막거나 로딩창을 띄우지 않고 회원·코스 정보를 미리 조회하는 함수 */
     public void preload() {
         if (profile.loader != null) profile();
         if (courses.loader != null) courses();

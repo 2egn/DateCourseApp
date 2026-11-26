@@ -19,7 +19,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Requests one walking leg per consecutive pair, retaining API geometry without straight-line joins. */
+/**
+ * - 선택한 장소의 연속된 두 지점마다 TMAP 도보 경로를 요청하는 클래스
+ * - API에서 받은 실제 경로 좌표를 사용하며 직선으로 이어 붙이지 않음
+ */
 public final class WalkingRouteService {
     private static final URI ENDPOINT = URI.create("https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1");
     private final HttpClient client;

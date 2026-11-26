@@ -3,7 +3,10 @@ package com.datecourse.service;
 import com.datecourse.model.*;
 import java.util.*;
 
-/** Offers only single-condition changes that actually produce eligible candidates. Never mutates filters. */
+/**
+ * - 검색 결과가 없을 때 한 가지 조건을 바꿔 후보가 생기는지 확인하는 클래스
+ * - 변경안을 안내만 하며 현재 필터를 직접 변경하지 않음
+ */
 public final class CandidateRecoveryService {
     public enum Change { INCLUDE_UNKNOWN, CLEAR_FACETS, EXPAND_RADIUS, REVIEW_PRICE }
     public record Suggestion(Change change, int matches) {}

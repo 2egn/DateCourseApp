@@ -10,7 +10,10 @@ import java.security.*;
 import java.util.HexFormat;
 import javax.imageio.ImageIO;
 
-/** Versioned PNG summary. The editable title is displayed by the surrounding UI. */
+/**
+ * - 코스 내용의 버전과 PNG 미리보기 관리용 클래스
+ * - 편집 가능한 코스 제목은 주변 화면에서 따로 표시
+ */
 public final class CoursePreviewImage implements CoursePreviewRenderer {
     public static final int WIDTH = 1000, HEIGHT = 420;
     public static final int MAP_WIDTH = WIDTH, MAP_HEIGHT = 520;
@@ -18,7 +21,7 @@ public final class CoursePreviewImage implements CoursePreviewRenderer {
     public static final int MAP_PREVIEW_HEIGHT = HEADER_HEIGHT + MAP_HEIGHT + FOOTER_HEIGHT;
     public static final int MAX_PNG_BYTES = 2_000_000;
 
-    /** Only content rendered in the image contributes to its revision. */
+    /** 실제 이미지에 그려지는 코스 정보만 사용해 내용 지문 생성 */
     public static String fingerprint(RoutePlan plan) {
         StringBuilder value = new StringBuilder("summary-map-v3\n");
         value.append(plan.startLat()).append(',').append(plan.startLng()).append('\n')
@@ -30,7 +33,7 @@ public final class CoursePreviewImage implements CoursePreviewRenderer {
         catch (NoSuchAlgorithmException impossible) { throw new IllegalStateException(impossible); }
     }
 
-    /** Compose the current SDK map without cropping its logo or copyright footer. */
+    /** 지도 로고와 저작권 안내를 자르지 않고 현재 SDK 지도를 이미지로 구성 */
     public byte[] renderWithMap(RoutePlan plan, BufferedImage map) throws IOException {
         var image=new BufferedImage(MAP_WIDTH,MAP_PREVIEW_HEIGHT,BufferedImage.TYPE_INT_RGB);
         var g=image.createGraphics();
@@ -48,7 +51,7 @@ public final class CoursePreviewImage implements CoursePreviewRenderer {
         }
     }
 
-    /** Encode only the captured map viewport for display in the live map area. */
+    /** 실제 지도 영역에 표시할 캡처 뷰포트만 이미지로 인코딩 */
     public byte[] renderMapOnly(BufferedImage map) throws IOException {
         if (map == null) throw new IllegalArgumentException("지도 이미지가 필요합니다.");
         try (var bytes = new ByteArrayOutputStream()) {

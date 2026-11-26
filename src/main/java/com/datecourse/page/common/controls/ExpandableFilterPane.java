@@ -11,7 +11,7 @@ import javafx.scene.shape.SVGPath;
 import java.util.*;
 import java.util.function.IntSupplier;
 
-/** A reusable filter surface: stable entry/chips, registered categories and bounded editing area. */
+/** 조건 진입 버튼, 선택 요약 및 펼친 편집 영역을 묶는 공통 필터 부품 */
 public final class ExpandableFilterPane extends VBox {
     public enum Tone {
         NEUTRAL, BLUE, AMBER, GREEN;

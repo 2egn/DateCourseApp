@@ -9,7 +9,10 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-/** A single retrieval's in-memory details. Never attach this to persisted Place or saved courses. */
+/**
+ * - 외부 API에서 한 번 조회한 장소 상세정보 보관용 모델
+ * - 현재 메모리에서만 사용, Place 및 저장 코스의 영구 데이터에는 포함하지 않음
+ */
 @JsonSerialize(using = ExternalPlaceSnapshot.NoPersistence.class)
 public record ExternalPlaceSnapshot(ExternalPlaceLink link, Instant fetchedAt,
         ProviderPriceRange priceRange, Double rating, Integer ratingCount,
@@ -33,7 +36,7 @@ public record ExternalPlaceSnapshot(ExternalPlaceLink link, Instant fetchedAt,
         openingIntervals = openingIntervals == null ? List.of() : List.copyOf(openingIntervals);
     }
     public FactState featureState(PlaceFeature feature) { return features.getOrDefault(feature, FactState.UNKNOWN); }
-    /** No known interval means unknown, not closed. Gaps require a complete schedule to prove closure. */
+    /** 영업 구간이 없으면 미확인으로 처리. 전체 시간표가 있어야 구간 밖을 영업 종료로 판단 */
     public FactState openAt(Instant arrival) {
         return openingIntervals.stream().anyMatch(p -> p.contains(arrival)) ? FactState.AVAILABLE : FactState.UNKNOWN;
     }

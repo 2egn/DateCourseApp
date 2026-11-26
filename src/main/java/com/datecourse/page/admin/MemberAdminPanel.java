@@ -17,7 +17,7 @@ import java.util.function.*;
 
 /**
  * 관리자용 회원 관리 화면: 검색 → 선택 → 수정/탈퇴/영구 삭제.
- * One selected member, one draft, one background operation at a time.
+ * 한 번에 선택 회원 1명, 편집 초안 1개 및 배경 작업 1개만 처리
  */
 public final class MemberAdminPanel extends JPanel {
 

@@ -3,11 +3,15 @@ package com.datecourse.model;
 import java.util.List;
 import java.util.Locale;
 
-/** Sum only amounts with a confirmed per-person basis; report missing places explicitly. */
+/**
+ * - 장소별 가격에 인원을 적용한 예상 비용 계산용 모델
+ * - 1인 기준으로 환산 가능한 금액만 합산, 미확인 및 추정 장소 수는 따로 표시
+ */
 public record CostEstimate(long minimum, Long maximum, int unknownPlaces, int placeCount, int estimatedPlaces) {
     public CostEstimate(long minimum, Long maximum, int unknownPlaces, int placeCount) {
         this(minimum, maximum, unknownPlaces, placeCount, 0);
     }
+    // 장소별 가격 범위에 인원을 곱하고 미확인·추정 장소 수를 같이 계산
     public static CostEstimate of(List<Place> places, int people) {
         if (people < 1 || people > 20) throw new IllegalArgumentException("인원은 1~20명이어야 합니다.");
         long lower = 0, upper = 0;
@@ -25,6 +29,7 @@ public record CostEstimate(long minimum, Long maximum, int unknownPlaces, int pl
         return new CostEstimate(lower, open ? null : upper, unknown, places.size(), estimated);
     }
 
+    // 미확인·추정·열린 범위가 없는 경우에만 단일 합계 반환
     public long exactTotal() {
         if (estimatedPlaces != 0 || unknownPlaces != 0 || maximum == null || minimum != maximum)
             throw new IllegalStateException("전체 비용을 하나의 금액으로 확정할 수 없습니다.");

@@ -15,7 +15,10 @@ import java.time.Clock;
 import java.time.Duration;
 import java.util.*;
 
-/** Full source snapshots are transactional; administrator corrections remain a separate overlay. */
+/**
+ * - 장소 카탈로그 버전, 전체 자료 및 변경 이력 관리용 클래스
+ * - 전체 스냅샷을 트랜잭션으로 반영, 관리자 정정값은 별도 관리
+ */
 public final class PlaceCatalogRepository implements PlaceSource {
     public record Batch(String sourceKey, Instant generatedAt, List<Place> places) {
         public Batch {
@@ -42,7 +45,7 @@ public final class PlaceCatalogRepository implements PlaceSource {
         this.pool=Objects.requireNonNull(pool);this.clock=Objects.requireNonNull(clock);
     }
 
-    /** Performs source/model validation without connecting to a database. IDs come from source identities. */
+    /** DB 접속 없이 원본과 모델을 검증하는 함수. ID는 원본의 식별값으로 구성 */
     public static PreparedBatch prepare(Batch batch) throws IOException {
         var payloads = new TreeMap<String, String>();
         for (Place place : batch.places()) {
@@ -78,7 +81,7 @@ public final class PlaceCatalogRepository implements PlaceSource {
         return synchronize(batch, ImportMode.FULL_SNAPSHOT);
     }
 
-    /** Expansion requires a complete retained snapshot; regional fragments cannot retire other regions. */
+    /** 확장은 기존 전체 자료를 포함한 스냅샷으로 처리. 일부 지역 자료만으로 다른 지역을 비활성화하지 않음 */
     public ImportResult synchronize(Batch batch, ImportMode mode) throws SQLException, IOException {
         Objects.requireNonNull(mode);
         var prepared = prepare(batch); // Reject malformed data before schema or row writes.
@@ -231,7 +234,7 @@ public final class PlaceCatalogRepository implements PlaceSource {
         }
     }
 
-    /** Empty optional means not migrated. An imported catalog intentionally replaces legacy recommendations. */
+    /** 적재된 공공 카탈로그 조회용 함수. 적재 이력이 없으면 기존 자료를 사용할 수 있도록 빈 Optional 반환 */
     public Optional<List<Place>> findImported() throws SQLException,IOException {
         try(var c=pool.getConnection()) {
             if(!tableExists(c,"place_catalog_sources"))return Optional.empty();

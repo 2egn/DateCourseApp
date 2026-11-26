@@ -2,7 +2,10 @@ package com.datecourse.model;
 
 import java.util.Set;
 
-/** Filters are evaluated before the display limit. Empty facets mean no restriction. */
+/**
+ * - 다음 장소 검색에 사용할 활동, 가격, 반경 및 필터 조건 보관용 모델
+ * - 필터 적용 후 표시 개수 제한, 비어 있는 세부 조건은 제한 없이 처리
+ */
 public record NextPlaceCondition(String activity, int maxPrice, int radius, boolean includeUnknown,
                                  Set<String> subtypes, Set<PlaceTag> tags, int displayLimit,
                                  Set<String> detailTypes, PlacePriceFilter priceFilter) {

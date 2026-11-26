@@ -4,7 +4,10 @@ import com.datecourse.model.Place;
 import com.datecourse.model.SearchCondition;
 import java.util.*;
 
-/** Includes each selected activity, then adds affordable distinct places within the requested count. */
+/**
+ * - 전체 범위 안의 장소 조회와 동일 장소 중복 정리용 클래스
+ * - 현재 편집은 nearby 결과 사용, 이전 전체 예산 기반 일괄 추천은 recommend에서 별도 처리
+ */
 public final class PlaceSearchService {
     private final PlaceCalculationService calculation = new PlaceCalculationService();
     public record NearbyPlace(Place place, double distanceMeters) {}
@@ -12,6 +15,7 @@ public final class PlaceSearchService {
                          long totalCost, List<String> missingCategories, boolean overBudget,
                          boolean insufficientPlaces) {}
 
+    // 전체 반경 안의 유효한 장소를 조회하고 공공 ID 우선으로 중복 정리
     public List<NearbyPlace> nearby(List<Place> places, double lat, double lng,
                                     int radius, List<String> categories) {
         List<NearbyPlace> candidates = places.stream()
@@ -31,7 +35,7 @@ public final class PlaceSearchService {
             PlaceLocation location = new PlaceLocation(place.name(), place.lat(), place.lng());
             boolean duplicate = identities.getOrDefault(place.stableKey(),List.of()).stream().anyMatch(place::sameIdentityAs)
                     || locations.getOrDefault(location,List.of()).stream().anyMatch(place::sameIdentityAs);
-            // Authoritative public identities are considered first, so legacy aliases cannot merge distinct public places.
+            // 공공 ID를 먼저 확인해 이전 자료의 별칭으로 서로 다른 공공 장소가 합쳐지지 않도록 처리
             identities.computeIfAbsent(place.stableKey(),key->new ArrayList<>()).add(place);
             locations.computeIfAbsent(location,key->new ArrayList<>()).add(place);
             if (!duplicate) distinct.add(candidate);
@@ -44,6 +48,7 @@ public final class PlaceSearchService {
 
     private record PlaceLocation(String name, double lat, double lng) {}
 
+    // 이전 일괄 추천용 함수. 전체 예산과 활동별 방문 수를 기준으로 코스 구성
     public Result recommend(List<Place> places, SearchCondition condition) {
         if (condition.people() < 1 || condition.budget() < 1 || condition.categories().isEmpty())
             throw new IllegalArgumentException("예산·인원·분류를 확인해 주세요.");

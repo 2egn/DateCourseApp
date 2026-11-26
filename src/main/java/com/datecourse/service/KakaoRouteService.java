@@ -9,7 +9,10 @@ import java.net.http.*;
 import java.time.Duration;
 import java.util.*;
 
-/** Live Kakao routes. Responses stay in the current display, not a reusable cache or database. */
+/**
+ * - 카카오 API 기반 자동차 및 대중교통 경로 조회용 클래스
+ * - 응답은 현재 화면에서만 사용하며 DB나 재사용 캐시에 저장하지 않음
+ */
 public final class KakaoRouteService {
     private static final int MAX_RESPONSE_BYTES=4*1024*1024;
     private static final URI DRIVING=URI.create("https://apis-navi.kakaomobility.com/v1/directions");

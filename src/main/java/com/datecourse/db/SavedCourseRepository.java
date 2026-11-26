@@ -5,6 +5,7 @@ import com.datecourse.model.RoutePlan;
 import com.datecourse.model.SavedCourse;
 import com.datecourse.model.PriceEstimate;
 import com.datecourse.model.PlaceDetails;
+// 저장 당시 장소·가격·상세 정보를 JSON으로 보관하고 복원하기 위한 라이브러리
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import com.datecourse.service.RouteRangeValidator;
@@ -25,7 +26,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Saves the course and its place snapshots in one transaction. Does not own the pool. */
+/**
+ * - 회원별 코스 저장, 조회, 이름 변경 및 삭제용 DB 클래스
+ * - 코스 본문과 장소 스냅샷을 같은 트랜잭션으로 처리, 연결 풀은 외부에서 전달
+ */
 public final class SavedCourseRepository {
     private final DataSource dataSource;
     private final com.datecourse.service.CoursePreviewRenderer previewRenderer;
@@ -43,7 +47,7 @@ public final class SavedCourseRepository {
         this.previewRenderer = Objects.requireNonNull(renderer);
     }
 
-    /** One ordered query reads each course and its saved places, without the current place dataset. */
+    /** 정렬된 단일 조회로 코스와 저장 당시 장소를 복원. 현재 장소 원본과 별도로 처리 */
     public List<SavedCourse> findAll(UserSession session) throws SQLException {
         requireSession(session);
         try (Connection connection = dataSource.getConnection();
@@ -124,18 +128,18 @@ public final class SavedCourseRepository {
         if (session == null || session.memberId() <= 0) throw new IllegalArgumentException("로그인한 회원 정보가 필요합니다.");
     }
 
-    /** Creates a new saved course; the result is returned only after commit. */
+    /** 신규 코스 저장용 함수. 트랜잭션 커밋 완료 후 결과 반환 */
     public SavedCourse save(UserSession session, RoutePlan plan) throws SQLException {
         return persist(session, null, plan);
     }
 
-    /** Updates the same course ID. Missing/foreign courses never become new courses. */
+    /** 동일 코스 번호의 수정 저장용 함수. 없거나 다른 회원의 코스는 신규 저장으로 바꾸지 않음 */
     public SavedCourse save(UserSession session, long courseId, RoutePlan plan) throws SQLException {
         if (courseId <= 0) throw new IllegalArgumentException("저장 코스 번호를 확인해 주세요.");
         return persist(session, courseId, plan);
     }
 
-    /** Saves course data without generating a static image; the saved-course screen renders a live map. */
+    /** 정적 이미지 생성 없이 코스 본문만 저장. 지도 표시는 저장 코스 화면에서 처리 */
     public SavedCourse saveWithoutPreview(UserSession session, Long courseId, RoutePlan plan) throws SQLException {
         if (courseId != null && courseId <= 0) throw new IllegalArgumentException("저장 코스 번호를 확인해 주세요.");
         return persist(session, courseId, plan, ignored -> null, false).course();
@@ -145,14 +149,14 @@ public final class SavedCourseRepository {
         return persist(session, existingCourseId, plan, previewRenderer).course();
     }
 
-    /** UI supplies the complete SDK screenshot; a missing image never prevents saving the course. */
+    /** 화면에서 전달한 지도 캡처를 함께 저장. 이미지가 없어도 코스 본문은 저장 가능하게 처리 */
     public SavedCourse saveWithPreview(UserSession session, Long courseId, RoutePlan plan, byte[] png) throws SQLException {
         return saveWithPreviewResult(session,courseId,plan,png).course();
     }
 
     public record SaveResult(SavedCourse course, boolean previewStored) {}
 
-    /** Reports the committed image write, rather than assuming PNG generation means storage succeeded. */
+    /** PNG 생성 여부와 DB 반영 여부를 구분해 실제 저장 결과 반환 */
     public SaveResult saveWithPreviewResult(UserSession session, Long courseId, RoutePlan plan, byte[] png) throws SQLException {
         if(courseId!=null && courseId<=0)throw new IllegalArgumentException("저장 코스 번호를 확인해 주세요.");
         byte[] copy=png==null?null:png.clone();
@@ -282,7 +286,7 @@ public final class SavedCourseRepository {
         return true;
     }
 
-    /** Updates only the derived PNG. Course title, timestamps and place snapshots are unchanged. */
+    /** 미리보기 PNG만 갱신하는 함수. 코스 제목, 수정 시각 및 장소 스냅샷은 유지 */
     public void refreshPreview(UserSession session,SavedCourse expected,byte[] png) throws SQLException,IOException {
         requireSession(session);
         if(png==null || png.length==0 || png.length>com.datecourse.service.CoursePreviewImage.MAX_PNG_BYTES)throw new IllegalArgumentException("미리보기 이미지를 확인해 주세요.");
@@ -330,7 +334,7 @@ public final class SavedCourseRepository {
         return current;
     }
 
-    /** Fetches one optional BLOB, checking both ownership and the selected snapshot revision. */
+    /** 회원 소유권과 현재 코스 내용 지문을 확인한 뒤 선택적 이미지 BLOB 조회 */
     public java.util.Optional<byte[]> findPreview(UserSession session, SavedCourse course) throws SQLException {
         requireSession(session);
         try (var connection = dataSource.getConnection(); var query = connection.prepareStatement("""
@@ -475,7 +479,7 @@ public final class SavedCourseRepository {
         catch (IOException failure) { throw new SQLException("장소 가격·출처를 저장할 형식으로 바꾸지 못했습니다.", failure); }
     }
 
-    /** Both reads and round-trip tests restore the same price and provenance snapshot. */
+    /** 조회와 저장·복원 검사에서 같은 가격 및 근거 스냅샷을 복원하기 위한 공통 처리 */
     static Place readPlaceSnapshot(ResultSet row) throws SQLException {
         try {
             String priceJson = row.getString("price_estimate_snapshot");

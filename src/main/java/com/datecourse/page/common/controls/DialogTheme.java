@@ -2,7 +2,7 @@ package com.datecourse.page.common.controls;
 
 import javafx.scene.control.Dialog;
 
-/** Applies the existing stylesheet to native JavaFX dialogs. */
+/** JavaFX 기본 대화상자에 공통 스타일을 적용하는 도우미 클래스 */
 public final class DialogTheme {
     private DialogTheme() {}
     public static void apply(Dialog<?> dialog) {

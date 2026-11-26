@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import java.io.IOException;
 
+/** TMAP 도보 탐색 옵션 확인 및 변경용 설정 창 */
 public final class TmapSettingsDialog {
     @FunctionalInterface interface OptionSaver { void save(int option) throws IOException; }
     public static boolean show(Window owner) {

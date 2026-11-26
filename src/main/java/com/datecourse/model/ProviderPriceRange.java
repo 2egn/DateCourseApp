@@ -2,7 +2,10 @@ package com.datecourse.model;
 
 import java.math.BigDecimal;
 
-/** Provider-reported range. Deliberately has no conversion to a per-person course budget. */
+/**
+ * - 외부 API에서 제공한 가격 범위 보관용 모델
+ * - 제공사 기준 금액이므로 코스의 1인 예산으로 자동 환산하지 않음
+ */
 public record ProviderPriceRange(BigDecimal minimum, BigDecimal maximum, String currencyCode) {
     public ProviderPriceRange {
         if (minimum == null || minimum.signum() < 0 || maximum != null && maximum.compareTo(minimum) < 0

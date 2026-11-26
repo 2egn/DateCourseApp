@@ -1,6 +1,6 @@
 package com.datecourse.model;
 
-/** Tags are attached only when their source or calculation is available. */
+/** 출처나 계산 근거가 있는 장소 특징을 검색 및 표시에 사용하기 위한 enum */
 public enum PlaceTag {
     GOOD_PRICE("착한가격"), MODEL_RESTAURANT("모범음식점"), FREE_ADMISSION("무료입장"),
     NEAR_SUBWAY("역 가까움"), NEAR_BUS("정류장 가까움"),

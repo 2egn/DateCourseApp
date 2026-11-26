@@ -3,7 +3,10 @@ package com.datecourse.model;
 import java.util.Map;
 import java.util.List;
 
-/** Public-source facts and identifiers. External API price/review payloads do not belong here. */
+/**
+ * - 장소 주소, 세부 업종, 공공 속성 및 외부 ID 보관용 모델
+ * - 외부 API에서 조회한 가격이나 리뷰 응답은 포함하지 않음
+ */
 public record PlaceDetails(String address, String subcategory, String phone, String website,
                            String sourceUrl, String sourceDate, String identityCheckedAt,
                            String verificationUrl, Map<String, String> externalIds, List<TagFact> tags,
@@ -17,7 +20,7 @@ public record PlaceDetails(String address, String subcategory, String phone, Str
                         String verificationUrl, Map<String, String> externalIds) {
         this(address, subcategory, phone, website, sourceUrl, sourceDate, identityCheckedAt, verificationUrl, externalIds, List.of());
     }
-    /** Compatibility for existing snapshots and admin edits. Raw external IDs never imply approval. */
+    /** 기존 스냅샷 및 관리자 수정과의 호환용 생성자. 외부 ID만으로 검토 승인을 간주하지 않음 */
     public PlaceDetails(String address, String subcategory, String phone, String website,
                         String sourceUrl, String sourceDate, String identityCheckedAt,
                         String verificationUrl, Map<String, String> externalIds, List<TagFact> tags) {
@@ -68,7 +71,7 @@ public record PlaceDetails(String address, String subcategory, String phone, Str
                 .orElseGet(() -> tags.stream().anyMatch(t -> PlaceFeature.from(t.tag()) == feature)
                         ? FactState.AVAILABLE : FactState.UNKNOWN);
     }
-    /** One domain interpretation for legacy tags and evidence-backed facts. Missing is never false. */
+    /** 이전 태그와 근거 있는 속성의 확인 상태를 공통 기준으로 해석. 누락은 불가능과 구분 */
     public List<PlaceTag> availableTags() {
         return java.util.Arrays.stream(PlaceTag.values()).filter(this::hasTag).toList();
     }

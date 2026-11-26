@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
 
-/** REST credential is used only by Java requests, never WebView or saved plans. */
+/**
+ * - 카카오 경로 요청에 사용할 REST 키와 설정 로드용 클래스
+ * - REST 키는 Java HTTP 요청에만 사용, WebView나 저장 계획에 전달하지 않음
+ */
 public record KakaoRouteSettings(String restApiKey) {
     public static final Path LOCAL_FILE=Path.of(".local","kakao-routing.properties");
     public KakaoRouteSettings {
