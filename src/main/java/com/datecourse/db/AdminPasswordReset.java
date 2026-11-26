@@ -9,7 +9,10 @@ import java.awt.GridLayout;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
-/** Explicit local maintenance tool. Requires the configured DB write access; never part of the login UI. */
+/** 
+- 관리자 패스워드 초기화용 유틸리티용 클래스
+- 메인 흐름에는 포함되지 않고, 따로 실행 필요
+*/
 public final class AdminPasswordReset {
     private AdminPasswordReset() {}
 
