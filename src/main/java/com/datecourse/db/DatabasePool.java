@@ -1,8 +1,9 @@
 package com.datecourse.db;
 
+// 데이터베이스 연결 관리 최적화용 import 
 import com.zaxxer.hikari.HikariDataSource;
 
-/** Creates a lazy pool: the existing background initialization opens the first connection. */
+/** 데이터베이스 커넥션 부하 방지용 lazy pool 구성 */
 public final class DatabasePool {
     private DatabasePool() {}
 
@@ -17,10 +18,9 @@ public final class DatabasePool {
         pool.setConnectionTimeout(10_000);
         pool.setValidationTimeout(3_000);
         pool.setMaxLifetime(600_000);
-        // Do not send periodic keepalive queries to an otherwise unused cloud database.
         pool.setKeepaliveTime(0);
         if (settings.url().startsWith("jdbc:mysql:")) {
-            // PreparedStatement 배치를 공급사 드라이버의 일괄 전송으로 묶는다.
+            // 데이터베이스에게 요청하는 쿼리를 batch 형태로 일괄적 전송하게 처리, 쿼리 최적화용
             pool.addDataSourceProperty("rewriteBatchedStatements", "true");
             pool.addDataSourceProperty("connectTimeout", "5000");
             pool.addDataSourceProperty("socketTimeout", "10000");
