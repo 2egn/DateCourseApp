@@ -2,3 +2,5 @@
 @media(max-width:800px){.page #quartz-body .explorer.collapsed>.explorer-content{visibility:hidden;pointer-events:none;transition:none}}
 @media(max-width:600px){.team-navigation{padding:0 12px;gap:4px}.team-navigation nav{gap:0}.team-navigation nav a{font-size:11px;padding:8px 7px}.team-navigation .team-brand{font-size:11px}}
 @media(max-width:380px){.team-navigation .team-brand{display:none}.team-navigation{justify-content:center}}
+
+@media(max-width:600px){.team-navigation .team-brand{display:none}.team-navigation{justify-content:center}}

@@ -6,6 +6,7 @@ import {spawnSync} from 'node:child_process';
 import {extractMethods,enrichMethods,methodNames} from './flow-methods.mjs';
 import {compactDocument} from './compact-docs.mjs';
 import {optimizeAssets} from './optimize-assets.mjs';
+import {writeImplementationGuide} from './implementation-guide.mjs';
 import {normalizeTableLinks} from './table-links.mjs';
 import {updateDocumentRevisions} from './document-revisions.mjs';
 import {removeMovedCopies,normalizeMovedLinks,carryMovedRevisions} from './document-moves.mjs';
@@ -95,12 +96,12 @@ fs.copyFileSync(path.join(root,'data/sql/08_saved_course_price_estimates.sql'),p
 fs.cpSync(path.join(site,'web/connect'),path.join(site,'public/connect'),{recursive:true});
 fs.copyFileSync(path.join(site,'web/navigation.css'),path.join(site,'public/navigation.css'));
 for(const file of ['compact-docs.css','compact-docs.js','flow-tooltips.css','flow-tooltips.js','responsive-navigation.js','document-updates.js','document-updates.css','learning-demos.css','learning-demos.js'])fs.copyFileSync(path.join(site,'web',file),path.join(site,'public',file));
-const navigation=active=>`<header class="team-navigation"><a class="team-brand" href="/" data-router-ignore>DateCourseApp</a><nav aria-label="사이트 메뉴"><a href="/" data-router-ignore${active==='docs'?' aria-current="page"':''}>문서</a><a href="/dashboard/" data-router-ignore${active==='board'?' aria-current="page"':''}>작업 보드</a><a href="/업데이트_내역.html" data-router-ignore${active==='updates'?' aria-current="page"':''}>업데이트</a><a href="/connect/" data-router-ignore${active==='connect'?' aria-current="page"':''}>Codex 연결</a></nav></header>`;
+const navigation=active=>`<header class="team-navigation"><a class="team-brand" href="/" data-router-ignore>DateCourseApp</a><nav aria-label="사이트 메뉴"><a href="/" data-router-ignore>기능 안내</a><a href="/목차.html" data-router-ignore${active==='docs'?' aria-current="page"':''}>문서</a><a href="/dashboard/" data-router-ignore${active==='board'?' aria-current="page"':''}>작업 보드</a><a href="/업데이트_내역.html" data-router-ignore${active==='updates'?' aria-current="page"':''}>업데이트</a><a href="/connect/" data-router-ignore${active==='connect'?' aria-current="page"':''}>Codex 연결</a></nav></header>`;
 function addNavigation(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){
  const file=path.join(dir,item.name);if(item.isDirectory()){addNavigation(file);continue;}if(!item.name.endsWith('.html'))continue;
  const section=path.relative(path.join(site,'public'),file).split(path.sep)[0];
  const active=section==='dashboard'?'board':section==='connect'?'connect':'docs';
- let html=fs.readFileSync(file,'utf8');html=html.replace('</head>','<link rel="stylesheet" href="/navigation.css"></head>');
+ let html=fs.readFileSync(file,'utf8');if(/<meta\b[^>]*http-equiv=["']refresh["']/i.test(html))continue;html=html.replace('</head>','<link rel="stylesheet" href="/navigation.css"></head>');
  html=html.replace('</head>','<link rel="stylesheet" href="/document-updates.css"><script type="module" src="/document-updates.js" data-persist></script></head>');
  html=html.replace('</body>','<script type="application/json" data-document-revisions>'+revisionJson+'</script></body>');
  if(active==='docs'){
@@ -135,5 +136,6 @@ const agentDocs=Object.entries(index).filter(([,n])=>n.filePath&&Object.hasOwn(d
 fs.mkdirSync(path.join(site,'public/agent'),{recursive:true});
 fs.writeFileSync(path.join(site,'public/agent/documents.json'),JSON.stringify(agentDocs));
 optimizeAssets(path.join(site,'public'),quartz);
+writeImplementationGuide(root);
 fs.writeFileSync(revisionFile,JSON.stringify(revisionState,null,2)+'\n');
 console.log(`Built ${notes.length} notes and shared dashboard. Graph view disabled.`);

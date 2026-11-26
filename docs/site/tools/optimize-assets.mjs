@@ -7,7 +7,7 @@ import {createRequire} from 'node:module';
 export function optimizeAssets(publicDir,quartz){
  const {buildSync}=createRequire(path.join(quartz,'package.json'))('esbuild');
  const pages=[];
- function visit(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const f=path.join(dir,entry.name);if(entry.isDirectory())visit(f);else if(entry.name.endsWith('.html'))pages.push({file:f,html:fs.readFileSync(f,'utf8')});}}
+ function visit(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const f=path.join(dir,entry.name);if(entry.isDirectory())visit(f);else if(entry.name.endsWith('.html')){const html=fs.readFileSync(f,'utf8');if(!/<meta\b[^>]*http-equiv=["']refresh["']/i.test(html))pages.push({file:f,html});}}}
  visit(publicDir);
  const local=(file,href)=>{
   if(/^(?:https?:)?\/\//.test(href))return null;

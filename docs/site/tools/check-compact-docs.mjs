@@ -29,7 +29,7 @@ try {
  await page.waitForFunction(()=>{const n=document.getElementById(decodeURIComponent(location.hash.slice(1)));return !!n?.closest('details')?.open;});
  await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.screenshot({path:'build/ui-preview/compact-docs-mobile.png'});
  // Navigation starts compact again; deep links continue to reveal their path.
- await page.goto('https://compact.test/');await page.waitForLoadState('networkidle');await page.locator('.doc-quick-links').getByRole('link',{name:'파일·함수별 변경',exact:true}).click();
+ await page.goto('https://compact.test/reference.html');await page.waitForLoadState('networkidle');await page.locator('.doc-quick-links').getByRole('link',{name:'파일·함수별 변경',exact:true}).click();
  await page.getByRole('heading',{name:'변경 파일·함수 요약',exact:true}).waitFor();assert.equal(await page.locator('article details[open]').count(),0);
  await page.evaluate(()=>window.dispatchEvent(new Event('beforeprint')));assert.equal(await page.locator('article details:not([open])').count(),0);await page.evaluate(()=>window.dispatchEvent(new Event('afterprint')));assert.equal(await page.locator('article details[open]').count(),0);
  assert.deepEqual(errors,[]);console.log(`Compact docs passed: hierarchy, one-click/keyboard, all/none, hashes, SPA, print, mobile. Initial height ${Math.round(height)}px vs ${Math.round(fullHeight)}px expanded.`);
