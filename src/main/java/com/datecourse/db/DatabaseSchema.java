@@ -4,7 +4,8 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/** 일반 앱에서는 구조를 조회만 하며 테이블·계정은 생성하지 않는다. */
+/** 앱 시작 -> 로그인 창 연결 흐름 사이에 로그인 창에 필요한 데이터베이스 구조 유효성 검사 클래스  */
+
 public final class DatabaseSchema {
     private DatabaseSchema() {}
     public static final class SetupRequiredException extends SQLException {
@@ -12,7 +13,7 @@ public final class DatabaseSchema {
             super("DB 구조가 준비되지 않았어요. 관리자에게 DB 준비 작업을 요청해 주세요.", cause);
         }
     }
-    /** 필요한 테이블의 조회 가능 여부만 확인한다. 실제 행은 읽지 않는다. */
+    // 테이블 존재 여부 확인 함수
     public static void requireTables(DataSource source, String... tables) throws SQLException {
         try (Connection connection = source.getConnection()) {
             try (var statement = connection.createStatement()) {
@@ -25,7 +26,7 @@ public final class DatabaseSchema {
             } catch (SQLException failure) { throw new SetupRequiredException(failure); }
         }
     }
-    /** 회원·관리자 구조와 해시 저장 공간을 확인하며 기존 계정은 읽거나 변경하지 않는다. */
+    //회원가입, 로그인을 위한 구조 유효성 검사. 
     public static void requireMembership(DataSource source) throws SQLException {
         try (Connection connection = source.getConnection()) {
             try (var statement = connection.createStatement()) {
