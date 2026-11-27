@@ -429,41 +429,67 @@ public final class CourseEditorController extends BasePageController {
     /** 다음 장소 검색 반경을 100m 단위로 읽는다. */
     private int radius() { return (int) Math.round(radiusSlider.getValue() / 100) * 100; }
 
-    /** 현재 조건으로 후보를 조회하고 최신 검색 결과만 반영한다. */
+    /** 입력 조건 확인 → 후보 조회 → 최신 결과만 화면에 반영 */
     @FXML
     private void onRecommendNext() {
         if (original == null) return;
         try {
-            int price = NumberStepper.readWon(placePriceField);
-            NextPlaceCondition condition=new NextPlaceCondition(activityBox.getValue(),price,radius(),includeUncertainPrice.isSelected(),
-                subtypeBox.getValue()==null?java.util.Set.of():java.util.Set.of(subtypeBox.getValue()),
-                java.util.Set.copyOf(featureSelector.selectedTags()),candidateLimitBox.getValue(),
-                detailTypeBox.getValue()==null?java.util.Set.of():java.util.Set.of(detailTypeBox.getValue()),priceFilterBox.getValue());
-            long version=++searchVersion;
-            RoutePlan context=draft(); List<Place> source=allPlaces;
-            candidatesDirty=true;map.setCandidateActionsEnabled(false);candidateList.refresh();candidateStatus.setText("후보 갱신 중…");
-            Consumer<CandidateSearch> present=response->{
-                if(version!=searchVersion)return;
-                List<PlaceSearchService.NearbyPlace> result=response.matches();
-                allPlaces=List.copyOf(response.source());
-                extendFacets();
-                matchingCandidates=result;candidatesDirty=false;displayCandidates();
-                editorError.setText("");
-                emptyResults.setVisible(result.isEmpty());
-                if(result.isEmpty())showRecovery(recovery.analyze(response.source(),context,condition,(int)radiusSlider.getMax()));
-                candidateStatus.setText(result.isEmpty()?"일치하는 장소가 없어요. 세부 조건·가격·반경을 조정해 주세요.":
-                    result.stream().anyMatch(p->p.place().priceEstimate().estimated())?"추정 가격 기준 후보가 포함돼요.":"조건 적용됨");
-                setState(result.isEmpty()?EditorState.CONDITION:EditorState.CHOICE);
-            };
-            if(placeRefresh==null)present.accept(new CandidateSearch(source,search.matching(source,context.places(),context.startLat(),context.startLng(),context.people(),context.radius(),condition)));
-            else runWork("후보를 찾고 있어요",()-> {
-                List<Place> fresh=placeRefresh.apply(source);
-                return new CandidateSearch(fresh,search.matching(fresh,context.places(),context.startLat(),context.startLng(),context.people(),context.radius(),condition));
-            },present,failure->{if(version==searchVersion){markCandidatesDirty();editorError.setText("후보 갱신에 실패했어요. 다시 시도해 주세요.");}});
+            NextPlaceCondition condition = readNextPlaceCondition();
+            long version = ++searchVersion;
+            RoutePlan context = draft();
+            List<Place> source = allPlaces;
+
+            candidatesDirty = true;
+            map.setCandidateActionsEnabled(false);
+            candidateList.refresh();
+            candidateStatus.setText("후보 갱신 중…");
+
+            Consumer<CandidateSearch> present = response -> applyCandidateSearch(version, context, condition, response);
+            if (placeRefresh == null) {
+                present.accept(new CandidateSearch(source, search.matching(source, context.places(),
+                        context.startLat(), context.startLng(), context.people(), context.radius(), condition)));
+            } else {
+                runWork("후보를 찾고 있어요", () -> {
+                    List<Place> fresh = placeRefresh.apply(source);
+                    return new CandidateSearch(fresh, search.matching(fresh, context.places(),
+                            context.startLat(), context.startLng(), context.people(), context.radius(), condition));
+                }, present, failure -> {
+                    if (version != searchVersion) return;
+                    markCandidatesDirty();
+                    editorError.setText("후보 갱신에 실패했어요. 다시 시도해 주세요.");
+                });
+            }
         } catch (IllegalArgumentException invalid) {
             clearCandidate();
             editorError.setText(invalid.getMessage());
         }
+    }
+
+    /** 현재 폼의 가격·반경·유형·특징을 검색 조건으로 구성 */
+    private NextPlaceCondition readNextPlaceCondition() {
+        int price = NumberStepper.readWon(placePriceField);
+        return new NextPlaceCondition(activityBox.getValue(), price, radius(), includeUncertainPrice.isSelected(),
+                subtypeBox.getValue() == null ? java.util.Set.of() : java.util.Set.of(subtypeBox.getValue()),
+                java.util.Set.copyOf(featureSelector.selectedTags()), candidateLimitBox.getValue(),
+                detailTypeBox.getValue() == null ? java.util.Set.of() : java.util.Set.of(detailTypeBox.getValue()),
+                priceFilterBox.getValue());
+    }
+
+    /** 요청 번호 확인 후 후보·조건 선택지·검색 대안·화면 상태 갱신 */
+    private void applyCandidateSearch(long version, RoutePlan context, NextPlaceCondition condition, CandidateSearch response) {
+        if (version != searchVersion) return;
+        List<PlaceSearchService.NearbyPlace> result = response.matches();
+        allPlaces = List.copyOf(response.source());
+        extendFacets();
+        matchingCandidates = result;
+        candidatesDirty = false;
+        displayCandidates();
+        editorError.setText("");
+        emptyResults.setVisible(result.isEmpty());
+        if (result.isEmpty()) showRecovery(recovery.analyze(response.source(), context, condition, (int) radiusSlider.getMax()));
+        candidateStatus.setText(result.isEmpty() ? "일치하는 장소가 없어요. 세부 조건·가격·반경을 조정해 주세요."
+                : result.stream().anyMatch(p -> p.place().priceEstimate().estimated()) ? "추정 가격 기준 후보가 포함돼요." : "조건 적용됨");
+        setState(result.isEmpty() ? EditorState.CONDITION : EditorState.CHOICE);
     }
 
     /** 검색 결과가 없을 때 적용 가능한 조건 완화 방법을 표시한다. */

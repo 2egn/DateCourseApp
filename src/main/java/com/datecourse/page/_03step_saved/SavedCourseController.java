@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import com.datecourse.service.UserContext;
 import com.datecourse.db.SavedCourseRepository;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -459,10 +460,24 @@ public class SavedCourseController extends BasePageController {
 
     // ---------- [가운데] 지도 ----------
 
-    /** 선택한 코스를 지도에 표시한다. */
+    /** 이전 요청 정리 → 이미지 조회·변환 → 현재 선택 코스에만 반영 */
     private void showPreview(SavedCourse course) {
         long version = ++previewLoadVersion;
-        // 화면 전용 변환만 취소하고 UserContext의 공유 이미지 조회는 유지한다.
+        resetPreview(course);
+        if (course == null) return;
+
+        UserContext context = userContext;
+        SavedCourseRepository storage = repository;
+        var bytes = context == null || storage == null
+                ? java.util.concurrent.CompletableFuture.completedFuture(Optional.<byte[]>empty())
+                : context.preview(course, () -> storage.findPreview(context.session(), course));
+        previewTask = bytes.handleAsync((png, failure) -> decodePreview(course, png, failure));
+        previewTask.whenComplete((preview, failure) -> javafx.application.Platform.runLater(
+                () -> applyPreview(version, context, course, preview, failure)));
+    }
+
+    /** 화면 전용 요청 취소·표시 상태 초기화, 공유 이미지 조회는 유지 */
+    private void resetPreview(SavedCourse course) {
         if (previewTask != null) previewTask.cancel(false);
         previewTask = null;
         previewVersion++;
@@ -476,45 +491,43 @@ public class SavedCourseController extends BasePageController {
         mapPane.setVisible(course != null);
         mapPane.setManaged(course != null);
         refreshMapNotice();
-        if (course == null) return;
-        UserContext context = userContext;
-        SavedCourseRepository storage = repository;
-        var bytes = context == null || storage == null
-                ? java.util.concurrent.CompletableFuture.completedFuture(java.util.Optional.<byte[]>empty())
-                : context.preview(course, () -> storage.findPreview(context.session(), course));
-        previewTask = bytes.handleAsync((png, failure) -> {
-            if (failure != null) com.datecourse.service.AppDiagnostics.failure(
-                    com.datecourse.service.AppDiagnostics.Operation.PREVIEW_READ,
-                    com.datecourse.service.AppDiagnostics.Stage.DATABASE_READ, failure);
-            boolean stored = failure == null && png.isPresent();
+    }
+
+    /** 저장 PNG 변환, 조회·변환 실패 시 기존 로컬 연결도로 대체 */
+    private PreviewImage decodePreview(SavedCourse course, Optional<byte[]> png, Throwable failure) {
+        if (failure != null) com.datecourse.service.AppDiagnostics.failure(
+                com.datecourse.service.AppDiagnostics.Operation.PREVIEW_READ,
+                com.datecourse.service.AppDiagnostics.Stage.DATABASE_READ, failure);
+        boolean stored = failure == null && png.isPresent();
+        try {
+            byte[] content = stored ? png.get() : new com.datecourse.service.CoursePreviewImage().render(course.plan());
+            var image = new javafx.scene.image.Image(new java.io.ByteArrayInputStream(content));
+            if (image.isError()) throw new java.io.IOException("Invalid preview image");
+            return new PreviewImage(image, stored);
+        } catch (Exception failureImage) {
+            com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.PREVIEW_READ,
+                    com.datecourse.service.AppDiagnostics.Stage.IMAGE_ENCODE, failureImage);
             try {
-                byte[] content = stored ? png.get() : new com.datecourse.service.CoursePreviewImage().render(course.plan());
-                var image = new javafx.scene.image.Image(new java.io.ByteArrayInputStream(content));
-                if (image.isError()) throw new java.io.IOException("Invalid preview image");
-                return new PreviewImage(image, stored);
-            } catch (Exception failureImage) {
-                com.datecourse.service.AppDiagnostics.failure(com.datecourse.service.AppDiagnostics.Operation.PREVIEW_READ,
-                        com.datecourse.service.AppDiagnostics.Stage.IMAGE_ENCODE, failureImage);
-                try {
-                    byte[] fallback = new com.datecourse.service.CoursePreviewImage().render(course.plan());
-                    return new PreviewImage(new javafx.scene.image.Image(new java.io.ByteArrayInputStream(fallback)), false);
-                } catch (java.io.IOException fallbackFailure) {
-                    throw new java.util.concurrent.CompletionException(fallbackFailure);
-                }
+                byte[] fallback = new com.datecourse.service.CoursePreviewImage().render(course.plan());
+                return new PreviewImage(new javafx.scene.image.Image(new java.io.ByteArrayInputStream(fallback)), false);
+            } catch (java.io.IOException fallbackFailure) {
+                throw new java.util.concurrent.CompletionException(fallbackFailure);
             }
-        });
-        previewTask.whenComplete((preview, failure) -> javafx.application.Platform.runLater(() -> {
-            if (version != previewLoadVersion || context != userContext || context != null && context.isClosed()) return;
-            previewLoading = false;
-            if (failure == null) {
-                coursePreview.setImage(preview.image());
-                storedPreview = preview.stored();
-                mapPrepared = context != null && context.isMapPrepared(course);
-            }
-            boolean openMap = mapSelected ? mapPrepared || !storedPreview : !selectedPreviewView && !storedPreview;
-            if (!showingMap && openMap) showMapPreview();
-            refreshMapNotice();
-        }));
+        }
+    }
+
+    /** 요청 번호·사용자 세션 확인 후 이미지·지도 준비 상태 반영 */
+    private void applyPreview(long version, UserContext context, SavedCourse course, PreviewImage preview, Throwable failure) {
+        if (version != previewLoadVersion || context != userContext || context != null && context.isClosed()) return;
+        previewLoading = false;
+        if (failure == null) {
+            coursePreview.setImage(preview.image());
+            storedPreview = preview.stored();
+            mapPrepared = context != null && context.isMapPrepared(course);
+        }
+        boolean openMap = mapSelected ? mapPrepared || !storedPreview : !selectedPreviewView && !storedPreview;
+        if (!showingMap && openMap) showMapPreview();
+        refreshMapNotice();
     }
 
     /** 선택한 코스를 지도에 표시하고 늦은 화면 맞춤 요청을 구분한다. */

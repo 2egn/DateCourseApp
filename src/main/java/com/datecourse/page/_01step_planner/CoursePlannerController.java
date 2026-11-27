@@ -12,6 +12,8 @@ import com.datecourse.page._03step_saved.SavedCourseController;
 import com.datecourse.model.Place;
 import com.datecourse.model.RoutePlan;
 import com.datecourse.model.SavedCourse;
+import com.datecourse.service.AppDiagnostics;
+import com.datecourse.service.UserContext;
 import com.datecourse.db.SavedCourseRepository;
 import javafx.fxml.FXMLLoader;
 import com.datecourse.service.PlaceSource;
@@ -28,6 +30,7 @@ import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 공통 조건과 확정본을 소유한다. 편집 화면은 별도의 복사본만 변경한다.
@@ -168,7 +171,7 @@ public class CoursePlannerController extends BasePageController {
     // 알림 / 시작 / 종료
     private PageFeedback feedback;
     private Runnable startupReady;
-    private final java.util.function.Function<RoutePlan, java.util.Optional<String>> titlePrompt = this::askCourseTitle;
+    private final java.util.function.Function<RoutePlan, Optional<String>> titlePrompt = this::askCourseTitle;
     private final java.util.function.BooleanSupplier closeConfirmation = this::confirmUnsavedClose;
 
     // =====================================================================
@@ -490,55 +493,67 @@ public class CoursePlannerController extends BasePageController {
             saveStatusLabel.setText("장소를 고르고 편집 완료한 뒤 저장해 주세요.");
             return;
         }
-        java.util.Optional<String> answer = titlePrompt.apply(appliedPlan);
-        if (answer.isEmpty()) return;
+        var plan = readSavePlan();
+        if (plan.isEmpty()) return;
+        RoutePlan snapshot = plan.get();
+        Long id = savedCourseId;
+        var context = ensureUserContext();
+
+        setSaving(true);
+        saveStatusLabel.setText("코스를 저장하고 있어요…");
+        var diagnostic = AppDiagnostics.begin(AppDiagnostics.Operation.COURSE_SAVE);
+        updateLoading(saveStatusLabel.getText());
+        runWork("코스를 저장하고 있어요…",
+                () -> savedCourseRepository.saveWithoutPreview(context.session(), id, snapshot),
+                result -> applyCourseSave(context, result, diagnostic),
+                failure -> {
+                    setSaving(false);
+                    saveStatusLabel.setText(failure instanceof IllegalArgumentException ? failure.getMessage()
+                            : "코스를 저장하지 못했어요. 잠시 후 다시 시도해 주세요. 편집 내용은 유지돼요.");
+                    notifyUser(PageFeedback.Kind.ERROR, saveStatusLabel.getText());
+                });
+    }
+
+    /** 제목 입력·검증 후 현재 폼의 공통 조건을 저장 스냅샷에 반영 */
+    private Optional<RoutePlan> readSavePlan() {
+        Optional<String> answer = titlePrompt.apply(appliedPlan);
+        if (answer.isEmpty()) return Optional.empty();
         String title = answer.get().trim();
         if (title.isEmpty() || title.length() > 20) {
             saveStatusLabel.setText("코스 이름은 1~20자로 입력해 주세요.");
-            return;
+            return Optional.empty();
         }
-        // Common conditions can change after returning from the editor. Save what the form displays.
-        final RoutePlan snapshot;
         try {
-            snapshot = new RoutePlan(selectedLatitude, selectedLongitude,
+            return Optional.of(new RoutePlan(selectedLatitude, selectedLongitude,
                     NumberStepper.read(peopleField, 1, 20, "인원"), radius(), title,
-                    appliedPlan.places(), appliedPlan.arrivalRadii(), travelMode());
+                    appliedPlan.places(), appliedPlan.arrivalRadii(), travelMode()));
         } catch (IllegalArgumentException invalid) {
             saveStatusLabel.setText(invalid.getMessage());
-            return;
+            return Optional.empty();
         }
-        Long id = savedCourseId;
-        var context = ensureUserContext();
-        saving = true;
-        headerBar.setDisable(true);
-        mainPage.setDisable(true);
-        saveStatusLabel.setText("코스를 저장하고 있어요…");
-        var diagnostic = com.datecourse.service.AppDiagnostics.begin(com.datecourse.service.AppDiagnostics.Operation.COURSE_SAVE);
-        updateLoading(saveStatusLabel.getText());
-        runWork("코스를 저장하고 있어요…", () -> savedCourseRepository.saveWithoutPreview(context.session(), id, snapshot), result -> {
-            saving = false;
-            headerBar.setDisable(false);
-            mainPage.setDisable(false);
-            savedCourseId = result.courseId();
-            lastSavedPlan = result.plan();
-            context.invalidateCourses();
-            context.courses(); // Refresh once after a successful write, without blocking the form.
-            presentPlan(result.plan());
-            saveStatusLabel.setText("코스를 저장했어요.");
-            diagnostic.report(com.datecourse.service.AppDiagnostics.Stage.COMPLETE,
-                    com.datecourse.service.AppDiagnostics.Outcome.SUCCESS, null);
-            notifyUser(PageFeedback.Kind.SUCCESS, saveStatusLabel.getText());
-        }, failure -> {
-            saving = false;
-            headerBar.setDisable(false);
-            mainPage.setDisable(false);
-            saveStatusLabel.setText(failure instanceof IllegalArgumentException ? failure.getMessage()
-                    : "코스를 저장하지 못했어요. 잠시 후 다시 시도해 주세요. 편집 내용은 유지돼요.");
-            notifyUser(PageFeedback.Kind.ERROR, saveStatusLabel.getText());
-        });
     }
 
-    private java.util.Optional<String> askCourseTitle(RoutePlan plan) {
+    /** 저장 시작·성공·실패에서 같은 입력 잠금 상태 적용 */
+    private void setSaving(boolean value) {
+        saving = value;
+        headerBar.setDisable(value);
+        mainPage.setDisable(value);
+    }
+
+    /** 저장 결과 반영 → 사용자 목록 캐시 갱신 → 완료 안내 */
+    private void applyCourseSave(UserContext context, SavedCourse result, AppDiagnostics.Trace diagnostic) {
+        setSaving(false);
+        savedCourseId = result.courseId();
+        lastSavedPlan = result.plan();
+        context.invalidateCourses();
+        context.courses(); // 폼 입력을 막지 않고 저장 목록 갱신
+        presentPlan(result.plan());
+        saveStatusLabel.setText("코스를 저장했어요.");
+        diagnostic.report(AppDiagnostics.Stage.COMPLETE, AppDiagnostics.Outcome.SUCCESS, null);
+        notifyUser(PageFeedback.Kind.SUCCESS, saveStatusLabel.getText());
+    }
+
+    private Optional<String> askCourseTitle(RoutePlan plan) {
         TextInputDialog dialog = new TextInputDialog(plan.title());
         dialog.initOwner(plannerRoot.getScene().getWindow());
         com.datecourse.page.common.controls.DialogTheme.apply(dialog);
