@@ -144,7 +144,7 @@
 - **무엇:** 회원별 코스·장소 스냅샷·미리보기 저장.
 - **무엇을 사용:** JDBC · Jackson.
 - **필요 기능·사용 효과:** SQL 실행·값 바인딩·연결/트랜잭션 기능을 사용한다. JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `persist()` (줄 148), `findAll()` (줄 51), `saveWithoutPreview()` (줄 143), `refreshPreview()` (줄 290)
+- **어떻게 확인:** `persist()` (줄 154), `findAll()` (줄 54), `saveWithoutPreview()` (줄 149), `refreshPreview()` (줄 296)
 - **중첩 타입:** `SaveResult`
 - **코드:** [SavedCourseRepository.java](../../src/main/java/com/datecourse/db/SavedCourseRepository.java)
 - **검증 참조:** [SavedCourseRepositoryTest.java](../../src/test/java/com/datecourse/db/SavedCourseRepositoryTest.java)
@@ -263,7 +263,7 @@
 - **무엇:** 인원별 비용 범위와 미확인·추정 개수 집계.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `of()` (줄 15), `display()` (줄 39), `exactTotal()` (줄 33), `CostEstimate()` (줄 11)
+- **어떻게 확인:** `of()` (줄 19), `display()` (줄 46), `exactTotal()` (줄 39), `CostEstimate()` (줄 11)
 - **주요 값:** `minimum`, `maximum`, `unknownPlaces`, `placeCount`, `estimatedPlaces`
 - **코드:** [CostEstimate.java](../../src/main/java/com/datecourse/model/CostEstimate.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -444,7 +444,7 @@
 - **무엇:** 가격 범위·단위·근거·미확인 표현.
 - **무엇을 사용:** Java record.
 - **필요 기능·사용 효과:** 관련 값을 한 단위로 전달하고 필드 재할당을 제한한다. 컬렉션 복사·검증은 별도 코드 확인이 필요하다.
-- **어떻게 확인:** `withinCap()` (줄 61), `exact()` (줄 36), `estimated()` (줄 42), `display()` (줄 70)
+- **어떻게 확인:** `withinCap()` (줄 68), `exact()` (줄 40), `estimated()` (줄 48), `display()` (줄 79)
 - **주요 값:** `minimum`, `maximum`, `unit`, `basis`, `evidence`, `sourceUrl`, `checkedAt`
 - **중첩 타입:** `Unit`, `Evidence`
 - **코드:** [PriceEstimate.java](../../src/main/java/com/datecourse/model/PriceEstimate.java)
@@ -606,7 +606,7 @@
 - **무엇:** 초안·후보·순서·반경·필터 조율.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `onRecommendNext()` (줄 434), `onAddCandidate()` (줄 550), `begin()` (줄 400), `resume()` (줄 366)
+- **어떻게 확인:** `onRecommendNext()` (줄 440), `onAddCandidate()` (줄 556), `begin()` (줄 406), `resume()` (줄 372)
 - **중첩 타입:** `FacetSelection`, `CandidateSearch`, `EditorState`
 - **코드:** [CourseEditorController.java](../../src/main/java/com/datecourse/page/_02step_editor/CourseEditorController.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -634,7 +634,7 @@
 - **무엇:** 저장 목록·이미지/지도·명시적 경로 조회 조율.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `configure()` (줄 301), `loadCourses()` (줄 414), `onRequestRoute()` (줄 617), `onOpenClick()` (줄 358)
+- **어떻게 확인:** `configure()` (줄 301), `loadCourses()` (줄 414), `onRequestRoute()` (줄 618), `onOpenClick()` (줄 358)
 - **중첩 타입:** `RouteSummary`, `PreviewImage`
 - **코드:** [SavedCourseController.java](../../src/main/java/com/datecourse/page/_03step_saved/SavedCourseController.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -1009,7 +1009,7 @@
 - **무엇:** 후보를 실제로 늘리는 조건 완화 안내.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `analyze()` (줄 17), `offer()` (줄 41), `matches()` (줄 44), `copy()` (줄 47)
+- **어떻게 확인:** `analyze()` (줄 22), `offer()` (줄 49), `matches()` (줄 53), `copy()` (줄 57)
 - **중첩 타입:** `Change`, `Suggestion`, `Advice`
 - **코드:** [CandidateRecoveryService.java](../../src/main/java/com/datecourse/service/CandidateRecoveryService.java)
 - **검증 참조:** [CandidateRecoveryServiceTest.java](../../src/test/java/com/datecourse/service/CandidateRecoveryServiceTest.java)
@@ -1059,7 +1059,7 @@
 - **무엇:** 카카오 자동차·대중교통 응답 파싱.
 - **무엇을 사용:** Jackson · HttpClient.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다. 외부 HTTP 요청과 응답 처리를 제공한다.
-- **어떻게 확인:** `KakaoRouteService()` (줄 23), `route()` (줄 26), `request()` (줄 49), `array()` (줄 137)
+- **어떻게 확인:** `KakaoRouteService()` (줄 23), `route()` (줄 31), `request()` (줄 55), `array()` (줄 147)
 - **중첩 타입:** `NoTransitRouteException`
 - **코드:** [KakaoRouteService.java](../../src/main/java/com/datecourse/service/KakaoRouteService.java)
 - **검증 참조:** [KakaoRouteServiceTest.java](../../src/test/java/com/datecourse/service/KakaoRouteServiceTest.java)
@@ -1109,7 +1109,7 @@
 - **무엇:** 조건에 맞는 다음 후보를 거리순으로 선택.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `matching()` (줄 30), `candidates()` (줄 23)
+- **어떻게 확인:** `matching()` (줄 38), `candidates()` (줄 26)
 - **코드:** [NextPlaceService.java](../../src/main/java/com/datecourse/service/NextPlaceService.java)
 - **검증 참조:** [NextPlaceServiceTest.java](../../src/test/java/com/datecourse/service/NextPlaceServiceTest.java)
 
@@ -1207,7 +1207,7 @@
 - **무엇:** 완성 코스의 전체·구간 직선 반경 검사.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `exceeded()` (줄 15), `legs()` (줄 18), `outsideRange()` (줄 31)
+- **어떻게 확인:** `exceeded()` (줄 19), `legs()` (줄 24), `outsideRange()` (줄 38)
 - **중첩 타입:** `Leg`
 - **코드:** [RouteRangeValidator.java](../../src/main/java/com/datecourse/service/RouteRangeValidator.java)
 - **검증 참조:** [RouteRangeValidatorTest.java](../../src/test/java/com/datecourse/service/RouteRangeValidatorTest.java)
@@ -1270,7 +1270,7 @@
 - **무엇:** 이동수단에 맞는 경로 어댑터 호출.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `route()` (줄 15)
+- **어떻게 확인:** `route()` (줄 19)
 - **코드:** [TravelRouteService.java](../../src/main/java/com/datecourse/service/TravelRouteService.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 

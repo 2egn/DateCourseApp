@@ -1,5 +1,5 @@
 {
-  "reviewedCommit": "55f1258",
+  "reviewedCommit": "c65c157",
   "date": "2026-11-27",
   "scope": "Shared tracked project components, excluding personal settings/secrets, IDE state, Git internals, generated outputs/caches and this reference package.",
   "mainJavaFiles": 99,
@@ -497,118 +497,118 @@
         },
         {
           "name": "findAll",
-          "line": 51
+          "line": 54
         },
         {
           "name": "restored",
-          "line": 89
+          "line": 92
         },
         {
           "name": "rename",
-          "line": 95
+          "line": 98
         },
         {
           "name": "delete",
-          "line": 117
+          "line": 120
         },
         {
           "name": "requireSession",
-          "line": 127
+          "line": 130
         },
         {
           "name": "save",
-          "line": 132
+          "line": 135
         },
         {
           "name": "saveWithoutPreview",
-          "line": 143
+          "line": 149
         },
         {
           "name": "persist",
-          "line": 148
+          "line": 154
         },
         {
           "name": "saveWithPreview",
-          "line": 153
+          "line": 159
         },
         {
           "name": "saveWithPreviewResult",
-          "line": 160
+          "line": 166
         },
         {
           "name": "transportTableExists",
-          "line": 227
+          "line": 233
         },
         {
           "name": "courseQuery",
-          "line": 234
+          "line": 240
         },
         {
           "name": "initializeTransport",
-          "line": 242
+          "line": 248
         },
         {
           "name": "replaceTransport",
-          "line": 247
-        },
-        {
-          "name": "readTransport",
           "line": 253
         },
         {
-          "name": "initializePreviews",
-          "line": 261
+          "name": "readTransport",
+          "line": 259
         },
         {
-          "name": "replacePreview",
+          "name": "initializePreviews",
           "line": 267
         },
         {
+          "name": "replacePreview",
+          "line": 273
+        },
+        {
           "name": "refreshPreview",
-          "line": 290
+          "line": 296
         },
         {
           "name": "readCurrentPlan",
-          "line": 311
+          "line": 317
         },
         {
           "name": "findPreview",
-          "line": 338
+          "line": 344
         },
         {
           "name": "insertCourse",
-          "line": 355
+          "line": 361
         },
         {
           "name": "updateCourse",
-          "line": 370
+          "line": 376
         },
         {
           "name": "bindCourse",
-          "line": 392
+          "line": 398
         },
         {
           "name": "replacePlaces",
-          "line": 400
+          "line": 406
         },
         {
           "name": "validate",
-          "line": 438
+          "line": 444
         },
         {
           "name": "text",
-          "line": 467
+          "line": 473
         },
         {
           "name": "coordinates",
-          "line": 472
+          "line": 478
         },
         {
           "name": "snapshotJson",
-          "line": 477
+          "line": 483
         }
       ],
-      "sha256": "79216e32f6a4c693154dcadb445246e30f4215f094a7e6948843c4096329bae7",
+      "sha256": "64e1499e2eca77ad8a932f9e25dc94c98ca2158721c7740f5ab4210b09095276",
       "nestedTypes": [
         "SaveResult"
       ],
@@ -875,26 +875,26 @@
         },
         {
           "name": "of",
-          "line": 15
+          "line": 19
         },
         {
           "name": "exactTotal",
-          "line": 33
-        },
-        {
-          "name": "display",
           "line": 39
         },
         {
+          "name": "display",
+          "line": 46
+        },
+        {
           "name": "amountDisplay",
-          "line": 48
+          "line": 56
         },
         {
           "name": "won",
-          "line": 53
+          "line": 61
         }
       ],
-      "sha256": "ef8342dc477607be577292839d30a1eed8a4a7ea968e493c174bdedf532ffb19",
+      "sha256": "23c0d2bb6bb14e2483a149c3d0d02e97bcd0bb0993b312ccf1dc0ade30c79059",
       "nestedTypes": [],
       "fields": [
         "minimum",
@@ -1323,66 +1323,66 @@
       "methods": [
         {
           "name": "label",
-          "line": 18
-        },
-        {
-          "name": "PriceEstimate",
           "line": 20
         },
         {
+          "name": "PriceEstimate",
+          "line": 22
+        },
+        {
           "name": "unknown",
-          "line": 34
-        },
-        {
-          "name": "exact",
-          "line": 36
-        },
-        {
-          "name": "usablePerPerson",
-          "line": 37
-        },
-        {
-          "name": "finite",
           "line": 38
         },
         {
-          "name": "estimated",
+          "name": "exact",
+          "line": 40
+        },
+        {
+          "name": "usablePerPerson",
           "line": 42
         },
         {
-          "name": "evidenceText",
-          "line": 43
-        },
-        {
-          "name": "briefBasis",
+          "name": "finite",
           "line": 44
         },
         {
+          "name": "estimated",
+          "line": 48
+        },
+        {
+          "name": "evidenceText",
+          "line": 49
+        },
+        {
+          "name": "briefBasis",
+          "line": 51
+        },
+        {
           "name": "explanation",
-          "line": 59
+          "line": 66
         },
         {
           "name": "withinCap",
-          "line": 61
+          "line": 68
         },
         {
           "name": "sortUpperBound",
-          "line": 62
-        },
-        {
-          "name": "exactAmount",
-          "line": 65
-        },
-        {
-          "name": "display",
           "line": 70
         },
         {
-          "name": "won",
+          "name": "exactAmount",
+          "line": 73
+        },
+        {
+          "name": "display",
           "line": 79
+        },
+        {
+          "name": "won",
+          "line": 88
         }
       ],
-      "sha256": "879840fb130f6fa0fa284bc20158805d416fddd886aba35ba1ce1c04db26ed4a",
+      "sha256": "fb144963c04b1a4d5d9f850d212a6e79b12ccb141c0606cf9052aa4a330bd72e",
       "nestedTypes": [
         "Unit",
         "Evidence"
@@ -1841,46 +1841,46 @@
         },
         {
           "name": "updateOriginProtection",
-          "line": 879
+          "line": 880
         },
         {
           "name": "onWalkingRoute",
-          "line": 885
+          "line": 886
         },
         {
           "name": "onTmapSettings",
-          "line": 890
+          "line": 891
         },
         {
           "name": "onReloadMap",
-          "line": 895
+          "line": 896
         },
         {
           "name": "reportInformation",
-          "line": 901
+          "line": 902
         },
         {
           "name": "hasCoursePlaces",
-          "line": 919
+          "line": 920
         },
         {
           "name": "hasUnsavedChanges",
-          "line": 924
+          "line": 925
         },
         {
           "name": "isReplaceCancelled",
-          "line": 933
+          "line": 934
         },
         {
           "name": "clearUserContext",
-          "line": 943
+          "line": 944
         },
         {
           "name": "ensureUserContext",
-          "line": 950
+          "line": 951
         }
       ],
-      "sha256": "6269b69548e46a877ff6f74e244eb987352007fa64b77447aa3ea9754b0296b6",
+      "sha256": "7e0a53c91f4b091048f7a93b43eb763d9e50d7661e6254bedbe194b9849ab5fd",
       "nestedTypes": [],
       "fields": []
     },
@@ -1917,314 +1917,314 @@
       "methods": [
         {
           "name": "setPlaceRefresh",
-          "line": 63
-        },
-        {
-          "name": "setOnReport",
           "line": 66
         },
         {
+          "name": "setOnReport",
+          "line": 69
+        },
+        {
           "name": "travelMode",
-          "line": 89
+          "line": 92
         },
         {
           "name": "initialize",
-          "line": 118
+          "line": 121
         },
         {
           "name": "configureResponsiveSummary",
-          "line": 132
+          "line": 135
         },
         {
           "name": "configureVisibilityAndFilters",
-          "line": 145
+          "line": 148
         },
         {
           "name": "configureMapAndTravelMode",
-          "line": 169
+          "line": 172
         },
         {
           "name": "configureConditionInputs",
-          "line": 189
+          "line": 192
         },
         {
           "name": "configureCandidateList",
-          "line": 220
+          "line": 223
         },
         {
           "name": "updateItem",
-          "line": 247
+          "line": 250
         },
         {
           "name": "registerConditionListeners",
-          "line": 272
+          "line": 275
         },
         {
           "name": "configureCourseList",
-          "line": 304
+          "line": 307
         },
         {
           "name": "configureEditorNavigation",
-          "line": 345
+          "line": 348
         },
         {
           "name": "prepareMap",
-          "line": 360
-        },
-        {
-          "name": "dispose",
           "line": 363
         },
         {
-          "name": "resume",
+          "name": "dispose",
           "line": 366
         },
         {
+          "name": "resume",
+          "line": 372
+        },
+        {
           "name": "draftSnapshot",
-          "line": 380
+          "line": 386
         },
         {
           "name": "onResetDraft",
-          "line": 383
+          "line": 389
         },
         {
           "name": "begin",
-          "line": 400
+          "line": 406
         },
         {
           "name": "onReloadMap",
-          "line": 418
-        },
-        {
-          "name": "draft",
           "line": 424
         },
         {
-          "name": "radius",
+          "name": "draft",
           "line": 430
         },
         {
+          "name": "radius",
+          "line": 436
+        },
+        {
           "name": "onRecommendNext",
-          "line": 434
+          "line": 440
         },
         {
           "name": "readNextPlaceCondition",
-          "line": 469
+          "line": 475
         },
         {
           "name": "applyCandidateSearch",
-          "line": 479
+          "line": 485
         },
         {
           "name": "showRecovery",
-          "line": 496
+          "line": 502
         },
         {
           "name": "onIncludeUnknownRecovery",
-          "line": 515
-        },
-        {
-          "name": "onClearFacetsRecovery",
-          "line": 518
-        },
-        {
-          "name": "onExpandRadiusRecovery",
           "line": 521
         },
         {
-          "name": "onReviewPriceRecovery",
+          "name": "onClearFacetsRecovery",
           "line": 524
         },
         {
-          "name": "candidate",
+          "name": "onExpandRadiusRecovery",
           "line": 527
         },
         {
-          "name": "showCandidate",
+          "name": "onReviewPriceRecovery",
           "line": 530
         },
         {
+          "name": "candidate",
+          "line": 533
+        },
+        {
+          "name": "showCandidate",
+          "line": 536
+        },
+        {
           "name": "clearCandidate",
-          "line": 535
+          "line": 541
         },
         {
           "name": "onAddCandidate",
-          "line": 550
+          "line": 556
         },
         {
           "name": "changed",
-          "line": 562
+          "line": 568
         },
         {
           "name": "refreshSummary",
-          "line": 574
+          "line": 580
         },
         {
           "name": "updateRadiusLimit",
-          "line": 591
+          "line": 597
         },
         {
           "name": "updateRadiusLabel",
-          "line": 601
+          "line": 607
         },
         {
           "name": "minutes",
-          "line": 606
+          "line": 612
         },
         {
           "name": "walkingDescription",
-          "line": 611
+          "line": 617
         },
         {
           "name": "refreshWalkingSummary",
-          "line": 621
+          "line": 627
         },
         {
           "name": "updateButtons",
-          "line": 640
+          "line": 646
         },
         {
           "name": "syncSelectedRadius",
-          "line": 665
+          "line": 671
         },
         {
           "name": "onUpdateSelectedRadius",
-          "line": 687
+          "line": 693
         },
         {
           "name": "onMoveUp",
-          "line": 698
-        },
-        {
-          "name": "onMoveDown",
-          "line": 701
-        },
-        {
-          "name": "move",
           "line": 704
         },
         {
+          "name": "onMoveDown",
+          "line": 707
+        },
+        {
+          "name": "move",
+          "line": 710
+        },
+        {
           "name": "onRemove",
-          "line": 714
+          "line": 720
         },
         {
           "name": "onFinish",
-          "line": 724
+          "line": 730
         },
         {
           "name": "onCancel",
-          "line": 732
-        },
-        {
-          "name": "onModifyConditions",
-          "line": 735
-        },
-        {
-          "name": "setState",
           "line": 738
         },
         {
+          "name": "onModifyConditions",
+          "line": 741
+        },
+        {
+          "name": "setState",
+          "line": 744
+        },
+        {
           "name": "wirePane",
-          "line": 756
+          "line": 762
         },
         {
           "name": "updatePaneCursor",
-          "line": 780
-        },
-        {
-          "name": "markCandidatesDirty",
           "line": 786
         },
         {
+          "name": "markCandidatesDirty",
+          "line": 792
+        },
+        {
           "name": "displayCandidates",
-          "line": 796
+          "line": 802
         },
         {
           "name": "installFacetLabels",
-          "line": 810
+          "line": 816
         },
         {
           "name": "currentFacets",
-          "line": 821
+          "line": 827
         },
         {
           "name": "activityPlaces",
-          "line": 825
+          "line": 831
         },
         {
           "name": "refreshFacets",
-          "line": 828
+          "line": 834
         },
         {
           "name": "populateFacets",
-          "line": 836
+          "line": 842
         },
         {
           "name": "refreshPriceFilters",
-          "line": 853
+          "line": 859
         },
         {
           "name": "refreshDetailTypes",
-          "line": 864
+          "line": 870
         },
         {
           "name": "extendFacets",
-          "line": 874
+          "line": 880
         },
         {
           "name": "updateFacetVisibility",
-          "line": 877
-        },
-        {
-          "name": "updateFacetSummary",
           "line": 883
         },
         {
+          "name": "updateFacetSummary",
+          "line": 889
+        },
+        {
           "name": "onClearAdvancedFilters",
-          "line": 894
+          "line": 900
         },
         {
           "name": "onCandidateDetail",
-          "line": 903
+          "line": 909
         },
         {
           "name": "onPlaceDetail",
-          "line": 906
-        },
-        {
-          "name": "onFitRange",
           "line": 912
         },
         {
-          "name": "onFitRoute",
-          "line": 915
-        },
-        {
-          "name": "fitRange",
+          "name": "onFitRange",
           "line": 918
         },
         {
-          "name": "onWalkingRoute",
+          "name": "onFitRoute",
           "line": 921
         },
         {
-          "name": "onWalkingExplanation",
+          "name": "fitRange",
           "line": 924
         },
         {
-          "name": "onTmapSettings",
+          "name": "onWalkingRoute",
           "line": 927
         },
         {
+          "name": "onWalkingExplanation",
+          "line": 930
+        },
+        {
+          "name": "onTmapSettings",
+          "line": 933
+        },
+        {
           "name": "refreshMap",
-          "line": 932
+          "line": 938
         },
         {
           "name": "focusCandidate",
-          "line": 943
+          "line": 949
         }
       ],
-      "sha256": "8f8ff3ba4bb11f2694d3bdf34327b7b68adb02e415fa1e2f91813f65b564883f",
+      "sha256": "0c3a9ced86a3e373482575b212a2cfdd8b009e71cfbd723face50ae8a70bd184",
       "nestedTypes": [
         "FacetSelection",
         "CandidateSearch",
@@ -2378,78 +2378,78 @@
         },
         {
           "name": "onLoadMap",
-          "line": 567
+          "line": 568
         },
         {
           "name": "focusPendingPlace",
-          "line": 573
+          "line": 574
         },
         {
           "name": "rememberMapPrepared",
-          "line": 581
+          "line": 582
         },
         {
           "name": "cachedRoute",
-          "line": 586
+          "line": 587
         },
         {
           "name": "travelText",
-          "line": 592
+          "line": 593
         },
         {
           "name": "refreshTravelInformation",
-          "line": 597
+          "line": 598
         },
         {
           "name": "onToggleMap",
-          "line": 611
+          "line": 612
         },
         {
           "name": "onRequestRoute",
-          "line": 617
+          "line": 618
         },
         {
           "name": "showMapError",
-          "line": 626
+          "line": 627
         },
         {
           "name": "refreshMapNotice",
-          "line": 632
+          "line": 633
         },
         {
           "name": "updatePreviewControls",
-          "line": 646
+          "line": 647
         },
         {
           "name": "buildPreviewCaption",
-          "line": 666
+          "line": 667
         },
         {
           "name": "buildMapNotice",
-          "line": 675
+          "line": 676
         },
         {
           "name": "updateButtons",
-          "line": 687
+          "line": 688
         },
         {
           "name": "title",
-          "line": 703
+          "line": 704
         },
         {
           "name": "updatedText",
-          "line": 706
+          "line": 707
         },
         {
           "name": "setWrappingCellFactory",
-          "line": 714
+          "line": 715
         },
         {
           "name": "run",
-          "line": 731
+          "line": 732
         }
       ],
-      "sha256": "13cf12e1dc859c34c96e133675a216612358b11f487cb534182c288f1ac3c9b2",
+      "sha256": "034d74773476425193d488c5bc66bdf3717dd5d125e8fade03aab12a20cbcec5",
       "nestedTypes": [
         "RouteSummary",
         "PreviewImage"
@@ -4057,22 +4057,22 @@
       "methods": [
         {
           "name": "analyze",
-          "line": 17
+          "line": 22
         },
         {
           "name": "offer",
-          "line": 41
+          "line": 49
         },
         {
           "name": "matches",
-          "line": 44
+          "line": 53
         },
         {
           "name": "copy",
-          "line": 47
+          "line": 57
         }
       ],
-      "sha256": "84744bdf23469c581d1764428f0cc933b7eebda238b5938d301c50a7ee2bb8e9",
+      "sha256": "1abdd6b3cdfbe4faf7035cdb8be65a1bd3265d005d14b8e7b8f11caab4f8b771",
       "nestedTypes": [
         "Change",
         "Suggestion",
@@ -4183,38 +4183,38 @@
         },
         {
           "name": "route",
-          "line": 26
+          "line": 31
         },
         {
           "name": "request",
-          "line": 49
+          "line": 55
         },
         {
           "name": "array",
-          "line": 137
+          "line": 147
         },
         {
           "name": "number",
-          "line": 138
-        },
-        {
-          "name": "optionalInt",
-          "line": 141
-        },
-        {
-          "name": "coordinate",
-          "line": 145
-        },
-        {
-          "name": "requireGeometry",
           "line": 148
         },
         {
-          "name": "malformed",
+          "name": "optionalInt",
           "line": 151
+        },
+        {
+          "name": "coordinate",
+          "line": 156
+        },
+        {
+          "name": "requireGeometry",
+          "line": 160
+        },
+        {
+          "name": "malformed",
+          "line": 163
         }
       ],
-      "sha256": "15c9587719738d26f0a0960ba87902fe9b1564a90816b6a08d6345b9c6be8e58",
+      "sha256": "81a92ea5575820e08ea7c1f377296c32f894fb37106e9666fec355d26ed2000f",
       "nestedTypes": [
         "NoTransitRouteException"
       ],
@@ -4312,14 +4312,14 @@
       "methods": [
         {
           "name": "candidates",
-          "line": 23
+          "line": 26
         },
         {
           "name": "matching",
-          "line": 30
+          "line": 38
         }
       ],
-      "sha256": "6bc552e8d1ee88fb894d96907d23d16de90869c2aaf61958a4ec47362e1147e4",
+      "sha256": "7ae8dbecdad01ae89596e45de279a2ede8a6d67f40ee0550924655b9d276daf3",
       "nestedTypes": [],
       "fields": []
     },
@@ -4555,18 +4555,18 @@
       "methods": [
         {
           "name": "exceeded",
-          "line": 15
+          "line": 19
         },
         {
           "name": "legs",
-          "line": 18
+          "line": 24
         },
         {
           "name": "outsideRange",
-          "line": 31
+          "line": 38
         }
       ],
-      "sha256": "24208fff68652a724eb80d977e71767a15f5f7a00676f8de2cadd31074b1fe68",
+      "sha256": "9bcb8e86f21d52c3885bc16ef52c7fa31d624802fffaf88c9e070fa2149ec5a9",
       "nestedTypes": [
         "Leg"
       ],
@@ -4678,7 +4678,7 @@
         "Java 표준 클래스"
       ],
       "methods": [],
-      "sha256": "08a1dbf4a08ad0a7fd17377ce2760e02587e1fa6e3024626ab46ca0db72298c2",
+      "sha256": "7b053c0eb271539d186193a84e2d50c7db8f781bd2fcd90ce314c76fb966be7f",
       "nestedTypes": [],
       "fields": []
     },
@@ -4694,10 +4694,10 @@
       "methods": [
         {
           "name": "route",
-          "line": 15
+          "line": 19
         }
       ],
-      "sha256": "9d98c8798e7fccc29a79995ee6ecc9c164627bf8904a247a20543cab6394b3c4",
+      "sha256": "1d853011bb3fb4fec4b08536ad8c4f253b893ff827062587b36575ca0c5c63c5",
       "nestedTypes": [],
       "fields": []
     },
@@ -5678,6 +5678,11 @@
     },
     {
       "path": "data/places/expansion/jung-gu-2026-11-25/appeal/threshold_comparison.json",
+      "group": "공공 원본·기준본·검증 이력",
+      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
+    },
+    {
+      "path": "data/places/expansion/jung-gu-2026-11-25/baseline-hash-correction-2026-11-27.json",
       "group": "공공 원본·기준본·검증 이력",
       "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
     },
@@ -8740,7 +8745,7 @@
   "counts": {
     "프로젝트 기본 설정·탐색 안내": 12,
     "보관 원본·별도 검사": 92,
-    "공공 원본·기준본·검증 이력": 134,
+    "공공 원본·기준본·검증 이력": 135,
     "SQL 구조·마이그레이션": 11,
     "설계·검토·변경 문서": 59,
     "팀 사이트 원본·자원·설정": 207,

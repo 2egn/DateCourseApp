@@ -55,3 +55,5 @@ flowchart TD
 ### 컨트롤러 읽기 순서
 
 후보 검색 진입점은 `onRecommendNext()`. 같은 클래스의 `readNextPlaceCondition()`에서 조건 구성, 기존 검색 후 `applyCandidateSearch()`에서 요청 번호를 확인하고 결과 반영.
+
+> 2026-11-27 확인 · `c65c157`: 역할·판단 근거·연결 클래스의 한국어 주석 보완. 실행 코드 동일, 최신 선언 위치·지문은 클래스 색인 기준.

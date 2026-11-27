@@ -6,7 +6,7 @@
 |---|---:|
 | 프로젝트 기본 설정·탐색 안내 | 12 |
 | 보관 원본·별도 검사 | 92 |
-| 공공 원본·기준본·검증 이력 | 134 |
+| 공공 원본·기준본·검증 이력 | 135 |
 | SQL 구조·마이그레이션 | 11 |
 | 설계·검토·변경 문서 | 59 |
 | 팀 사이트 원본·자원·설정 | 207 |
@@ -140,7 +140,7 @@
 
 </details>
 
-<details><summary>공공 원본·기준본·검증 이력 · 134개</summary>
+<details><summary>공공 원본·기준본·검증 이력 · 135개</summary>
 
 무엇: 장소·가격·속성·정책·결과. 사용: CSV/JSON/SQL/명세. 왜: 출처·기존 보존·재현. 어떻게: current 포인터 → 전체 파일 쌍 → 준비 도구 → 검증 기록.
 
@@ -223,6 +223,7 @@
 | [data/places/expansion/jung-gu-2026-11-25/appeal/sources.json](../../data/places/expansion/jung-gu-2026-11-25/appeal/sources.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [data/places/expansion/jung-gu-2026-11-25/appeal/summary.json](../../data/places/expansion/jung-gu-2026-11-25/appeal/summary.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [data/places/expansion/jung-gu-2026-11-25/appeal/threshold_comparison.json](../../data/places/expansion/jung-gu-2026-11-25/appeal/threshold_comparison.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
+| [data/places/expansion/jung-gu-2026-11-25/baseline-hash-correction-2026-11-27.json](../../data/places/expansion/jung-gu-2026-11-25/baseline-hash-correction-2026-11-27.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [data/places/expansion/jung-gu-2026-11-25/baseline.json](../../data/places/expansion/jung-gu-2026-11-25/baseline.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [data/places/expansion/jung-gu-2026-11-25/candidate-summary.json](../../data/places/expansion/jung-gu-2026-11-25/candidate-summary.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [data/places/expansion/jung-gu-2026-11-25/import-verification.json](../../data/places/expansion/jung-gu-2026-11-25/import-verification.json) | 적재·보존·반복 또는 형식 검증 기록 |

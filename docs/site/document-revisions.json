@@ -506,8 +506,8 @@
       "present": false
     },
     "업데이트_내역.md": {
-      "fingerprint": "3608a1df32c38eda109f1bfda1c1fee05f6d60826752d09247d263560307c8cc",
-      "revision": 51,
+      "fingerprint": "94f51d065c810f7d7453ed4cec4cae9e56ed11af2d93941cf4122eb7b75fa895",
+      "revision": 53,
       "updated": true,
       "present": true
     },
@@ -968,20 +968,20 @@
       "present": true
     },
     "기능별_구현/02-planning.md": {
-      "fingerprint": "a437d450cbbe7bfbbdc3f4d280b9f37224e2f9030170a222bf82c1385a5e97a0",
-      "revision": 6,
-      "updated": true,
-      "present": true
-    },
-    "기능별_구현/03-recommendation.md": {
-      "fingerprint": "7949f50d7ea800c78adbfec9308adf1c82c07e871671f60d91e9d08ed5495964",
+      "fingerprint": "f720340edf76407a74b5b8b0d7ff803fb6f09a6da8641bcff6d16abcbf71b82f",
       "revision": 7,
       "updated": true,
       "present": true
     },
+    "기능별_구현/03-recommendation.md": {
+      "fingerprint": "03d782f255e122d9e20c4a212431ab65ffbc28c74e4efd3ce5ca08a5d9195a76",
+      "revision": 8,
+      "updated": true,
+      "present": true
+    },
     "기능별_구현/04-price-and-models.md": {
-      "fingerprint": "56f6065ab34d0048cf080752469f0cc398a98ee8c7662fd96a61cbc66a7bd69a",
-      "revision": 5,
+      "fingerprint": "a7fceff454e31a71e6d11807b77b6d6dcc75c3071dbb3979db0200d5d400f0ec",
+      "revision": 6,
       "updated": true,
       "present": true
     },
@@ -992,14 +992,14 @@
       "present": true
     },
     "기능별_구현/06-routing.md": {
-      "fingerprint": "b1b67fbb27f1b30cee4310666b82ebdc830a51d0c52fab667830d0ce31c86a93",
-      "revision": 6,
+      "fingerprint": "77a12b9fa7bf4cc6bb49d2bc40a7e21185c5b3366a7194abaaeb55718d16b6d6",
+      "revision": 7,
       "updated": true,
       "present": true
     },
     "기능별_구현/07-saved-courses.md": {
-      "fingerprint": "1e37e4d4dc8e4bc9d53248fe00412966de22da0ccceb034149c2f29454172dcf",
-      "revision": 7,
+      "fingerprint": "9a40019e60f0315745382d673a5982300468a44f43ffdbd52ebe81da4947393f",
+      "revision": 8,
       "updated": true,
       "present": true
     },
