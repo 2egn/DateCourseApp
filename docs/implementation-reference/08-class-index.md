@@ -180,30 +180,6 @@
 </details>
 
 <details>
-<summary>ConditionLauncher — 회원 DB 없는 조건 화면 시연 실행</summary>
-
-- **무엇:** 회원 DB 없는 조건 화면 시연 실행.
-- **무엇을 사용:** Java 표준 클래스.
-- **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `main()` (줄 4)
-- **코드:** [ConditionLauncher.java](../../src/main/java/com/datecourse/demo/ConditionLauncher.java)
-- **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
-
-</details>
-
-<details>
-<summary>ConditionTestApp — 조건 화면의 별도 JavaFX 시연 호스트</summary>
-
-- **무엇:** 조건 화면의 별도 JavaFX 시연 호스트.
-- **무엇을 사용:** JavaFX.
-- **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `main()` (줄 11), `start()` (줄 16)
-- **코드:** [ConditionTestApp.java](../../src/main/java/com/datecourse/demo/ConditionTestApp.java)
-- **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
-
-</details>
-
-<details>
 <summary>CoursePreviewSetup — 이전 명령에서 이미지 구조 준비로 위임</summary>
 
 - **무엇:** 이전 명령에서 이미지 구조 준비로 위임.
@@ -235,42 +211,6 @@
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
 - **어떻게 확인:** `main()` (줄 10)
 - **코드:** [KakaoRouteProbe.java](../../src/main/java/com/datecourse/demo/KakaoRouteProbe.java)
-- **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
-
-</details>
-
-<details>
-<summary>PilotPlannerApp — 소규모 자료로 코스 화면 구성</summary>
-
-- **무엇:** 소규모 자료로 코스 화면 구성.
-- **무엇을 사용:** JavaFX.
-- **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `start()` (줄 11)
-- **코드:** [PilotPlannerApp.java](../../src/main/java/com/datecourse/demo/PilotPlannerApp.java)
-- **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
-
-</details>
-
-<details>
-<summary>PilotPlannerLauncher — 소규모 장소 시연 진입점</summary>
-
-- **무엇:** 소규모 장소 시연 진입점.
-- **무엇을 사용:** JavaFX.
-- **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `main()` (줄 4)
-- **코드:** [PilotPlannerLauncher.java](../../src/main/java/com/datecourse/demo/PilotPlannerLauncher.java)
-- **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
-
-</details>
-
-<details>
-<summary>PlaceBindingDemo — 확정 외부 ID 연결표 오프라인 확인</summary>
-
-- **무엇:** 확정 외부 ID 연결표 오프라인 확인.
-- **무엇을 사용:** Java 표준 클래스.
-- **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `main()` (줄 7)
-- **코드:** [PlaceBindingDemo.java](../../src/main/java/com/datecourse/demo/PlaceBindingDemo.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
 </details>
@@ -638,7 +578,7 @@
 - **무엇:** 공통 조건·확정 코스·저장·페이지 전환 조율.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `onRecommendClick()` (줄 757), `openEditor()` (줄 776), `onSaveCourse()` (줄 505), `restoreSavedCourse()` (줄 368)
+- **어떻게 확인:** `onRecommendClick()` (줄 702), `openEditor()` (줄 721), `onSaveCourse()` (줄 483), `restoreSavedCourse()` (줄 354)
 - **코드:** [CoursePlannerController.java](../../src/main/java/com/datecourse/page/_01step_planner/CoursePlannerController.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -694,8 +634,8 @@
 - **무엇:** 저장 목록·이미지/지도·명시적 경로 조회 조율.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `configure()` (줄 302), `loadCourses()` (줄 415), `onRequestRoute()` (줄 607), `onOpenClick()` (줄 359)
-- **중첩 타입:** `RouteSummary`, `PreviewImage`, `CourseDetailRow`, `PlaceInfoRow`
+- **어떻게 확인:** `configure()` (줄 300), `loadCourses()` (줄 413), `onRequestRoute()` (줄 604), `onOpenClick()` (줄 357)
+- **중첩 타입:** `RouteSummary`, `PreviewImage`
 - **코드:** [SavedCourseController.java](../../src/main/java/com/datecourse/page/_03step_saved/SavedCourseController.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -1169,33 +1109,9 @@
 - **무엇:** 조건에 맞는 다음 후보를 거리순으로 선택.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `matching()` (줄 41), `candidates()` (줄 14)
+- **어떻게 확인:** `matching()` (줄 30), `candidates()` (줄 23)
 - **코드:** [NextPlaceService.java](../../src/main/java/com/datecourse/service/NextPlaceService.java)
 - **검증 참조:** [NextPlaceServiceTest.java](../../src/test/java/com/datecourse/service/NextPlaceServiceTest.java)
-
-</details>
-
-<details>
-<summary>PilotPlaceRepository — 소규모 대조 완료 시연 자료 읽기</summary>
-
-- **무엇:** 소규모 대조 완료 시연 자료 읽기.
-- **무엇을 사용:** Jackson.
-- **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `findAll()` (줄 20), `read()` (줄 27)
-- **코드:** [PilotPlaceRepository.java](../../src/main/java/com/datecourse/service/PilotPlaceRepository.java)
-- **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
-
-</details>
-
-<details>
-<summary>PlaceBindingCatalog — 자료 버전과 일치하는 외부 ID 연결표 읽기</summary>
-
-- **무엇:** 자료 버전과 일치하는 외부 ID 연결표 읽기.
-- **무엇을 사용:** Jackson.
-- **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `PlaceBindingCatalog()` (줄 38), `load()` (줄 45), `googlePlaceId()` (줄 80), `reviewedGoogleLink()` (줄 90)
-- **코드:** [PlaceBindingCatalog.java](../../src/main/java/com/datecourse/service/PlaceBindingCatalog.java)
-- **검증 참조:** [PlaceBindingCatalogTest.java](../../src/test/java/com/datecourse/service/PlaceBindingCatalogTest.java)
 
 </details>
 
@@ -1274,24 +1190,12 @@
 </details>
 
 <details>
-<summary>PublicDemoPlaceRepository — 내장 공공 시연 자료 읽기</summary>
-
-- **무엇:** 내장 공공 시연 자료 읽기.
-- **무엇을 사용:** Java 표준 클래스.
-- **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `findAll()` (줄 14)
-- **코드:** [PublicDemoPlaceRepository.java](../../src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java)
-- **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
-
-</details>
-
-<details>
 <summary>PublicPlaceFacts — 장소 파일 지문·ID 검사와 공공 속성 연결</summary>
 
 - **무엇:** 장소 파일 지문·ID 검사와 공공 속성 연결.
 - **무엇을 사용:** Jackson.
 - **필요 기능·사용 효과:** JSON과 Java 값의 읽기·쓰기·직렬화 제어를 제공한다.
-- **어떻게 확인:** `PublicPlaceFacts()` (줄 18), `read()` (줄 20), `required()` (줄 74), `sha256()` (줄 79)
+- **어떻게 확인:** `PublicPlaceFacts()` (줄 18), `read()` (줄 20), `readPlaces()` (줄 75), `required()` (줄 113)
 - **코드:** [PublicPlaceFacts.java](../../src/main/java/com/datecourse/service/PublicPlaceFacts.java)
 - **검증 참조:** [PublicPlaceFactsTest.java](../../src/test/java/com/datecourse/service/PublicPlaceFactsTest.java)
 
@@ -1316,8 +1220,8 @@
 - **무엇:** 저장 코스 합계·이동 요약 문구.
 - **무엇을 사용:** Java 표준 클래스.
 - **필요 기능·사용 효과:** 메서드·컬렉션·문자열·수학·상태 처리를 조합한다.
-- **어떻게 확인:** `costSummary()` (줄 19), `present()` (줄 31)
-- **중첩 타입:** `Summary`
+- **어떻게 확인:** `costSummary()` (줄 24), `present()` (줄 36)
+- **중첩 타입:** `CourseDetailRow`, `PlaceInfoRow`, `Summary`
 - **코드:** [SavedCoursePresenter.java](../../src/main/java/com/datecourse/service/SavedCoursePresenter.java)
 - **검증 참조:** [SavedCoursePresenterTest.java](../../src/test/java/com/datecourse/service/SavedCoursePresenterTest.java)
 

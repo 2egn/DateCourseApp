@@ -5,17 +5,17 @@
 | 범위 | 파일 수 |
 |---|---:|
 | 프로젝트 기본 설정·탐색 안내 | 12 |
-| 보관 원본·별도 검사 | 35 |
-| 공공 원본·기준본·검증 이력 | 177 |
+| 보관 원본·별도 검사 | 92 |
+| 공공 원본·기준본·검증 이력 | 134 |
 | SQL 구조·마이그레이션 | 11 |
-| 설계·검토·변경 문서 | 58 |
+| 설계·검토·변경 문서 | 59 |
 | 팀 사이트 원본·자원·설정 | 207 |
 | 팀 사이트 서버·공유 상태 | 15 |
 | 사이트 로직 검사 | 15 |
 | 사이트 빌드·표시 검사 | 31 |
-| 앱 Java | 107 |
+| 앱 Java | 99 |
 | 화면·지도·스타일·공개 설정 예제 | 21 |
-| 앱 검사 | 57 |
+| 앱 검사 | 56 |
 | 자료·운영 도구·검사 | 32 |
 
 <details><summary>프로젝트 기본 설정·탐색 안내 · 12개</summary>
@@ -39,7 +39,7 @@
 
 </details>
 
-<details><summary>보관 원본·별도 검사 · 35개</summary>
+<details><summary>보관 원본·별도 검사 · 92개</summary>
 
 무엇: 사용하지 않는 이전 코드·구조 이력. 사용: 원본 보관·선택 검사. 왜: 현재 앱과 혼동 없이 이력 유지. 어떻게: 기본 sourceSets 제외·별도 init script.
 
@@ -53,6 +53,63 @@
 | [archive/db-schema/2026-11-24-empty-backups/postflight.json](../../archive/db-schema/2026-11-24-empty-backups/postflight.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
 | [archive/db-schema/2026-11-24-empty-backups/preflight.json](../../archive/db-schema/2026-11-24-empty-backups/preflight.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
 | [archive/db-schema/2026-11-24-empty-backups/restore.sql](../../archive/db-schema/2026-11-24-empty-backups/restore.sql) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/.gitattributes](../../archive/legacy-place-demo/.gitattributes) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/README.md](../../archive/legacy-place-demo/README.md) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/.gitattributes.original](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/.gitattributes.original) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/README.md](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/README.md) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/additional_facility_facts.json](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/additional_facility_facts.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/busanjin_model_restaurants.csv](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/busanjin_model_restaurants.csv) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/checksums.json](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/checksums.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/demo_appeal_facts.json](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/demo_appeal_facts.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/demo_nearest_transit.csv](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/demo_nearest_transit.csv) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/designation_links.csv](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/designation_links.csv) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/designation_review_needed.json](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/designation_review_needed.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/busan_bus_stops.csv](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/busan_bus_stops.csv) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/busan_railway_stations.csv](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/busan_railway_stations.csv) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/busanjin_model_restaurants_cp949.csv](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/busanjin_model_restaurants_cp949.csv) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/national_railway_original.xlsx](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/national_railway_original.xlsx) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/sources.json](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/sources.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/summary.json](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/summary.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/threshold_comparison.json](../../archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/threshold_comparison.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/.gitattributes](../../archive/legacy-place-demo/data/places/demo/.gitattributes) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/README.md](../../archive/legacy-place-demo/data/places/demo/README.md) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/expansion-baseline-2026-11-16.json](../../archive/legacy-place-demo/data/places/demo/expansion-baseline-2026-11-16.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/expansion-report-2026-11-16.json](../../archive/legacy-place-demo/data/places/demo/expansion-report-2026-11-16.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/rehearsal-place-checks-2026-11-14.json](../../archive/legacy-place-demo/data/places/demo/rehearsal-place-checks-2026-11-14.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/rehearsal-place-checks-culture-alternatives-2026-11-14.json](../../archive/legacy-place-demo/data/places/demo/rehearsal-place-checks-culture-alternatives-2026-11-14.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/rehearsal-place-checks-district-recheck-2026-11-14.json](../../archive/legacy-place-demo/data/places/demo/rehearsal-place-checks-district-recheck-2026-11-14.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/selection-policy.json](../../archive/legacy-place-demo/data/places/demo/selection-policy.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/seomyeon-jeonpo-demo.json](../../archive/legacy-place-demo/data/places/demo/seomyeon-jeonpo-demo.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/demo/seomyeon-public-estimates.json](../../archive/legacy-place-demo/data/places/demo/seomyeon-public-estimates.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/README.md](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/README.md) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v3.csv](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v3.csv) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v5.csv](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v5.csv) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-sample-v2.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-sample-v2.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/contact-source-overrides.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/contact-source-overrides.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-evaluation-v2.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-evaluation-v2.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-refinement-v3.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-refinement-v3.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-review.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-review.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v2.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v2.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v3.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v3.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v4.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v4.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v5.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v5.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-evaluation-v4.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-evaluation-v4.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-reconciled-v5.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-reconciled-v5.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/manifest.json](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/manifest.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/places.csv](../../archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/places.csv) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/manifest.json](../../archive/legacy-place-demo/manifest.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/main/java/com/datecourse/demo/ConditionLauncher.java](../../archive/legacy-place-demo/src/main/java/com/datecourse/demo/ConditionLauncher.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/main/java/com/datecourse/demo/ConditionTestApp.java](../../archive/legacy-place-demo/src/main/java/com/datecourse/demo/ConditionTestApp.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/main/java/com/datecourse/demo/PilotPlannerApp.java](../../archive/legacy-place-demo/src/main/java/com/datecourse/demo/PilotPlannerApp.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/main/java/com/datecourse/demo/PilotPlannerLauncher.java](../../archive/legacy-place-demo/src/main/java/com/datecourse/demo/PilotPlannerLauncher.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/main/java/com/datecourse/demo/PlaceBindingDemo.java](../../archive/legacy-place-demo/src/main/java/com/datecourse/demo/PlaceBindingDemo.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/main/java/com/datecourse/service/PilotPlaceRepository.java](../../archive/legacy-place-demo/src/main/java/com/datecourse/service/PilotPlaceRepository.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/main/java/com/datecourse/service/PlaceBindingCatalog.java](../../archive/legacy-place-demo/src/main/java/com/datecourse/service/PlaceBindingCatalog.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java](../../archive/legacy-place-demo/src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/test/java/com/datecourse/service/PilotPriceFlowTest.java](../../archive/legacy-place-demo/src/test/java/com/datecourse/service/PilotPriceFlowTest.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/test/java/com/datecourse/service/PlaceBindingCatalogTest.java](../../archive/legacy-place-demo/src/test/java/com/datecourse/service/PlaceBindingCatalogTest.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
+| [archive/legacy-place-demo/src/test/java/com/datecourse/service/PublicPlaceFactsTest.java](../../archive/legacy-place-demo/src/test/java/com/datecourse/service/PublicPlaceFactsTest.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
 | [archive/legacy-ui/README.md](../../archive/legacy-ui/README.md) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
 | [archive/legacy-ui/inventory.json](../../archive/legacy-ui/inventory.json) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
 | [archive/legacy-ui/src/main/java/com/datecourse/demo/AdminLauncher.java](../../archive/legacy-ui/src/main/java/com/datecourse/demo/AdminLauncher.java) | 보관 원본·과거 검증: 기본 앱 기능과 구분 |
@@ -83,7 +140,7 @@
 
 </details>
 
-<details><summary>공공 원본·기준본·검증 이력 · 177개</summary>
+<details><summary>공공 원본·기준본·검증 이력 · 134개</summary>
 
 무엇: 장소·가격·속성·정책·결과. 사용: CSV/JSON/SQL/명세. 왜: 출처·기존 보존·재현. 어떻게: current 포인터 → 전체 파일 쌍 → 준비 도구 → 검증 기록.
 
@@ -93,35 +150,9 @@
 | [data/busan_placedata/outputs/20261110_shop_average_01a1c4b1/부산_가게별_평균가격.csv](../../data/busan_placedata/outputs/20261110_shop_average_01a1c4b1/부산_가게별_평균가격.csv) | 공공 원본·정규화·표본·연결표; 폴더 명세로 구분 |
 | [data/busan_placedata/outputs/20261110_shop_average_01a1c4b1/부산_가게별_평균가격.xlsx](../../data/busan_placedata/outputs/20261110_shop_average_01a1c4b1/부산_가게별_평균가격.xlsx) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [data/places/appeal/.gitattributes](../../data/places/appeal/.gitattributes) | 텍스트 줄바꿈 고정·자료 지문 재현 보조 |
-| [data/places/appeal/busan-2026-11-14/.gitattributes](../../data/places/appeal/busan-2026-11-14/.gitattributes) | 텍스트 줄바꿈 고정·자료 지문 재현 보조 |
-| [data/places/appeal/busan-2026-11-14/README.md](../../data/places/appeal/busan-2026-11-14/README.md) | 앱 기능·실행·현재 검증 안내 |
-| [data/places/appeal/busan-2026-11-14/additional_facility_facts.json](../../data/places/appeal/busan-2026-11-14/additional_facility_facts.json) | 장소 속성·시설·근거 자료 |
-| [data/places/appeal/busan-2026-11-14/busanjin_model_restaurants.csv](../../data/places/appeal/busan-2026-11-14/busanjin_model_restaurants.csv) | 공공 원본·정규화·표본·연결표; 폴더 명세로 구분 |
-| [data/places/appeal/busan-2026-11-14/checksums.json](../../data/places/appeal/busan-2026-11-14/checksums.json) | 원본/출력 지문·출처·수집 명세 |
-| [data/places/appeal/busan-2026-11-14/demo_appeal_facts.json](../../data/places/appeal/busan-2026-11-14/demo_appeal_facts.json) | 장소 속성·시설·근거 자료 |
-| [data/places/appeal/busan-2026-11-14/demo_nearest_transit.csv](../../data/places/appeal/busan-2026-11-14/demo_nearest_transit.csv) | 공공 원본·정규화·표본·연결표; 폴더 명세로 구분 |
-| [data/places/appeal/busan-2026-11-14/designation_links.csv](../../data/places/appeal/busan-2026-11-14/designation_links.csv) | 공공 원본·정규화·표본·연결표; 폴더 명세로 구분 |
-| [data/places/appeal/busan-2026-11-14/designation_review_needed.json](../../data/places/appeal/busan-2026-11-14/designation_review_needed.json) | 품질·가격·모의 결과·검토 기록 |
-| [data/places/appeal/busan-2026-11-14/raw/busan_bus_stops.csv](../../data/places/appeal/busan-2026-11-14/raw/busan_bus_stops.csv) | 공공 원본·정규화·표본·연결표; 폴더 명세로 구분 |
-| [data/places/appeal/busan-2026-11-14/raw/busan_railway_stations.csv](../../data/places/appeal/busan-2026-11-14/raw/busan_railway_stations.csv) | 공공 원본·정규화·표본·연결표; 폴더 명세로 구분 |
-| [data/places/appeal/busan-2026-11-14/raw/busanjin_model_restaurants_cp949.csv](../../data/places/appeal/busan-2026-11-14/raw/busanjin_model_restaurants_cp949.csv) | 공공 원본·정규화·표본·연결표; 폴더 명세로 구분 |
-| [data/places/appeal/busan-2026-11-14/raw/national_railway_original.xlsx](../../data/places/appeal/busan-2026-11-14/raw/national_railway_original.xlsx) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/appeal/busan-2026-11-14/sources.json](../../data/places/appeal/busan-2026-11-14/sources.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/appeal/busan-2026-11-14/summary.json](../../data/places/appeal/busan-2026-11-14/summary.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/appeal/busan-2026-11-14/threshold_comparison.json](../../data/places/appeal/busan-2026-11-14/threshold_comparison.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [data/places/appeal/designation-sources.json](../../data/places/appeal/designation-sources.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [data/places/appeal/manual-facility-facts.json](../../data/places/appeal/manual-facility-facts.json) | 장소 속성·시설·근거 자료 |
 | [data/places/current/integrated_places.csv](../../data/places/current/integrated_places.csv) | 공공 원본·정규화·표본·연결표; 폴더 명세로 구분 |
-| [data/places/demo/.gitattributes](../../data/places/demo/.gitattributes) | 텍스트 줄바꿈 고정·자료 지문 재현 보조 |
-| [data/places/demo/README.md](../../data/places/demo/README.md) | 앱 기능·실행·현재 검증 안내 |
-| [data/places/demo/expansion-baseline-2026-11-16.json](../../data/places/demo/expansion-baseline-2026-11-16.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/demo/expansion-report-2026-11-16.json](../../data/places/demo/expansion-report-2026-11-16.json) | 품질·가격·모의 결과·검토 기록 |
-| [data/places/demo/rehearsal-place-checks-2026-11-14.json](../../data/places/demo/rehearsal-place-checks-2026-11-14.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/demo/rehearsal-place-checks-culture-alternatives-2026-11-14.json](../../data/places/demo/rehearsal-place-checks-culture-alternatives-2026-11-14.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/demo/rehearsal-place-checks-district-recheck-2026-11-14.json](../../data/places/demo/rehearsal-place-checks-district-recheck-2026-11-14.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/demo/selection-policy.json](../../data/places/demo/selection-policy.json) | 자료 선택 범위·개수·분류 정책 |
-| [data/places/demo/seomyeon-jeonpo-demo.json](../../data/places/demo/seomyeon-jeonpo-demo.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/demo/seomyeon-public-estimates.json](../../data/places/demo/seomyeon-public-estimates.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
 | [data/places/expansion/.gitattributes](../../data/places/expansion/.gitattributes) | 텍스트 줄바꿈 고정·자료 지문 재현 보조 |
 | [data/places/expansion/busan-balanced-2026-11-25/README.md](../../data/places/expansion/busan-balanced-2026-11-25/README.md) | 앱 기능·실행·현재 검증 안내 |
 | [data/places/expansion/busan-balanced-2026-11-25/appeal/additional_facility_facts.json](../../data/places/expansion/busan-balanced-2026-11-25/appeal/additional_facility_facts.json) | 장소 속성·시설·근거 자료 |
@@ -218,23 +249,6 @@
 | [data/places/expansion/suyeong-2026-11-16/quality-report.json](../../data/places/expansion/suyeong-2026-11-16/quality-report.json) | 품질·가격·모의 결과·검토 기록 |
 | [data/places/expansion/suyeong-2026-11-16/rehearsal-report.json](../../data/places/expansion/suyeong-2026-11-16/rehearsal-report.json) | 품질·가격·모의 결과·검토 기록 |
 | [data/places/expansion/suyeong-policy.json](../../data/places/expansion/suyeong-policy.json) | 자료 선택 범위·개수·분류 정책 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/README.md](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/README.md) | 앱 기능·실행·현재 검증 안내 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v3.csv](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v3.csv) | 품질·가격·모의 결과·검토 기록 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v5.csv](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v5.csv) | 품질·가격·모의 결과·검토 기록 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-sample-v2.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-sample-v2.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/contact-source-overrides.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/contact-source-overrides.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-evaluation-v2.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-evaluation-v2.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-refinement-v3.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-refinement-v3.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-review.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-review.json) | 품질·가격·모의 결과·검토 기록 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v2.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v2.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v3.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v3.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v4.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v4.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v5.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v5.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-evaluation-v4.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-evaluation-v4.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-reconciled-v5.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-reconciled-v5.json) | 해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/manifest.json](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/manifest.json) | 원본/출력 지문·출처·수집 명세 |
-| [data/places/pilot/seomyeon-jeonpo-2026-11-13/places.csv](../../data/places/pilot/seomyeon-jeonpo-2026-11-13/places.csv) | 공공 원본·정규화·표본·연결표; 폴더 명세로 구분 |
 | [data/places/pricing/.gitattributes](../../data/places/pricing/.gitattributes) | 텍스트 줄바꿈 고정·자료 지문 재현 보조 |
 | [data/places/pricing/2026-11-24/README.md](../../data/places/pricing/2026-11-24/README.md) | 앱 기능·실행·현재 검증 안내 |
 | [data/places/pricing/2026-11-24/import-verification.json](../../data/places/pricing/2026-11-24/import-verification.json) | 적재·보존·반복 또는 형식 검증 기록 |
@@ -289,7 +303,7 @@
 
 </details>
 
-<details><summary>설계·검토·변경 문서 · 58개</summary>
+<details><summary>설계·검토·변경 문서 · 59개</summary>
 
 무엇: 구현 근거·설계·당시 검토. 사용: 문서·지문·검증 기록. 왜: 현재 구현과 제안을 구분. 어떻게: 기준 버전·날짜·연결 소스로 확인.
 
@@ -342,6 +356,7 @@
 | [docs/research/ux-review-2026-11-15.md](../../docs/research/ux-review-2026-11-15.md) | 품질·가격·모의 결과·검토 기록 |
 | [docs/review-2026-11-24.md](../../docs/review-2026-11-24.md) | 품질·가격·모의 결과·검토 기록 |
 | [docs/review-2026-11-25.md](../../docs/review-2026-11-25.md) | 품질·가격·모의 결과·검토 기록 |
+| [docs/review-flow-cleanup-2026-11-27.md](../../docs/review-flow-cleanup-2026-11-27.md) | 품질·가격·모의 결과·검토 기록 |
 | [docs/saved-course-previews.md](../../docs/saved-course-previews.md) | 품질·가격·모의 결과·검토 기록 |
 | [docs/suyeong-rehearsal-2026-11-16.md](../../docs/suyeong-rehearsal-2026-11-16.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
 | [docs/transport-options-2026-11-16.md](../../docs/transport-options-2026-11-16.md) | 설명·설계·당시 검토/변경 기록; 구현 상태는 본문 기준 |
@@ -660,7 +675,7 @@
 
 </details>
 
-<details><summary>앱 Java · 107개</summary>
+<details><summary>앱 Java · 99개</summary>
 
 무엇: 실제 앱의 타입·정책·화면·DB. 사용: Java와 클래스별 기술. 왜·어떻게: 08 클래스 색인과 기능 문서의 카드에 연결.
 
@@ -679,14 +694,9 @@
 | [src/main/java/com/datecourse/db/SavedCourseRepository.java](../../src/main/java/com/datecourse/db/SavedCourseRepository.java) | 회원별 코스·장소 스냅샷·미리보기 저장 |
 | [src/main/java/com/datecourse/demo/CameraMotionDemoApp.java](../../src/main/java/com/datecourse/demo/CameraMotionDemoApp.java) | 카메라 정책·지도 전환 시연 |
 | [src/main/java/com/datecourse/demo/CameraMotionDemoLauncher.java](../../src/main/java/com/datecourse/demo/CameraMotionDemoLauncher.java) | 카메라 시연 진입점 |
-| [src/main/java/com/datecourse/demo/ConditionLauncher.java](../../src/main/java/com/datecourse/demo/ConditionLauncher.java) | 회원 DB 없는 조건 화면 시연 실행 |
-| [src/main/java/com/datecourse/demo/ConditionTestApp.java](../../src/main/java/com/datecourse/demo/ConditionTestApp.java) | 조건 화면의 별도 JavaFX 시연 호스트 |
 | [src/main/java/com/datecourse/demo/CoursePreviewSetup.java](../../src/main/java/com/datecourse/demo/CoursePreviewSetup.java) | 이전 명령에서 이미지 구조 준비로 위임 |
 | [src/main/java/com/datecourse/demo/InformationReportSetup.java](../../src/main/java/com/datecourse/demo/InformationReportSetup.java) | 이전 명령에서 DB 준비 도구로 위임 |
 | [src/main/java/com/datecourse/demo/KakaoRouteProbe.java](../../src/main/java/com/datecourse/demo/KakaoRouteProbe.java) | 명시적 실제 카카오 경로 점검 |
-| [src/main/java/com/datecourse/demo/PilotPlannerApp.java](../../src/main/java/com/datecourse/demo/PilotPlannerApp.java) | 소규모 자료로 코스 화면 구성 |
-| [src/main/java/com/datecourse/demo/PilotPlannerLauncher.java](../../src/main/java/com/datecourse/demo/PilotPlannerLauncher.java) | 소규모 장소 시연 진입점 |
-| [src/main/java/com/datecourse/demo/PlaceBindingDemo.java](../../src/main/java/com/datecourse/demo/PlaceBindingDemo.java) | 확정 외부 ID 연결표 오프라인 확인 |
 | [src/main/java/com/datecourse/demo/PublicPlaceImport.java](../../src/main/java/com/datecourse/demo/PublicPlaceImport.java) | 공공 파일 쌍 검증·명시적 적재 |
 | [src/main/java/com/datecourse/maintenance/DatabaseSetup.java](../../src/main/java/com/datecourse/maintenance/DatabaseSetup.java) | 요청된 DB 구조 준비만 명시적으로 실행 |
 | [src/main/java/com/datecourse/maintenance/ReplaceIntegratedData.java](../../src/main/java/com/datecourse/maintenance/ReplaceIntegratedData.java) | 이전 일반 데이터의 명시적 교체 |
@@ -755,15 +765,12 @@
 | [src/main/java/com/datecourse/service/MapPageServer.java](../../src/main/java/com/datecourse/service/MapPageServer.java) | 지도 자원을 로컬 HTTP로 제공 |
 | [src/main/java/com/datecourse/service/NextPlaceRadius.java](../../src/main/java/com/datecourse/service/NextPlaceRadius.java) | 전체 범위·직전 장소에 맞는 구간 반경 상한 |
 | [src/main/java/com/datecourse/service/NextPlaceService.java](../../src/main/java/com/datecourse/service/NextPlaceService.java) | 조건에 맞는 다음 후보를 거리순으로 선택 |
-| [src/main/java/com/datecourse/service/PilotPlaceRepository.java](../../src/main/java/com/datecourse/service/PilotPlaceRepository.java) | 소규모 대조 완료 시연 자료 읽기 |
-| [src/main/java/com/datecourse/service/PlaceBindingCatalog.java](../../src/main/java/com/datecourse/service/PlaceBindingCatalog.java) | 자료 버전과 일치하는 외부 ID 연결표 읽기 |
 | [src/main/java/com/datecourse/service/PlaceCalculationService.java](../../src/main/java/com/datecourse/service/PlaceCalculationService.java) | 좌표 사이 구면 거리·이전 정액 계산 |
 | [src/main/java/com/datecourse/service/PlaceFacets.java](../../src/main/java/com/datecourse/service/PlaceFacets.java) | 공공 업종을 화면 유형·상세 분류에 연결 |
 | [src/main/java/com/datecourse/service/PlaceMapPayload.java](../../src/main/java/com/datecourse/service/PlaceMapPayload.java) | 모델에 지도 표시용 presentation을 덧붙임 |
 | [src/main/java/com/datecourse/service/PlacePresenter.java](../../src/main/java/com/datecourse/service/PlacePresenter.java) | 가격·출처·특징을 표시 문구로 변환 |
 | [src/main/java/com/datecourse/service/PlaceSearchService.java](../../src/main/java/com/datecourse/service/PlaceSearchService.java) | 전체 범위·중복 대표 검색과 이전 일괄 추천 |
 | [src/main/java/com/datecourse/service/PlaceSource.java](../../src/main/java/com/datecourse/service/PlaceSource.java) | 장소 조회의 공통 계약 |
-| [src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java](../../src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java) | 내장 공공 시연 자료 읽기 |
 | [src/main/java/com/datecourse/service/PublicPlaceFacts.java](../../src/main/java/com/datecourse/service/PublicPlaceFacts.java) | 장소 파일 지문·ID 검사와 공공 속성 연결 |
 | [src/main/java/com/datecourse/service/RouteRangeValidator.java](../../src/main/java/com/datecourse/service/RouteRangeValidator.java) | 완성 코스의 전체·구간 직선 반경 검사 |
 | [src/main/java/com/datecourse/service/SavedCoursePresenter.java](../../src/main/java/com/datecourse/service/SavedCoursePresenter.java) | 저장 코스 합계·이동 요약 문구 |
@@ -806,7 +813,7 @@
 
 </details>
 
-<details><summary>앱 검사 · 57개</summary>
+<details><summary>앱 검사 · 56개</summary>
 
 무엇: 구현 규칙의 회귀 확인. 사용: JUnit/H2/JavaFX fixture. 왜: 조건·저장·늦은 응답 오류 방지. 어떻게: 준비 입력 → 동작 → 결과/불변 조건 확인.
 
@@ -854,10 +861,9 @@
 | [src/test/java/com/datecourse/service/NextPlaceConditionsTest.java](../../src/test/java/com/datecourse/service/NextPlaceConditionsTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [src/test/java/com/datecourse/service/NextPlaceRadiusTest.java](../../src/test/java/com/datecourse/service/NextPlaceRadiusTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [src/test/java/com/datecourse/service/NextPlaceServiceTest.java](../../src/test/java/com/datecourse/service/NextPlaceServiceTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
-| [src/test/java/com/datecourse/service/PilotPriceFlowTest.java](../../src/test/java/com/datecourse/service/PilotPriceFlowTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
-| [src/test/java/com/datecourse/service/PlaceBindingCatalogTest.java](../../src/test/java/com/datecourse/service/PlaceBindingCatalogTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [src/test/java/com/datecourse/service/PlaceCalculationServiceTest.java](../../src/test/java/com/datecourse/service/PlaceCalculationServiceTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [src/test/java/com/datecourse/service/PlacePresenterTest.java](../../src/test/java/com/datecourse/service/PlacePresenterTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
+| [src/test/java/com/datecourse/service/PlacePriceFlowTest.java](../../src/test/java/com/datecourse/service/PlacePriceFlowTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [src/test/java/com/datecourse/service/PlaceSearchServiceTest.java](../../src/test/java/com/datecourse/service/PlaceSearchServiceTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [src/test/java/com/datecourse/service/PriceEvidenceTest.java](../../src/test/java/com/datecourse/service/PriceEvidenceTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |
 | [src/test/java/com/datecourse/service/PublicPlaceFactsTest.java](../../src/test/java/com/datecourse/service/PublicPlaceFactsTest.java) | 해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인 |

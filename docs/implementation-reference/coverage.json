@@ -1,8 +1,8 @@
 {
-  "reviewedCommit": "1a4568c",
-  "date": "2026-11-25",
+  "reviewedCommit": "15cfd44",
+  "date": "2026-11-27",
   "scope": "Shared tracked project components, excluding personal settings/secrets, IDE state, Git internals, generated outputs/caches and this reference package.",
-  "mainJavaFiles": 107,
+  "mainJavaFiles": 99,
   "mainJava": [
     {
       "path": "src/main/java/com/datecourse/app/AppLauncher.java",
@@ -23,7 +23,7 @@
           "line": 10
         }
       ],
-      "sha256": "b9ffd5102de84c15ff3bbc207469fd40b818d609638908e74a523ef7e382fa07",
+      "sha256": "97947bb6cc8a3e66e6fe22f8394a1cb7b71f6df2ce9cb73981e99b66840bf8ce",
       "nestedTypes": [],
       "fields": []
     },
@@ -54,7 +54,7 @@
           "line": 30
         }
       ],
-      "sha256": "cfd88655199d39be4e98efa89d9b759a105d496693503348154737c9f3be9b19",
+      "sha256": "f43ce39d49e5d8eed7f47fbe608a37476bb6a1d5a22560f67bec17c351c75383",
       "nestedTypes": [],
       "fields": []
     },
@@ -81,7 +81,7 @@
           "line": 79
         }
       ],
-      "sha256": "856d8dae86c525ab59565c16e45c2da8047646cc3cd31f57ba0c71498d41a4d9",
+      "sha256": "80b3aa0a6bbc5b8a96df13f3969462eec1e8983891d360c6555a105ed9eff00b",
       "nestedTypes": [],
       "fields": []
     },
@@ -104,7 +104,7 @@
           "line": 10
         }
       ],
-      "sha256": "e402d281df90570ec6346e3c60bd71464775546db49d644056159ebdcb0f456a",
+      "sha256": "c0408817d0355f87029a737a2c378e215688e4b24a2d163a8e09dc364b2174a7",
       "nestedTypes": [],
       "fields": []
     },
@@ -135,7 +135,7 @@
           "line": 30
         }
       ],
-      "sha256": "cc3910f78706c2f865fec6ab1d2e82e780a7f28214f16dbde07fa1c122ff074a",
+      "sha256": "dd3a5c9b645c22ba92dd4f07648f31073ebc6bd582f82e6e79f7b0af6938bc17",
       "nestedTypes": [
         "SetupRequiredException"
       ],
@@ -682,7 +682,7 @@
           "line": 121
         }
       ],
-      "sha256": "0ffe2bdae8926204faad984057d14487859e42d12be308045f8cfda47d039ffe",
+      "sha256": "6665a1a4802fe1eb56eef580813a898f8e138019021812a858b6d97353c372ef",
       "nestedTypes": [
         "Command",
         "Panel",
@@ -705,49 +705,7 @@
           "line": 4
         }
       ],
-      "sha256": "8aeb39c1720439efc7557b6018b1b572a2a6dc7409a5a257efb1ad15cb33f139",
-      "nestedTypes": [],
-      "fields": []
-    },
-    {
-      "path": "src/main/java/com/datecourse/demo/ConditionLauncher.java",
-      "name": "ConditionLauncher",
-      "package": "com.datecourse.demo",
-      "kind": "class",
-      "role": "회원 DB 없는 조건 화면 시연 실행",
-      "technology": [
-        "Java 표준 클래스"
-      ],
-      "methods": [
-        {
-          "name": "main",
-          "line": 4
-        }
-      ],
-      "sha256": "8e9bd1b6ffe925a2b0b81873770771c859dee41bd39b11642f8a30c91c29d24f",
-      "nestedTypes": [],
-      "fields": []
-    },
-    {
-      "path": "src/main/java/com/datecourse/demo/ConditionTestApp.java",
-      "name": "ConditionTestApp",
-      "package": "com.datecourse.demo",
-      "kind": "class",
-      "role": "조건 화면의 별도 JavaFX 시연 호스트",
-      "technology": [
-        "JavaFX"
-      ],
-      "methods": [
-        {
-          "name": "main",
-          "line": 11
-        },
-        {
-          "name": "start",
-          "line": 16
-        }
-      ],
-      "sha256": "4b5f3203aa8846a2e43f660e11c86ad17809b6618fcf177e97287fc7f5d472df",
+      "sha256": "6cf0a2896c801c4ecee8e6964e9b312a4c637125d0c01f2585f9e489d06b0414",
       "nestedTypes": [],
       "fields": []
     },
@@ -804,64 +762,7 @@
           "line": 10
         }
       ],
-      "sha256": "b39462b3825f4c0e2e26881d668824287803aafabb779b407b0585eeafc12894",
-      "nestedTypes": [],
-      "fields": []
-    },
-    {
-      "path": "src/main/java/com/datecourse/demo/PilotPlannerApp.java",
-      "name": "PilotPlannerApp",
-      "package": "com.datecourse.demo",
-      "kind": "class",
-      "role": "소규모 자료로 코스 화면 구성",
-      "technology": [
-        "JavaFX"
-      ],
-      "methods": [
-        {
-          "name": "start",
-          "line": 11
-        }
-      ],
-      "sha256": "17af71b8f8376fd837e5675bbb0815c1e39ce0f20f2828a0e3517f2d2acfc2fd",
-      "nestedTypes": [],
-      "fields": []
-    },
-    {
-      "path": "src/main/java/com/datecourse/demo/PilotPlannerLauncher.java",
-      "name": "PilotPlannerLauncher",
-      "package": "com.datecourse.demo",
-      "kind": "class",
-      "role": "소규모 장소 시연 진입점",
-      "technology": [
-        "JavaFX"
-      ],
-      "methods": [
-        {
-          "name": "main",
-          "line": 4
-        }
-      ],
-      "sha256": "da982b33e57127bd6d81665cb221314c4cd552d684bac40eec28b6bbe303f10b",
-      "nestedTypes": [],
-      "fields": []
-    },
-    {
-      "path": "src/main/java/com/datecourse/demo/PlaceBindingDemo.java",
-      "name": "PlaceBindingDemo",
-      "package": "com.datecourse.demo",
-      "kind": "class",
-      "role": "확정 외부 ID 연결표 오프라인 확인",
-      "technology": [
-        "Java 표준 클래스"
-      ],
-      "methods": [
-        {
-          "name": "main",
-          "line": 7
-        }
-      ],
-      "sha256": "84cd6fc96d406bb4343d558fc762469d62dca6dd57c281e102688315f7601da3",
+      "sha256": "8f072672230c76ae0440a31e0a6ae6751a3fe034dd9607d47fe516ac5d1133c7",
       "nestedTypes": [],
       "fields": []
     },
@@ -884,7 +785,7 @@
           "line": 29
         }
       ],
-      "sha256": "7046d3acdc50152366dfba87ae78ee606fa6c45f9c82cc5f9a571883599111ee",
+      "sha256": "94b298ff7204d8ba2a1ef3a755881b6d56c9d9799f9cd33267b10fc6cab8c856",
       "nestedTypes": [],
       "fields": []
     },
@@ -935,7 +836,7 @@
           "line": 87
         }
       ],
-      "sha256": "3f8e0a70e51cea044e073d0f32db0cc8007a9d24950fee750e3a5365906ff222",
+      "sha256": "b2d2c9a6ca43b57077c31808752c45a6acf1509ea7526121f5e35ea571303512",
       "nestedTypes": [],
       "fields": []
     },
@@ -954,7 +855,7 @@
           "line": 17
         }
       ],
-      "sha256": "47e03e331f550008267555400ef24c8559a0771f6cdb5a226aa2b71171aac2fd",
+      "sha256": "b0ba1ce33883160360f3e73fbe3db933d3d86e37916f62e62a8a21079e2305ed",
       "nestedTypes": [],
       "fields": []
     },
@@ -1768,214 +1669,206 @@
       "methods": [
         {
           "name": "initialize",
-          "line": 186
-        },
-        {
-          "name": "usePilotPlaces",
-          "line": 258
+          "line": 179
         },
         {
           "name": "setUserSession",
-          "line": 262
+          "line": 248
         },
         {
           "name": "setAccountActions",
-          "line": 269
+          "line": 255
         },
         {
           "name": "setSavedCourseRepository",
-          "line": 278
+          "line": 264
         },
         {
           "name": "setPlaceRepository",
-          "line": 283
+          "line": 269
         },
         {
           "name": "prepareStartup",
-          "line": 296
+          "line": 282
         },
         {
           "name": "finishStartup",
-          "line": 309
+          "line": 295
         },
         {
           "name": "onHome",
-          "line": 323
+          "line": 309
         },
         {
           "name": "onSavedCourses",
-          "line": 337
+          "line": 323
         },
         {
           "name": "prepareSavedPage",
-          "line": 359
+          "line": 345
         },
         {
           "name": "restoreSavedCourse",
-          "line": 368
+          "line": 354
         },
         {
           "name": "onMyPage",
-          "line": 389
+          "line": 367
         },
         {
           "name": "onLogout",
-          "line": 415
+          "line": 393
         },
         {
           "name": "logoutNow",
-          "line": 427
+          "line": 405
         },
         {
           "name": "confirmWindowClose",
-          "line": 457
+          "line": 435
         },
         {
           "name": "confirmUnsavedClose",
-          "line": 465
+          "line": 443
         },
         {
           "name": "selectNavigation",
-          "line": 474
+          "line": 452
         },
         {
           "name": "pauseForNavigation",
-          "line": 480
+          "line": 458
         },
         {
           "name": "onSaveCourse",
-          "line": 505
+          "line": 483
         },
         {
           "name": "askCourseTitle",
-          "line": 563
+          "line": 541
         },
         {
           "name": "lacksStorage",
-          "line": 573
+          "line": 551
         },
         {
           "name": "updateCourseOverview",
-          "line": 580
+          "line": 558
         },
         {
           "name": "stopLines",
-          "line": 597
+          "line": 575
         },
         {
           "name": "presentPlan",
-          "line": 610
-        },
-        {
-          "name": "changeSource",
-          "line": 635
+          "line": 588
         },
         {
           "name": "loadPlaces",
-          "line": 667
+          "line": 613
         },
         {
           "name": "call",
-          "line": 688
+          "line": 633
         },
         {
           "name": "travelMode",
-          "line": 724
+          "line": 669
         },
         {
           "name": "configureRadiusMaximum",
-          "line": 729
+          "line": 674
         },
         {
           "name": "radius",
-          "line": 735
+          "line": 680
         },
         {
           "name": "updateRange",
-          "line": 739
+          "line": 684
         },
         {
           "name": "onRecommendClick",
-          "line": 757
+          "line": 702
         },
         {
           "name": "openEditor",
-          "line": 776
+          "line": 721
         },
         {
           "name": "applyEdits",
-          "line": 785
+          "line": 730
         },
         {
           "name": "pauseEdits",
-          "line": 795
+          "line": 740
         },
         {
           "name": "showEditor",
-          "line": 805
+          "line": 750
         },
         {
           "name": "onNewCourse",
-          "line": 841
+          "line": 786
         },
         {
           "name": "resetCourse",
-          "line": 846
+          "line": 791
         },
         {
           "name": "updateResetButton",
-          "line": 874
+          "line": 819
         },
         {
           "name": "onLocationSelected",
-          "line": 899
+          "line": 844
         },
         {
           "name": "noticeOriginLocked",
-          "line": 915
+          "line": 860
         },
         {
           "name": "updateOriginProtection",
-          "line": 919
+          "line": 864
         },
         {
           "name": "onWalkingRoute",
-          "line": 925
+          "line": 870
         },
         {
           "name": "onTmapSettings",
-          "line": 930
+          "line": 875
         },
         {
           "name": "onReloadMap",
-          "line": 935
+          "line": 880
         },
         {
           "name": "reportInformation",
-          "line": 941
+          "line": 886
         },
         {
           "name": "hasCoursePlaces",
-          "line": 959
+          "line": 904
         },
         {
           "name": "hasUnsavedChanges",
-          "line": 964
+          "line": 909
         },
         {
           "name": "isReplaceCancelled",
-          "line": 973
+          "line": 918
         },
         {
           "name": "clearUserContext",
-          "line": 983
+          "line": 928
         },
         {
           "name": "ensureUserContext",
-          "line": 990
+          "line": 935
         }
       ],
-      "sha256": "76afeb5fb03d8a49d3c4174cc29e3fe2ca5dfc8a1a48b6acc28bdf396ca96e0f",
+      "sha256": "c10433ae3dc9379f2b73eec22b6907cf70a5a64f0d61d1be14174f4b69cfeb7d",
       "nestedTypes": [],
       "fields": []
     },
@@ -2311,7 +2204,7 @@
           "line": 917
         }
       ],
-      "sha256": "33f1752d0d4d9a2eee252f681939bbbd726836c5a6bbd08c2ee84c56c284bec4",
+      "sha256": "3d13f2ea7bf73bdcfeea0cad60b9559021f0345427ca3948df899ad71b3c89f7",
       "nestedTypes": [
         "FacetSelection",
         "CandidateSearch",
@@ -2345,203 +2238,189 @@
       "methods": [
         {
           "name": "저장소",
-          "line": 77
+          "line": 79
         },
         {
           "name": "true",
-          "line": 81
+          "line": 83
         },
         {
           "name": "번호",
-          "line": 82
+          "line": 84
         },
         {
           "name": "initialize",
-          "line": 104
+          "line": 102
         },
         {
           "name": "configureCourseList",
-          "line": 116
+          "line": 114
         },
         {
           "name": "updateItem",
-          "line": 148
+          "line": 146
         },
         {
           "name": "configurePreviewMap",
-          "line": 168
+          "line": 166
         },
         {
           "name": "configureDetailTables",
-          "line": 203
+          "line": 201
         },
         {
           "name": "focusPlaceRow",
-          "line": 254
+          "line": 252
         },
         {
           "name": "configureResponsiveDetails",
-          "line": 264
+          "line": 262
         },
         {
           "name": "layoutDetailTables",
-          "line": 269
+          "line": 267
         },
         {
           "name": "configureMessages",
-          "line": 292
+          "line": 290
         },
         {
           "name": "configure",
-          "line": 302
+          "line": 300
         },
         {
           "name": "clear",
-          "line": 317
+          "line": 315
         },
         {
           "name": "dispose",
-          "line": 332
+          "line": 330
         },
         {
           "name": "onNewCourseClick",
-          "line": 345
+          "line": 343
         },
         {
           "name": "onMapRetry",
-          "line": 350
+          "line": 348
         },
         {
           "name": "onOpenClick",
-          "line": 359
+          "line": 357
         },
         {
           "name": "onRefreshClick",
-          "line": 365
+          "line": 363
         },
         {
           "name": "onRenameClick",
-          "line": 372
+          "line": 370
         },
         {
           "name": "onDeleteClick",
-          "line": 392
+          "line": 390
         },
         {
           "name": "loadCourses",
-          "line": 415
+          "line": 413
         },
         {
           "name": "showDetail",
-          "line": 447
+          "line": 445
         },
         {
           "name": "showPreview",
-          "line": 466
+          "line": 463
         },
         {
           "name": "showMapPreview",
-          "line": 524
+          "line": 521
         },
         {
           "name": "onSelectMap",
-          "line": 546
+          "line": 543
         },
         {
           "name": "onSelectImage",
-          "line": 552
+          "line": 549
         },
         {
           "name": "onLoadMap",
-          "line": 557
+          "line": 554
         },
         {
           "name": "focusPendingPlace",
-          "line": 563
+          "line": 560
         },
         {
           "name": "rememberMapPrepared",
-          "line": 571
+          "line": 568
         },
         {
           "name": "cachedRoute",
-          "line": 576
+          "line": 573
         },
         {
           "name": "travelText",
-          "line": 582
+          "line": 579
         },
         {
           "name": "refreshTravelInformation",
-          "line": 587
+          "line": 584
         },
         {
           "name": "onToggleMap",
-          "line": 601
+          "line": 598
         },
         {
           "name": "onRequestRoute",
-          "line": 607
+          "line": 604
         },
         {
           "name": "showMapError",
-          "line": 616
+          "line": 613
         },
         {
           "name": "refreshMapNotice",
-          "line": 622
+          "line": 619
         },
         {
           "name": "updatePreviewControls",
-          "line": 636
+          "line": 633
         },
         {
           "name": "buildPreviewCaption",
-          "line": 656
+          "line": 653
         },
         {
           "name": "buildMapNotice",
-          "line": 665
+          "line": 662
         },
         {
           "name": "updateButtons",
-          "line": 677
+          "line": 674
         },
         {
           "name": "title",
-          "line": 693
+          "line": 690
         },
         {
           "name": "updatedText",
-          "line": 696
-        },
-        {
-          "name": "toCourseDetailRow",
-          "line": 704
-        },
-        {
-          "name": "configurePlaceRows",
-          "line": 711
-        },
-        {
-          "name": "toPlaceInfoRow",
-          "line": 716
+          "line": 693
         },
         {
           "name": "setWrappingCellFactory",
-          "line": 728
+          "line": 701
         },
         {
           "name": "run",
-          "line": 745
+          "line": 718
         }
       ],
-      "sha256": "17b914a70d96c7f2a95227b6a89899d4b555b337cd29720c00a37c949efa14a5",
+      "sha256": "74d180ab5038aff4272836117ff6988ed59a56128efafa766b76315da216ccc8",
       "nestedTypes": [
         "RouteSummary",
-        "PreviewImage",
-        "CourseDetailRow",
-        "PlaceInfoRow"
+        "PreviewImage"
       ],
       "fields": []
     },
@@ -2572,7 +2451,7 @@
           "line": 39
         }
       ],
-      "sha256": "78873b7b468c0cbde1283d481d6db5a376fcbdf8fe2afe681b8897dc4a05c501",
+      "sha256": "cf0f734692eaeabdce9e0c4b32d29014f690beb3d463662b93640fd37fa6fd36",
       "nestedTypes": [],
       "fields": []
     },
@@ -2855,7 +2734,7 @@
           "line": 190
         }
       ],
-      "sha256": "b3346eb5ae4ed755a019af4881a166644b3a7ce4117626eb259b597d93353ca5",
+      "sha256": "779f67595b31c15ddffb71d5f30fa28fdf131b7cfe0c8ec4d69efbb1e6644290",
       "nestedTypes": [
         "ThinScrollBarUI"
       ],
@@ -3739,7 +3618,7 @@
           "line": 53
         }
       ],
-      "sha256": "db0e4af2331542c0c93973011b3ca21006a3755674981694a5eb1d8560d8fcd1",
+      "sha256": "6258eba5977a64539abaef82a5888568be9f8441423f6889180ca2ccea1f76e9",
       "nestedTypes": [],
       "fields": []
     },
@@ -3938,7 +3817,7 @@
           "line": 39
         }
       ],
-      "sha256": "b4f47c09d113bebd5cad746d07bc5f95b1361a6ef2136df41156b9d2754920c5",
+      "sha256": "8b7edc52da817167e6f0c9ac68557b9bd00d78b2439c852e7a54abe53ec2be67",
       "nestedTypes": [],
       "fields": []
     },
@@ -4401,80 +4280,14 @@
       "methods": [
         {
           "name": "candidates",
-          "line": 14
+          "line": 23
         },
         {
           "name": "matching",
-          "line": 41
+          "line": 30
         }
       ],
-      "sha256": "a3942f7d834573c0dbd19d4f2d40f3802eaa1df8d15c4946e3cde452ddc867fe",
-      "nestedTypes": [],
-      "fields": []
-    },
-    {
-      "path": "src/main/java/com/datecourse/service/PilotPlaceRepository.java",
-      "name": "PilotPlaceRepository",
-      "package": "com.datecourse.service",
-      "kind": "class",
-      "role": "소규모 대조 완료 시연 자료 읽기",
-      "technology": [
-        "Jackson"
-      ],
-      "methods": [
-        {
-          "name": "findAll",
-          "line": 20
-        },
-        {
-          "name": "read",
-          "line": 27
-        }
-      ],
-      "sha256": "33c7321ef8a59d0189ba78f581644c3262f88dc75a54367dafc0a977b86bdbe8",
-      "nestedTypes": [],
-      "fields": []
-    },
-    {
-      "path": "src/main/java/com/datecourse/service/PlaceBindingCatalog.java",
-      "name": "PlaceBindingCatalog",
-      "package": "com.datecourse.service",
-      "kind": "class",
-      "role": "자료 버전과 일치하는 외부 ID 연결표 읽기",
-      "technology": [
-        "Jackson"
-      ],
-      "methods": [
-        {
-          "name": "PlaceBindingCatalog",
-          "line": 38
-        },
-        {
-          "name": "load",
-          "line": 45
-        },
-        {
-          "name": "googlePlaceId",
-          "line": 80
-        },
-        {
-          "name": "reviewedGoogleLink",
-          "line": 90
-        },
-        {
-          "name": "size",
-          "line": 96
-        },
-        {
-          "name": "requiredText",
-          "line": 98
-        },
-        {
-          "name": "sha256",
-          "line": 106
-        }
-      ],
-      "sha256": "0d7701d5bfa83526ef8c8b9dbca25d422da786a7b59d1f9b660a510c61b9c448",
+      "sha256": "6bc552e8d1ee88fb894d96907d23d16de90869c2aaf61958a4ec47362e1147e4",
       "nestedTypes": [],
       "fields": []
     },
@@ -4664,25 +4477,6 @@
       "fields": []
     },
     {
-      "path": "src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java",
-      "name": "PublicDemoPlaceRepository",
-      "package": "com.datecourse.service",
-      "kind": "class",
-      "role": "내장 공공 시연 자료 읽기",
-      "technology": [
-        "Java 표준 클래스"
-      ],
-      "methods": [
-        {
-          "name": "findAll",
-          "line": 14
-        }
-      ],
-      "sha256": "6ca59ccec99845fa731e26d049ea1041cdc90ed9ad026366f4d80bf6678d20f7",
-      "nestedTypes": [],
-      "fields": []
-    },
-    {
       "path": "src/main/java/com/datecourse/service/PublicPlaceFacts.java",
       "name": "PublicPlaceFacts",
       "package": "com.datecourse.service",
@@ -4701,15 +4495,19 @@
           "line": 20
         },
         {
+          "name": "readPlaces",
+          "line": 75
+        },
+        {
           "name": "required",
-          "line": 74
+          "line": 113
         },
         {
           "name": "sha256",
-          "line": 79
+          "line": 118
         }
       ],
-      "sha256": "b6649b1f10e93c65a19bc5e3a5f3cc26f12cd7f5b36d13f2c603975b9fe59129",
+      "sha256": "ac29bdadd7307b89403d649e37fbbaf26a1e2b26a0e25be3d3f9525fdd256115",
       "nestedTypes": [],
       "fields": []
     },
@@ -4754,15 +4552,17 @@
       "methods": [
         {
           "name": "costSummary",
-          "line": 19
+          "line": 24
         },
         {
           "name": "present",
-          "line": 31
+          "line": 36
         }
       ],
-      "sha256": "a1a83b4d09aa7c1cf4b058cdedd202c8d4c6925b05491eb9ec01b8db6c4c1d52",
+      "sha256": "0ca8a8ba301737130f4734dad5829f4c6f5d75680d4b459555019d0e5bb8a547",
       "nestedTypes": [
+        "CourseDetailRow",
+        "PlaceInfoRow",
         "Summary"
       ],
       "fields": []
@@ -5040,6 +4840,291 @@
       "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
     },
     {
+      "path": "archive/legacy-place-demo/.gitattributes",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/README.md",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/.gitattributes.original",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/README.md",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/additional_facility_facts.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/busanjin_model_restaurants.csv",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/checksums.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/demo_appeal_facts.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/demo_nearest_transit.csv",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/designation_links.csv",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/designation_review_needed.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/busan_bus_stops.csv",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/busan_railway_stations.csv",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/busanjin_model_restaurants_cp949.csv",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/raw/national_railway_original.xlsx",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/sources.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/summary.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/threshold_comparison.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/.gitattributes",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/README.md",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/expansion-baseline-2026-11-16.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/expansion-report-2026-11-16.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/rehearsal-place-checks-2026-11-14.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/rehearsal-place-checks-culture-alternatives-2026-11-14.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/rehearsal-place-checks-district-recheck-2026-11-14.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/selection-policy.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/seomyeon-jeonpo-demo.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/demo/seomyeon-public-estimates.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/README.md",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v3.csv",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v5.csv",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-sample-v2.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/contact-source-overrides.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-evaluation-v2.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-refinement-v3.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-review.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v2.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v3.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v4.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v5.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-evaluation-v4.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-reconciled-v5.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/manifest.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13/places.csv",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/manifest.json",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/main/java/com/datecourse/demo/ConditionLauncher.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/main/java/com/datecourse/demo/ConditionTestApp.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/main/java/com/datecourse/demo/PilotPlannerApp.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/main/java/com/datecourse/demo/PilotPlannerLauncher.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/main/java/com/datecourse/demo/PlaceBindingDemo.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/main/java/com/datecourse/service/PilotPlaceRepository.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/main/java/com/datecourse/service/PlaceBindingCatalog.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/test/java/com/datecourse/service/PilotPriceFlowTest.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/test/java/com/datecourse/service/PlaceBindingCatalogTest.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
+      "path": "archive/legacy-place-demo/src/test/java/com/datecourse/service/PublicPlaceFactsTest.java",
+      "group": "보관 원본·별도 검사",
+      "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
+    },
+    {
       "path": "archive/legacy-ui/README.md",
       "group": "보관 원본·별도 검사",
       "role": "보관 원본·과거 검증: 기본 앱 기능과 구분"
@@ -5200,86 +5285,6 @@
       "role": "텍스트 줄바꿈 고정·자료 지문 재현 보조"
     },
     {
-      "path": "data/places/appeal/busan-2026-11-14/.gitattributes",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "텍스트 줄바꿈 고정·자료 지문 재현 보조"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/README.md",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "앱 기능·실행·현재 검증 안내"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/additional_facility_facts.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "장소 속성·시설·근거 자료"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/busanjin_model_restaurants.csv",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "공공 원본·정규화·표본·연결표; 폴더 명세로 구분"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/checksums.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "원본/출력 지문·출처·수집 명세"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/demo_appeal_facts.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "장소 속성·시설·근거 자료"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/demo_nearest_transit.csv",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "공공 원본·정규화·표본·연결표; 폴더 명세로 구분"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/designation_links.csv",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "공공 원본·정규화·표본·연결표; 폴더 명세로 구분"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/designation_review_needed.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "품질·가격·모의 결과·검토 기록"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/raw/busan_bus_stops.csv",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "공공 원본·정규화·표본·연결표; 폴더 명세로 구분"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/raw/busan_railway_stations.csv",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "공공 원본·정규화·표본·연결표; 폴더 명세로 구분"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/raw/busanjin_model_restaurants_cp949.csv",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "공공 원본·정규화·표본·연결표; 폴더 명세로 구분"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/raw/national_railway_original.xlsx",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/sources.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/summary.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/appeal/busan-2026-11-14/threshold_comparison.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
       "path": "data/places/appeal/designation-sources.json",
       "group": "공공 원본·기준본·검증 이력",
       "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
@@ -5293,56 +5298,6 @@
       "path": "data/places/current/integrated_places.csv",
       "group": "공공 원본·기준본·검증 이력",
       "role": "공공 원본·정규화·표본·연결표; 폴더 명세로 구분"
-    },
-    {
-      "path": "data/places/demo/.gitattributes",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "텍스트 줄바꿈 고정·자료 지문 재현 보조"
-    },
-    {
-      "path": "data/places/demo/README.md",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "앱 기능·실행·현재 검증 안내"
-    },
-    {
-      "path": "data/places/demo/expansion-baseline-2026-11-16.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/demo/expansion-report-2026-11-16.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "품질·가격·모의 결과·검토 기록"
-    },
-    {
-      "path": "data/places/demo/rehearsal-place-checks-2026-11-14.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/demo/rehearsal-place-checks-culture-alternatives-2026-11-14.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/demo/rehearsal-place-checks-district-recheck-2026-11-14.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/demo/selection-policy.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "자료 선택 범위·개수·분류 정책"
-    },
-    {
-      "path": "data/places/demo/seomyeon-jeonpo-demo.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/demo/seomyeon-public-estimates.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
     },
     {
       "path": "data/places/expansion/.gitattributes",
@@ -5825,91 +5780,6 @@
       "role": "자료 선택 범위·개수·분류 정책"
     },
     {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/README.md",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "앱 기능·실행·현재 검증 안내"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v3.csv",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "품질·가격·모의 결과·검토 기록"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v5.csv",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "품질·가격·모의 결과·검토 기록"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-sample-v2.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/contact-source-overrides.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-evaluation-v2.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-refinement-v3.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-review.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "품질·가격·모의 결과·검토 기록"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v2.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v3.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v4.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v5.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-evaluation-v4.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-reconciled-v5.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "해당 폴더의 설정·자료·지원 자원; 원본/안내에서 범위 확인"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/manifest.json",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "원본/출력 지문·출처·수집 명세"
-    },
-    {
-      "path": "data/places/pilot/seomyeon-jeonpo-2026-11-13/places.csv",
-      "group": "공공 원본·기준본·검증 이력",
-      "role": "공공 원본·정규화·표본·연결표; 폴더 명세로 구분"
-    },
-    {
       "path": "data/places/pricing/.gitattributes",
       "group": "공공 원본·기준본·검증 이력",
       "role": "텍스트 줄바꿈 고정·자료 지문 재현 보조"
@@ -6351,6 +6221,11 @@
     },
     {
       "path": "docs/review-2026-11-25.md",
+      "group": "설계·검토·변경 문서",
+      "role": "품질·가격·모의 결과·검토 기록"
+    },
+    {
+      "path": "docs/review-flow-cleanup-2026-11-27.md",
       "group": "설계·검토·변경 문서",
       "role": "품질·가격·모의 결과·검토 기록"
     },
@@ -7845,16 +7720,6 @@
       "role": "카메라 시연 진입점"
     },
     {
-      "path": "src/main/java/com/datecourse/demo/ConditionLauncher.java",
-      "group": "앱 Java",
-      "role": "회원 DB 없는 조건 화면 시연 실행"
-    },
-    {
-      "path": "src/main/java/com/datecourse/demo/ConditionTestApp.java",
-      "group": "앱 Java",
-      "role": "조건 화면의 별도 JavaFX 시연 호스트"
-    },
-    {
       "path": "src/main/java/com/datecourse/demo/CoursePreviewSetup.java",
       "group": "앱 Java",
       "role": "이전 명령에서 이미지 구조 준비로 위임"
@@ -7868,21 +7733,6 @@
       "path": "src/main/java/com/datecourse/demo/KakaoRouteProbe.java",
       "group": "앱 Java",
       "role": "명시적 실제 카카오 경로 점검"
-    },
-    {
-      "path": "src/main/java/com/datecourse/demo/PilotPlannerApp.java",
-      "group": "앱 Java",
-      "role": "소규모 자료로 코스 화면 구성"
-    },
-    {
-      "path": "src/main/java/com/datecourse/demo/PilotPlannerLauncher.java",
-      "group": "앱 Java",
-      "role": "소규모 장소 시연 진입점"
-    },
-    {
-      "path": "src/main/java/com/datecourse/demo/PlaceBindingDemo.java",
-      "group": "앱 Java",
-      "role": "확정 외부 ID 연결표 오프라인 확인"
     },
     {
       "path": "src/main/java/com/datecourse/demo/PublicPlaceImport.java",
@@ -8225,16 +8075,6 @@
       "role": "조건에 맞는 다음 후보를 거리순으로 선택"
     },
     {
-      "path": "src/main/java/com/datecourse/service/PilotPlaceRepository.java",
-      "group": "앱 Java",
-      "role": "소규모 대조 완료 시연 자료 읽기"
-    },
-    {
-      "path": "src/main/java/com/datecourse/service/PlaceBindingCatalog.java",
-      "group": "앱 Java",
-      "role": "자료 버전과 일치하는 외부 ID 연결표 읽기"
-    },
-    {
       "path": "src/main/java/com/datecourse/service/PlaceCalculationService.java",
       "group": "앱 Java",
       "role": "좌표 사이 구면 거리·이전 정액 계산"
@@ -8263,11 +8103,6 @@
       "path": "src/main/java/com/datecourse/service/PlaceSource.java",
       "group": "앱 Java",
       "role": "장소 조회의 공통 계약"
-    },
-    {
-      "path": "src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java",
-      "group": "앱 Java",
-      "role": "내장 공공 시연 자료 읽기"
     },
     {
       "path": "src/main/java/com/datecourse/service/PublicPlaceFacts.java",
@@ -8635,22 +8470,17 @@
       "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
     },
     {
-      "path": "src/test/java/com/datecourse/service/PilotPriceFlowTest.java",
-      "group": "앱 검사",
-      "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
-    },
-    {
-      "path": "src/test/java/com/datecourse/service/PlaceBindingCatalogTest.java",
-      "group": "앱 검사",
-      "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
-    },
-    {
       "path": "src/test/java/com/datecourse/service/PlaceCalculationServiceTest.java",
       "group": "앱 검사",
       "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
     },
     {
       "path": "src/test/java/com/datecourse/service/PlacePresenterTest.java",
+      "group": "앱 검사",
+      "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
+    },
+    {
+      "path": "src/test/java/com/datecourse/service/PlacePriceFlowTest.java",
       "group": "앱 검사",
       "role": "해당 대상의 자동 회귀 검사·모의 입력; 실연동 조건은 본문 확인"
     },
@@ -8877,17 +8707,17 @@
   ],
   "counts": {
     "프로젝트 기본 설정·탐색 안내": 12,
-    "보관 원본·별도 검사": 35,
-    "공공 원본·기준본·검증 이력": 177,
+    "보관 원본·별도 검사": 92,
+    "공공 원본·기준본·검증 이력": 134,
     "SQL 구조·마이그레이션": 11,
-    "설계·검토·변경 문서": 58,
+    "설계·검토·변경 문서": 59,
     "팀 사이트 원본·자원·설정": 207,
     "팀 사이트 서버·공유 상태": 15,
     "사이트 로직 검사": 15,
     "사이트 빌드·표시 검사": 31,
-    "앱 Java": 107,
+    "앱 Java": 99,
     "화면·지도·스타일·공개 설정 예제": 21,
-    "앱 검사": 57,
+    "앱 검사": 56,
     "자료·운영 도구·검사": 32
   },
   "reasonBasis": "Capabilities actually used and implementation effects; not undocumented historical author decisions."

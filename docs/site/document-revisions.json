@@ -506,8 +506,8 @@
       "present": false
     },
     "업데이트_내역.md": {
-      "fingerprint": "ed2810bf2fb3142b20fffe4bb6d3a876e10ae3c16d4bc1c7c9440691fa999ea2",
-      "revision": 49,
+      "fingerprint": "2abdca0030411df2f43b6cc3254a82e86806a9fa855f5370c9d2bd15bcde6d2c",
+      "revision": 50,
       "updated": true,
       "present": true
     },
@@ -974,8 +974,8 @@
       "present": true
     },
     "기능별_구현/03-recommendation.md": {
-      "fingerprint": "919f31366e0ac8478b4fb4772b7af3c85654ff4568b90589c52e8caa9f201388",
-      "revision": 5,
+      "fingerprint": "93e4d46835ebcc3b74fd911bd4fc37ad67989c8b225b05e46120e4fda84c0880",
+      "revision": 6,
       "updated": true,
       "present": true
     },
@@ -992,14 +992,14 @@
       "present": true
     },
     "기능별_구현/06-routing.md": {
-      "fingerprint": "1de2e2001d2a80aad7f919645a60c68b4c5e5e61d554544cd4a69d4b539d1780",
-      "revision": 5,
+      "fingerprint": "b1b67fbb27f1b30cee4310666b82ebdc830a51d0c52fab667830d0ce31c86a93",
+      "revision": 6,
       "updated": true,
       "present": true
     },
     "기능별_구현/07-saved-courses.md": {
-      "fingerprint": "1fe35f633ad00f74b811700c5049954175fddefdd897a020a8e2fb4c8fed1950",
-      "revision": 5,
+      "fingerprint": "8b926ecb7c184461dfed63fc8595fef5618837d7af7d4c6bb15467341ca8368a",
+      "revision": 6,
       "updated": true,
       "present": true
     },
@@ -1016,8 +1016,8 @@
       "present": true
     },
     "기능별_구현/10-place-data.md": {
-      "fingerprint": "e60a0b2aaddc1e99fcfc4b867df34913e72040b85e0184bb1d27880b450d8b34",
-      "revision": 5,
+      "fingerprint": "a5e026b2f63e80b05326be16d144a1cddabc5f073fc2f8b204ffa35adeb220b6",
+      "revision": 6,
       "updated": true,
       "present": true
     },
