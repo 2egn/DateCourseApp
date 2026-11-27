@@ -11,7 +11,7 @@ import java.util.*;
 
 /**
  * - 카카오 API 기반 자동차 및 대중교통 경로 조회용 클래스
- * - 응답은 현재 화면에서만 사용하며 DB나 재사용 캐시에 저장하지 않음
+ * - TravelRouteService에서 호출, API 응답을 공통 경로 모델 TravelRoute로 변환
  */
 public final class KakaoRouteService {
     private static final int MAX_RESPONSE_BYTES=4*1024*1024;
@@ -23,6 +23,11 @@ public final class KakaoRouteService {
     public KakaoRouteService(){this(HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).followRedirects(HttpClient.Redirect.NEVER).build(),DRIVING,TRANSIT);}
     KakaoRouteService(HttpClient client,URI driving,URI transit){this.client=client;drivingEndpoint=driving;transitEndpoint=transit;}
 
+    /**
+     * 방문 순서대로 인접 두 지점의 자동차·대중교통 경로 조회, 좌표·거리(m)·시간(초)을 TravelRoute로 통합
+     * 도보 단독 조회는 TMAP 담당, 혼합 모드는 TravelRouteService가 이 결과를 TransitWalkingRouteService에 전달
+     * 같은 좌표는 API 호출 없이 거리·시간 0으로 처리, 조회 도중 취소 요청 확인
+     */
     public TravelRoute route(List<Stop> input,TravelMode mode,KakaoRouteSettings settings)throws IOException,InterruptedException {
         var stops=List.copyOf(input);
         if(mode!=TravelMode.DRIVING&&mode!=TravelMode.TRANSIT)throw new IllegalArgumentException("카카오 자동차·대중교통 경로를 선택해 주세요.");
@@ -46,6 +51,7 @@ public final class KakaoRouteService {
         return new TravelRoute(legs,distance,time,mode,"카카오");
     }
 
+    // HttpClient로 API 요청, HTTP 오류와 지연을 화면 안내용 예외로 변환
     private JsonNode request(URI uri,KakaoRouteSettings settings,TravelMode mode)throws IOException,InterruptedException {
         var request=HttpRequest.newBuilder(uri).timeout(Duration.ofSeconds(20))
                 .header("Authorization","KakaoAK "+settings.restApiKey()).header("Accept","application/json").GET().build();
@@ -70,6 +76,7 @@ public final class KakaoRouteService {
         }
     }
 
+    // 성공한 자동차 경로의 요약·도로 좌표·회전 안내를 Leg로 변환, 좌표 없는 경로는 오류 처리
     Leg driving(JsonNode body,Stop from,Stop to)throws IOException {
         try {
             JsonNode selected=null;
@@ -94,10 +101,13 @@ public final class KakaoRouteService {
         }catch(IllegalArgumentException|ArithmeticException error){throw malformed();}
     }
 
+    // 정상 응답의 경로 없음과 인증·통신·형식 오류를 구분, 혼합 모드의 도보 대체 판단에 사용
     static final class NoTransitRouteException extends IOException {
         NoTransitRouteException(){super("선택 위치 사이의 대중교통 경로가 없어요.");}
     }
 
+    // 대중교통 후보 중 총시간이 가장 짧은 경로 선택, 버스·지하철·도보 단계와 요금·환승 정보 보존
+    // API가 제공한 구간 총시간 사용, 도보 구간을 TMAP 시간으로 교체하거나 이중 합산하지 않음
     Leg transit(JsonNode body,Stop from,Stop to)throws IOException {
         String status=body.path("status").asText();
         if(Set.of("NO_RESULTS","STARTNODES_NULL","ENDNODES_NULL","EQUAL_POINTS").contains(status))
@@ -142,9 +152,11 @@ public final class KakaoRouteService {
         if(node.path(key).isMissingNode()||node.path(key).isNull())return null;
         long value=number(node,key);if(value>Integer.MAX_VALUE)throw new IllegalArgumentException();return (int)value;
     }
+    // API의 x=경도·y=위도를 공통 모델의 위도·경도 순서로 변환
     private static Coordinate coordinate(JsonNode x,JsonNode y) {
         if(!x.isNumber()||!y.isNumber())throw new IllegalArgumentException();return new Coordinate(y.doubleValue(),x.doubleValue());
     }
+    // 이동 거리가 있는데 상세 좌표가 없으면 직선 대체 없이 실패로 처리
     private static void requireGeometry(long distance,List<List<Coordinate>> paths)throws IOException {
         if(distance>0&&paths.isEmpty())throw new IOException("경로의 상세 좌표를 받지 못했어요. 직선으로 대체하지 않고 다시 조회할 수 있어요.");
     }

@@ -3,7 +3,7 @@
   "baselineDataset": "data/places/pricing/2026-11-24/staged/places.json",
   "baselineFacts": "data/places/pricing/clock-correction-2026-11-24/facts.json",
   "baselineDatasetSha256": "8441730f69b6d69fca74b7fca954b52818bcc4cb1208d386b9fa4125abc4b06b",
-  "baselineFactsSha256": "4e33ef99668fa67c7378526b51407febe75eabf8ecb896320ccd60dda269e85f",
+  "baselineFactsSha256": "2c4df4b139be9bece4b56d8700ae4862f832c441cfb923f1837b5cc6d70c6d68",
   "baselinePlaces": 2040,
   "preparedPlaces": 2138,
   "addedPlaces": 98,

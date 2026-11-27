@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-11-27",
+  "scope": "repository_baseline_metadata_only",
+  "source": "data/places/pricing/clock-correction-2026-11-24/facts.json",
+  "firstTrackedCommit": "933fd85",
+  "previousRecordedSha256": "4e33ef99668fa67c7378526b51407febe75eabf8ecb896320ccd60dda269e85f",
+  "verifiedRepositorySha256": "2c4df4b139be9bece4b56d8700ae4862f832c441cfb923f1837b5cc6d70c6d68",
+  "updatedReferences": [
+    "baseline.json:baselineFactsSha256",
+    "appeal/checksums.json:inputs"
+  ],
+  "evidence": {
+    "matchesFirstTrackedBlob": true,
+    "retainedBaselineFactRows": 2040,
+    "allBaselineRowsEqualToJungGuExpansion": true,
+    "productionDatasetAndFactsUnchanged": true
+  },
+  "limitations": "The earlier recorded digest cannot be reproduced from the first tracked blob, LF/CRLF or UTF-8 BOM variants. The bytes that produced it are not available; no claim of recovering that original artifact is made.",
+  "preservedHistoricalReports": [
+    "data/places/pricing/clock-correction-2026-11-24/preflight.json",
+    "data/places/pricing/clock-correction-2026-11-24/correction-result.json"
+  ],
+  "operationalDatabaseAccessed": false
+}

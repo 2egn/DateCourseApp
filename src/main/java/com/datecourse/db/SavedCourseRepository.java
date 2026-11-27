@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * - 회원별 코스 저장, 조회, 이름 변경 및 삭제용 DB 클래스
- * - 코스 본문과 장소 스냅샷을 같은 트랜잭션으로 처리, 연결 풀은 외부에서 전달
+ * - RoutePlan과 장소 스냅샷을 같은 트랜잭션으로 보존, 연결 풀은 외부에서 전달
  */
 public final class SavedCourseRepository {
     private final DataSource dataSource;
@@ -47,7 +47,10 @@ public final class SavedCourseRepository {
         this.previewRenderer = Objects.requireNonNull(renderer);
     }
 
-    /** 정렬된 단일 조회로 코스와 저장 당시 장소를 복원. 현재 장소 원본과 별도로 처리 */
+    /**
+     * 로그인 회원의 코스·방문 순서를 단일 조회로 복원
+     * 현재 장소 원본 대신 저장 당시 스냅샷 사용, 결과는 SavedCourse로 반환
+     */
     public List<SavedCourse> findAll(UserSession session) throws SQLException {
         requireSession(session);
         try (Connection connection = dataSource.getConnection();
@@ -100,7 +103,7 @@ public final class SavedCourseRepository {
             statement.setString(1, title);
             statement.setLong(2, courseId);
             statement.setLong(3, session.memberId());
-            // MySQL may return zero for an unchanged name; verify ownership with the same connection.
+            // 같은 이름으로 변경 시 갱신 건수가 0일 수 있어 동일 연결로 소유권 재확인
             if (statement.executeUpdate() == 0) {
                 try (PreparedStatement check = connection.prepareStatement(
                         "SELECT course_id FROM saved_courses WHERE course_id=? AND member_id=?")) {
@@ -139,7 +142,10 @@ public final class SavedCourseRepository {
         return persist(session, courseId, plan);
     }
 
-    /** 정적 이미지 생성 없이 코스 본문만 저장. 지도 표시는 저장 코스 화면에서 처리 */
+    /**
+     * CoursePlannerController의 저장 진입점, 코스·장소 스냅샷을 이미지 생성 없이 저장
+     * courseId가 없으면 신규 저장, 있으면 본인 코스 수정
+     */
     public SavedCourse saveWithoutPreview(UserSession session, Long courseId, RoutePlan plan) throws SQLException {
         if (courseId != null && courseId <= 0) throw new IllegalArgumentException("저장 코스 번호를 확인해 주세요.");
         return persist(session, courseId, plan, ignored -> null, false).course();

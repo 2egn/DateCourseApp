@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * 공통 조건과 확정본을 소유한다. 편집 화면은 별도의 복사본만 변경한다.
+ * 공통 조건·확정 코스 관리용 컨트롤러, CourseEditorController에는 별도 편집본 전달
  * <p>코드 순서 (condition-view.fxml 순서와 동일)
  * <ol>
  *   <li>상수</li>
@@ -876,6 +876,7 @@ public class CoursePlannerController extends BasePageController {
         notifyUser(PageFeedback.Kind.INFO, "출발지를 변경하려면 현재 코스를 초기화해 주세요.");
     }
 
+    // 선택한 장소가 있으면 CourseMapView의 출발지 변경을 잠가 지도 오클릭 방지
     private void updateOriginProtection() {
         map.setOriginLocked(hasCoursePlaces());
     }

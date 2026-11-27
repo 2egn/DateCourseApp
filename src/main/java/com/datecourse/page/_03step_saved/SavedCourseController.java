@@ -16,8 +16,8 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * 저장한 코스 화면 컨트롤러 (saved-course-view.fxml과 연결).
- * 목록과 상세 화면은 플래너에 전달할 동일한 저장 코스를 사용한다.
+ * 저장 코스 목록·상세·이미지/지도 전환용 컨트롤러 (saved-course-view.fxml 연결)
+ * SavedCourseRepository의 조회 결과 표시, 재편집 시 CoursePlannerController에 코스 전달
  *
  * <p>구성 순서 (FXML과 동일):
  * <ol>
@@ -564,6 +564,7 @@ public class SavedCourseController extends BasePageController {
         selectedPreviewView=true; mapSelected=false;
         refreshMapNotice();
     }
+    // 지도 불러오기 버튼의 진입점, 이미지 확인 완료 후 CourseMapView로 지도 준비
     @FXML private void onLoadMap() {
         if (previewCourse==null || !mapSelected || showingMap || previewLoading) return;
         showMapPreview();

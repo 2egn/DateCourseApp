@@ -5,13 +5,17 @@ import java.util.Locale;
 
 /**
  * - 장소별 가격에 인원을 적용한 예상 비용 계산용 모델
- * - 1인 기준으로 환산 가능한 금액만 합산, 미확인 및 추정 장소 수는 따로 표시
+ * - Place의 PriceEstimate를 기준으로 합산, 미확인 및 추정 장소 수는 별도 보존
  */
 public record CostEstimate(long minimum, Long maximum, int unknownPlaces, int placeCount, int estimatedPlaces) {
     public CostEstimate(long minimum, Long maximum, int unknownPlaces, int placeCount) {
         this(minimum, maximum, unknownPlaces, placeCount, 0);
     }
-    // 장소별 가격 범위에 인원을 곱하고 미확인·추정 장소 수를 같이 계산
+    /**
+     * PriceEstimate의 최소·최대 금액에 인원을 곱해 합산, 미확인은 금액 대신 장소 수로 보존
+     * 추정 금액도 계산에 포함하되 estimatedPlaces로 구분, 총액의 근거가 확정값처럼 보이지 않게 처리
+     * 가격 보완은 사전 데이터 도구에서 수행, 여기서는 전달받은 가격만 계산
+     */
     public static CostEstimate of(List<Place> places, int people) {
         if (people < 1 || people > 20) throw new IllegalArgumentException("인원은 1~20명이어야 합니다.");
         long lower = 0, upper = 0;
@@ -22,7 +26,9 @@ public record CostEstimate(long minimum, Long maximum, int unknownPlaces, int pl
             PriceEstimate price = place.priceEstimate();
             if (!price.usablePerPerson()) { unknown++; continue; }
             if (price.estimated()) estimated++;
+            // long 연산과 Exact 계열로 금액 초과 시 잘못된 합계 대신 예외 발생
             lower = Math.addExact(lower, Math.multiplyExact((long) price.minimum(), people));
+            // 상한 없는 가격이 포함되면 총비용 상한도 미확정 처리
             if (price.maximum() == null) open = true;
             else upper = Math.addExact(upper, Math.multiplyExact((long) price.maximum(), people));
         }
@@ -36,6 +42,7 @@ public record CostEstimate(long minimum, Long maximum, int unknownPlaces, int pl
         return minimum;
     }
 
+    // 계산된 금액과 미확인·추정 장소 수를 구분해 표시
     public String display() {
         if (placeCount == 0) return "선택한 장소 없음";
         if (unknownPlaces == placeCount) return "가격 미확인 " + unknownPlaces + "곳";
@@ -45,6 +52,7 @@ public record CostEstimate(long minimum, Long maximum, int unknownPlaces, int pl
                 + (estimatedPlaces == 0 ? "" : " · 추정 " + estimatedPlaces + "곳 포함");
     }
 
+    // 단일 금액·최소~최대·최소 이상 중 가격 범위에 맞는 표현 반환
     public String amountDisplay() {
         return maximum == null ? won(minimum) + " 이상"
                 : minimum == maximum ? won(minimum) : won(minimum) + "~" + won(maximum);

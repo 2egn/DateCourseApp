@@ -11,7 +11,11 @@ import java.util.List;
 public final class TravelRouteService {
     private final WalkingRouteService walking=new WalkingRouteService();
     private final KakaoRouteService kakao=new KakaoRouteService();
-    // 선택 수단에 따라 TMAP 도보, 카카오 자동차 또는 도보·대중교통 비교 서비스 호출
+    /**
+     * 화면에서 선택한 이동수단을 제공사별 경로 조회로 연결하는 공통 진입점
+     * 도보는 TMAP, 자동차는 카카오, 혼합은 두 제공사의 구간 조회 함수를 TransitWalkingRouteService에 전달
+     * 설정은 요청 시 불러오고, 실제 경로 응답 검증·변환은 각 제공사 서비스에서 담당
+     */
     public TravelRoute route(List<Stop> stops,TravelMode mode)throws Exception {
         if(mode==TravelMode.WALKING)return walking.route(stops,TmapSettings.load());
         var kakaoSettings=KakaoRouteSettings.load();

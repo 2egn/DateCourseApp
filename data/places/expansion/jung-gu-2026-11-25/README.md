@@ -47,3 +47,9 @@ python tools/supplement_place_prices.py --dataset build/jung-gu-rebuild/places.j
 ```
 
 운영 적재·보존·반복 검증은 확장 약 110초, 후속 가격 보완 약 29초였다. 순수 삽입·갱신 시간이나 개선율로 해석하지 않는다. 최종 312개 모의 코스 결과는 `rehearsal-report.json`을 따른다. 실행 중 앱의 장소 캐시는 장소를 다시 읽거나 앱을 재시작해야 갱신된다.
+
+## 기준본 지문 정정 · 2026-11-27
+
+`baseline.json`과 `appeal/checksums.json`의 직전 속성 파일 지문을 최초 Git 원본(`933fd85`)과 일치하는 `2c4df4…`로 정정했다. 이전 기록 `4e33ef…`는 해당 원본 및 LF/CRLF·BOM 변형으로 재현되지 않으며, 이를 생성한 바이트는 확보하지 못했다. 기존 2,040개 속성 행은 중구 확장본과 모두 일치한다.
+
+[지문 정정 근거](baseline-hash-correction-2026-11-27.json)에 이전 값·확인 범위·한계를 보존한다. 장소·속성 본문, 현재 운영 자료 쌍, 당시 운영 preflight·correction-result는 수정하지 않았다. 운영 DB에는 접근하지 않았고 기존 지문 검사를 유지한다.

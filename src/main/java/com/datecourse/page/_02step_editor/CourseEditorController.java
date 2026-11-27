@@ -29,7 +29,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-/** 편집본만 변경한다. 메인 화면으로의 전달은 완료 버튼에서만 일어난다. */
+/**
+ * - 장소 추천·선택과 편집 초안 관리용 컨트롤러
+ * - NextPlaceService로 후보 조회, 완료 시에만 CoursePlannerController에 편집본 전달
+ */
 public final class CourseEditorController extends BasePageController {
     private final com.datecourse.service.PlacePresenter placePresenter = new com.datecourse.service.PlacePresenter();
     @FXML private WebView editMapView;
@@ -362,7 +365,10 @@ public final class CourseEditorController extends BasePageController {
     /** 진행 중인 후보 응답을 무효화하고 지도를 정리한다. */
     public void dispose() { searchVersion++;map.dispose(); }
 
-    /** 화면 전환 시에도 후보와 조건을 유지하도록 기존 편집 폼을 재사용한다. */
+    /**
+     * CoursePlannerController에서 돌아올 때 기존 초안·필터 재사용
+     * 출발지·인원·전체 반경 변경 시 이전 추천 후보만 초기화
+     */
     public void resume(RoutePlan context, List<Place> places) {
         boolean changed = original.startLat() != context.startLat() || original.startLng() != context.startLng()
                 || original.people() != context.people() || original.radius() != context.radius();
