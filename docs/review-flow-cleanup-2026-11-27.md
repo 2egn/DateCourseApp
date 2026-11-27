@@ -15,3 +15,17 @@
 Java 391개와 보관 UI 2개 통과, JAR 생성·시연 항목 제외 확인. 대중교통 실패 안내의 로딩 오인, 문장부호·줄바꿈이 있는 장소의 표 열 보존, 늦은 장소 조회 응답 무효화 검사 포함. 운영 API·DB 쓰기는 수행하지 않음.
 
 Python 도구 검사 32개 중 31개, 별도 자료 도구 51개 통과. 남은 1개는 이번 변경과 무관한 기존 이력 지문 불일치: `jung-gu-2026-11-25/baseline.json`은 시각 정정 facts의 SHA를 `4e33ef…`로 기록했지만, 파일과 기존 HEAD 원본은 모두 `2c4df4…`. 원본·이력을 임의 수정하거나 검사를 완화하지 않음. 보관 파일 지문과 현재 운영 자료 쌍의 지문은 모두 일치.
+
+## 컨트롤러 읽기 순서 추가 정리
+
+클래스·파일·외부 API를 늘리지 않고 같은 클래스 안에서 입력·작업·결과 반영을 인접 배치. 기존 이벤트·처리 순서·문구·세션·요청 번호 검사는 유지.
+
+| 진입점 | 같은 클래스에서 이어 읽을 처리 |
+|---|---|
+| `CourseEditorController.onRecommendNext()` | `readNextPlaceCondition()` → 기존 검색 실행 → `applyCandidateSearch()` |
+| `CoursePlannerController.onSaveCourse()` | `readSavePlan()` → `setSaving()`·기존 저장 실행 → `applyCourseSave()` |
+| `SavedCourseController.showPreview()` | `resetPreview()` → 기존 이미지 조회·`decodePreview()` → `applyPreview()` |
+
+저장 입력 잠금·복원은 `setSaving()`에서 공통 처리. 미리보기는 화면 전용 변환 취소와 UserContext 공유 조회를 구분하며, FX 스레드 반영 전 요청 번호·세션 확인 유지.
+
+추가 정리 검증: Java 391개·보관 UI 2개·JAR·문서 로컬 빌드 통과. 코드 기준 `55f1258`. 기존 자료 도구의 과거 지문 불일치 기록은 위와 같음.

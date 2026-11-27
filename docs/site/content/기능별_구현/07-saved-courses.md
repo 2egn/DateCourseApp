@@ -56,3 +56,7 @@ flowchart TD
 ## 2026-11-27 반영
 
 `SavedCoursePresenter`가 기존 표 행을 내부 record로 구성해 `SavedCourseController`에 직접 전달. 줄바꿈·콜론·번호로 설명 문자열을 다시 분해하지 않으며 장소명·주소의 원래 문자를 보존한다.
+
+### 컨트롤러 읽기 순서
+
+미리보기는 `showPreview()`에서 이전 요청 정리·조회·결과 반영 순서로 확인. 같은 클래스의 `resetPreview()`·`decodePreview()`·`applyPreview()`로 세부 처리, 공유 캐시·늦은 응답 검사는 유지.

@@ -52,3 +52,7 @@ flowchart TD
 소스 기준 `a0d9436` · 문서 확인 2026-11-25. 설명용 예시는 새 API 호출·운영 DB 검증 결과와 구분한다.
 
 다음 기능: [[기능별_구현/03-recommendation|장소 후보 검색·조건 조정]]
+
+### 컨트롤러 읽기 순서
+
+저장은 `onSaveCourse()`에서 입력 확인·저장 실행·결과 반영 순서로 확인. 제목·폼 스냅샷은 `readSavePlan()`, 입력 잠금·복원은 `setSaving()`, 성공 반영은 `applyCourseSave()`에서 처리.

@@ -56,3 +56,7 @@ flowchart TD
 ## 2026-11-27 반영
 
 추천은 `NextPlaceCondition` 인수로 통일. `matching()`은 전체 후보, `candidates()`는 표시 개수 제한 결과. 이전 인수 나열 오버로드·기본값 별칭은 제거했다.
+
+### 컨트롤러 읽기 순서
+
+후보 검색 진입점은 `onRecommendNext()`. 같은 클래스의 `readNextPlaceCondition()`에서 조건 구성, 기존 검색 후 `applyCandidateSearch()`에서 요청 번호를 확인하고 결과 반영.

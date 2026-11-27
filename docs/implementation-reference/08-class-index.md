@@ -578,7 +578,7 @@
 - **무엇:** 공통 조건·확정 코스·저장·페이지 전환 조율.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `onRecommendClick()` (줄 702), `openEditor()` (줄 721), `onSaveCourse()` (줄 483), `restoreSavedCourse()` (줄 354)
+- **어떻게 확인:** `onRecommendClick()` (줄 717), `openEditor()` (줄 736), `onSaveCourse()` (줄 486), `restoreSavedCourse()` (줄 357)
 - **코드:** [CoursePlannerController.java](../../src/main/java/com/datecourse/page/_01step_planner/CoursePlannerController.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
 
@@ -606,7 +606,7 @@
 - **무엇:** 초안·후보·순서·반경·필터 조율.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `onRecommendNext()` (줄 434), `onAddCandidate()` (줄 524), `begin()` (줄 400), `resume()` (줄 366)
+- **어떻게 확인:** `onRecommendNext()` (줄 434), `onAddCandidate()` (줄 550), `begin()` (줄 400), `resume()` (줄 366)
 - **중첩 타입:** `FacetSelection`, `CandidateSearch`, `EditorState`
 - **코드:** [CourseEditorController.java](../../src/main/java/com/datecourse/page/_02step_editor/CourseEditorController.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
@@ -634,7 +634,7 @@
 - **무엇:** 저장 목록·이미지/지도·명시적 경로 조회 조율.
 - **무엇을 사용:** JavaFX.
 - **필요 기능·사용 효과:** 화면 노드·속성·이벤트·UI 스레드 연결 기능을 사용한다.
-- **어떻게 확인:** `configure()` (줄 300), `loadCourses()` (줄 413), `onRequestRoute()` (줄 604), `onOpenClick()` (줄 357)
+- **어떻게 확인:** `configure()` (줄 301), `loadCourses()` (줄 414), `onRequestRoute()` (줄 617), `onOpenClick()` (줄 358)
 - **중첩 타입:** `RouteSummary`, `PreviewImage`
 - **코드:** [SavedCourseController.java](../../src/main/java/com/datecourse/page/_03step_saved/SavedCourseController.java)
 - **검증 참조:** [기능별 검사 안내](07-verification-and-team-site.md). 동명 테스트의 부재만으로 미검증이라고 단정하지 않는다.
