@@ -20,7 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / 'build/appeal-data-fetch'
-OUT = ROOT / 'data/places/appeal/busan-2026-11-14'
+OUT = ROOT / 'archive/legacy-place-demo/data/places/appeal/busan-2026-11-14'
 PUBLIC = ROOT / 'data/places/public/busan'
 DATE = datetime.now(timezone(timedelta(hours=9))).date().isoformat()
 
@@ -262,7 +262,7 @@ def retain_existing_facts(demos, facts, baseline_dataset, baseline_facts):
 def collect(offline=False, demo_path=None, output=OUT, baseline_dataset=None, baseline_facts=None):
     if (baseline_dataset is None)!=(baseline_facts is None):
         raise ValueError("Provide both retained dataset and facts")
-    demo_path = Path(demo_path) if demo_path else ROOT / 'data/places/demo/seomyeon-public-estimates.json'
+    demo_path = Path(demo_path) if demo_path else ROOT / 'archive/legacy-place-demo/data/places/demo/seomyeon-public-estimates.json'
     source_pack=SOURCE_PACK
     OUT=Path(output)
     demo_path=demo_path.resolve()

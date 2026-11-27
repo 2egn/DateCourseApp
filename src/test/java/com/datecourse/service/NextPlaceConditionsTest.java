@@ -30,8 +30,8 @@ class NextPlaceConditionsTest {
         assertEquals(6,search.matching(pool(),List.of(),35.1578,129.06,2,2000,condition(Set.of("한식","일식"),Set.of(PlaceTag.GOOD_PRICE),30)).size());
         assertTrue(search.candidates(pool(),List.of(),35.1578,129.06,2,2000,new NextPlaceCondition("식사",10000,2000,false,Set.of(),Set.of(),30)).isEmpty());
     }
-    @Test void packagedPublicDatasetKeepsFactsAndEstimatesSeparate() throws Exception {
-        var rows=new PublicDemoPlaceRepository().findAll();
+    @Test void currentPublicDatasetKeepsFactsAndEstimatesSeparate() throws Exception {
+        var rows=com.datecourse.demo.PublicPlaceImport.batch().places();
         assertTrue(rows.stream().filter(p->p.category().equals("MEAL")).count()>30);
         assertTrue(rows.stream().filter(p->p.category().equals("CAFE")).count()>30);
         assertTrue(rows.stream().anyMatch(p->p.details().hasTag(PlaceTag.GOOD_PRICE)));
@@ -43,7 +43,7 @@ class NextPlaceConditionsTest {
         assertTrue(rows.stream().anyMatch(p->p.name().equals("증권박물관(부산관)")&&!p.details().identityCheckedAt().isBlank()));
     }
     @Test void expandedPublicCandidatesStayUsefulWithoutTreatingUnknownPricesAsFree() throws Exception {
-        var places=new PublicDemoPlaceRepository().findAll();
+        var places=com.datecourse.demo.PublicPlaceImport.batch().places();
         var counts=new java.util.LinkedHashMap<String,Integer>();
         for(String activity:List.of("식사","카페","문화")) {
             var known=new NextPlaceCondition(activity,20000,2000,false,Set.of(),Set.of(),30);
@@ -54,7 +54,7 @@ class NextPlaceConditionsTest {
             assertTrue(search.candidates(places,List.of(),35.1578,129.06,2,2000,inclusive).size()<=30);
             counts.put(activity+"_priced",priced.size());counts.put(activity+"_inclusive",all.size());
         }
-        assertTrue(counts.get("식사_priced")>=140);assertEquals(120,counts.get("카페_priced"));
+        assertTrue(counts.get("식사_priced")>=140);assertTrue(counts.get("카페_priced")>=120);
         assertTrue(counts.get("문화_inclusive")>counts.get("문화_priced"));
         var output=java.nio.file.Path.of("build/rehearsal/expanded-candidate-counts.json");java.nio.file.Files.createDirectories(output.getParent());
         java.nio.file.Files.writeString(output,new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(counts));

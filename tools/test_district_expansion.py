@@ -110,7 +110,7 @@ class DistrictExpansionTest(unittest.TestCase):
         links,_=match_designations([dict(row,district='다른구')],[source]);self.assertFalse(links)
 
     def test_staged_district_is_repeatable_preserves_baseline_and_has_conservative_prices(self):
-        original=(ROOT/'data/places/demo/seomyeon-public-estimates.json').read_bytes()
+        original=(ROOT/'archive/legacy-place-demo/data/places/demo/seomyeon-public-estimates.json').read_bytes()
         with tempfile.TemporaryDirectory() as temp:
             target=Path(temp)
             with patch('urllib.request.urlopen',side_effect=AssertionError('No network')):
@@ -128,6 +128,6 @@ class DistrictExpansionTest(unittest.TestCase):
                     self.assertIn(p['details']['subcategory'],report['pricePolicy']['allowedSubtypes'])
                     self.assertNotIn('일식',price['basis'])
                 else:self.assertIsNone(price['minimum'])
-        self.assertEqual(original,(ROOT/'data/places/demo/seomyeon-public-estimates.json').read_bytes())
+        self.assertEqual(original,(ROOT/'archive/legacy-place-demo/data/places/demo/seomyeon-public-estimates.json').read_bytes())
 
 if __name__=='__main__':unittest.main()

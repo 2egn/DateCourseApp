@@ -1,6 +1,5 @@
 package com.datecourse.demo;
 
-import com.datecourse.service.PublicDemoPlaceRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.datecourse.db.MemberRepository;
 import com.datecourse.db.PlaceCatalogRepository;
@@ -11,14 +10,15 @@ import com.datecourse.service.PublicPlaceFacts;
 
 /** Preview is offline. Apply uses existing DB settings and only additive source-owned catalog writes. */
 public final class PublicPlaceImport {
-    public static PlaceCatalogRepository.Batch batch() throws Exception {
-        try (var facts = PublicPlaceImport.class.getResourceAsStream(PublicDemoPlaceRepository.FACTS_RESOURCE)) {
-            if (facts == null) throw new IllegalStateException("공공 속성 자료가 없습니다.");
-            Instant generated = Instant.parse(new ObjectMapper().readTree(facts).path("generatedAt").asText());
-            return new PlaceCatalogRepository.Batch("busan-public-places", generated, new PublicDemoPlaceRepository().findAll());
-        }
+    /** current.json이 지정한 현재 운영 장소·속성 쌍 조회, DB 연결 없음 */
+    public static PlaceCatalogRepository.Batch batch() throws java.io.IOException {
+        var current=new ObjectMapper().readTree(Path.of("data/places/expansion/current.json").toFile());
+        String dataset=current.path("dataset").asText(""),facts=current.path("facts").asText("");
+        if(current.path("schemaVersion").asInt()!=1 || dataset.isBlank() || facts.isBlank())
+            throw new java.io.IOException("현재 운영 장소 기준본을 확인해 주세요.");
+        return batch(Path.of(dataset),Path.of(facts));
     }
-    public static PlaceCatalogRepository.Batch batch(Path dataset, Path facts) throws Exception {
+    public static PlaceCatalogRepository.Batch batch(Path dataset, Path facts) throws java.io.IOException {
         byte[] bytes = Files.readAllBytes(dataset);
         byte[] factBytes = Files.readAllBytes(facts);
         Instant generated = Instant.parse(new ObjectMapper().readTree(factBytes).path("generatedAt").asText());

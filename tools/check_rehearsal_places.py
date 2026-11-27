@@ -26,9 +26,9 @@ def main():
     options.add_argument('--alternatives',action='store_true');options.add_argument('--district-recheck',action='store_true');args=parser.parse_args()
     batch='district-recheck' if args.district_recheck else 'culture-alternatives' if args.alternatives else 'primary'
     names=('증권박물관(부산관)','한국거래소자본시장역사박물관') if args.district_recheck else ('증권박물관(부산관)','한국거래소자본시장역사박물관','부산여대차박물관') if args.alternatives else NAMES
-    output=ROOT/'data/places/demo'/('rehearsal-place-checks-2026-11-14.json' if batch=='primary' else f'rehearsal-place-checks-{batch}-2026-11-14.json')
+    output=ROOT/'archive/legacy-place-demo/data/places/demo'/('rehearsal-place-checks-2026-11-14.json' if batch=='primary' else f'rehearsal-place-checks-{batch}-2026-11-14.json')
     if output.exists():raise FileExistsError()
-    rows=json.loads((ROOT/'data/places/demo/seomyeon-public-estimates.json').read_text(encoding='utf-8'))['places']
+    rows=json.loads((ROOT/'archive/legacy-place-demo/data/places/demo/seomyeon-public-estimates.json').read_text(encoding='utf-8'))['places']
     sample=[next(p for p in rows if p['name']==name) for name in names]
     key=pilot.load_google_key()
     checked=datetime.now(timezone.utc).isoformat()

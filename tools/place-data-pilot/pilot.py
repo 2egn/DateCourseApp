@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'data/places/public/busan'
-OUTPUT = ROOT / 'data/places/pilot/seomyeon-jeonpo-2026-11-13'
+OUTPUT = ROOT / 'archive/legacy-place-demo/data/places/pilot/seomyeon-jeonpo-2026-11-13'
 REPORT = ROOT / 'build/place-data-pilot'
 CENTER = (35.1578, 129.0600)
 NEIGHBORHOODS = {'부전1동', '부전2동', '전포1동', '전포2동'}

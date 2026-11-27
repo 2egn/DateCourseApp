@@ -74,6 +74,25 @@ class SavedCourseMapTest {
     private static Label status(Form form) throws Exception {return (Label)field(form.controller,"mapStatus");}
     private static Button retry(Form form) throws Exception {return (Button)field(form.controller,"mapRetry");}
 
+    @Test void savedTablesKeepPunctuationAndLineBreaksInTheirOriginalColumns() throws Exception {
+        Form form=form();String name="첫. 장소:\n둘째 줄",address="부산: 중구\n상세: 2층";
+        try {
+            fx(()->{
+                var details=new PlaceDetails(address,"카페","","","","","","",Map.of());
+                var place=new Place(1,"a",name,"CAFE",35.1579,129.06,PriceEstimate.unknown(),0,details);
+                var saved=new SavedCourse(1,7,new RoutePlan(35.1578,129.06,2,1000,"",List.of(place)));
+                var list=(ListView<SavedCourse>)field(form.controller,"courseList");
+                list.getItems().setAll(saved);list.getSelectionModel().selectFirst();
+                var table=(TableView<com.datecourse.service.SavedCoursePresenter.PlaceInfoRow>)field(form.controller,"placeTable");
+                var row=table.getItems().getFirst();
+                assertEquals("1",row.order());assertEquals(name+"(카페)",row.name());
+                assertEquals(address,row.address());assertTrue(row.price().contains("가격 미확인"));
+                assertEquals("도보 · 조회 전",row.travel());
+                return null;
+            });
+        } finally {fx(()->{form.controller.dispose();return null;});}
+    }
+
     @Test void selectingOrReopeningCourseNeverRequestsRoutesUntilUserClicks() throws Exception {
         Form form=form();var calls=new AtomicInteger();
         try {

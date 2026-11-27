@@ -15,7 +15,6 @@ import com.datecourse.model.SavedCourse;
 import com.datecourse.db.SavedCourseRepository;
 import javafx.fxml.FXMLLoader;
 import com.datecourse.service.PlaceSource;
-import com.datecourse.service.PilotPlaceRepository;
 import com.datecourse.model.UserSession;
 import com.datecourse.db.PlaceRepository;
 import javafx.animation.*;
@@ -53,9 +52,6 @@ public class CoursePlannerController extends BasePageController {
     // 1. 상수
     // =====================================================================
 
-    // 장소 목록 선택지
-    private static final String EXISTING = "운영 장소 목록", PILOT = "서면·전포 시연 목록";
-    private static final String PUBLIC_DEMO = "서면 공공자료 · 추정 가격";
 
     // =====================================================================
     // 2. 필드 (FXML 화면 순서대로)
@@ -94,8 +90,6 @@ public class CoursePlannerController extends BasePageController {
     // 장소 목록
     @FXML
     private Label sourceStatusLabel;
-    @FXML
-    private ComboBox<String> sourceBox;
     // 인원
     @FXML
     private TextField peopleField;
@@ -151,7 +145,6 @@ public class CoursePlannerController extends BasePageController {
     private boolean placesLoaded, placesLoading;
     private Task<List<Place>> placeLoadTask;
     private long placeLoadVersion;
-    private boolean restoringSource;
     // 코스 / 출발지
     private Double selectedLatitude, selectedLongitude;
     private RoutePlan appliedPlan;
@@ -244,9 +237,6 @@ public class CoursePlannerController extends BasePageController {
             updateResetButton();
         });
         map.load();
-        sourceBox.getItems().setAll(EXISTING, PILOT, PUBLIC_DEMO);
-        sourceBox.setValue(EXISTING);
-        sourceBox.valueProperty().addListener((obs, old, selected) -> changeSource(old, selected));
         selectNavigation(homeButton);
         updateResetButton();
     }
@@ -255,14 +245,10 @@ public class CoursePlannerController extends BasePageController {
     // 4. 외부에서 주입하는 설정 (로그인 정보, 저장소 등)
     // =====================================================================
 
-    public void usePilotPlaces() {
-        sourceBox.setValue(PILOT);
-    }
-
     public void setUserSession(UserSession session) {
         if (!java.util.Objects.equals(userSession, session)) clearUserContext();
         userSession = session;
-        userLabel.setText(session == null ? "시연 모드" : session.name() + "님");
+        userLabel.setText(session == null ? "로그인 전" : session.name() + "님");
         userLabel.setDisable(session == null);
     }
 
@@ -369,15 +355,7 @@ public class CoursePlannerController extends BasePageController {
         editorPaused = false;
         savedCourseId = saved.courseId();
         lastSavedPlan = saved.plan();
-        // Match the candidate source without clearing the restored course.
-        String source = saved.plan().places().stream().anyMatch(p -> p.placeId().startsWith("DCA-DEMO-PUBLIC-")) ? PUBLIC_DEMO
-                : saved.plan().places().stream().anyMatch(p -> p.placeId().startsWith("DCA-DEMO-")) ? PILOT : EXISTING;
-        if (!source.equals(sourceBox.getValue())) {
-            restoringSource = true;
-            sourceBox.setValue(source);
-            restoringSource = false;
-            loadPlaces();
-        }
+        // 저장 스냅샷은 그대로 복원, 다음 후보는 현재 운영 목록 사용
         presentPlan(saved.plan());
         map.requestWalkingRouteWhenReady();
         map.fit(false);
@@ -631,42 +609,9 @@ public class CoursePlannerController extends BasePageController {
     // 8. 01 기본 조건: 장소 목록 / 이동 방법 / 범위
     // =====================================================================
 
-    // ---------- 장소 목록 선택 ----------
-    private void changeSource(String old, String selected) {
-        if (restoringSource) return;
-        if (appliedPlan != null && !appliedPlan.places().isEmpty() || editorPaused) {
-            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                    "장소 목록을 바꾸면 현재 코스를 비워요. 계속할까요?", ButtonType.OK, ButtonType.CANCEL);
-            confirm.initOwner(plannerRoot.getScene().getWindow());
-            com.datecourse.page.common.controls.DialogTheme.apply(confirm);
-            if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
-                restoringSource = true;
-                sourceBox.setValue(old);
-                restoringSource = false;
-                return;
-            }
-        }
-        appliedPlan = null;
-        editorPaused = false;
-        updateOriginProtection();
-        savedCourseId = null;
-        lastSavedPlan = null;
-        saveStatusLabel.setText("");
-        resultLabel.setText("아직 확정된 코스가 없어요.");
-        if (PILOT.equals(selected) || PUBLIC_DEMO.equals(selected)) {
-            radiusSlider.setValue(2000);
-            onLocationSelected(PilotPlaceRepository.START_LAT, PilotPlaceRepository.START_LNG);
-        }
-        if (selectedLatitude != null) map.present(new RoutePlan(selectedLatitude, selectedLongitude, 1,
-                radius(), "", List.of()), null, radius(), false, true);
-        loadPlaces();
-        commonSettingsChanged = false;
-        updateResetButton();
-    }
-
+    // ---------- 운영 장소 목록 조회 ----------
     private void loadPlaces() {
-        PlaceSource source = PUBLIC_DEMO.equals(sourceBox.getValue()) ? new com.datecourse.service.PublicDemoPlaceRepository()
-                : PILOT.equals(sourceBox.getValue()) ? new PilotPlaceRepository() : placeRepository;
+        PlaceSource source = placeRepository;
         if (placeLoadTask != null) placeLoadTask.cancel();
         long version = ++placeLoadVersion;
         placesLoaded = false;
@@ -756,7 +701,7 @@ public class CoursePlannerController extends BasePageController {
     @FXML
     private void onRecommendClick() {
         if (!placesLoaded) {
-            if (placeRepository == null && EXISTING.equals(sourceBox.getValue()))
+            if (placeRepository == null)
                 errorLabel.setText("로그인하거나 서면·전포 시연 목록을 선택해 주세요.");
             else loadPlaces();
             return;

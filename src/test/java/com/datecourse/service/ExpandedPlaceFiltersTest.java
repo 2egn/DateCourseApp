@@ -47,7 +47,7 @@ class ExpandedPlaceFiltersTest {
         assertEquals(List.of(new CandidateRecoveryService.Suggestion(CandidateRecoveryService.Change.CLEAR_FACETS,1)),advice.suggestions());
     }
     @Test void publicDatasetProvidesRealDetailedChoicesAndStableFriendlyCultureLabels()throws Exception{
-        var places=new PublicDemoPlaceRepository().findAll();
+        var places=com.datecourse.demo.PublicPlaceImport.batch().places();
         assertTrue(places.stream().filter(p->p.category().equals("MEAL")).map(PlaceFacets::detailType).distinct().count()>=15);
         assertTrue(places.stream().anyMatch(p->PlaceFacets.detailType(p).equals("도시공원")));
         assertTrue(places.stream().anyMatch(p->PlaceFacets.detailType(p).equals("박물관·미술관")));

@@ -603,7 +603,7 @@ public final class CourseEditorController extends BasePageController {
             walkingTimeLabel.setText(travelMode().timeNote()+(walkingRoute.provider().isBlank()?"":" · 경로 "+walkingRoute.provider()));
             if (metricTimeLabel != null) metricTimeLabel.setText(minutes(walkingRoute.totalTime()));
         } else {
-            boolean loading = walkingMessage.contains("중")||walkingMessage.contains("준비");
+            boolean loading = map.isRoutePending();
             walkingTimeLabel.setVisible(!loading);
             walkingTimeLabel.setText(loading ? travelMode().label()+" 이동시간 조회 중…" : travelMode().label()+" 시간 미확인"+(walkingMessage.isBlank()?"":" · "+walkingMessage));
             if (metricTimeLabel != null) metricTimeLabel.setText(loading ? "계산 중…" : "미확인");

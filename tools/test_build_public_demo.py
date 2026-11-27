@@ -30,7 +30,7 @@ class PublicExpansionTest(unittest.TestCase):
                 with self.assertRaises(ValueError):load_policy(target)
 
     def test_expanded_snapshot_retains_original_ids_coordinates_and_prices(self):
-        directory=ROOT/'data/places/demo'
+        directory=ROOT/'archive/legacy-place-demo/data/places/demo'
         source=(directory/'seomyeon-public-estimates.json').read_bytes()
         self.assertNotIn(b'\r\n',source)
         rows=json.loads(source)['places']
@@ -50,7 +50,7 @@ class PublicExpansionTest(unittest.TestCase):
         self.assertTrue(all(p['priceEstimate']['evidence']!='GOOGLE_PROVIDED' for p in rows))
 
     def test_rebuilding_same_snapshot_is_byte_stable_and_offline(self):
-        original=(ROOT/'data/places/demo/seomyeon-public-estimates.json').read_bytes()
+        original=(ROOT/'archive/legacy-place-demo/data/places/demo/seomyeon-public-estimates.json').read_bytes()
         with tempfile.TemporaryDirectory() as directory:
             target=Path(directory)/'places.json';target.write_bytes(original)
             with patch('urllib.request.urlopen',side_effect=AssertionError('Network is not allowed')):

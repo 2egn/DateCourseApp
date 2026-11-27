@@ -16,13 +16,31 @@ class SavedCoursePresenterTest {
         var summary=new SavedCoursePresenter().present(course);
         assertTrue(summary.overview().contains("3곳 · 2명"));
         assertTrue(summary.overview().contains("가격 미확인 1곳"));
-        assertTrue(summary.details().contains("식사 1 + 카페 1 + 문화 1"));
-        assertTrue(summary.details().contains("전체 범위: 1000m"));
-        assertTrue(summary.details().contains("참고 1 + 추정 1 + 미확인 1"));
-        assertTrue(summary.details().contains("2026.11.15 10:00"));
+        assertEquals("식사 1 + 카페 1 + 문화 1",detail(summary,"카테고리"));
+        assertEquals("1000m",detail(summary,"전체 범위"));
+        assertEquals("참고 1 + 추정 1 + 미확인 1",detail(summary,"가격 상태"));
+        assertEquals("2026.11.15 10:00",detail(summary,"최근 수정"));
         assertEquals(3,summary.places().size());
-        assertTrue(summary.places().get(1).contains("2. 카페(카페)"));
-        assertTrue(summary.places().get(2).contains("가격 미확인"));
-        assertFalse(summary.details().contains("소요시간"));
+        assertEquals("2",summary.places().get(1).order());
+        assertEquals("카페(카페)",summary.places().get(1).name());
+        assertTrue(summary.places().get(2).price().contains("가격 미확인"));
+        assertTrue(summary.details().stream().noneMatch(row->row.label().contains("소요시간")));
+    }
+    private static String detail(SavedCoursePresenter.Summary summary,String label) {
+        return summary.details().stream().filter(row->row.label().equals(label)).findFirst().orElseThrow().value();
+    }
+
+    @Test void punctuationAndLineBreaksRemainInsideTheirOwnColumns() {
+        String name="첫. 장소:\n둘째 줄",address="부산: 중구\n상세: 2층";
+        var details=new PlaceDetails(address,"카페","","","","","","",Map.of());
+        var place=new Place(1,"a",name,"CAFE",35.15,129.05,PriceEstimate.unknown(),0,details);
+        var summary=new SavedCoursePresenter().present(new SavedCourse(1,7,
+                new RoutePlan(35.15,129.05,2,1000,"",List.of(place))));
+        var row=summary.places().getFirst();
+        assertEquals("1",row.order());assertEquals(name+"(카페)",row.name());
+        assertEquals(address,row.address());assertTrue(row.price().contains("가격 미확인"));
+        assertEquals("조회 전",row.travel());
+        assertThrows(UnsupportedOperationException.class,()->summary.details().clear());
+        assertThrows(UnsupportedOperationException.class,()->summary.places().clear());
     }
 }

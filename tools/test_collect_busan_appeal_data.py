@@ -65,7 +65,10 @@ class AppealDataTest(unittest.TestCase):
     def test_pack_is_bound_to_current_demo_and_inputs_are_unchanged(self):
         manifest=json.loads((OUT/'checksums.json').read_text(encoding='utf-8'))
         for path, digest in manifest['inputs'].items():
-            self.assertEqual(digest,hashlib.sha256((ROOT/path).read_bytes()).hexdigest(),path)
+            source=ROOT/path
+            if not source.exists() and path.startswith(('data/places/demo/','data/places/pilot/','data/places/appeal/busan-2026-11-14/')):
+                source=ROOT/'archive/legacy-place-demo'/path
+            self.assertEqual(digest,hashlib.sha256(source.read_bytes()).hexdigest(),path)
         for path, digest in manifest['outputs'].items():
             self.assertEqual(digest,hashlib.sha256((OUT/path).read_bytes()).hexdigest(),path)
         pack=json.loads((OUT/'demo_appeal_facts.json').read_text(encoding='utf-8'))

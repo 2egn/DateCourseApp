@@ -60,44 +60,20 @@ test {
 processResources {
     includeEmptyDirs = false
     doFirst { delete layout.buildDirectory.file('resources/main/db.properties').get().asFile }
-    exclude 'map/kakao-config.js', 'db.properties'
+    exclude 'map/kakao-config.js', 'db.properties', 'datasets/**'
     from('data/sql') { include '09_place_information_reports.sql', '10_place_catalog.sql', '11_saved_course_previews.sql', '12_saved_course_transport.sql'; into 'db' }
-    from('data/places/demo') {
-        include 'seomyeon-jeonpo-demo.json', 'seomyeon-public-estimates.json'
-        into 'datasets'
-    }
-    from('data/places/appeal/busan-2026-11-14') {
-        include 'demo_appeal_facts.json'
-        into 'datasets/appeal'
-    }
+
 }
 tasks.named('jar') {
     includeEmptyDirs = false
-    exclude 'map/kakao-config.js', 'db.properties'
+    exclude 'map/kakao-config.js', 'db.properties', 'datasets/**'
 }
 
-tasks.register('runMapDemo', JavaExec) {
-    group = 'application'
-    description = 'Open the planner map without requiring a DB login'
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'com.datecourse.demo.ConditionLauncher'
-    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
-}
 
-tasks.register('runPlaceBindingDemo', JavaExec) {
-    group = 'verification'
-    description = 'Check confirmed pilot place IDs without an API call or DB connection'
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'com.datecourse.demo.PlaceBindingDemo'
-}
 
-tasks.register('runPilotDemo', JavaExec) {
-    group = 'application'
-    description = 'Open the nine-place pilot planner without a member DB connection'
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'com.datecourse.demo.PilotPlannerLauncher'
-    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml,javafx.web,javafx.swing']
-}
+
+
+
 
 tasks.register('setupInformationReports', JavaExec) {
     group = 'verification'

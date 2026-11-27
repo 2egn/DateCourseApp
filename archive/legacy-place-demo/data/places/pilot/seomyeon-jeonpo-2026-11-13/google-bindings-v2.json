@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "match_rule": "name_address_identity_with_separate_visit_eligibility_v2",
+  "dataset_sha256": "eadae051e2272312c23de2cbafa06bf50f637f0c85cbdaf9bbda5ffab1b0f2d7",
+  "checked_at": "2026-11-13T12:41:36.602929+00:00",
+  "bindings": [
+    {
+      "local_place_id": "SBIZ:MA0101202607A0151351",
+      "google_place_id": "ChIJy9t_MG_raDURycqFmFmXVA8",
+      "eligibility": "ELIGIBLE_AT_CHECK"
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220813751543",
+      "google_place_id": "ChIJiYlDsmjraDURn7UoK53tA6I",
+      "eligibility": "ELIGIBLE_AT_CHECK"
+    },
+    {
+      "local_place_id": "SBIZ:MA0101202406A0012647",
+      "google_place_id": "ChIJXUD6AD7raDURKSQ_LWmWM8M",
+      "eligibility": "ELIGIBLE_AT_CHECK"
+    },
+    {
+      "local_place_id": "SBIZ:MA010120220805402285",
+      "google_place_id": "ChIJPcA0FJTraDURopacwsf1AXQ",
+      "eligibility": "ELIGIBLE_AT_CHECK"
+    },
+    {
+      "local_place_id": "SBIZ:MA0106202201A2364057",
+      "google_place_id": "ChIJv-9YDdnraDURsuuMSYKMvuI",
+      "eligibility": "ELIGIBLE_AT_CHECK"
+    },
+    {
+      "local_place_id": "LIB:73",
+      "google_place_id": "ChIJ4ThxWQDraDUR4RANsayka8w",
+      "eligibility": "ELIGIBLE_AT_CHECK"
+    }
+  ]
+}

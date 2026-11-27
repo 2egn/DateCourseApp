@@ -39,7 +39,7 @@ public final class CameraMotionDemoApp extends Application {
     private record Command(double lat,double lng,int radius,String movement,int level,int duration) {}
 
     @Override public void start(Stage stage) throws Exception {
-        var places=new PublicDemoPlaceRepository().findAll();
+        var places=com.datecourse.demo.PublicPlaceImport.batch().places();
         var distance=new PlaceCalculationService();
         var sorted=places.stream().sorted(Comparator.comparingDouble(p->distance.calculateDistance(START_LAT,START_LNG,p.lat(),p.lng()))).toList();
         var selected=new ArrayList<>(sorted.stream().limit(5).toList());selected.add(sorted.getLast());samples=List.copyOf(selected);

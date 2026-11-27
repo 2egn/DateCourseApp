@@ -195,21 +195,22 @@ class InformationReportRepositoryTest {
         while(fx(()->((javafx.scene.control.ListView<InformationReport>)root.lookup("#reports")).getItems().stream().anyMatch(r->r.status().equals("PENDING")))&&System.nanoTime()<end)Thread.sleep(20);
     }
     @Test void publicDatasetRehearsalBuildsSavesReportsAndReopensWithoutChangingOldSnapshot() throws Exception {
-        var source=new com.datecourse.service.PublicDemoPlaceRepository().findAll();
+        var source=com.datecourse.demo.PublicPlaceImport.batch().places();
         var search=new com.datecourse.service.NextPlaceService();
         var selected=new ArrayList<Place>();
         Place meal=search.candidates(source,selected,35.1578,129.06,2,2000,
             new NextPlaceCondition("식사",7000,2000,false,Set.of("한식"),Set.of(PlaceTag.GOOD_PRICE),30)).getFirst().place();
         selected.add(meal);
         Place cafe=search.candidates(source,selected,35.1578,129.06,2,2000,
-            new NextPlaceCondition("카페",3000,2000,false,Set.of(),Set.of(),30)).getFirst().place();selected.add(cafe);
+            new NextPlaceCondition("카페",20000,2000,false,Set.of(),Set.of(),30)).getFirst().place();selected.add(cafe);
         Place culture=search.candidates(source,selected,35.1578,129.06,2,2000,
             new NextPlaceCondition("문화",0,2000,false,Set.of(),Set.of(PlaceTag.FREE_ADMISSION),30)).getFirst().place();selected.add(culture);
-        var plan=new RoutePlan(35.1578,129.06,2,2000,"서면 시연 리허설",selected,
+        var plan=new RoutePlan(35.1578,129.06,2,2000,"운영 자료 코스 검사",selected,
             Map.of(meal.recordId(),2000,cafe.recordId(),2000,culture.recordId(),2000));
         var validator=new com.datecourse.service.RouteRangeValidator();
         assertTrue(validator.outsideRange(plan).isEmpty());assertTrue(validator.legs(plan).stream().noneMatch(l->l.exceeded()));
-        assertEquals(18800,plan.costEstimate().minimum());assertEquals(2,plan.costEstimate().estimatedPlaces());
+        assertEquals(selected.stream().mapToLong(p->p.priceEstimate().minimum()*2L).sum(),plan.costEstimate().minimum());
+        assertEquals(0,plan.costEstimate().unknownPlaces());
         var courses=new SavedCourseRepository(pool);var saved=courses.save(owner,plan);
         assertEquals(plan,courses.findAll(owner).getFirst().plan());
         long reportId=reports.submit(owner,meal,InformationReport.Field.PRICE,"9500","리허설 가정: 기준 메뉴 변경","https://example.test/rehearsal");
@@ -223,7 +224,7 @@ class InformationReportRepositoryTest {
             .map(p->p.place()).filter(p->p.placeId().equals(meal.placeId())).findFirst().orElseThrow();
         assertEquals(plan,courses.findAll(owner).getFirst().plan());
         var updated=new RoutePlan(plan.startLat(),plan.startLng(),plan.people(),plan.radius(),plan.title(),List.of(newMeal,cafe,culture),plan.arrivalRadii());
-        assertEquals(23800,updated.costEstimate().minimum());
+        assertEquals(plan.costEstimate().minimum()+(9500L-meal.priceEstimate().minimum())*plan.people(),updated.costEstimate().minimum());
         courses.save(owner,saved.courseId(),updated);assertEquals(updated,courses.findAll(owner).getFirst().plan());
         Path output=Path.of("build/rehearsal/public-course.md");Files.createDirectories(output.getParent());
         Files.writeString(output,"# 공공자료 기반 자동 리허설\n\nH2 테스트 DB 전용. 실제 영업·실도로 검증 또는 실제 매장 가격 정정을 의미하지 않음.\n\n"

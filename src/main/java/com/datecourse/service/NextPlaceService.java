@@ -6,33 +6,22 @@ import java.util.List;
 
 /** 다음 장소 후보를 거리순으로 찾고, 전체 원형 범위 밖의 장소와 이미 확정한 장소를 제외한다. */
 public final class NextPlaceService {
-    public static final int DEFAULT_CANDIDATES = NextPlaceCondition.DEFAULT_DISPLAY_LIMIT;
     private final PlaceSearchService search = new PlaceSearchService();
     private final PlaceCalculationService calculation = new PlaceCalculationService();
 
-    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
-    public List<PlaceSearchService.NearbyPlace> candidates(List<Place> places, List<Place> confirmed,
-            double startLat, double startLng, int radius, String category,
-            int maxPricePerPerson, int people, int routeRadius) {
-    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
-        return candidates(places, confirmed, startLat, startLng, radius, category,
-                maxPricePerPerson, people, routeRadius, false);
-    }
-
-    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
-    public List<PlaceSearchService.NearbyPlace> candidates(List<Place> places, List<Place> confirmed,
-            double startLat, double startLng, int radius, String category,
-            int maxPricePerPerson, int people, int routeRadius, boolean includeUncertainPrice) {
-    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
-        return candidates(places, confirmed, startLat, startLng, people, routeRadius,
-                new NextPlaceCondition(category, maxPricePerPerson, radius, includeUncertainPrice,
-                        java.util.Set.of(), java.util.Set.of(), DEFAULT_CANDIDATES));
-    }
-
-    // 조건에 맞는 후보를 조회하고 화면에 표시할 개수만 반환
+    /**
+     * 조건에 맞는 후보 중 화면에 표시할 개수만 반환
+     * @param places 장소 전체 목록
+     * @param confirmed 코스 편집에서 확정된 장소 목록
+     * @param startLat 출발지의 위도
+     * @param startLng 출발지의 경도
+     * @param people 인원수
+     * @param routeRadius 탐색 반경(공통 조건 - 전체 범위 기준)
+     * @param condition 활동·가격·구간 반경·특징·표시 개수 조건
+     * @return 필터 적용 후 거리순 후보, 표시 개수 이내
+     */
     public List<PlaceSearchService.NearbyPlace> candidates(List<Place> places, List<Place> confirmed,
             double startLat, double startLng, int people, int routeRadius, NextPlaceCondition condition) {
-    // 전체 범위 → 다음 반경 → 가격·중복·특징 순으로 조건에 맞는 전체 후보 조회
         return matching(places, confirmed, startLat, startLng, people, routeRadius, condition).stream()
                 .limit(condition.displayLimit()).toList();
     }

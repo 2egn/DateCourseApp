@@ -5,6 +5,8 @@ import com.datecourse.page.common.PageFeedback;
 import com.datecourse.page.common.map.CourseMapView;
 
 import com.datecourse.model.SavedCourse;
+import com.datecourse.service.SavedCoursePresenter.CourseDetailRow;
+import com.datecourse.service.SavedCoursePresenter.PlaceInfoRow;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -91,10 +93,6 @@ public class SavedCourseController extends BasePageController {
     private java.util.concurrent.CompletableFuture<PreviewImage> previewTask;
     private record PreviewImage(javafx.scene.image.Image image, boolean stored) {}
     private String mapFailure = "", routeFailure = "", routeMessage = "";
-
-    // 표의 한 줄을 나타내는 데이터
-    private record CourseDetailRow(String label, String value) {}
-    private record PlaceInfoRow(String order, String name, String price, String address, String travel) {}
 
     // =====================================================================
     // 2. 초기화
@@ -450,9 +448,8 @@ public class SavedCourseController extends BasePageController {
         detailTitle.setText(course == null ? "코스를 선택해 주세요" : title(course));
         if (course != null) {
             var summary=presenter.present(course);
-            summaryTable.getItems().setAll(java.util.Arrays.stream(summary.details().split("\\R"))
-                    .map(SavedCourseController::toCourseDetailRow).toList());
-            configurePlaceRows(summary.places());
+            summaryTable.getItems().setAll(summary.details());
+            placeTable.getItems().setAll(summary.places());
         }
         showPreview(course);
         refreshTravelInformation();
@@ -699,30 +696,6 @@ public class SavedCourseController extends BasePageController {
     }
 
     // ---------- 표 데이터 변환 ----------
-
-    /** "이름: 내용" 형태의 한 줄을 요약 표의 한 행으로 바꾼다. */
-    private static CourseDetailRow toCourseDetailRow(String line) {
-        int separator = line.indexOf(':');
-        return separator < 0 ? new CourseDetailRow("카테고리", line)
-                : new CourseDetailRow(line.substring(0, separator).trim(), line.substring(separator + 1).trim());
-    }
-
-    /** 장소 설명 목록을 장소 표에 채운다. */
-    private void configurePlaceRows(java.util.List<String> descriptions) {
-        placeTable.getItems().setAll(descriptions.stream().map(SavedCourseController::toPlaceInfoRow).toList());
-    }
-
-    /** 장소 설명(여러 줄 문자열)을 순서/이름/가격/주소로 나눠 표의 한 행으로 바꾼다. */
-    private static PlaceInfoRow toPlaceInfoRow(String text) {
-        String[] lines = text.split("\\R", 3);
-        String first = lines.length > 0 ? lines[0] : "";
-        int separator = first.indexOf(". ");
-        String order = separator > 0 ? first.substring(0, separator) : "";
-        String name = separator > 0 ? first.substring(separator + 2) : first;
-        String price = lines.length > 1 ? lines[1].replaceFirst("^가격:\\s*", "") : "가격 정보 없음";
-        String address = lines.length > 2 ? lines[2].replaceFirst("^주소:\\s*", "") : "주소 정보 없음";
-        return new PlaceInfoRow(order, name, price, address, "조회 전");
-    }
 
     /** 표의 열이 긴 글을 자동 줄바꿈해서 보여주도록 설정한다. */
     private static <T> void setWrappingCellFactory(TableColumn<T, String> column) {

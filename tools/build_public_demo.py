@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/'data/places/public/busan'
-DEMO=ROOT/'data/places/demo'
+DEMO=ROOT/'archive/legacy-place-demo/data/places/demo'
 POLICY=DEMO/'selection-policy.json'
 def read(name):
     with (DATA/name).open(encoding='utf-8-sig',newline='') as f:return list(csv.DictReader(f))
@@ -119,10 +119,10 @@ def build(policy_path=POLICY,target=DEMO/'seomyeon-public-estimates.json',exclud
             raise ValueError('Public input checksum mismatch: '+name)
     places=read('busan_places.csv');shops=read('busan_good_price_shops.csv');menus=read('busan_menu_prices.csv')
     byid={p['place_id']:p for p in places}
-    checked_snapshot=json.loads((ROOT/'data/places/demo/seomyeon-jeonpo-demo.json').read_text(encoding='utf-8'))
+    checked_snapshot=json.loads((ROOT/'archive/legacy-place-demo/data/places/demo/seomyeon-jeonpo-demo.json').read_text(encoding='utf-8'))
     checked={p['details']['externalIds']['public']:p['details'] for p in checked_snapshot['places']}
     checks={}
-    documents=[json.loads(p.read_text(encoding='utf-8')) for p in (ROOT/'data/places/demo').glob('rehearsal-place-checks-*.json')]
+    documents=[json.loads(p.read_text(encoding='utf-8')) for p in (ROOT/'archive/legacy-place-demo/data/places/demo').glob('rehearsal-place-checks-*.json')]
     for document in sorted(documents,key=lambda d:d['checkedAt']):
         for row in document['places']:checks[row['publicId']]=dict(row,checkedAt=document['checkedAt'])
     shopids={s['price_shop_id']:s['linked_place_id'] for s in shops if s['linked_place_id']}

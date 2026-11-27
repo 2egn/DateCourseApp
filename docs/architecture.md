@@ -1,5 +1,7 @@
 # 현재 아키텍처
 
+2026-11-27: 추천은 조건 모델 진입점으로 통일. 경로 로딩은 실제 요청 상태 사용. 저장 표는 Presenter의 행 모델을 직접 전달. 앱의 장소 목록은 운영 DB 하나이며, 시연 코드·자료는 별도 보관. [변경·검증 범위](review-flow-cleanup-2026-11-27.md).
+
 최신 후속 검증은 **2026-11-25 · 앱 Java 395개 + 선택 유지보수 3개**, 보관 UI 2개다. 키보드·포커스, 도보 설정 동기화와 추천 계산 재사용은 [후속 개선 기록](review-2026-11-25.md)을 참고한다. 아래 11월 24일 검사 숫자는 당시 기록이다.
 
 현재 앱과 검사는 `com.datecourse` 아래에 있다. DB는 `db`, 회원 화면은 `page.account`, 관리 화면은 `page.admin`, 공용 부품은 `page.common.controls`(JavaFX)·`page.common.swing`에 둔다. `UserSession`은 `model`, `PasswordHash`는 `auth`다. [패키지 통합과 남은 구조 점검](site/content/09_구조와_검토/패키지_통합과_구조_점검_2026_11_24.md)을 참고한다.

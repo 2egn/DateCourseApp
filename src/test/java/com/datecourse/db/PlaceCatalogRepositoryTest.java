@@ -2,7 +2,6 @@ package com.datecourse.db;
 
 import com.datecourse.model.*;
 import com.datecourse.demo.PublicPlaceImport;
-import com.datecourse.service.PublicDemoPlaceRepository;
 import com.zaxxer.hikari.HikariDataSource;
 import com.datecourse.model.UserSession;
 import org.h2.tools.RunScript;
@@ -232,21 +231,23 @@ class PlaceCatalogRepositoryTest {
     }
     @Test void expandedPublicPlacesRoundTripWithFactsAndUnreviewedLinks() throws Exception {
         var input=PublicPlaceImport.batch();
-        assertEquals(386,catalog.synchronize(input).inserted());
-        assertEquals(386,catalog.synchronize(input).unchanged());
+        assertEquals(input.places().size(),catalog.synchronize(input).inserted());
+        assertEquals(input.places().size(),catalog.synchronize(input).unchanged());
         var places=new PlaceRepository(pool).findAll();
-        assertEquals(386,places.size());
-        assertEquals(368,places.stream().filter(p->p.details().hasTag(PlaceTag.NEAR_SUBWAY)).count());
+        assertEquals(input.places().size(),places.size());
+        assertEquals(input.places().stream().filter(p->p.details().hasTag(PlaceTag.NEAR_SUBWAY)).count(),places.stream().filter(p->p.details().hasTag(PlaceTag.NEAR_SUBWAY)).count());
         assertTrue(places.stream().flatMap(p->p.details().externalLinks().stream()).noneMatch(ExternalPlaceLink::usable));
         assertTrue(places.stream().allMatch(p->p.placeId().equals(p.details().externalIds().get("public"))));
-        var original=new PublicDemoPlaceRepository().findAll();
+        var original=com.datecourse.demo.PublicPlaceImport.batch().places();
         assertEquals(original.getFirst().priceEstimate(),places.stream().filter(p->p.placeId().equals(original.getFirst().details().externalIds().get("public"))).findFirst().orElseThrow().priceEstimate());
     }
     @Test void stagedDistrictExpansionLoadsThroughProductionModelAndRetainsExistingCatalog() throws Exception {
         var staged=PublicPlaceImport.batch(Path.of("data/places/expansion/suyeong-2026-11-16/places.json"),
                 Path.of("data/places/expansion/suyeong-2026-11-16/appeal/demo_appeal_facts.json"));
         // A bundled baseline may be regenerated later; seed the prior version explicitly.
-        var original=new PlaceCatalogRepository.Batch(staged.sourceKey(),staged.generatedAt().minusSeconds(1),PublicPlaceImport.batch().places());
+        var original=new PlaceCatalogRepository.Batch(staged.sourceKey(),staged.generatedAt().minusSeconds(1),PublicPlaceImport.batch(
+                Path.of("archive/legacy-place-demo/data/places/demo/seomyeon-public-estimates.json"),
+                Path.of("archive/legacy-place-demo/data/places/appeal/busan-2026-11-14/demo_appeal_facts.json")).places());
         catalog.synchronize(original);
         var old=catalog.findAll();
         var result=catalog.synchronize(staged,PlaceCatalogRepository.ImportMode.EXPANSION);

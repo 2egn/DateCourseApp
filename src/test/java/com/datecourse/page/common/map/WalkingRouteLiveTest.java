@@ -41,7 +41,7 @@ class WalkingRouteLiveTest {
         com.datecourse.service.LiveMapTestServer isolated=new com.datecourse.service.LiveMapTestServer();
         java.net.URI livePage=isolated.page();
         var editor=new java.util.concurrent.atomic.AtomicReference<CourseEditorController>();
-        var places=new com.datecourse.service.PublicDemoPlaceRepository().findAll();
+        var places=com.datecourse.demo.PublicPlaceImport.batch().places();
         var first=places.stream().filter(p->p.name().equals("대모골")).findFirst().orElseThrow();
         var second=places.stream().filter(p->p.name().equals("카페이떼")).findFirst().orElseThrow();
         Context context=fx(()->{

@@ -54,3 +54,7 @@ flowchart TD
 소스 기준 `a0d9436` · 문서 확인 2026-11-25. 설명용 예시는 새 API 호출·운영 DB 검증 결과와 구분한다.
 
 다음 기능: [프로젝트 실행·공통 설정·DB 연결과 준비](11-runtime-db.md)
+
+## 2026-11-27 반영
+
+일반 앱은 운영 DB 장소 목록 하나만 사용. 자료 검증·적재의 기본 쌍은 `data/places/expansion/current.json`. 이전 시연 코드·자료는 `archive/legacy-place-demo`로 보관하고 앱·JAR에서 제외했다.

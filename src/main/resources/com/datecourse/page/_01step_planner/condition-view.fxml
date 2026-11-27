@@ -32,7 +32,7 @@
                         minWidth="-Infinity"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <!-- 계정 메뉴 -->
-                <MenuButton fx:id="userLabel" text="시연 모드" disable="true" styleClass="account-menu"
+                <MenuButton fx:id="userLabel" text="로그인 전" disable="true" styleClass="account-menu"
                             minWidth="-Infinity">
                     <items>
                         <MenuItem text="내 페이지" onAction="#onMyPage"/>
@@ -87,19 +87,11 @@
                                         <!-- 장소 선택 -->
                                         <VBox styleClass="condition-group">
                                             <VBox styleClass="condition-field-tight">
-                                                <Label text="장소 선택" styleClass="field-label"/>
+                                                <Label text="운영 장소 목록" styleClass="field-label"/>
                                                 <Label fx:id="sourceStatusLabel" text="장소를 불러오고 있어요."
                                                        minHeight="-Infinity" wrapText="true"
                                                        styleClass="planner-caption"/>
                                             </VBox>
-                                            <!-- 장소 목록 선택(접힘) -->
-                                            <TitledPane fx:id="sourceSettings" styleClass="compact-pane"
-                                                        text="추가 설정 · 장소 목록" expanded="false" animated="false">
-                                                <VBox styleClass="condition-field">
-                                                    <Label text="사용할 장소 목록" styleClass="field-label"/>
-                                                    <ComboBox fx:id="sourceBox" maxWidth="Infinity"/>
-                                                </VBox>
-                                            </TitledPane>
                                         </VBox>
 
                                         <!-- 인원 / 이동 방법 / 전체 범위 -->

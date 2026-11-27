@@ -8,6 +8,8 @@
 
 최근 검증: **2026-11-25**. 앱 Java 테스트 **395개**, 선택 유지보수 검사 **3개 통과**. [후속 개선·전체 검증](docs/review-2026-11-25.md)에서 수정·검증 범위와 남은 확인을 볼 수 있습니다. 실제 API·운영 DB 검증은 자동 테스트와 별도로 기록합니다.
 
+[2026-11-27 흐름 정리·운영 목록 통합](docs/review-flow-cleanup-2026-11-27.md): 추천 진입점·경로 상태·저장 표 전달을 단순화하고 이전 시연 선택지를 제거했다.
+
 ## 빠른 시작
 
 1. Gradle을 시작할 JDK 17 이상과 저장소의 Gradle Wrapper를 사용합니다. 설치된 JDK 21을 우선 사용하며, 없으면 운영체제·CPU에 맞는 21을 Gradle 개인 캐시에 자동 다운로드합니다. 최초 다운로드에는 인터넷 연결이 필요하고 JDK 파일은 저장소에 포함하지 않습니다. Gradle toolchain으로 컴파일·검사·앱 실행 JDK를 21로 고정하고 `--release 21`도 유지합니다. Gradle 자체 실행 JDK는 IDE·`JAVA_HOME` 설정을 따릅니다. JavaFX는 같은 21 계열의 유지보수판 **21.0.13.1**로 고정하고 나머지 라이브러리도 명시한 버전을 사용합니다. 처음 받는 PC에는 이 의존성을 내려받을 인터넷 연결이 필요합니다. IDE에서 직접 실행할 때도 Project SDK를 21로 지정합니다. 여러 JDK가 있어도 자동 검색·`JDK21_HOME`·`JAVA_HOME_21_X64`·`JAVA_HOME`에서 찾은 후보 중 21을 선택합니다. 일반 위치 밖에 설치한 21은 `JDK21_HOME`에 설치 경로를 지정합니다. [선택 규칙과 검색 실패 해결](docs/site/content/01_시작/JDK21_자동_검색과_선택_2026_11_25.md)을 참고합니다.
@@ -55,7 +57,7 @@ IntelliJ 실행 진입점은 `com.datecourse.app.AppLauncher`이고 Working dire
 | 자동차 | 30km | 60km |
 | 대중교통 + 도보 | 20km | 40km |
 
-운영 공공 카탈로그는 부산 16개 구·군 분산 확장 후 **5,628곳**이다. 기존 2,138곳과 내장 시연 386곳은 유지한다. [지역별 확장·가격·보존 검증 결과](data/places/expansion/busan-balanced-2026-11-25/README.md)와 [현재 기준본](data/places/expansion/current.json)을 참고한다.
+운영 공공 카탈로그는 부산 16개 구·군 분산 확장 후 **5,628곳**이다. 기존 장소·ID를 보존하며, 앱은 운영 목록만 사용한다. 이전 9곳·386곳 시연 자료는 [별도 보관](archive/legacy-place-demo/README.md)한다. [지역별 확장·가격·보존 검증 결과](data/places/expansion/busan-balanced-2026-11-25/README.md)와 [현재 기준본](data/places/expansion/current.json)을 참고한다.
 
 운영 DB는 비어 있는 이전 백업 8개 정리 후 15개 테이블이다. 원본·사용자·코스·변경 이력은 보존했다. [현재 DB 구조](docs/site/content/05_회원_DB/DB_구조와_빈_백업_정리_2026_11_24.md)와 [복원 SQL·검증 기록](archive/db-schema/2026-11-24-empty-backups/README.md)을 참고한다.
 
@@ -92,11 +94,10 @@ DateCourseApp/
 
 ```powershell
 .\gradlew.bat test
-.\gradlew.bat runPilotDemo
 node --test docs/site/test/*.test.mjs
 ```
 
-`test`는 모의 지도·공급사와 H2로 동작을 검사합니다. `runPilotDemo`는 회원 DB 없이 별도 시연 목록을 사용하며, 가격 미확인 장소는 해당 포함 옵션이 필요합니다. 선택 검사 `tmapLiveTest`는 실제 API 호출이 발생하므로 자동 테스트와 구분합니다.
+`test`는 모의 지도·공급사와 H2로 동작을 검사합니다. 선택 검사 `tmapLiveTest`는 실제 API 호출이 발생하므로 자동 테스트와 구분합니다.
 
 지도·FXML 캡처는 `build/ui-preview`, 테스트 결과는 `build/reports/tests/test`에서 확인합니다. Node 검증에는 Node 22 이상을 사용합니다.
 

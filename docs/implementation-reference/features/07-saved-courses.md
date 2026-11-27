@@ -47,3 +47,7 @@ flowchart TD
 소스 기준 `a0d9436` · 문서 확인 2026-11-25. 설명용 예시는 새 API 호출·운영 DB 검증 결과와 구분한다.
 
 다음 기능: [장소 정정 제보·관리자 회원 관리](08-reports-admin.md)
+
+## 2026-11-27 반영
+
+`SavedCoursePresenter`가 기존 표 행을 내부 record로 구성해 `SavedCourseController`에 직접 전달. 줄바꿈·콜론·번호로 설명 문자열을 다시 분해하지 않으며 장소명·주소의 원래 문자를 보존한다.

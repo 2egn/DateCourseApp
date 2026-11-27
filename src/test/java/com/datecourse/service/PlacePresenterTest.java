@@ -15,7 +15,7 @@ class PlacePresenterTest {
         return new Place(id.hashCode(),id,"가게","MEAL",35.1578,129.06,PriceEstimate.exact(5000),0,details);
     }
     @Test void publicFactsHaveConciseLabelsAndPreserveCalculationContext() throws Exception {
-        var place=new PublicDemoPlaceRepository().findAll().getFirst();
+        var place=com.datecourse.demo.PublicPlaceImport.batch().places().getFirst();
         var view=presenter.present(place);
         assertEquals("추정 가격",view.priceLabel());
         assertTrue(view.priceSummary().contains("부산 착한가격업소"));
@@ -49,7 +49,8 @@ class PlacePresenterTest {
         var old=facility("PUBLIC:A",FactState.AVAILABLE);
         var current=new Place(999,"canonical-id","정정된 가게","MEAL",35.1579,129.06,old.priceEstimate(),0,old.details());
         assertTrue(old.sameIdentityAs(current));
-        assertTrue(new NextPlaceService().candidates(List.of(current),List.of(old),35.1578,129.06,500,"식사",10000,2,500).isEmpty());
+        assertTrue(new NextPlaceService().candidates(List.of(current), List.of(old), 35.1578, 129.06, 2, 500,
+                new NextPlaceCondition("식사", 10000, 500, false, Set.of(), Set.of(), NextPlaceCondition.DEFAULT_DISPLAY_LIMIT)).isEmpty());
         assertFalse(old.sameIdentityAs(facility("PUBLIC:B",FactState.AVAILABLE)));
     }
     @Test void publicFacilityNamesUseTheSameReadableTypeInCandidatesAndMapCards() throws Exception {

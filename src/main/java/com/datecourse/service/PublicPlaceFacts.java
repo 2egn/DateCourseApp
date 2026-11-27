@@ -18,7 +18,7 @@ public final class PublicPlaceFacts {
     private PublicPlaceFacts() {}
     // 장소와 속성 파일의 ID·지문·기준 정보를 확인한 뒤 공공 속성 연결
     public static List<Place> read(byte[] dataset, InputStream factsInput) throws IOException {
-        List<Place> places = PilotPlaceRepository.read(new ByteArrayInputStream(dataset));
+        List<Place> places = readPlaces(new ByteArrayInputStream(dataset));
         JsonNode facts = new ObjectMapper().readTree(factsInput);
         if (facts == null || !facts.path("schemaVersion").isIntegralNumber() || !facts.path("schemaVersion").canConvertToInt()
                 || facts.path("schemaVersion").asInt() != 1
@@ -70,6 +70,45 @@ public final class PublicPlaceFacts {
         }
         if (!indexed.isEmpty()) throw new IOException("목록에 없는 장소의 공공 속성이 포함됐어요.");
         return List.copyOf(result);
+    }
+    /** 장소 스냅샷의 필수값·식별자·좌표·가격 검증 */
+    public static List<Place> readPlaces(InputStream input) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode document = mapper.readTree(input);
+        if (document == null || !document.path("schemaVersion").isIntegralNumber()
+                || !document.path("schemaVersion").canConvertToInt()
+                || document.path("schemaVersion").asInt() != 1 || !document.path("places").isArray())
+            throw new IOException("장소 목록 형식이 올바르지 않아요.");
+        List<Place> places = new ArrayList<>();
+        var ids = new HashSet<String>();
+        var records = new HashSet<Long>();
+        for (JsonNode row : document.path("places")) {
+            // Numeric defaults must never silently become a free price or (0,0) location.
+            for (String field : List.of("recordId", "lat", "lng", "rating"))
+                if (!row.path(field).isNumber()) throw new IOException("장소의 숫자 항목이 누락됐어요: " + field);
+            if (!row.path("priceEstimate").isObject() || !row.path("details").isObject())
+                throw new IOException("장소 가격 상태와 출처가 필요해요.");
+            if (!row.path("recordId").isIntegralNumber() || !row.path("recordId").canConvertToLong())
+                throw new IOException("장소 번호는 정수여야 해요.");
+            for (String amount : List.of("minimum", "maximum")) {
+                JsonNode value = row.path("priceEstimate").path(amount);
+                if (!value.isNull() && (!value.isIntegralNumber() || !value.canConvertToInt()))
+                    throw new IOException("가격은 정수 또는 미확인(null)이어야 해요.");
+            }
+            Place place = mapper.treeToValue(row, Place.class);
+            if (place.recordId() <= 0 || place.placeId() == null || place.placeId().isBlank()
+                    || !ids.add(place.placeId()) || !records.add(place.recordId())
+                    || place.name() == null || place.name().isBlank()
+                    || !("MEAL".equals(place.category()) || "CAFE".equals(place.category()) || "CULTURE".equals(place.category()))
+                    || !Double.isFinite(place.lat()) || !Double.isFinite(place.lng())
+                    || place.lat() < -90 || place.lat() > 90 || place.lng() < -180 || place.lng() > 180
+                    || place.lat() == 0 && place.lng() == 0 || place.details().sourceUrl().isBlank()
+                    || !Double.isFinite(place.rating()) || place.rating() < 0 || place.rating() > 5)
+                throw new IOException("장소 ID·좌표·분류·출처를 확인해 주세요.");
+            places.add(place);
+        }
+        if (places.isEmpty()) throw new IOException("장소 목록이 비어 있어요.");
+        return List.copyOf(places);
     }
     private static String required(JsonNode row, String field) throws IOException {
         if (!row.path(field).isTextual() || row.path(field).asText().isBlank())

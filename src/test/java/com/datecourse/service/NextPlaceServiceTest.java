@@ -1,10 +1,13 @@
 package com.datecourse.service;
 
+import com.datecourse.model.NextPlaceCondition;
+
 import com.datecourse.model.Place;
 import com.datecourse.model.RoutePlan;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NextPlaceServiceTest {
@@ -19,8 +22,8 @@ class NextPlaceServiceTest {
         Place next = place(3, "다음 카페", 35.174, 4000);
         Place nearOrigin = place(4, "출발지 근처", 35.157, 4000);
         Place outside = place(5, "전체 범위 밖", 35.176, 1000);
-        var result = service.candidates(List.of(last, duplicate, next, nearOrigin, outside), List.of(last),
-                35.157, 129.06, 500, "카페", 10000, 2, 2000);
+        var result = service.candidates(List.of(last, duplicate, next, nearOrigin, outside), List.of(last), 35.157, 129.06, 2, 2000,
+                new NextPlaceCondition("카페", 10000, 500, false, Set.of(), Set.of(), NextPlaceCondition.DEFAULT_DISPLAY_LIMIT));
         assertEquals(List.of(next), result.stream().map(PlaceSearchService.NearbyPlace::place).toList());
     }
 
@@ -33,7 +36,8 @@ class NextPlaceServiceTest {
         var legacy=place(14,"같은 이름",35.158,500);
         var last=place(15,"직전 장소",35.159,5000);
         for(var confirmed:List.of(List.<Place>of(),List.of(last))) {
-            var result=service.candidates(List.of(a,b,alias,legacy,last),confirmed,35.157,129.06,500,"카페",10000,2,2000);
+            var result=service.candidates(List.of(a,b,alias,legacy,last), confirmed, 35.157, 129.06, 2, 2000,
+                new NextPlaceCondition("카페", 10000, 500, false, Set.of(), Set.of(), NextPlaceCondition.DEFAULT_DISPLAY_LIMIT));
             assertEquals(List.of(11L,12L),result.stream().filter(p->p.place().recordId()!=15)
                     .map(p->p.place().recordId()).toList());
             assertEquals(result.get(0).distanceMeters(),new PlaceCalculationService().calculateDistance(
@@ -45,13 +49,14 @@ class NextPlaceServiceTest {
         Place first = place(1, "첫 장소", 35.157, 10000);
         Place affordable = place(2, "가능", 35.157, 5000);
         Place overBudget = place(3, "예산 초과", 35.157, 6000);
-        var result = service.candidates(List.of(first, affordable, overBudget), List.of(first),
-                35.157, 129.06, 500, "카페", 10000, 2, 500);
+        var result = service.candidates(List.of(first, affordable, overBudget), List.of(first), 35.157, 129.06, 2, 500,
+                new NextPlaceCondition("카페", 10000, 500, false, Set.of(), Set.of(), NextPlaceCondition.DEFAULT_DISPLAY_LIMIT));
         assertEquals(List.of(affordable, overBudget), result.stream().map(PlaceSearchService.NearbyPlace::place).toList());
-        assertTrue(service.candidates(List.of(affordable), List.of(), 35.157, 129.06, 500,
-                "카페", 0, 2, 500).isEmpty());
+        assertTrue(service.candidates(List.of(affordable), List.of(), 35.157, 129.06, 2, 500,
+                new NextPlaceCondition("카페", 0, 500, false, Set.of(), Set.of(), NextPlaceCondition.DEFAULT_DISPLAY_LIMIT)).isEmpty());
         Place free = place(4, "무료", 35.157, 0);
-        assertEquals(1, service.candidates(List.of(free), List.of(), 35.157, 129.06, 500, "카페", 0, 2, 500).size());
+        assertEquals(1, service.candidates(List.of(free), List.of(), 35.157, 129.06, 2, 500,
+                new NextPlaceCondition("카페", 0, 500, false, Set.of(), Set.of(), NextPlaceCondition.DEFAULT_DISPLAY_LIMIT)).size());
     }
 
     @Test void onlyIntersectionOfGlobalAndPreviousPlaceRangesIsEligible() {
@@ -60,16 +65,16 @@ class NextPlaceServiceTest {
         Place both = place(3, "두 범위 안", 35.161, 3000);
         Place previousOnly = place(4, "이전 장소 범위만", 35.162, 3000);
         Place neither = place(5, "두 범위 밖", 35.17, 3000);
-        var result = service.candidates(List.of(previous, globalOnly, both, previousOnly, neither),
-                List.of(previous), 35.157, 129.06, 300, "카페", 10000, 2, 500);
+        var result = service.candidates(List.of(previous, globalOnly, both, previousOnly, neither), List.of(previous), 35.157, 129.06, 2, 500,
+                new NextPlaceCondition("카페", 10000, 300, false, Set.of(), Set.of(), NextPlaceCondition.DEFAULT_DISPLAY_LIMIT));
         assertEquals(List.of(both), result.stream().map(PlaceSearchService.NearbyPlace::place).toList());
     }
 
     @Test void firstPlaceUsesDepartureForBothRangesAndHonorsSmallerRadius() {
         Place close = place(1, "공통 범위 안", 35.158, 3000);
         Place far = place(2, "전체 범위만", 35.160, 3000);
-        var result = service.candidates(List.of(close, far), List.of(),
-                35.157, 129.06, 200, "카페", 10000, 2, 500);
+        var result = service.candidates(List.of(close, far), List.of(), 35.157, 129.06, 2, 500,
+                new NextPlaceCondition("카페", 10000, 200, false, Set.of(), Set.of(), NextPlaceCondition.DEFAULT_DISPLAY_LIMIT));
         assertEquals(List.of(close), result.stream().map(PlaceSearchService.NearbyPlace::place).toList());
     }
 
@@ -89,7 +94,8 @@ class NextPlaceServiceTest {
         places.add(place(90, "가격 초과", 35.157, 50000));
         for (int i = 8; i >= 1; i--) places.add(place(i, "후보 " + i, 35.157 + i * 0.0001, 5000));
         places.add(new Place(100, "duplicate", "후보 1", "CAFE", 35.1571, 129.06, 5000, 4));
-        var result = service.candidates(places, List.of(), 35.157, 129.06, 500, "카페", 10000, 2, 500);
+        var result = service.candidates(places, List.of(), 35.157, 129.06, 2, 500,
+                new NextPlaceCondition("카페", 10000, 500, false, Set.of(), Set.of(), NextPlaceCondition.DEFAULT_DISPLAY_LIMIT));
         assertEquals(List.of(1L,2L,3L,4L,5L),result.stream().map(p -> p.place().recordId()).toList());
     }
 }

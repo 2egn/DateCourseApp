@@ -1,0 +1,218 @@
+[
+  {
+    "original": "src/main/java/com/datecourse/service/PilotPlaceRepository.java",
+    "sha256": "5df18736526fcab56606263d5b62d259f0ba3e1ae43172890f020ff01ba503b0"
+  },
+  {
+    "original": "src/main/java/com/datecourse/service/PublicDemoPlaceRepository.java",
+    "sha256": "c4b404c3842310718f399dd3d3cb1d4e7f396c616529e3bb0edd737ab88e46a8"
+  },
+  {
+    "original": "src/main/java/com/datecourse/service/PlaceBindingCatalog.java",
+    "sha256": "3203005955eeeb5bf9b5f10138d9be191360761592f62e712e45fed0176fb050"
+  },
+  {
+    "original": "src/main/java/com/datecourse/demo/PilotPlannerApp.java",
+    "sha256": "0c97e92ac6e994a55e8c7d149c929976315d0161801c411ace09e747c7c1d158"
+  },
+  {
+    "original": "src/main/java/com/datecourse/demo/PilotPlannerLauncher.java",
+    "sha256": "da982b33e57127bd6d81665cb221314c4cd552d684bac40eec28b6bbe303f10b"
+  },
+  {
+    "original": "src/main/java/com/datecourse/demo/PlaceBindingDemo.java",
+    "sha256": "84cd6fc96d406bb4343d558fc762469d62dca6dd57c281e102688315f7601da3"
+  },
+  {
+    "original": "src/main/java/com/datecourse/demo/ConditionLauncher.java",
+    "sha256": "8e9bd1b6ffe925a2b0b81873770771c859dee41bd39b11642f8a30c91c29d24f"
+  },
+  {
+    "original": "src/main/java/com/datecourse/demo/ConditionTestApp.java",
+    "sha256": "3566f5926116bb58f124ac525a3eec86172f487b9dfa82321babb74fab3f2007"
+  },
+  {
+    "original": "src/test/java/com/datecourse/service/PlaceBindingCatalogTest.java",
+    "sha256": "c1a6e692a4e56c86532106408de712f4fd3dfa9e36f45b48ca7f8c896ed27458"
+  },
+  {
+    "original": "data/places/demo/.gitattributes",
+    "sha256": "8b6bb6bcb9ba3a682e10de1303de9dd9e27841641bc478a8114426e97531722b"
+  },
+  {
+    "original": "data/places/demo/expansion-baseline-2026-11-16.json",
+    "sha256": "1fffa00800b4fc71bbcb925e461e7089163aef2b30640158f2ba0999d1bdfeb5"
+  },
+  {
+    "original": "data/places/demo/expansion-report-2026-11-16.json",
+    "sha256": "39e64aa5266184cc601604af417a2ebb5d128c2e26ee66ef92f4b0ab5d132c75"
+  },
+  {
+    "original": "data/places/demo/README.md",
+    "sha256": "8d4df9ab3f4265e7114c6996ea33305ef78852b6e1fe223bcaa5ce683f339b0d"
+  },
+  {
+    "original": "data/places/demo/rehearsal-place-checks-2026-11-14.json",
+    "sha256": "4edb96f9b51448d647f82b1cc16257d4d4ea100fd5833f93108524e388aa393d"
+  },
+  {
+    "original": "data/places/demo/rehearsal-place-checks-culture-alternatives-2026-11-14.json",
+    "sha256": "40e6987ce0f35f978f422cd8f1f4782fbc82e88e2dcfb100a1f5ca3227391de4"
+  },
+  {
+    "original": "data/places/demo/rehearsal-place-checks-district-recheck-2026-11-14.json",
+    "sha256": "e3aac82b75df04fff220a78e72380784fa476e808ff34497eda7b8acf4416157"
+  },
+  {
+    "original": "data/places/demo/selection-policy.json",
+    "sha256": "03aaa4bbb173ee2717fcab4156721856911e88ca1907c63d80657d56ea165d22"
+  },
+  {
+    "original": "data/places/demo/seomyeon-jeonpo-demo.json",
+    "sha256": "9b736824dfddef2133cacf2455dac5f5e3c458d589b189591f0798e5bf1e4784"
+  },
+  {
+    "original": "data/places/demo/seomyeon-public-estimates.json",
+    "sha256": "9d752bd7aecb0ad6a551cdb22a4f3018ff2c37c621664cd127e92a7b65ada6c0"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v3.csv",
+    "sha256": "0a37b14fab1b82cf9f8cd8488dd7296ac2cc2e1ff08d83576f890c1f65e6589c"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-review-v5.csv",
+    "sha256": "a8abb19fd41a2f2e7d6069c6223a3a4d5d9caf6559884c95cfad3a310ce0a477"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/binding-sample-v2.json",
+    "sha256": "e3b2c0ae2a0fe40b05f529c9ed51f1170dc3e00a5c8d1533094df4aaff5d6fcf"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/contact-source-overrides.json",
+    "sha256": "0a77aea9d3bfc25669f9970417e21fade0b5320ad457d1ee3386462d72fa7085"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-evaluation-v2.json",
+    "sha256": "bfc940ebf31b2be3ed06885b2058791323cc9d56d8b04c84f45efdaabe112734"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-refinement-v3.json",
+    "sha256": "d82d34e64c86f2067fdc823cdbbc9faf58393737d0bd583c4a34995b22e4b46a"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-binding-review.json",
+    "sha256": "c66455c77705f377774336aca471fcbeb87ba8561ac03453f76d40cc2a20a0f4"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v2.json",
+    "sha256": "5e0b431953d4c85263720308dd30ffa56a0112fd9fa4dfbc9f6df29b64778c0c"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v3.json",
+    "sha256": "6f4a937c84df0ce045ee8e4eef5050516c43e0fcbf55f27c9c32f86b34f42ddf"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v4.json",
+    "sha256": "43a622581f88cfae98930123241c3ee2da13e260da985f6235be10c761c8a54d"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings-v5.json",
+    "sha256": "c4d737b582da5af6fde3a2458ebfa0f5f1096083103865f4e27a02278cfbbe48"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-bindings.json",
+    "sha256": "5886e65656030740d09793ce7c995946cdfdd50f9736050b525c303ae32dfed0"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-evaluation-v4.json",
+    "sha256": "9e417139aa5049dea831b436206f3a55d8f8caa092400fe6c9ab224da474df3d"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/google-contact-reconciled-v5.json",
+    "sha256": "7a4f9b7801c6c9ee4a579c6367f2e2a0f334025666a040e365a9d70ccf9c6025"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/manifest.json",
+    "sha256": "937cef7759a4fce54b3c2952942d7da60fb98901343a745cd6a468de630e4758"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/places.csv",
+    "sha256": "eadae051e2272312c23de2cbafa06bf50f637f0c85cbdaf9bbda5ffab1b0f2d7"
+  },
+  {
+    "original": "data/places/pilot/seomyeon-jeonpo-2026-11-13/README.md",
+    "sha256": "241f6ee0d3ef66f24182ee5f489bdb67c7ed271c5c45ec8651a86ea7a03e0b9e"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/.gitattributes",
+    "sha256": "0deb0c92ec72bb4187a8a7105f275ffc6221257de97ca89ecd75c9eb871058ab"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/additional_facility_facts.json",
+    "sha256": "81124373543f6bb5f1f0a9999b9e46b4b2e85ad4eda176fa3ef896dce78ad552"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/busanjin_model_restaurants.csv",
+    "sha256": "1837a8ad89cc810e802b7d4ec91d9751f7ded64f7f0ade79015c91c5904bc1be"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/checksums.json",
+    "sha256": "04be7f29806d15d7b089a6f90c3a8d6e6145fc22ba62c5e454100f7eba5b39ee"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/demo_appeal_facts.json",
+    "sha256": "ac479487853c83996f86e7adf3621736b7f1d4b5d31af0d3db8369cf500006a1"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/demo_nearest_transit.csv",
+    "sha256": "7baa0b500b0429c4952ecde8475ba64c4c433f35091adfcf6273fbc72cd8266b"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/designation_links.csv",
+    "sha256": "5b71a51065142b3e3109020ec158de0e04aef02e22b4211a7a0d5e6084eedc25"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/designation_review_needed.json",
+    "sha256": "278fe3405f0f8b7fbb5e3fac293ae02bec957166465b8b6ac8218c8de750cfc8"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/README.md",
+    "sha256": "060ef8ad845f5daa8ebd78f90581710e96abf924b96a89a68cebbd9d5b1a6beb"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/sources.json",
+    "sha256": "61b20fe41647a21dd2849cff494c9aecb9e316bf8757146f7b5dab6c04b390e6"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/summary.json",
+    "sha256": "d4f5d0686f1400577bbd022314a73390a0c697ed78cf9b312ea6406d06b271c1"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/threshold_comparison.json",
+    "sha256": "b35bf542118b118b751d0fd03872e346e6f7085a10c124de7b7204f414630a91"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/raw/busanjin_model_restaurants_cp949.csv",
+    "sha256": "08bd230f7eb751fa8bb3c75db2eb3bb4c93dfc7237883df7f7dc68c99db0b678"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/raw/busan_bus_stops.csv",
+    "sha256": "74060217eaa9b05ea07f692646813a1690495afb7d9287632c756e2819fdfff4"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/raw/busan_railway_stations.csv",
+    "sha256": "be858b691edbf741c00601ef0d682734b0dcdae74ad327efe6eb7d4a039191da"
+  },
+  {
+    "original": "data/places/appeal/busan-2026-11-14/raw/national_railway_original.xlsx",
+    "sha256": "cdf1d84a7e5c898b2aacd622783ba8ba9af35c40bee0561dc97d55ce8e063f94"
+  },
+  {
+    "original": "src/test/java/com/datecourse/service/PublicPlaceFactsTest.java",
+    "sha256": "0d99f6b241c174e2dee8e37250a3254995a5abb9e6d6b6e325ee2c10019dc4b0"
+  },
+  {
+    "original": "src/test/java/com/datecourse/service/PilotPriceFlowTest.java",
+    "sha256": "3a5feacd2d23e197ad6c4addc99a091ee783e74bb42f04eaec39e762b68b411d"
+  }
+]

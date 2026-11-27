@@ -45,7 +45,7 @@ class CoursePlannerUiTest {
             CourseEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
             var details=new com.datecourse.model.PlaceDetails("","","","","","","","",java.util.Map.of(),
                     java.util.List.of(new com.datecourse.model.PlaceDetails.TagFact(com.datecourse.model.PlaceTag.FREE_ADMISSION,"확인","","")));
-            var places=new java.util.ArrayList<>(new com.datecourse.service.PublicDemoPlaceRepository().findAll());
+            var places=new java.util.ArrayList<>(com.datecourse.demo.PublicPlaceImport.batch().places());
             // 비문화 자료에 무료 태그가 섞여도 화면의 활동 정책을 따라야 한다.
             places.add(new com.datecourse.model.Place(99999,"free-meal","무료 태그 식당","MEAL",35.1578,129.06,com.datecourse.model.PriceEstimate.exact(0),0,details));
             editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),places,p->{},()->{});
@@ -86,7 +86,7 @@ class CoursePlannerUiTest {
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/_02step_editor/route-editor-view.fxml"));Parent root=loader.load();
             CourseEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
             editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),
-                    new com.datecourse.service.PublicDemoPlaceRepository().findAll(),p->{},()->{});
+                    com.datecourse.demo.PublicPlaceImport.batch().places(),p->{},()->{});
             var pane=(com.datecourse.page.common.controls.ExpandableFilterPane)field(editor,"filterPane");
             var subtype=(javafx.scene.control.ComboBox<String>)field(editor,"subtypeBox");
             var detail=(javafx.scene.control.ComboBox<String>)field(editor,"detailTypeBox");
@@ -125,7 +125,7 @@ class CoursePlannerUiTest {
         FutureTask<Void> task=new FutureTask<>(()->{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/_02step_editor/route-editor-view.fxml"));Parent root=loader.load();
             CourseEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
-            var places=new com.datecourse.service.PublicDemoPlaceRepository().findAll();
+            var places=com.datecourse.demo.PublicPlaceImport.batch().places();
             editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),places,p->{},()->{});
             var subtype=(javafx.scene.control.ComboBox<String>)field(editor,"subtypeBox");
             var detail=(javafx.scene.control.ComboBox<String>)field(editor,"detailTypeBox");
@@ -553,7 +553,7 @@ class CoursePlannerUiTest {
 
     @Test void confirmedPinPreviewIsPassiveAndClickOpensDetailsWithWalkingRoutePresent() throws Exception {
         WebEngine engine=loadMap(850,720);
-        var place=new com.datecourse.service.PublicDemoPlaceRepository().findAll().getFirst();
+        var place=com.datecourse.demo.PublicPlaceImport.batch().places().getFirst();
         var payload=new com.datecourse.service.PlaceMapPayload(new com.fasterxml.jackson.databind.ObjectMapper(),new com.datecourse.service.PlacePresenter());
         script(engine,"window.previewPlace="+payload.place(place)+";window.presentRoute({startLat:35.1578,startLng:129.06,radius:1000,places:[previewPlace]},null,500,false,false,[]);");
         script(engine,"""
@@ -605,7 +605,7 @@ class CoursePlannerUiTest {
     }
 
     @Test void javaPresentationFlowsIntoMapCardWithoutOverflowOrSourceFields() throws Exception {
-        var place=new com.datecourse.service.PublicDemoPlaceRepository().findAll().getFirst();
+        var place=com.datecourse.demo.PublicPlaceImport.batch().places().getFirst();
         var payload=new com.datecourse.service.PlaceMapPayload(new com.fasterxml.jackson.databind.ObjectMapper(),new com.datecourse.service.PlacePresenter());
         for(int width:new int[]{850,420}) {
             WebEngine engine=loadMap(width,720);
@@ -809,8 +809,7 @@ class CoursePlannerUiTest {
             stubPlannerMap(field(main,"routeEditorController"),"editMapView");
             var people=(TextField)field(main,"peopleField");
             var radius=(javafx.scene.control.Slider)field(main,"radiusSlider");
-            var source=(javafx.scene.control.ComboBox<?>)field(main,"sourceBox");
-            Object originalSource=source.getValue();
+            Object originalPlaces=field(main,"allPlaces");
             people.setText("7");radius.setValue(1600);
             setField(main,"selectedLatitude",35.0);setField(main,"selectedLongitude",129.0);
             invoke(main,"updateRange");
@@ -822,7 +821,7 @@ class CoursePlannerUiTest {
             assertNull(field(main,"appliedPlan"));assertNull(field(main,"savedCourseId"));
             assertNull(field(field(main,"map"),"plan"));
             assertFalse((Boolean)field(field(main,"map"),"originLocked"));
-            assertEquals(originalSource,source.getValue());
+            assertSame(originalPlaces,field(main,"allPlaces"));
             assertTrue(((javafx.scene.control.Button)field(main,"newCourseButton")).isDisabled());
             setField(main,"placesLoaded",true);invoke(main,"onRecommendClick");
             assertTrue(((javafx.scene.control.Label)field(main,"errorLabel")).getText().contains("출발 장소"));
@@ -1331,7 +1330,7 @@ class CoursePlannerUiTest {
         fx(()->{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/_02step_editor/route-editor-view.fxml"));
             Parent root=loader.load();CourseEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
-            var rows=new com.datecourse.service.PublicDemoPlaceRepository().findAll();
+            var rows=com.datecourse.demo.PublicPlaceImport.batch().places();
             editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),rows,p->{},()->{});
             ((javafx.scene.control.Slider)field(editor,"radiusSlider")).setValue(2000);
             new Scene(root,1280,800);root.resize(1280,800);root.applyCss();root.layout();
@@ -1384,7 +1383,7 @@ class CoursePlannerUiTest {
         fx(()->{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/_02step_editor/route-editor-view.fxml"));loader.load();
             CourseEditorController editor=loader.getController();stubPlannerMap(editor,"editMapView");
-            var rows=new com.datecourse.service.PublicDemoPlaceRepository().findAll();
+            var rows=com.datecourse.demo.PublicPlaceImport.batch().places();
             editor.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,2000,"",java.util.List.of()),rows,p->{},()->{});
             ((javafx.scene.control.Slider)field(editor,"radiusSlider")).setValue(2000);
             var price=(TextField)field(editor,"placePriceField");
@@ -1529,6 +1528,39 @@ class CoursePlannerUiTest {
             });
             assertTrue(requested.containsAll(java.util.List.of(com.datecourse.model.TravelMode.WALKING,com.datecourse.model.TravelMode.DRIVING,com.datecourse.model.TravelMode.TRANSIT)));
         }finally {releaseDriving.countDown();}
+    }
+
+    @Test void transitFailureTextDoesNotKeepEditorInLoadingState() throws Exception {
+        var started=new CountDownLatch(1);var release=new CountDownLatch(1);
+        String failure="대중교통 + 도보 경로 조회가 지연되고 있어요. 다시 시도해 주세요.";
+        CourseEditorController editor=fx(()->{
+            var loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/_02step_editor/route-editor-view.fxml"));loader.load();
+            CourseEditorController e=loader.getController();stubPlannerMap(e,"editMapView");
+            ((CourseMapView)field(e,"map")).setRouteRouter((stops,mode)->{
+                started.countDown();release.await(5,TimeUnit.SECONDS);throw new java.io.IOException(failure);
+            });
+            var place=new com.datecourse.model.Place(1,"a","식당","MEAL",35.1579,129.06,7000,0);
+            e.begin(new com.datecourse.model.RoutePlan(35.1578,129.06,2,1000,"",java.util.List.of(place),
+                    java.util.Map.of(),com.datecourse.model.TravelMode.TRANSIT),java.util.List.of(place),p->{},()->{});
+            return e;
+        });
+        try {
+            assertTrue(started.await(5,TimeUnit.SECONDS));
+            fx(()->{
+                assertTrue(((CourseMapView)field(editor,"map")).isRoutePending());
+                setField(editor,"walkingMessage","응답을 기다립니다");invoke(editor,"refreshWalkingSummary");
+                assertEquals("계산 중…",((javafx.scene.control.Label)field(editor,"metricTimeLabel")).getText());
+                return null;
+            });
+            release.countDown();awaitEditorTime(editor,"미확인");
+            fx(()->{
+                assertFalse(((CourseMapView)field(editor,"map")).isRoutePending());
+                var label=(javafx.scene.control.Label)field(editor,"walkingTimeLabel");
+                assertTrue(label.isVisible());assertTrue(label.getText().contains(failure));
+                assertEquals("미확인",((javafx.scene.control.Label)field(editor,"metricTimeLabel")).getText());
+                return null;
+            });
+        } finally {release.countDown();fx(()->{editor.dispose();return null;});}
     }
 
     private static void awaitEditorTime(CourseEditorController editor,String text) throws Exception {
@@ -1701,9 +1733,9 @@ class CoursePlannerUiTest {
     }
 
     @Test
-    void pilotSourceWinsOverLateDatabaseLoadAndUnknownPriceSurvivesEditing() throws Exception {
+    void latestMainRepositoryWinsOverLateLoadAndUnknownPriceSurvivesEditing() throws Exception {
         CountDownLatch dbStarted = new CountDownLatch(1), releaseDb = new CountDownLatch(1), dbFinished = new CountDownLatch(1);
-        CountDownLatch pilotLoaded = new CountDownLatch(1);
+        CountDownLatch mainLoaded = new CountDownLatch(1);
         var delayed = new com.datecourse.db.PlaceRepository(null) {
             @Override public java.util.List<com.datecourse.model.Place> findAll() {
                 dbStarted.countDown();
@@ -1723,7 +1755,7 @@ class CoursePlannerUiTest {
             CourseEditorController editor = (CourseEditorController) loader.getNamespace().get("routeEditorController");
             stubPlannerMap(main, "mapView"); stubPlannerMap(editor, "editMapView");
             var status = (javafx.scene.control.Label) field(main, "sourceStatusLabel");
-            status.textProperty().addListener((o, old, value) -> { if (value.startsWith("9곳")) pilotLoaded.countDown(); });
+            status.textProperty().addListener((o, old, value) -> { if (value.startsWith("1곳")) mainLoaded.countDown(); });
             main.setPlaceRepository(delayed);
             return new Object[]{main, editor, root};
         });
@@ -1731,17 +1763,26 @@ class CoursePlannerUiTest {
         Object[] fixture = create.get(10, TimeUnit.SECONDS);
         try {
             assertTrue(dbStarted.await(5, TimeUnit.SECONDS));
-            FutureTask<Void> choose = new FutureTask<>(() -> { ((CoursePlannerController) fixture[0]).usePilotPlaces(); return null; });
+            FutureTask<Void> choose = new FutureTask<>(() -> {
+                var main=(CoursePlannerController)fixture[0];
+                setField(main,"selectedLatitude",35.1578);setField(main,"selectedLongitude",129.06);
+                main.setPlaceRepository(new com.datecourse.db.PlaceRepository(null) {
+                    @Override public java.util.List<com.datecourse.model.Place> findAll() {
+                        return java.util.List.of(new com.datecourse.model.Place(8,"main-unknown","현재 운영 장소","MEAL",35.1578,129.06,
+                                com.datecourse.model.PriceEstimate.unknown(),0,com.datecourse.model.PlaceDetails.EMPTY));
+                    }
+                });return null;
+            });
             Platform.runLater(choose); choose.get(10, TimeUnit.SECONDS);
-            assertTrue(pilotLoaded.await(5, TimeUnit.SECONDS));
+            assertTrue(mainLoaded.await(5, TimeUnit.SECONDS));
         } finally { releaseDb.countDown(); }
         assertTrue(dbFinished.await(5, TimeUnit.SECONDS));
         FutureTask<Void> inspect = new FutureTask<>(() -> {
             CoursePlannerController main = (CoursePlannerController) fixture[0];
             CourseEditorController editor = (CourseEditorController) fixture[1];
             var places = (java.util.List<com.datecourse.model.Place>) field(main, "allPlaces");
-            assertEquals(9, places.size());
-            assertTrue(places.stream().allMatch(p -> p.placeId().startsWith("DCA-DEMO-")));
+            assertEquals(1, places.size());
+            assertEquals("main-unknown",places.getFirst().placeId());
             invoke(main, "onRecommendClick"); invoke(editor, "onRecommendNext");
             assertTrue(((java.util.List<?>) field(editor, "candidates")).isEmpty());
             ((CheckBox) field(editor, "includeUncertainPrice")).setSelected(true);
@@ -2690,11 +2731,11 @@ class CoursePlannerUiTest {
         });
     }
 
-    @Test void userNoticesKeepRecoveryActionsAndTechnicalSourceSettingsStartCollapsed() throws Exception {
+    @Test void userNoticesKeepRecoveryActionsAndOnlyMainSourceIsAvailable() throws Exception {
         fx(()->{
             var loader=new FXMLLoader(getClass().getResource("/com/datecourse/page/_01step_planner/condition-view.fxml"));Parent root=loader.load();new Scene(root,1100,760);
             CoursePlannerController main=loader.getController();stubPlannerMap(main,"mapView");stubPlannerMap(field(main,"routeEditorController"),"editMapView");
-            assertFalse(((javafx.scene.control.TitledPane)loader.getNamespace().get("sourceSettings")).isExpanded());
+            assertNull(loader.getNamespace().get("sourceSettings"));assertNull(loader.getNamespace().get("sourceBox"));
             var feedback=(PageFeedback)field(main,"feedback");
             String partial="코스는 저장됐어요. 미리보기는 ‘저장한 코스’에서 다시 만들 수 있어요.";
             feedback.show(PageFeedback.Kind.INFO,partial);
