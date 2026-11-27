@@ -1,4 +1,4 @@
-import test from 'node:test';import assert from 'node:assert/strict';import path from 'node:path';import {fileURLToPath} from 'node:url';
+import fs from 'node:fs';import test from 'node:test';import assert from 'node:assert/strict';import path from 'node:path';import {fileURLToPath} from 'node:url';
 import {buildGuideData,readGuideFeature} from '../tools/implementation-guide.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../..');
 test('guide keeps all twelve feature documents, separates technology and code tables, and links actual sources',()=>{
@@ -11,4 +11,12 @@ test('guide fails clearly on missing sections or sources instead of publishing a
  assert.throws(()=>readGuideFeature('# Empty',{id:'empty'},{root,sourceRef:'a0d9436'}),/Missing feature summary/);
  const text='**summary**\n\n## 무엇을 사용했고 왜 필요한가\n\n| a | b | c |\n|---|---|---|\n| tool | need | how |\n\n<details><summary>핵심 코드와 연결해서 보기</summary>\n\n| a | b | c |\n|---|---|---|\n| run | [missing](../../../not-a-real-source.java) | action |\n</details>';
  assert.throws(()=>readGuideFeature(text,{id:'empty'},{root,sourceRef:'a0d9436'}),/Missing guide source/);
+});
+
+// Windows 체크아웃의 줄바꿈도 동일한 기능 안내로 변환
+test('guide reads CRLF feature notes with the same sections and code links',()=>{
+ const file=path.join(root,'docs/implementation-reference/features/03-recommendation.md');
+ const markdown=fs.readFileSync(file,'utf8').replaceAll('\r\n','\n');
+ const layout={id:'03-recommendation'};const options={root,sourceRef:'f3246b2'};
+ assert.deepEqual(readGuideFeature(markdown.replaceAll('\n','\r\n'),layout,options),readGuideFeature(markdown,layout,options));
 });

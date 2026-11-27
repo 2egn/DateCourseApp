@@ -6,6 +6,7 @@ function section(text,name){const start=text.indexOf('## '+name+'\n');if(start<0
 
 // 기능 문서의 설명·예시·기술·코드 표를 그대로 사용해 서로 다른 요약본이 생기지 않게 한다.
 export function readGuideFeature(markdown,layout,{root,sourceRef}){
+ markdown=markdown.replaceAll("\r\n","\n");
  const what=markdown.match(/^\*\*(.+)\*\*$/m)?.[1];if(!what)throw Error('Missing feature summary: '+layout.id);
  const technologies=rows(section(markdown,'무엇을 사용했고 왜 필요한가')).map(r=>{if(r.length!==3)throw Error('Invalid technology table');return {tool:clean(r[0]),need:clean(r[1]),how:clean(r[2])};});
  const detail=markdown.match(/<details><summary>핵심 코드와 연결해서 보기<\/summary>([\s\S]*?)<\/details>/)?.[1]||'';

@@ -145,7 +145,8 @@
   },
   {
     "original": "data/places/appeal/busan-2026-11-14/.gitattributes",
-    "sha256": "0deb0c92ec72bb4187a8a7105f275ffc6221257de97ca89ecd75c9eb871058ab"
+    "sha256": "0deb0c92ec72bb4187a8a7105f275ffc6221257de97ca89ecd75c9eb871058ab",
+    "archived": "data/places/appeal/busan-2026-11-14/.gitattributes.original"
   },
   {
     "original": "data/places/appeal/busan-2026-11-14/additional_facility_facts.json",
